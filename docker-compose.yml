@@ -1,0 +1,63 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: stock-app_mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    env_file:
+      - ./.env.mongodb
+    volumes:
+      - /data/mongodb/stock-app:/data/db
+    logging:
+      driver: none
+  redis-auth:
+    image: redis:latest
+    container_name: stock-app_redis-auth
+    restart: always
+    ports:
+      - 6379:6380
+    networks:
+      - backend
+    volumes:
+      - redis-auth:/stock-app/data/redis-auth
+    logging:
+      driver: none
+  redis-graphql:
+    image: redis:latest
+    container_name: stock-app_redis-graphql
+    restart: always
+    command: --port 6380
+    ports:
+      - 6380:6380
+    networks:
+      - backend
+    volumes:
+      - redis-graphql:/stock-app/data/redis-graphql
+    logging:
+      driver: none
+  server:
+    container_name: stock-app_server
+    env_file:
+      - ./server/.env.development
+    depends_on:
+      - mongodb
+      - redis-auth
+      - redis-graphql
+    build:
+      dockerfile: Dockerfile
+      context: ./server/.
+    ports:
+      - 3031:3031
+    networks:
+      - backend
+    volumes:
+      - ./server/:/stock-app/app/server
+networks:
+  backend:
+volumes:
+  redis-auth:
+  redis-graphql:
