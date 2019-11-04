@@ -1,3 +1,6 @@
+[submodule "client"]
+	path = client
+	url = https://github.com/mua-inc/client.git
 [submodule "server"]
 	path = server
 	url = https://github.com/mua-inc/server.git
