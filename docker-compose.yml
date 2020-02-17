@@ -12,10 +12,11 @@ services:
       - ./.env.mongodb
     volumes:
       - /data/mongodb/stock-app:/data/db
+      - mongodb:/data/db
     logging:
       driver: none
   redis-auth:
-    image: redis:latest
+    image: redis:alpine
     container_name: stock-app_redis-auth
     restart: always
     ports:
@@ -23,11 +24,11 @@ services:
     networks:
       - backend
     volumes:
-      - redis-auth:/stock-app/data/redis-auth
+      - redis-auth:/data
     logging:
       driver: none
   redis-graphql:
-    image: redis:latest
+    image: redis:alpine
     container_name: stock-app_redis-graphql
     restart: always
     command: --port 6380
@@ -36,7 +37,7 @@ services:
     networks:
       - backend
     volumes:
-      - redis-graphql:/stock-app/data/redis-graphql
+      - redis-graphql:/data
     logging:
       driver: none
   server:
@@ -59,5 +60,6 @@ services:
 networks:
   backend:
 volumes:
+  mongodb:
   redis-auth:
   redis-graphql:
