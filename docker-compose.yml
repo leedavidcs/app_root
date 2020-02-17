@@ -11,7 +11,7 @@ services:
     env_file:
       - ./.env.mongodb
     volumes:
-      - /data/mongodb/stock-app:/data/db
+      - ./data/mongodb/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
       - mongodb:/data/db
     logging:
       driver: none
