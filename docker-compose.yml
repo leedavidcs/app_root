@@ -55,8 +55,6 @@ services:
       - 3031:3031
     networks:
       - backend
-    volumes:
-      - ./server/:/stock-app/app/server
 networks:
   backend:
 volumes:
