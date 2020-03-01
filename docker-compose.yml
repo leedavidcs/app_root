@@ -1,26 +1,38 @@
 version: '3.7'
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: stock-app_mongodb
-    restart: always
+  pgadmin4:
+    image: dpage/pgadmin4:latest
     ports:
-      - 27017:27017
+      - 5050:80
     networks:
       - backend
     env_file:
-      - ./.env.mongodb
+      - ./.env.pgadmin4
     volumes:
-      - ./data/mongodb/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
-      - mongodb:/data/db
+      - pgadmin4:/root/.pgadmin
+    restart: unless-stopped
+    depends_on:
+      - postgres
     logging:
       driver: none
+  postgres:
+    image: postgres:latest
+    container_name: prisma-test_postgres
+    ports:
+      - 5432:5432
+    networks:
+      - backend
+    env_file:
+      - ./.env.postgres
+    volumes:
+      - postgres:/var/lib/postgres/data
+    restart: unless-stopped
   redis-auth:
     image: redis:alpine
     container_name: stock-app_redis-auth
     restart: always
     ports:
-      - 6379:6380
+      - 6379:6379
     networks:
       - backend
     volumes:
@@ -45,19 +57,27 @@ services:
     env_file:
       - ./server/.env.development
     depends_on:
-      - mongodb
       - redis-auth
       - redis-graphql
     build:
       dockerfile: Dockerfile
       context: ./server/.
+      network: host
     ports:
       - 3031:3031
     networks:
       - backend
+  server-dependencies:
+    image: alpine:latest
+    depends_on:
+      - pgadmin4
+      - postgres
+      - redis-auth
+      - redis-graphql
 networks:
   backend:
 volumes:
-  mongodb:
+  pgadmin4:
+  postgres:
   redis-auth:
   redis-graphql:

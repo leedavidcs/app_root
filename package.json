@@ -7,7 +7,8 @@
     "build": "echo $(date +%s) && docker-compose build --build-arg CACHE_BUST_FILES_UPDATED=$(date +%s) --pull server",
     "stop": "docker-compose down",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "docker-compose up"
+    "start": "docker-compose up",
+    "start:deps": "docker-compose up server-dependencies"
   },
   "repository": {
     "type": "git",
