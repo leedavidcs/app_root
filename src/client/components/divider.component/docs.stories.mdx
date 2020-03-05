@@ -1,0 +1,93 @@
+import { List, ListItem, ListItemIcon, ListItemText } from "@/client/components/list.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { themes } from "@storybook/theming";
+import { FaApple, FaBacon } from "react-icons/fa";
+import { Divider } from ".";
+
+<Meta
+	title="general/divider"
+	component={Divider}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# Divider
+
+- [Table of contents](#divider)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+  * [StandardStory](#middlestory)
+    + [Source](#source)
+  * [StandardStory](#insetstory)
+    + [Source](#source)
+
+## Description
+Divider (hr) that is typically used between list items.
+
+## Props
+<Props of={Divider} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<List>
+			<ListItem>
+				<ListItemText primary="Banana" />
+			</ListItem>
+			<Divider list={true} />
+			<ListItem>
+				<ListItemText primary="Apple" />
+			</ListItem>
+		</List>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
+
+## MiddleStory
+<Preview>
+	<Story name="middle">
+		<List>
+			<ListItem>
+				<ListItemText primary="Banana" />
+			</ListItem>
+			<Divider list={true} variant="middle" />
+			<ListItem>
+				<ListItemText primary="Apple" />
+			</ListItem>
+		</List>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
+
+## InsetStory
+<Preview>
+	<Story name="inset">
+		<List>
+			<ListItem>
+				<ListItemIcon>
+					<FaBacon />
+				</ListItemIcon>
+				<ListItemText primary="Banana" />
+			</ListItem>
+			<Divider list={true} variant="inset" />
+			<ListItem>
+				<ListItemIcon>
+					<FaApple />
+				</ListItemIcon>
+				<ListItemText primary="Apple" />
+			</ListItem>
+		</List>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

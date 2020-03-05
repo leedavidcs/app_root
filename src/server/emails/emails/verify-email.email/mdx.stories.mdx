@@ -1,0 +1,16 @@
+import { MjmlMounter } from "@/server/emails/components/mjml-mounter.component";
+import html from "@/server/emails/generated/VerifyEmail";
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+
+<Meta title="emails/verify-email" />
+
+# VerifyEmail
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<MjmlMounter>
+			{html}
+		</MjmlMounter>
+	</Story>
+</Preview>

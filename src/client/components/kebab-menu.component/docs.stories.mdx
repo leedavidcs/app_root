@@ -1,0 +1,27 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useState } from "react";
+import { StandardStory } from "./stories";
+import { KebabMenu } from ".";
+
+<Meta title="general/kebab-menu" component={KebabMenu} />
+
+# KebabMenu
+
+- [Table of Contents](#kebabmenu)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+Kebab menu, that is meant to display actions that a user can take.
+
+## Props
+<Props of={KebabMenu} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>

@@ -1,0 +1,3 @@
+import { buildEmailTemplates } from ".";
+
+buildEmailTemplates();

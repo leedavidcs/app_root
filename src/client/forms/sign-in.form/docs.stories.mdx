@@ -1,0 +1,32 @@
+import { Paper } from "@/client/components";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story }  from "@storybook/addon-docs/blocks";
+import { SignInForm } from ".";
+
+<Meta title="forms/sign-in-form" component={SignInForm} />
+
+# SignInForm
+
+- [Table of contents](#signinform)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+The sign-in form used to login a user.
+
+## Props
+<Props of={SignInForm} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<SignInForm />
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

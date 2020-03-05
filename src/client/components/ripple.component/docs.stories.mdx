@@ -1,0 +1,44 @@
+import { Paper } from "@/client/components/paper.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { text } from "@storybook/addon-knobs";
+import { themes } from "@storybook/theming";
+import { Ripple } from ".";
+
+<Meta
+	title="general/ripple"
+	component={Ripple}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# Ripple
+
+- [Table of Contents](#ripple)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+A ripple effect that is invoked on mousedown on its nearest relative parent.
+
+## Props
+<Props of={Ripple} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			CLICK BELOW:
+			<div style={{ height: 200, position: "relative" }}>
+				<Ripple />
+			</div>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

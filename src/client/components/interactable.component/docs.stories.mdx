@@ -1,0 +1,34 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { boolean } from "@storybook/addon-knobs";
+import { themes } from "@storybook/theming";
+import { Interactable } from ".";
+
+<Meta
+	title="general/interactable"
+	component={Interactable}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# Interactable
+
+## Description
+Provides a set of effects for interactable elements (hover and ripple effects).
+
+## Props
+<Props of={Interactable} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Interactable active={boolean("active", false)}>
+			<p>Click me!</p>
+		</Interactable>
+	</Story>
+</Preview>
+
+## Source
+(see code in story)

@@ -1,0 +1,35 @@
+import { Paper } from "@/client/components";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { text } from "@storybook/addon-knobs";
+import { VerifyEmailModal } from ".";
+
+<Meta title="modals/verify-email-modal" component={VerifyEmailModal} />
+
+# VerifyEmailModal
+
+- [Table of contents](#verifyemailmodal)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+
+## Description
+The modal which gets presented when the user requests another account-verification email.
+
+## Props
+<Props of={VerifyEmailModal} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<VerifyEmailModal
+				email={text("email", "test@test.com")}
+				onClickResend={action("onClickResend")}
+			/>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

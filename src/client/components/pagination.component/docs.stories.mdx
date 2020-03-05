@@ -1,0 +1,38 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { themes } from "@storybook/theming";
+import { Pagination } from ".";
+
+<Meta
+	title="general/pagination"
+	component={Pagination}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# Pagination
+
+- [Table of Contents](#pagination)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+Pagination component, that uses real pagination parameters.
+
+## Props
+<Props of={Pagination} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Pagination count={100} first={5} skip={60} onPage={action("onPage")} />
+	</Story>
+</Preview>
+
+## Source
+(see code in story)
