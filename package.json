@@ -19,9 +19,9 @@
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix",
     "postinstall": "npm run generate:backend",
-    "stop": "docker-compose down",
+    "deps:start": "docker-compose up server-dependencies",
+    "deps:stop": "docker-compose down",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:deps": "docker-compose up server-dependencies",
     "with-script": "dotenv -- ts-node -P tsconfig.gen.json -r tsconfig-paths/register -T"
   },
   "repository": {
@@ -37,6 +37,7 @@
   "dependencies": {
     "@apollo/react-ssr": "^3.1.3",
     "@apollo/react-testing": "^3.1.3",
+    "@blueprintjs/core": "^3.24.0",
     "@popperjs/core": "^2.0.6",
     "@prisma/client": "^2.0.0-preview023",
     "@seznam/compose-react-refs": "^1.0.4",
@@ -94,7 +95,7 @@
     "react-apollo": "^3.1.3",
     "react-dom": "^16.13.0",
     "react-draggable": "^4.2.0",
-    "react-hook-form": "^4.10.1",
+    "react-hook-form": "^4.10.2",
     "react-icons": "^3.9.0",
     "react-jss": "^10.0.4",
     "react-loading-skeleton": "^2.0.1",
@@ -105,7 +106,7 @@
     "request-ip": "^2.1.3",
     "typescript": "^3.8.3",
     "winston": "^3.2.1",
-    "yup": "^0.28.1",
+    "yup": "^0.28.3",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
@@ -114,9 +115,8 @@
     "@storybook/addon-knobs": "^5.3.14",
     "@storybook/addon-storyshots": "^5.3.14",
     "@storybook/addon-viewport": "^5.3.14",
-    "@storybook/addons": "^5.3.14",
     "@storybook/components": "^5.3.14",
-    "@storybook/preset-create-react-app": "^1.5.2",
+    "@storybook/preset-create-react-app": "^2.0.0",
     "@storybook/react": "^5.3.14",
     "@storybook/theming": "^5.3.14",
     "@types/faker": "^4.1.10",
@@ -124,7 +124,7 @@
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/eslint-plugin-tslint": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
-    "apollo": "^2.24.0",
+    "apollo": "^2.25.0",
     "audit-ci": "^2.5.1",
     "babel-plugin-module-resolver": "^4.0.0",
     "customize-cra": "^0.9.1",
