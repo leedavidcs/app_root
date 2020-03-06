@@ -1,11 +1,12 @@
 import {
 	ClickOutsideProvider,
-	ContextMenuProvider,
 	GlobalStyles,
 	JssProvider,
 	ModalProvider
 } from "@/client/components";
 import { withApollo } from "@/client/hocs";
+import { Layout } from "@/client/page-parts/_app.page-parts";
+import "@blueprintjs/core/lib/css/blueprint.css";
 import { flow } from "lodash";
 import App from "next/app";
 import Head from "next/head";
@@ -58,11 +59,11 @@ export default compose(
 					<JssProvider>
 						<GlobalStyles>
 							<ClickOutsideProvider>
-								<ContextMenuProvider>
-									<ModalProvider>
+								<ModalProvider>
+									<Layout>
 										<Component {...pageProps} />
-									</ModalProvider>
-								</ContextMenuProvider>
+									</Layout>
+								</ModalProvider>
 							</ClickOutsideProvider>
 						</GlobalStyles>
 					</JssProvider>

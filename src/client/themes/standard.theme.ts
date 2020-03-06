@@ -6,6 +6,7 @@ const GRID_EVEN = 0.1;
 export const standardTheme = {
 	background: "#121212",
 	surface: "#1D1D1D",
+	code: "#3E3E3E",
 	primary: "#BB86FC",
 	primaryVariant: "#3700B3",
 	secondary: "#03DAC6",
@@ -24,6 +25,7 @@ export const standardTheme = {
 	highEmphasis: 0.87,
 	mediumEmphasis: 0.6,
 	disabled: 0.38,
+	backdrop: "rgba(255, 255, 255, 0.08)",
 	surfaceOverlay: "#FFFFFF",
 	surfaceOverlayVariant: "#BB86FC",
 	surfaceOverlayHovered: 0.04,

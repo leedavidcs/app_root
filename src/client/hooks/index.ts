@@ -1,5 +1,6 @@
 export * from "./use-auth.hook";
 export * from "./use-click-through.hook";
+export * from "./use-context-menu.hook";
 export * from "./use-dictionary.hook";
 export * from "./use-double-click.hook";
 export * from "./use-focus.hook";
@@ -11,4 +12,4 @@ export * from "./use-modal.hook";
 export * from "./use-set-user.hook";
 export * from "./use-theme.hook";
 export * from "./use-tooltip.hook";
-export * from "./use-yup-validation-resolver";
+export * from "./use-yup-validation-resolver.hook";
