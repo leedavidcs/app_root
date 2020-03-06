@@ -1,0 +1,25 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { themes } from "@storybook/theming";
+import { StandardStory } from "./stories";
+import { useContextMenu } from ".";
+
+<Meta
+	title="hooks/use-context-menu"
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# useContextMenu
+
+## Description
+Creates an `onContextMenu` mouse event handler, and isOpen (boolean) state.
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>

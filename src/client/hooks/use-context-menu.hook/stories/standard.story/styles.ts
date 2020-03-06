@@ -3,8 +3,8 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		height: "100%",
-		width: "100%"
+		height: 500,
+		width: 500
 	}
 });
 
