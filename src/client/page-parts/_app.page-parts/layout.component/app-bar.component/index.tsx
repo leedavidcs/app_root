@@ -1,11 +1,10 @@
-import { Button, TextInput } from "@/client/components/input.component";
-import { Toolbar } from "@/client/components/toolbar.component";
-import { Tooltip } from "@/client/components/tooltip.component";
+import { TextInput, Toolbar, Tooltip } from "@/client/components";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
+import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, FormEventHandler, useCallback, useState } from "react";
-import { FaBars, FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaUserCircle } from "react-icons/fa";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
 
@@ -90,25 +89,23 @@ export const AppBar: FC<IProps> = (props) => {
 					<FaBars size={FA_BARS_SIZE} />
 				</div>
 				<h6 className={classes.title}>{title}</h6>
-				<div className={classes.searchWrapper}>
-					<TextInput
-						startIcon={<FaSearch />}
-						label="Search"
-						onChange={onSearch}
-						variant="outlined"
-						value={searchText}
-					/>
-				</div>
+				<TextInput
+					className={classes.searchWrapper}
+					icon="search"
+					placeholder="Search"
+					onChange={onSearch}
+					value={searchText}
+				/>
 				{!user && (
 					<div className={classes.authBtnWrapper}>
-						<Button
-							className={classes.authBtn}
-							onClick={onClickSignIn}
-							color="transparent"
-						>
+						<Button className={classes.authBtn} onClick={onClickSignIn} outlined={true}>
 							SIGN IN
 						</Button>
-						<Button className={classes.authBtn} onClick={onClickSignUp}>
+						<Button
+							className={classes.authBtn}
+							intent="primary"
+							onClick={onClickSignUp}
+						>
 							SIGN UP
 						</Button>
 					</div>

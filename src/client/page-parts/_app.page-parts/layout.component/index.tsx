@@ -1,7 +1,6 @@
-import { AppBar } from "@/client/components/app-bar.component";
 import { useSetUser } from "@/client/hooks";
-import { useEffect } from "@storybook/addons";
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useEffect } from "react";
+import { AppBar } from "./app-bar.component";
 
 interface IProps {
 	children: ReactElement;
