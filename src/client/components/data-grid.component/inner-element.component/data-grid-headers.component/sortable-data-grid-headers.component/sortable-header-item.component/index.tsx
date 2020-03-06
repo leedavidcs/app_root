@@ -1,11 +1,11 @@
-import { ContextMenu } from "@/client/components/context-menu.component";
 import { IHeaderConfig } from "@/client/components/data-grid.component";
 import { Tooltip } from "@/client/components/tooltip.component";
+import { useContextMenu } from "@/client/hooks";
+import { Menu } from "@blueprintjs/core";
 import { codes } from "keycode";
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useMemo } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
-import { HeaderMenu, IOption } from "./header-menu.component";
 import { HeaderSelect } from "./header-select.component";
 import { useStyles } from "./styles";
 import { useEditActions } from "./use-edit-actions.hook";
@@ -59,12 +59,12 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 		[stopEditing, updateLabel]
 	);
 
-	const menuOptions: readonly IOption[] = useMemo(
-		() => [
-			{ text: "Edit label", handler: startEditing },
-			{ text: freezeActionLabel, handler: freezeAction }
-		],
-		[freezeAction, freezeActionLabel, startEditing]
+	const [onContextMenu] = useContextMenu(
+		<Menu className={classes.contextMenu}>
+			<Menu.Item icon="edit" text="Edit label" onClick={startEditing} />
+			<Menu.Item text={freezeActionLabel} onClick={freezeAction} />
+		</Menu>,
+		{ onOpen: stopOperations }
 	);
 
 	return (
@@ -75,7 +75,7 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 			style={{ width }}
 			tooltip={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
 		>
-			<ContextMenu menu={<HeaderMenu options={menuOptions} />} onOpen={stopOperations}>
+			<div onContextMenu={onContextMenu}>
 				{isEditing ? (
 					<input
 						className={classes.editLabel}
@@ -88,7 +88,7 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 				) : (
 					<HeaderItem index={index} onClick={openSelect} {...headerProps} />
 				)}
-			</ContextMenu>
+			</div>
 		</Tooltip>
 	);
 });

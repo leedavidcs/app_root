@@ -21,6 +21,10 @@ const styles = (theme: CustomTheme) => ({
 			},
 			outline: "none"
 		}
+	},
+	contextMenu: {
+		backgroundColor: theme.surface,
+		color: theme.onSurface
 	}
 });
 
