@@ -49,12 +49,9 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 	const [didSucceed, setDidSucceed] = useState<boolean>(false);
 
 	const { login } = useAuth();
-	const { setContent, toggle } = useModal();
+	const { toggle } = useModal();
 
-	const onCompleted = useCallback(() => {
-		toggle(false);
-		setContent(null);
-	}, [setContent, toggle]);
+	const onCompleted = useCallback(() => toggle(false), [toggle]);
 
 	const [setUser] = useSetUser({ onCompleted });
 
@@ -125,7 +122,7 @@ export const SignInForm: FC = () => {
 	}, [isSubmitted]);
 
 	const onSubmit = useCallback(handleSubmit(onFormSubmit), [handleSubmit, onFormSubmit]);
-	const passwordError: string | boolean = didSubmit && !didSucceed && "Password is invalid";
+	const passwordError: Maybe<string> = didSubmit && !didSucceed ? "Password is invalid" : null;
 
 	return (
 		<div>
@@ -136,7 +133,6 @@ export const SignInForm: FC = () => {
 						label="Username or Email"
 						name="userIdentifier"
 						error={errors.userIdentifier?.message}
-						variant="outlined"
 						ref={register}
 					/>
 					<TextInput
@@ -145,7 +141,6 @@ export const SignInForm: FC = () => {
 						name="password"
 						type="password"
 						error={passwordError}
-						variant="outlined"
 						ref={register}
 					/>
 					<div className={classes.btnContainer}>

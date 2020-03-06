@@ -157,7 +157,6 @@ export const SignUpForm: FC = () => {
 					label="Username"
 					name="username"
 					error={errors.username?.message}
-					variant="outlined"
 					ref={register}
 				/>
 				<TextInput
@@ -165,7 +164,6 @@ export const SignUpForm: FC = () => {
 					label="Email"
 					name="email"
 					error={errors.email?.message}
-					variant="outlined"
 					ref={register}
 				/>
 				<TextInput
@@ -174,7 +172,7 @@ export const SignUpForm: FC = () => {
 					name="password"
 					error={errors.password?.message}
 					onChange={onPasswordChange}
-					variant="outlined"
+					type="password"
 					ref={register}
 				/>
 				<PasswordStrength className={classes.passwordStrength} password={password} />
@@ -183,7 +181,7 @@ export const SignUpForm: FC = () => {
 					name="confirmPassword"
 					error={errors.confirmPassword?.message}
 					className={classes.textInput}
-					variant="outlined"
+					type="password"
 					ref={register}
 				/>
 				<div className={classes.btnContainer}>

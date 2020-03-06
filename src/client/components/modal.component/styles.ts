@@ -1,52 +1,50 @@
 import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
+const OVERLAY_WIDTH = 680;
+
 const styles = (theme: CustomTheme) => ({
 	root: {
-		position: "fixed",
-		top: "0%",
-		left: "50%",
-		transform: "translate(-50%, -110%)",
-		padding: 0,
-		width: 680,
-		maxHeight: "75%",
-		transition: ({ transition }) => `all ${transition}ms ease`,
-		fontFamily: theme.fontPrimary,
-		opacity: 0
-	},
-	"@media (max-width: 768px)": {
-		root: {
-			width: "100%"
-		}
-	},
-	active: {
-		top: "50%",
-		transform: "translate(-50%, -50%)",
-		opacity: 1
-	},
-	title: {
-		height: 36,
-		position: "relative",
-		borderBottom: {
-			width: 1,
-			style: "solid",
-			color: "#d3d3d3"
-		},
-		textAlign: "center",
-		lineHeight: "36px"
+		backgroundColor: theme.backdrop
 	},
 	content: {
-		padding: "0 20px 20px"
+		position: "relative",
+		top: 0,
+		left: `calc(50vw - ${OVERLAY_WIDTH / 2}px)`,
+		width: OVERLAY_WIDTH,
+		margin: "10vh 0",
+		backgroundColor: theme.surface,
+		color: theme.onSurface,
+		"&-appear-active&$content": {
+			transform: "translateY(-80vh) rotate(-10deg)"
+		},
+		"&-appear-done&$content": {
+			transform: "translateY(0) rotate(0deg)",
+			transitionTimingFunction: "cubic-bezier(0.54, 1.12, 0.38, 1.11)",
+			transitionDuration: "300ms"
+		},
+		"&-enter-active&$content": {
+			transform: "translateY(-80vh) rotate(-10deg)"
+		},
+		"&-enter-done&$content": {
+			transform: "translateY(0) rotate(0deg)",
+			transitionTimingFunction: "cubic-bezier(0.54, 1.12, 0.38, 1.11)",
+			transitionDuration: "300ms"
+		},
+		"&-exit-active&$content": {
+			transform: "translateY(150vh) rotate(-20deg)",
+			transitionTimingFunction: "cubic-bezier(0.54, 1.12, 0.38, 1.11)",
+			transitionDuration: "500ms"
+		}
+	},
+	title: {
+		position: "relative"
 	},
 	closeBtn: {
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "center",
 		position: "absolute",
-		top: "50%",
 		right: 0,
-		transform: "translate(-50%, -50%)",
-		cursor: "pointer"
+		cursor: "pointer",
+		border: `1px solid ${theme.onSurface}`
 	}
 });
 
