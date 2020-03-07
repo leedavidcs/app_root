@@ -1,11 +1,12 @@
-import { ContextMenu } from "@/client/components/context-menu.component";
+import { ClickOutside } from "@/client/components/click-outside.component";
 import { IHeaderConfig } from "@/client/components/data-grid.component";
-import { Tooltip } from "@/client/components/tooltip.component";
+import { Popover } from "@/client/components/popover.component";
+import { useContextMenu } from "@/client/hooks";
+import { Menu } from "@blueprintjs/core";
 import { codes } from "keycode";
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useMemo } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
-import { HeaderMenu, IOption } from "./header-menu.component";
 import { HeaderSelect } from "./header-select.component";
 import { useStyles } from "./styles";
 import { useEditActions } from "./use-edit-actions.hook";
@@ -59,37 +60,39 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 		[stopEditing, updateLabel]
 	);
 
-	const menuOptions: readonly IOption[] = useMemo(
-		() => [
-			{ text: "Edit label", handler: startEditing },
-			{ text: freezeActionLabel, handler: freezeAction }
-		],
-		[freezeAction, freezeActionLabel, startEditing]
+	const [onContextMenu] = useContextMenu(
+		<Menu className={classes.contextMenu}>
+			<Menu.Item icon="edit" text="Edit label" onClick={startEditing} />
+			<Menu.Item text={freezeActionLabel} onClick={freezeAction} />
+		</Menu>,
+		{ onOpen: stopOperations }
 	);
 
 	return (
-		<Tooltip
-			active={isSelected}
-			direction="bottom-start"
-			onMouseDownOut={stopOperations}
-			style={{ width }}
-			tooltip={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
-		>
-			<ContextMenu menu={<HeaderMenu options={menuOptions} />} onOpen={stopOperations}>
-				{isEditing ? (
-					<input
-						className={classes.editLabel}
-						value={inputValue}
-						onChange={onInputChange}
-						onKeyDown={onInputKeyDown}
-						autoFocus={true}
-						spellCheck={false}
-					/>
-				) : (
-					<HeaderItem index={index} onClick={openSelect} {...headerProps} />
-				)}
-			</ContextMenu>
-		</Tooltip>
+		<ClickOutside onClick={stopOperations}>
+			<Popover
+				isOpen={isSelected}
+				minimal={true}
+				position="bottom-left"
+				onClose={stopOperations}
+				content={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
+			>
+				<div onContextMenu={onContextMenu} style={{ height: "100%", width }}>
+					{isEditing ? (
+						<input
+							className={classes.editLabel}
+							value={inputValue}
+							onChange={onInputChange}
+							onKeyDown={onInputKeyDown}
+							autoFocus={true}
+							spellCheck={false}
+						/>
+					) : (
+						<HeaderItem index={index} onClick={openSelect} {...headerProps} />
+					)}
+				</div>
+			</Popover>
+		</ClickOutside>
 	);
 });
 

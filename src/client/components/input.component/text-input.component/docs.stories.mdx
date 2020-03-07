@@ -1,23 +1,15 @@
 import { Paper } from "@/client/components/paper.component";
-import { onInputValueChanged } from "@/client/utils";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { useCallback, useState } from "react";
-import { FaBacon } from "react-icons/fa";
 import { TextInput } from ".";
 
 <Meta title="general/inputs/text-input" component={TextInput} />
 
 # TextInput
 
-- [Table of Contents](#textinput)
-  * [Description](#description)
-  * [Props](#props)
-  * [StandardStory](#standardstory)
-    + [Source](#source)
-
 ## Description
-A text-input for forms. Provides a wrapper around the native HTMLInputElement, with custom styles
-and additional features including validation.
+A text-input for forms. Providers a wrapper around the native HTMLInputElement, with custom styles
+and additioan features including validation.
 
 ## Props
 <Props of={TextInput} />
@@ -28,80 +20,25 @@ export const STANDARD_MAX_INPUT_LENGTH = 5;
 <Preview>
 	<Story name="standard">
 		{() => {
-			const [value0, setValue0] = useState("");
-			const [value1, setValue1] = useState("");
-			const [value2, setValue2] = useState("");
-			const [value3, setValue3] = useState("");
-			const [error0, setError0] = useState(null);
-			const [error1, setError1] = useState(null);
-			const [error2, setError2] = useState(null);
-			const [error3, setError3] = useState(null);
-			const validator = useCallback((value, setError) => {
-				const isValid = value.length < STANDARD_MAX_INPUT_LENGTH;
+			const [value, setValue] = useState("");
+			const [error, setError] = useState(null);
+			const onChange = useCallback(({ currentTarget }) => {
+				const isValid = currentTarget.value.length < STANDARD_MAX_INPUT_LENGTH;
 				setError(isValid ? null : "Text is too long");
-			}, []);
-			const style = { marginBottom: 8 };
-			const onChangeWithValidator = useCallback((setValue, setError) => {
-				return ({ currentTarget: { value } }) => {
-					validator(value, setError);
-					setValue(value);
-				};
-			}, [validator]);
-			const onChange0 = useCallback(
-				onChangeWithValidator(setValue0, setError0),
-				[setValue0, setError0]
-			);
-			const onChange1 = useCallback(
-				onChangeWithValidator(setValue1, setError1),
-				[setValue1, setError1]
-			);
-			const onChange2 = useCallback(
-				onChangeWithValidator(setValue2, setError2),
-				[setValue2, setError2]
-			);
-			const onChange3 = useCallback(
-				onChangeWithValidator(setValue3, setError3),
-				[setValue3, setError3]
-			);
+				setValue(currentTarget.value);
+			}, [setError]);
 			return (
 				<Paper>
 					<TextInput
-						label="Must be fewer than 5 chars"
-						error={error0}
-						style={style}
-						onChange={onChange0}
-						value={value0}
-					/>
-					<TextInput
-						label="Must be fewer than 5 chars"
-						error={error1}
-						style={style}
-						onChange={onChange1}
-						value={value1}
-						variant="outlined"
-					/>
-					<TextInput
-						label="Must be fewer than 5 chars"
-						error={error2}
-						style={style}
-						onChange={onChange2}
-						value={value2}
-						startIcon={<FaBacon />}
-					/>
-					<TextInput
-						label="Must be fewer than 5 chars"
-						error={error3}
-						style={style}
-						onChange={onChange3}
-						value={value3}
-						variant="outlined"
-						startIcon={<FaBacon />}
+						label="Text input"
+						labelInfo="(Must be fewer than 5 chars)"
+						error={error}
+						onChange={onChange}
+						placeholder="placeholder"
+						value={value}
 					/>
 				</Paper>
 			);
 		}}
 	</Story>
 </Preview>
-
-### Source
-(see code in story)

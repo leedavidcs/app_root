@@ -17,9 +17,6 @@ export const styles = (theme: CustomTheme) => ({
 	passwordStrength: {
 		marginBottom: 20
 	},
-	signUpBtn: {
-		width: 140
-	},
 	error: {
 		marginTop: 10,
 		color: theme.error,

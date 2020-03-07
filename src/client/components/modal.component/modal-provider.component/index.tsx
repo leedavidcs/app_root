@@ -6,11 +6,30 @@ import { useMutation, useQuery } from "react-apollo";
 
 export * from "./modal.context";
 
+interface IContent {
+	title: string;
+	body: ReactElement;
+}
+
 export const ModalProvider: FC = ({ children }) => {
 	const { data } = useQuery<GetModal>(Queries.GetModal);
-	const [toggleModal] = useMutation<ToggleModal, ToggleModalVariables>(Mutations.ToggleModal);
 
-	const [content, setContent] = useState<{ title: string; body: ReactElement } | null>(null);
+	const [content, setContent] = useState<IContent | null>(null);
+
+	const onCompleted = useCallback(
+		(result: ToggleModal) => {
+			const isOff = !result.toggleModal;
+
+			if (isOff) {
+				setContent(null);
+			}
+		},
+		[setContent]
+	);
+
+	const [toggleModal] = useMutation<ToggleModal, ToggleModalVariables>(Mutations.ToggleModal, {
+		onCompleted
+	});
 
 	const { title, body } = content || { title: "", body: null };
 	const active: boolean = data?.modal || false;
@@ -22,10 +41,11 @@ export const ModalProvider: FC = ({ children }) => {
 		[toggleModal]
 	);
 
-	const onClose = useCallback(() => {
-		setContent(null);
-		toggle(false);
-	}, [setContent, toggle]);
+	const onClose = useCallback(() => toggle(false), [toggle]);
+
+	// const setContent2 = useCallback(() => {
+
+	// }, []);
 
 	const value = useMemo(() => ({ active, setContent, toggle }), [active, setContent, toggle]);
 
@@ -33,7 +53,7 @@ export const ModalProvider: FC = ({ children }) => {
 		<ModalContext.Provider value={value}>
 			{children}
 			<Overlay active={active} clickThrough={false} relative={false} />
-			<Modal active={active} onClose={onClose} onClickOut={onClose} title={title}>
+			<Modal isOpen={active} onClose={onClose} title={title}>
 				{body}
 			</Modal>
 		</ModalContext.Provider>

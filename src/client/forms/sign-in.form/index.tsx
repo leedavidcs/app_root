@@ -1,6 +1,7 @@
-import { Anchor, Button, TextInput } from "@/client/components";
+import { Anchor, TextInput } from "@/client/components";
 import { LoginLocalUserVariables } from "@/client/graphql";
 import { useAuth, useModal, useSetUser, useYupValidationResolver } from "@/client/hooks";
+import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -49,12 +50,9 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 	const [didSucceed, setDidSucceed] = useState<boolean>(false);
 
 	const { login } = useAuth();
-	const { setContent, toggle } = useModal();
+	const { toggle } = useModal();
 
-	const onCompleted = useCallback(() => {
-		toggle(false);
-		setContent(null);
-	}, [setContent, toggle]);
+	const onCompleted = useCallback(() => toggle(false), [toggle]);
 
 	const [setUser] = useSetUser({ onCompleted });
 
@@ -125,7 +123,7 @@ export const SignInForm: FC = () => {
 	}, [isSubmitted]);
 
 	const onSubmit = useCallback(handleSubmit(onFormSubmit), [handleSubmit, onFormSubmit]);
-	const passwordError: string | boolean = didSubmit && !didSucceed && "Password is invalid";
+	const passwordError: Maybe<string> = didSubmit && !didSucceed ? "Password is invalid" : null;
 
 	return (
 		<div>
@@ -136,7 +134,6 @@ export const SignInForm: FC = () => {
 						label="Username or Email"
 						name="userIdentifier"
 						error={errors.userIdentifier?.message}
-						variant="outlined"
 						ref={register}
 					/>
 					<TextInput
@@ -145,11 +142,10 @@ export const SignInForm: FC = () => {
 						name="password"
 						type="password"
 						error={passwordError}
-						variant="outlined"
 						ref={register}
 					/>
 					<div className={classes.btnContainer}>
-						<Button className={classes.signInBtn} type="submit">
+						<Button intent="primary" type="submit">
 							SIGN IN
 						</Button>
 					</div>

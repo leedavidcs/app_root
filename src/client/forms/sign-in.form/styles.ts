@@ -14,9 +14,6 @@ const styles = (theme: CustomTheme) => ({
 	textInput: {
 		marginBottom: 16
 	},
-	signInBtn: {
-		width: 140
-	},
 	successSignIn: {
 		marginTop: 10,
 		marginBottom: 18,

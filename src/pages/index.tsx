@@ -1,14 +1,12 @@
-import { AppBar } from "@/client/components";
 import { NextComponentType } from "next";
 import React from "react";
 
-const IndexPage: NextComponentType = () => {
+const Page: NextComponentType = () => {
 	return (
 		<main>
-			<AppBar title="TheBrand Inc." />
 			<div>Home page works~!</div>
 		</main>
 	);
 };
 
-export default IndexPage;
+export default Page;

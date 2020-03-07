@@ -1,5 +1,4 @@
 import { ClickOutsideProvider } from "@/client/components/click-outside.component";
-import { ContextMenuProvider } from "@/client/components/context-menu.component";
 import { ModalProvider } from "@/client/components/modal.component";
 import React, { FC, ReactNode } from "react";
 import { ApolloProvider } from "./apollo-provider.component";
@@ -20,9 +19,7 @@ export const RootProvider: FC<IProps> = ({ children, mockRequests = true }) => {
 			<JssProvider>
 				<GlobalStyles>
 					<ClickOutsideProvider>
-						<ContextMenuProvider>
-							<ModalProvider>{children}</ModalProvider>
-						</ContextMenuProvider>
+						<ModalProvider>{children}</ModalProvider>
 					</ClickOutsideProvider>
 				</GlobalStyles>
 			</JssProvider>

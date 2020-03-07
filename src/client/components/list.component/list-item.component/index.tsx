@@ -4,12 +4,14 @@ import { Overlay } from "@/client/components/overlay.component";
 import { Ripple } from "@/client/components/ripple.component";
 import { useHover, useIsLastChild } from "@/client/hooks";
 import classnames from "classnames";
+import { flow } from "lodash";
 import memoizeOne from "memoize-one";
 import Link from "next/link";
 import React, {
 	FC,
 	Fragment,
 	MouseEvent,
+	MutableRefObject,
 	ReactElement,
 	ReactNode,
 	useCallback,
@@ -46,6 +48,12 @@ interface IProps {
 	 */
 	onClick?: (event: MouseEvent<HTMLElement>) => void;
 	/**
+	 * Applies a ripple effect if the element is selectable
+	 *
+	 * @default true
+	 */
+	ripple?: boolean;
+	/**
 	 * Whether this item is selected or not. If this is provided, the list will behave as if it is
 	 * selectable (highlights on hover, ripples on click)
 	 */
@@ -56,18 +64,9 @@ const isDeferred = memoizeOne((value: any): value is FC<IChildrenProps> => {
 	return typeof value === "function";
 });
 
-export const ListItem: FC<IProps> = ({ children, className, href, onClick, selected }) => {
-	const classes = useStyles({ href, selected });
-
-	const { divider } = useContext(ListContext);
-
-	const [hovered, listItemRef] = useHover<HTMLLIElement>(false);
-	const [isLastItem] = useIsLastChild(listItemRef);
-
-	const isSelectable: boolean = typeof selected === "boolean" || typeof href === "string";
-
-	const withHref = useCallback(
-		(content: ReactNode): ReactNode => {
+const useWithHref = ({ href }: IProps, classes: ReturnType<typeof useStyles>) => {
+	return useCallback(
+		(content: ReactNode) => {
 			if (!href) {
 				return content;
 			}
@@ -78,14 +77,18 @@ export const ListItem: FC<IProps> = ({ children, className, href, onClick, selec
 				</Link>
 			);
 		},
-		[classes.link, href]
+		[classes, href]
 	);
+};
 
-	const [innerHandlers, outerHandlers] = useMemo(() => {
-		const handlers = { onClick };
+const useWithEffects = ({
+	href,
+	ripple = true,
+	selected
+}: IProps): [MutableRefObject<HTMLLIElement | null>, (element: ReactNode) => ReactElement] => {
+	const [hovered, listItemRef] = useHover<HTMLLIElement>(false);
 
-		return isDeferred(children) ? [handlers, {}] : [{}, handlers];
-	}, [children, onClick]);
+	const isSelectable: boolean = typeof selected === "boolean" || typeof href === "string";
 
 	const overlayElem: ReactElement = useMemo(() => {
 		const opacity: number = selected ? OVERLAY_FOCUS_OPACITY : OVERLAY_HOVER_OPACITY;
@@ -99,32 +102,68 @@ export const ListItem: FC<IProps> = ({ children, className, href, onClick, selec
 		);
 	}, [isSelectable, hovered, selected]);
 
-	const applyEffects = useCallback(
-		(element: ReactNode) =>
-			withHref(
+	return [
+		listItemRef,
+		useCallback(
+			(element: ReactNode) => (
 				<Fragment>
 					{element}
 					{overlayElem}
-					{isSelectable && <Ripple />}
+					{isSelectable && ripple && <Ripple />}
 				</Fragment>
 			),
-		[isSelectable, overlayElem, withHref]
-	);
+			[isSelectable, overlayElem, ripple]
+		)
+	];
+};
 
+const useHandlers = ({ children, onClick }: IProps) => {
+	return useMemo(() => {
+		const handlers = { onClick };
+
+		return isDeferred(children) ? [handlers, {}] : [{}, handlers];
+	}, [children, onClick]);
+};
+
+const useChildElement = (
+	{ children, className }: IProps,
+	decorateItem: (content: ReactNode) => ReactElement,
+	handlers: Record<string, any>,
+	classes: ReturnType<typeof useStyles>
+) => {
 	const getDeferredElement = useCallback(
 		(element: ReactElement) => (
-			<div className={classnames(classes.root, classes.padded, className)} {...innerHandlers}>
-				{applyEffects(element)}
+			<div className={classnames(classes.root, classes.padded, className)} {...handlers}>
+				{decorateItem(element)}
 			</div>
 		),
-		[applyEffects, className, innerHandlers, classes.root, classes.padded]
+		[className, decorateItem, handlers, classes]
 	);
 
-	const childElement: ReactNode = useMemo(() => {
+	return useMemo(() => {
 		return isDeferred(children)
 			? children({ deferred: getDeferredElement })
-			: applyEffects(children);
-	}, [applyEffects, children, getDeferredElement]);
+			: decorateItem(children);
+	}, [children, decorateItem, getDeferredElement]);
+};
+
+export const ListItem: FC<IProps> = (props) => {
+	const { children, href, selected } = props;
+
+	const classes = useStyles({ href, selected });
+
+	const { divider } = useContext(ListContext);
+
+	const withHref = useWithHref(props, classes);
+	const [listItemRef, withEffects] = useWithEffects(props);
+
+	const [innerHandlers, outerHandlers] = useHandlers(props);
+
+	const decorateItem = useCallback(flow(withHref, withEffects), [withHref, withEffects]);
+
+	const childElement: ReactNode = useChildElement(props, decorateItem, innerHandlers, classes);
+
+	const [isLastItem] = useIsLastChild(listItemRef);
 
 	return (
 		<li

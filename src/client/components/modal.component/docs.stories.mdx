@@ -1,22 +1,8 @@
-import { action } from "@storybook/addon-actions";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
-import { boolean, text } from "@storybook/addon-knobs";
-import { themes } from "@storybook/theming";
-import Faker from "faker";
-import { Fragment } from "react";
+import { StandardStory } from "./stories";
 import { Modal } from ".";
-//
-Faker.seed(1);
 
-<Meta
-	title="general/modal"
-	component={Modal}
-	parameters={{
-		options: {
-			theme: themes.dark
-		}
-	}}
-/>
+<Meta title="general/modal" component={Modal} />
 
 # Modal
 
@@ -25,10 +11,6 @@ Faker.seed(1);
   * [Props](#props)
   * [StandardStory](#standardstory)
     + [Source](#source)
-  * [Hook: useModal](#hook-usemodal)
-    + [Type](#type)
-    + [Example](#example)
-    + [Quick Note](#quick-note)
 
 ## Description
 Modal component. Contains a title and contents. This component should not be created manually.
@@ -40,66 +22,48 @@ modal (see code example at the bottom).
 <Props of={Modal} />
 
 ## StandardStory
-export const paragraph = Faker.lorem.paragraph();
 
 <Preview>
 	<Story name="standard">
-		<div style={{ height: 120 }}>
-			<Modal
-				title={text("title", "Title goes here")}
-				active={boolean("active", true)}
-				onClickOut={action("onClickOut")}
-				onClose={action("onClose")}
-			>
-				<Fragment>
-					<h1>{text("heading", "Example heading")}</h1>
-					<p>{text("content", paragraph)}</p>
-				</Fragment>
-			</Modal>
-		</div>
+		<StandardStory />
 	</Story>
 </Preview>
 
 ### Source
-(see code in story)
-
-## Hook: useModal
-### Type
-```ts
-const useModal: () => {
-	/**
-	 * This sets the `title` and `content` of the Modal. If `null` is passed, `title` will be `""`
-	 * and `content` will be `null`.
-	 */
-	setContent: (options: { title: string, body: ReactElement } | null) => void;
-	/**
-	 * This will toggle the modal's `active` prop. If `force` is true, the modal will open. If
-	 * `force` is false, the modal will close.
-	 */
-	toggle: (force?: boolean) => void;
-}
-```
-
-### Example
 ```tsx
-import { useModal } from "@/client/hooks";
-import React, { FC, useCallback } from "react";
+import { Modal } from "@/client/components/modal.component";
+import { Button } from "@blueprintjs/core";
+import { text } from "@storybook/addon-knobs";
+import Faker from "faker";
+import React, { FC, useCallback, useState } from "react";
 
-export const WithModal: FC = () => {
-	const { setContent, toggle } = useModal();
+Faker.seed(1);
 
-	const onClick = useCallback(() => {
-		setContent({
-			title: "Hello world!",
-			body: <div>I am content!</div>
-		});
-		toggle(true);
-	}, [setContent, toggle]);
+const PARAGRAPHS_COUNT = 5;
 
-	return <div onClick={onClick}>Click me to open!</div>
+const paragraphs: string = Faker.lorem.paragraphs(PARAGRAPHS_COUNT);
+
+export const StandardStory: FC = () => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const onOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
+	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+	return (
+		<div>
+			<Button text="Open modal" onClick={onOpen} />
+			<Modal
+				title={text("title", "Hello world!")}
+				isOpen={isOpen}
+				onClose={onClose}
+				footer={[
+					<Button key="close" text="close" onClick={onClose} />,
+					<Button key="doThing" intent="primary" text="Do the thing" />
+				]}
+			>
+				<p>{text("content", paragraphs)}</p>
+			</Modal>
+		</div>
+	);
 };
 ```
-
-### Quick Note
-Clicking outside of the modal, or clicking on the `x` on the modal's top-right corner will close
-the modal.

@@ -1,3 +1,4 @@
+import "@blueprintjs/core/lib/css/blueprint.css";
 import { addDecorator, addParameters, configure } from "@storybook/react";
 import { themes } from "@storybook/theming";
 import { withRootProvider } from "../src/client/storybook";
