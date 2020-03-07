@@ -4,11 +4,9 @@ import { createUseStyles } from "react-jss";
 const styles = (theme: CustomTheme) => ({
 	input: {
 		backgroundColor: theme.code,
-		borderRadius: 4,
 
 		"& input.bp3-input": {
 			backgroundColor: theme.code,
-			borderRadius: 4,
 			color: theme.onSurface
 		}
 	}
