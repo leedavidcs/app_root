@@ -28,21 +28,30 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 
 	const [isHovered, hoverRef] = useHover<HTMLDivElement>(false, { stopPropagation: true });
 
+	const onOptionClick = useCallback(
+		(option: IKebabMenuOption) => (event: MouseEvent<HTMLElement>) => {
+			event.stopPropagation();
+			option.onClick();
+		},
+		[]
+	);
+
 	const tooltip: ReactElement = useMemo(
 		() => (
 			<List>
 				{options.map((option) => (
-					<ListItem key={option.text} selected={false} onClick={option.onClick}>
+					<ListItem key={option.text} selected={false} onClick={onOptionClick(option)}>
 						<ListItemText primary={option.text} />
 					</ListItem>
 				))}
 			</List>
 		),
-		[options]
+		[onOptionClick, options]
 	);
 
 	const onClick = useCallback(
 		(event: MouseEvent<HTMLDivElement>) => {
+			event.stopPropagation();
 			setIsOpen(true);
 		},
 		[setIsOpen]
