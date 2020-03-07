@@ -5,6 +5,7 @@ const styles = (theme: CustomTheme) => ({
 	input: {
 		backgroundColor: theme.code,
 		borderRadius: 4,
+		color: theme.onSurface,
 
 		"& input.bp3-input": {
 			backgroundColor: theme.code,

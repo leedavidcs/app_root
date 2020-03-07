@@ -1,42 +1,46 @@
-import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
-import React, { CSSProperties, FormEventHandler, forwardRef, KeyboardEventHandler } from "react";
+import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
+import React, { CSSProperties, forwardRef, KeyboardEventHandler } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string>;
 	icon?: IconName;
 	inline?: boolean;
 	label?: string;
 	labelInfo?: string;
-	name?: string;
-	onChange?: FormEventHandler<HTMLInputElement>;
+	max?: number;
+	min?: number;
+	majorStepSize?: number;
+	minorStepSize?: number;
 	onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+	onValueChange?: (valueAsNumber: number, valueAsString: string) => void;
 	placeholder?: string;
+	stepSize?: number;
 	style?: CSSProperties;
-	type?: string;
-	value?: string;
+	value?: number;
 }
 
-export const TextInput = forwardRef<InputGroup, IProps>(
+export const NumberInput = forwardRef<NumericInput, IProps>(
 	(
 		{
 			className,
-			defaultValue,
 			disabled,
 			error,
 			icon,
 			inline,
 			label,
 			labelInfo,
-			name,
-			onChange,
+			max,
+			min,
+			majorStepSize,
+			minorStepSize,
 			onKeyDown,
+			onValueChange,
 			placeholder,
+			stepSize,
 			style,
-			type,
 			value
 		},
 		ref
@@ -51,23 +55,28 @@ export const TextInput = forwardRef<InputGroup, IProps>(
 				disabled={disabled}
 				helperText={error}
 				inline={inline}
+				intent={intent}
 				label={label}
 				labelInfo={labelInfo}
-				intent={intent}
 				style={style}
 			>
-				<InputGroup
+				<NumericInput
 					ref={ref}
 					className={classes.input}
-					defaultValue={defaultValue}
+					allowNumericCharactersOnly={true}
+					clampValueOnBlur={true}
 					disabled={disabled}
+					fill={true}
 					intent={intent}
 					leftIcon={icon}
-					name={name}
-					onChange={onChange}
+					max={max}
+					min={min}
+					majorStepSize={majorStepSize}
+					minorStepSize={minorStepSize}
 					onKeyDown={onKeyDown}
+					onValueChange={onValueChange}
 					placeholder={placeholder}
-					type={type}
+					stepSize={stepSize}
 					value={value}
 				/>
 			</FormGroup>
@@ -75,4 +84,4 @@ export const TextInput = forwardRef<InputGroup, IProps>(
 	}
 );
 
-TextInput.displayName = "TextInput";
+NumberInput.displayName = "NumberInput";

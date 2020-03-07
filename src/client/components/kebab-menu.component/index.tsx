@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText } from "@/client/components/list.component";
 import { Overlay } from "@/client/components/overlay.component";
-import { Tooltip } from "@/client/components/tooltip.component";
+import { Popover } from "@/client/components/popover.component";
 import { useHover, useTheme } from "@/client/hooks";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback, useMemo, useState } from "react";
@@ -21,7 +21,7 @@ interface IProps {
 }
 
 export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE }) => {
-	const [active, setActive] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const classes = useStyles({ size });
 	const { theme } = useTheme();
@@ -43,28 +43,28 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 
 	const onClick = useCallback(
 		(event: MouseEvent<HTMLDivElement>) => {
-			setActive(true);
+			setIsOpen(true);
 		},
-		[setActive]
+		[setIsOpen]
 	);
 
-	const onClickOut = useCallback(() => setActive(false), [setActive]);
+	const onClickOut = useCallback(() => setIsOpen(false), [setIsOpen]);
 
 	return (
-		<Tooltip
-			popperClassName={classes.menu}
-			active={active}
-			direction="bottom-start"
-			onClickOut={onClickOut}
-			tooltip={tooltip}
+		<Popover
+			popoverClassName={classes.menu}
+			isOpen={isOpen}
+			position="bottom-left"
+			onClose={onClickOut}
+			content={tooltip}
 		>
 			<div ref={hoverRef} className={classnames(classes.root, className)} onClick={onClick}>
 				<FaEllipsisV />
 				<Overlay
-					active={active || isHovered}
-					opacity={active ? theme.surfaceOverlayFocused : theme.surfaceOverlayHovered}
+					active={isOpen || isHovered}
+					opacity={isOpen ? theme.surfaceOverlayFocused : theme.surfaceOverlayHovered}
 				/>
 			</div>
-		</Tooltip>
+		</Popover>
 	);
 };

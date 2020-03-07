@@ -43,11 +43,6 @@ const styles = (theme: CustomTheme) => ({
 	},
 	authBtn: {
 		marginLeft: 4,
-		color: theme.onSurface,
-
-		"&:last-child": {
-			color: theme.onPrimary
-		},
 
 		[breakpoints.up("md")]: {
 			minWidth: 120,

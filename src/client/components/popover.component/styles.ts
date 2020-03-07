@@ -2,14 +2,18 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	input: {
-		backgroundColor: theme.code,
-		borderRadius: 4,
-
-		"& input.bp3-input": {
-			backgroundColor: theme.code,
-			borderRadius: 4,
-			color: theme.onSurface
+	root: {
+		"& > .bp3-popover-target": {
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+			height: "100%",
+			width: "100%"
+		}
+	},
+	popover: {
+		"& > .bp3-popover-content": {
+			background: "none"
 		}
 	}
 });

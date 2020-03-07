@@ -1,7 +1,8 @@
-import { TextInput, Toolbar, Tooltip } from "@/client/components";
+import { Popover, TextInput, Toolbar } from "@/client/components";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
+import { Button, Classes } from "@blueprintjs/core";
+import classnames from "classnames";
 import dynamic from "next/dynamic";
 import React, { FC, FormEventHandler, useCallback, useState } from "react";
 import { FaBars, FaUserCircle } from "react-icons/fa";
@@ -97,7 +98,7 @@ export const AppBar: FC<IProps> = (props) => {
 					value={searchText}
 				/>
 				{!user && (
-					<div className={classes.authBtnWrapper}>
+					<div className={classnames(classes.authBtnWrapper, Classes.DARK)}>
 						<Button className={classes.authBtn} onClick={onClickSignIn} outlined={true}>
 							SIGN IN
 						</Button>
@@ -111,11 +112,11 @@ export const AppBar: FC<IProps> = (props) => {
 					</div>
 				)}
 				{user && (
-					<Tooltip
-						active={selectedIndex === 0}
-						direction="left-start"
-						onMouseDownOut={closeMenus}
-						tooltip={
+					<Popover
+						isOpen={selectedIndex === 0}
+						position="left-top"
+						onClose={closeMenus}
+						content={
 							<ProfileMenu
 								onClickSignIn={onClickSignIn}
 								onClickSignOut={onClickSignOut}
@@ -128,7 +129,7 @@ export const AppBar: FC<IProps> = (props) => {
 							className={classes.profileIcon}
 							size={FA_USER_CIRCLE_SIZE}
 						/>
-					</Tooltip>
+					</Popover>
 				)}
 			</div>
 		</Toolbar>

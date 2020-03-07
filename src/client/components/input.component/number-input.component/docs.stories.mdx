@@ -1,0 +1,44 @@
+import { Paper } from "@/client/components/paper.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback, useState } from "react";
+import { NumberInput } from ".";
+
+<Meta title="general/inputs/number-input" component={NumberInput} />
+
+# NumberInput
+
+## Description
+A number-input for forms. Providers a wrapper around the native HTMLInputElement, with custom styles
+and additioan features including validation.
+
+## Props
+<Props of={NumberInput} />
+
+## StandardStory
+export const STANDARD_MAX_INPUT_VALUE = 5;
+
+<Preview>
+	<Story name="standard">
+		{() => {
+			const [value, setValue] = useState(0);
+			const [error, setError] = useState(null);
+			const onValueChange = useCallback((numberValue) => {
+				const isValid = numberValue < STANDARD_MAX_INPUT_VALUE;
+				setError(isValid ? null : "Value is too large");
+				setValue(numberValue);
+			}, [setError]);
+			return (
+				<Paper>
+					<NumberInput
+						label="Number input"
+						labelInfo="(Must be less than 5)"
+						error={error}
+						onValueChange={onValueChange}
+						placeholder="placeholder"
+						value={value}
+					/>
+				</Paper>
+			);
+		}}
+	</Story>
+</Preview>

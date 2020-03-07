@@ -1,5 +1,6 @@
+import { ClickOutside } from "@/client/components/click-outside.component";
 import { IHeaderConfig } from "@/client/components/data-grid.component";
-import { Tooltip } from "@/client/components/tooltip.component";
+import { Popover } from "@/client/components/popover.component";
 import { useContextMenu } from "@/client/hooks";
 import { Menu } from "@blueprintjs/core";
 import { codes } from "keycode";
@@ -68,28 +69,30 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 	);
 
 	return (
-		<Tooltip
-			active={isSelected}
-			direction="bottom-start"
-			onMouseDownOut={stopOperations}
-			style={{ width }}
-			tooltip={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
-		>
-			<div onContextMenu={onContextMenu}>
-				{isEditing ? (
-					<input
-						className={classes.editLabel}
-						value={inputValue}
-						onChange={onInputChange}
-						onKeyDown={onInputKeyDown}
-						autoFocus={true}
-						spellCheck={false}
-					/>
-				) : (
-					<HeaderItem index={index} onClick={openSelect} {...headerProps} />
-				)}
-			</div>
-		</Tooltip>
+		<ClickOutside onClick={stopOperations}>
+			<Popover
+				isOpen={isSelected}
+				minimal={true}
+				position="bottom-left"
+				onClose={stopOperations}
+				content={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
+			>
+				<div onContextMenu={onContextMenu} style={{ height: "100%", width }}>
+					{isEditing ? (
+						<input
+							className={classes.editLabel}
+							value={inputValue}
+							onChange={onInputChange}
+							onKeyDown={onInputKeyDown}
+							autoFocus={true}
+							spellCheck={false}
+						/>
+					) : (
+						<HeaderItem index={index} onClick={openSelect} {...headerProps} />
+					)}
+				</div>
+			</Popover>
+		</ClickOutside>
 	);
 });
 
