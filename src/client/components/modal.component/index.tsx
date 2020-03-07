@@ -25,6 +25,7 @@ export const Modal: FC<IProps> = ({ children, footer, isOpen, onClose, title }) 
 			isOpen={isOpen}
 			onClose={onClose}
 			title={title}
+			transitionDuration={500}
 			usePortal={true}
 		>
 			<div className={Classes.DIALOG_BODY}>{children}</div>
