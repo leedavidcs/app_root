@@ -5,7 +5,7 @@ import {
 	ModalProvider
 } from "@/client/components";
 import { withApollo } from "@/client/hocs";
-import { Layout } from "@/client/page-parts/_app.page-parts";
+import { Layout } from "@/client/page-parts/_app";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import { flow } from "lodash";
 import App from "next/app";

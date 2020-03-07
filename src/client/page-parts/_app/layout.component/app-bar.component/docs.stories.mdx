@@ -1,24 +1,9 @@
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
-import { themes } from "@storybook/theming";
 import { AppBar } from ".";
 
-<Meta
-	title="general/app-bar"
-	component={AppBar}
-	parameters={{
-		options: {
-			theme: themes.dark
-		}
-	}}
-/>
+<Meta title="page-parts/app-bar" component={AppBar} />
 
 # AppBar
-
-- [Table of contents](#appbar)
-  * [Description](#description)
-  * [Props](#props)
-  * [StandardStory](#standardstory)
-    + [Source](#source)
 
 ## Description
 A top, app-bar used for the entire app. This is visible on every page.
@@ -31,7 +16,17 @@ This contains the brand logo, search bar, authentication actions and others.
 ## StandardStory
 <Preview>
 	<Story name="standard">
-		<AppBar title="Title goes here" user={null} />
+		<AppBar title="Title goes here" />
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
+
+## With User
+<Preview>
+	<Story name="with-user">
+		<AppBar title="Title goes here" withMock={true} />
 	</Story>
 </Preview>
 
