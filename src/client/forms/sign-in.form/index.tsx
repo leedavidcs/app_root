@@ -1,6 +1,7 @@
-import { Anchor, Button, TextInput } from "@/client/components";
+import { Anchor, TextInput } from "@/client/components";
 import { LoginLocalUserVariables } from "@/client/graphql";
 import { useAuth, useModal, useSetUser, useYupValidationResolver } from "@/client/hooks";
+import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -144,7 +145,7 @@ export const SignInForm: FC = () => {
 						ref={register}
 					/>
 					<div className={classes.btnContainer}>
-						<Button className={classes.signInBtn} type="submit">
+						<Button intent="primary" type="submit">
 							SIGN IN
 						</Button>
 					</div>

@@ -1,4 +1,4 @@
-import { Anchor, Button, PasswordStrength, TextInput } from "@/client/components";
+import { Anchor, PasswordStrength, TextInput } from "@/client/components";
 import {
 	LoginLocalUserVariables,
 	Mutations,
@@ -8,6 +8,7 @@ import {
 } from "@/client/graphql";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
+import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useMutation } from "react-apollo";
@@ -185,7 +186,7 @@ export const SignUpForm: FC = () => {
 					ref={register}
 				/>
 				<div className={classes.btnContainer}>
-					<Button className={classes.signUpBtn} type="submit">
+					<Button intent="primary" type="submit">
 						SIGN UP
 					</Button>
 				</div>
