@@ -13,5 +13,5 @@ export const colors = {
 	lightGray2: "#D8E1E8",
 	lightGray3: "#E1E8ED",
 	lightGray4: "#EBF1F5",
-	lightGray5: "#F5F8FA",
+	lightGray5: "#F5F8FA"
 };
