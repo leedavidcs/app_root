@@ -1,6 +1,5 @@
-import { Paper } from "@/client/components/paper.component";
-import { Classes, Icon, Overlay } from "@blueprintjs/core";
-import classnames from "classnames";
+import { Classes, Dialog } from "@blueprintjs/core";
+import { isEmpty } from "lodash";
 import React, { FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
 
@@ -11,32 +10,29 @@ interface IProps {
 	isOpen: boolean;
 	onClose?: (event?: SyntheticEvent<HTMLElement>) => void;
 	title: string;
+	footer?: readonly ReactElement[] | null;
 }
 
-export const Modal: FC<IProps> = ({ children, isOpen, onClose, title }) => {
+export const Modal: FC<IProps> = ({ children, footer, isOpen, onClose, title }) => {
 	const classes = useStyles();
 
 	return (
-		<Overlay
-			className={Classes.OVERLAY_SCROLL_CONTAINER}
-			backdropClassName={classes.root}
-			autoFocus={true}
+		<Dialog
+			className={classes.root}
+			backdropClassName={classes.backdrop}
 			canEscapeKeyClose={true}
 			canOutsideClickClose={true}
-			hasBackdrop={true}
 			isOpen={isOpen}
 			onClose={onClose}
-			transitionName={classes.content}
-			transitionDuration={500}
+			title={title}
 			usePortal={true}
 		>
-			<Paper className={classnames(classes.content)}>
-				<h3 className={classnames(classes.title, Classes.DARK, Classes.HEADING)}>
-					{title}
-					<Icon className={classes.closeBtn} icon="cross" onClick={onClose} />
-				</h3>
-				{children}
-			</Paper>
-		</Overlay>
+			<div className={Classes.DIALOG_BODY}>{children}</div>
+			{!isEmpty(footer) && (
+				<div className={Classes.DIALOG_FOOTER}>
+					<div className={Classes.DIALOG_FOOTER_ACTIONS}>{footer}</div>
+				</div>
+			)}
+		</Dialog>
 	);
 };

@@ -1,36 +1,3 @@
-import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
-import { StandardStory } from "./stories";
-import { Modal } from ".";
-
-<Meta title="general/modal" component={Modal} />
-
-# Modal
-
-- [Table of Contents](#modal)
-  * [Description](#description)
-  * [Props](#props)
-  * [StandardStory](#standardstory)
-    + [Source](#source)
-
-## Description
-Modal component. Contains a title and contents. This component should not be created manually.
-
-To create a Modal, pick a title and create contents, then use the `useModal` hook to invoke the
-modal (see code example at the bottom).
-
-## Props
-<Props of={Modal} />
-
-## StandardStory
-
-<Preview>
-	<Story name="standard">
-		<StandardStory />
-	</Story>
-</Preview>
-
-### Source
-```tsx
 import { Modal } from "@/client/components/modal.component";
 import { Button } from "@blueprintjs/core";
 import { text } from "@storybook/addon-knobs";
@@ -66,4 +33,3 @@ export const StandardStory: FC = () => {
 		</div>
 	);
 };
-```

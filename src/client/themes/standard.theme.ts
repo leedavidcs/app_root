@@ -1,3 +1,4 @@
+import { colors } from "@/client/themes/colors";
 import { lighten } from "polished";
 
 const GRID_ODD = 0.16;
@@ -6,7 +7,7 @@ const GRID_EVEN = 0.1;
 export const standardTheme = {
 	background: "#121212",
 	surface: "#1D1D1D",
-	code: "#3E3E3E",
+	code: "#3F3F3F",
 	primary: "#BB86FC",
 	primaryVariant: "#3700B3",
 	secondary: "#03DAC6",
@@ -44,5 +45,7 @@ export const standardTheme = {
 	gridEven: lighten(GRID_EVEN, "#000"),
 	gridSelected: "#00B0FF",
 	surfaceLoading: "#323232",
-	surfaceLoadingHighlight: "#A6A6A6"
+	surfaceLoadingHighlight: "#A6A6A6",
+	dialogBackground: "#333333",
+	dialogHeader: colors.darkGray2
 };
