@@ -7,9 +7,11 @@ import {
 	Queries
 } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
+import classnames from "classnames";
 import { range } from "lodash";
 import React, { FC, useCallback } from "react";
 import { useMutation, useQuery } from "react-apollo";
+import { useStyles } from "./styles";
 
 const LOADING_ELEMENTS = 3;
 
@@ -41,6 +43,8 @@ const useClickDeleteStockPortfolio = (onCompleted: () => any) => {
 };
 
 export const StockPortfolioList: FC<IProps> = ({ onClickOpen: propsOnClickOpen, variables }) => {
+	const classes = useStyles();
+
 	const { data, loading, refetch } = useQuery<GetStockPortfoliosForPreview>(
 		Queries.GetStockPortfoliosForPreview,
 		{ variables }
@@ -63,8 +67,12 @@ export const StockPortfolioList: FC<IProps> = ({ onClickOpen: propsOnClickOpen, 
 				{range(LOADING_ELEMENTS).map((__, i) => (
 					<ListItem key={i}>
 						<ListItemText
-							primary={<div className={Classes.SKELETON} />}
-							secondary={<div className={Classes.SKELETON} />}
+							primary={
+								<div className={classnames(classes.loadName, Classes.SKELETON)} />
+							}
+							secondary={
+								<div className={classnames(classes.loadDate, Classes.SKELETON)} />
+							}
 						/>
 					</ListItem>
 				))}
