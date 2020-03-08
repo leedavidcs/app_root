@@ -256,6 +256,24 @@ export interface GetOneStockPortfolioVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetStockPortfolioCount
+// ====================================================
+
+export interface GetStockPortfolioCount {
+  readonly stockPortfolioCount: number | null;
+}
+
+export interface GetStockPortfolioCountVariables {
+  readonly where?: StockPortfolioWhereInput | null;
+  readonly query?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetStockPortfoliosForPreview
 // ====================================================
 
@@ -273,6 +291,8 @@ export interface GetStockPortfoliosForPreview {
 export interface GetStockPortfoliosForPreviewVariables {
   readonly first?: number | null;
   readonly after?: StockPortfolioWhereUniqueInput | null;
+  readonly skip?: number | null;
+  readonly where?: StockPortfolioWhereInput | null;
   readonly query?: string | null;
 }
 
@@ -345,6 +365,33 @@ export interface GetViewer {
 // START Enums and Input Objects
 //==============================================================
 
+export interface BooleanFilter {
+  readonly equals?: boolean | null;
+  readonly not?: boolean | null;
+}
+
+export interface DateTimeFilter {
+  readonly equals?: any | null;
+  readonly not?: any | null;
+  readonly in?: ReadonlyArray<any> | null;
+  readonly notIn?: ReadonlyArray<any> | null;
+  readonly lt?: any | null;
+  readonly lte?: any | null;
+  readonly gt?: any | null;
+  readonly gte?: any | null;
+}
+
+export interface IntFilter {
+  readonly equals?: number | null;
+  readonly not?: number | null;
+  readonly in?: ReadonlyArray<number> | null;
+  readonly notIn?: ReadonlyArray<number> | null;
+  readonly lt?: number | null;
+  readonly lte?: number | null;
+  readonly gt?: number | null;
+  readonly gte?: number | null;
+}
+
 export interface LoginLocalUserInput {
   readonly userIdentifier: string;
   readonly password: string;
@@ -364,9 +411,67 @@ export interface RegisterLocalUserInput {
   readonly username: string;
 }
 
+export interface StockPortfolioHeaderFilter {
+  readonly every?: StockPortfolioHeaderWhereInput | null;
+  readonly some?: StockPortfolioHeaderWhereInput | null;
+  readonly none?: StockPortfolioHeaderWhereInput | null;
+}
+
+export interface StockPortfolioHeaderWhereInput {
+  readonly id?: UUIDFilter | null;
+  readonly name?: StringFilter | null;
+  readonly dataKey?: StringFilter | null;
+  readonly width?: IntFilter | null;
+  readonly frozen?: BooleanFilter | null;
+  readonly resizable?: BooleanFilter | null;
+  readonly AND?: ReadonlyArray<StockPortfolioHeaderWhereInput> | null;
+  readonly OR?: ReadonlyArray<StockPortfolioHeaderWhereInput> | null;
+  readonly NOT?: ReadonlyArray<StockPortfolioHeaderWhereInput> | null;
+  readonly stockPortfolio?: StockPortfolioWhereInput | null;
+}
+
+export interface StockPortfolioWhereInput {
+  readonly id?: UUIDFilter | null;
+  readonly name?: StringFilter | null;
+  readonly headers?: StockPortfolioHeaderFilter | null;
+  readonly createdAt?: DateTimeFilter | null;
+  readonly updatedAt?: DateTimeFilter | null;
+  readonly AND?: ReadonlyArray<StockPortfolioWhereInput> | null;
+  readonly OR?: ReadonlyArray<StockPortfolioWhereInput> | null;
+  readonly NOT?: ReadonlyArray<StockPortfolioWhereInput> | null;
+}
+
 export interface StockPortfolioWhereUniqueInput {
   readonly id?: string | null;
   readonly user_name?: NameCompoundUniqueInput | null;
+}
+
+export interface StringFilter {
+  readonly equals?: string | null;
+  readonly not?: string | null;
+  readonly in?: ReadonlyArray<string> | null;
+  readonly notIn?: ReadonlyArray<string> | null;
+  readonly lt?: string | null;
+  readonly lte?: string | null;
+  readonly gt?: string | null;
+  readonly gte?: string | null;
+  readonly contains?: string | null;
+  readonly startsWith?: string | null;
+  readonly endsWith?: string | null;
+}
+
+export interface UUIDFilter {
+  readonly equals?: any | null;
+  readonly not?: any | null;
+  readonly in?: ReadonlyArray<any> | null;
+  readonly notIn?: ReadonlyArray<any> | null;
+  readonly lt?: any | null;
+  readonly lte?: any | null;
+  readonly gt?: any | null;
+  readonly gte?: any | null;
+  readonly contains?: any | null;
+  readonly startsWith?: any | null;
+  readonly endsWith?: any | null;
 }
 
 export interface UserInput {

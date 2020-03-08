@@ -1,4 +1,4 @@
-import { stringFilter } from "@/server/prisma";
+import { applyGenerators, stringFilter } from "@/server/prisma";
 import { arg, extendType, intArg, queryField, stringArg } from "nexus";
 
 export const stockPortfolioQueries = extendType({
@@ -6,6 +6,21 @@ export const stockPortfolioQueries = extendType({
 	definition: (t) => {
 		t.crud.stockPortfolio();
 		t.crud.stockPortfolios({ filtering: true, ordering: true });
+		t.int("stockPortfolioCount", {
+			args: {
+				where: arg({ type: "StockPortfolioHeaderWhereInput" }),
+				query: stringArg()
+			},
+			resolve: async (parent, { query, where }, { prisma }) => {
+				const result = await prisma.stockPortfolio.findMany({
+					where: applyGenerators(where, [stringFilter("name", query)])
+				});
+
+				const count: number = result.length;
+
+				return count;
+			}
+		});
 	}
 });
 
@@ -28,10 +43,7 @@ export const stockPortfolios = queryField("stockPortfolios", {
 
 		const result = await prisma.stockPortfolio.findMany({
 			...paginationArgs,
-			where: {
-				...where,
-				AND: [...(where?.AND || []), ...stringFilter("name", query)]
-			}
+			where: applyGenerators(where, [stringFilter("name", query)])
 		});
 
 		return result;

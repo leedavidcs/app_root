@@ -120,6 +120,7 @@ type Query implements RequestRoot {
     provider: String
   ): [DataKeyOption!]!
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
+  stockPortfolioCount(query: String, where: StockPortfolioHeaderWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
 
   """The viewer of this request"""
