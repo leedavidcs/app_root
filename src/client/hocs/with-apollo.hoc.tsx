@@ -1,4 +1,6 @@
+import { ModalProvider } from "@/client/components";
 import { createApolloClient } from "@/client/graphql";
+import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { NextComponentType, NextPageContext } from "next";
 import App, { AppContext } from "next/app";
@@ -58,7 +60,7 @@ const initOntoContext = <T extends AppContext | NextPageContext>(ctx: T): T => {
 		console.warn(
 			"Warning: You have opted-out of Automatic Static Optimization due to `withApollo` in \
 			`pages/_app`.\n\
-			Read more: https://err.sh/next.js/opt-out-auto-static-optimization\n"
+			Read more: https://err.sh/next.js/opt-out-auto-static-optimization \n"
 		);
 	}
 
@@ -156,7 +158,11 @@ export const withApollo = (options: IWithApolloOptions = { ssr: false }) => (
 
 		return (
 			<ApolloProvider client={client}>
-				<PageComponent {...pageProps} />
+				<ModalProvider>
+					<Layout>
+						<PageComponent {...pageProps} />
+					</Layout>
+				</ModalProvider>
 			</ApolloProvider>
 		);
 	};

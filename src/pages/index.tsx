@@ -1,3 +1,4 @@
+import { withApollo } from "@/client/hocs";
 import { NextComponentType } from "next";
 import React from "react";
 
@@ -9,4 +10,4 @@ const Page: NextComponentType = () => {
 	);
 };
 
-export default Page;
+export default withApollo()(Page);
