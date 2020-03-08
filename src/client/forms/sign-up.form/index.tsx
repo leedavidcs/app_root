@@ -138,7 +138,7 @@ const usePasswordChangeHandler = () => {
 export const SignUpForm: FC = () => {
 	const classes = useStyles();
 
-	const { errors, getValues, handleSubmit, register } = useForm<IFormData>({
+	const { control, errors, getValues, handleSubmit } = useForm<IFormData>({
 		validationResolver
 	});
 
@@ -158,14 +158,14 @@ export const SignUpForm: FC = () => {
 					label="Username"
 					name="username"
 					error={errors.username?.message}
-					ref={register}
+					control={control}
 				/>
 				<TextInput
 					className={classes.textInput}
 					label="Email"
 					name="email"
 					error={errors.email?.message}
-					ref={register}
+					control={control}
 				/>
 				<TextInput
 					className={classes.textInput}
@@ -174,7 +174,7 @@ export const SignUpForm: FC = () => {
 					error={errors.password?.message}
 					onChange={onPasswordChange}
 					type="password"
-					ref={register}
+					control={control}
 				/>
 				<PasswordStrength className={classes.passwordStrength} password={password} />
 				<TextInput
@@ -183,7 +183,7 @@ export const SignUpForm: FC = () => {
 					error={errors.confirmPassword?.message}
 					className={classes.textInput}
 					type="password"
-					ref={register}
+					control={control}
 				/>
 				<div className={classes.btnContainer}>
 					<Button intent="primary" type="submit">
