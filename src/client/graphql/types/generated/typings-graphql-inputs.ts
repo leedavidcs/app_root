@@ -273,6 +273,7 @@ export interface GetStockPortfoliosForPreview {
 export interface GetStockPortfoliosForPreviewVariables {
   readonly first?: number | null;
   readonly after?: StockPortfolioWhereUniqueInput | null;
+  readonly query?: string | null;
 }
 
 /* tslint:disable */
@@ -349,6 +350,10 @@ export interface LoginLocalUserInput {
   readonly password: string;
 }
 
+export interface NameCompoundUniqueInput {
+  readonly name: string;
+}
+
 export interface RefreshAccessTokenInput {
   readonly refreshToken: string;
 }
@@ -361,6 +366,7 @@ export interface RegisterLocalUserInput {
 
 export interface StockPortfolioWhereUniqueInput {
   readonly id?: string | null;
+  readonly user_name?: NameCompoundUniqueInput | null;
 }
 
 export interface UserInput {
