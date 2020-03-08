@@ -31,9 +31,7 @@ export const nexusSchema = makeSchema({
 		nexusPrismaPlugin({
 			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") },
 			computedInputs: {
-				user: ({ ctx }) => ({ connect: { id: ctx.user.id } }),
-				createdAt: () => undefined,
-				updatedAt: () => undefined
+				user: ({ ctx }) => ({ connect: { id: ctx.user.id } })
 			}
 		}),
 		queryComplexityPlugin()
