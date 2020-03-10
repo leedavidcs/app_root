@@ -36,7 +36,7 @@ export const Popover: FC<IProps> = memo(
 		const classes = useStyles();
 
 		const modifiers: PopperModifiers = {
-			arrow: { enabled: Boolean(arrow) },
+			arrow: { enabled: arrow },
 			flip: { enabled: flip },
 			preventOverflow: { enabled: preventOverflow }
 		};
@@ -44,7 +44,7 @@ export const Popover: FC<IProps> = memo(
 		return (
 			<BpPopover
 				canEscapeKeyClose={true}
-				className={classnames(classes.root, className)}
+				className={className}
 				content={content || undefined}
 				disabled={disabled}
 				isOpen={isOpen}
