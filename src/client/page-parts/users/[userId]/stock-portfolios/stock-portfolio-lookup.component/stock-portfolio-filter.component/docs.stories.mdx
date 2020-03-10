@@ -1,0 +1,28 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback,  useState } from "react";
+import { StockPortfolioFilter } from ".";
+
+<Meta title="page-parts/users/[userId]/stock-portfolios/stock-portfolio-filter" component={StockPortfolioFilter} />
+
+# StockPortfolioFilter
+
+## Description
+This component creates non-paginated filters for the stock-portfolio lookup.
+
+## Props
+<Props of={StockPortfolioFilter} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		{() => {
+			const [variables, setVariables] = useState({});
+			const onChange = useCallback((value) => {
+				action("onChange")(value);
+				setVariables(value);
+			}, [setVariables]);
+			return <StockPortfolioFilter onChange={onChange} variables={variables} />;
+		}}
+	</Story>
+</Preview>

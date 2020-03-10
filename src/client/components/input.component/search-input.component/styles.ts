@@ -2,8 +2,14 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	root: {
-		display: "inline-block"
+	input: {
+		flexGrow: 1,
+		backgroundColor: theme.code,
+
+		"& input.bp3-input": {
+			backgroundColor: theme.code,
+			color: theme.onSurface
+		}
 	}
 });
 

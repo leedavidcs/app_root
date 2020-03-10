@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { StockPortfolioList } from ".";
 
-<Meta title="page-parts/stock-portfolio-list" component={StockPortfolioList} />
+<Meta title="page-parts/users/[userId]/stock-portfolios/stock-portfolio-list" component={StockPortfolioList} />
 
 # StockPortfolioList
 
@@ -24,7 +24,7 @@ A list that displays the stock portfolios that the user has created.
 		<div style={{ width: 500 }}>
 			<StockPortfolioList
 				onClickOpen={action("onClickOpen")}
-				variables={{ first: 10, after: { id: "" } }}
+				variables={{ first: 10, skip: 0 }}
 			/>
 		</div>
 	</Story>

@@ -1,6 +1,8 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { number } from "@storybook/addon-knobs";
 import { themes } from "@storybook/theming";
+import { useCallback, useState } from "react";
 import { Pagination } from ".";
 
 <Meta
@@ -30,9 +32,38 @@ Pagination component, that uses real pagination parameters.
 ## StandardStory
 <Preview>
 	<Story name="standard">
-		<Pagination count={100} first={5} skip={60} onPage={action("onPage")} />
+		<Pagination
+			count={number("count", 100)}
+			first={number("first", 5)}
+			skip={number("skip", 60)}
+			onPage={action("onPage")}
+		/>
 	</Story>
 </Preview>
 
 ## Source
 (see code in story)
+
+## WithLimitConfig
+<Preview>
+	<Story name="with-limit-config">
+		{() => {
+			const [pagination, setPagination] = useState({
+				count: 100,
+				first: 5,
+				skip: 60
+			});
+			const onPage = useCallback((value) => {
+				action("onPage")(value);
+				setPagination(value);
+			}, [setPagination]);
+			return (
+				<Pagination
+					{...pagination}
+					onPage={onPage}
+					showLimitConfig={true}
+				/>
+			);
+		}}
+	</Story>
+</Preview>

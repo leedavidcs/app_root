@@ -1,5 +1,5 @@
 import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
-import React, { CSSProperties, forwardRef, KeyboardEventHandler } from "react";
+import React, { CSSProperties, FC, KeyboardEventHandler } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
@@ -22,66 +22,58 @@ interface IProps {
 	value?: number;
 }
 
-export const NumberInput = forwardRef<NumericInput, IProps>(
-	(
-		{
-			className,
-			disabled,
-			error,
-			icon,
-			inline,
-			label,
-			labelInfo,
-			max,
-			min,
-			majorStepSize,
-			minorStepSize,
-			onKeyDown,
-			onValueChange,
-			placeholder,
-			stepSize,
-			style,
-			value
-		},
-		ref
-	) => {
-		const classes = useStyles();
+export const NumberInput: FC<IProps> = ({
+	className,
+	disabled,
+	error,
+	icon,
+	inline,
+	label,
+	labelInfo,
+	max,
+	min,
+	majorStepSize,
+	minorStepSize,
+	onKeyDown,
+	onValueChange,
+	placeholder,
+	stepSize,
+	style,
+	value
+}) => {
+	const classes = useStyles();
 
-		const intent: Intent = error ? "danger" : "none";
+	const intent: Intent = error ? "danger" : "none";
 
-		return (
-			<FormGroup
-				className={className}
+	return (
+		<FormGroup
+			className={className}
+			disabled={disabled}
+			helperText={error}
+			inline={inline}
+			intent={intent}
+			label={label}
+			labelInfo={labelInfo}
+			style={style}
+		>
+			<NumericInput
+				className={classes.input}
+				allowNumericCharactersOnly={true}
+				clampValueOnBlur={true}
 				disabled={disabled}
-				helperText={error}
-				inline={inline}
+				fill={true}
 				intent={intent}
-				label={label}
-				labelInfo={labelInfo}
-				style={style}
-			>
-				<NumericInput
-					ref={ref}
-					className={classes.input}
-					allowNumericCharactersOnly={true}
-					clampValueOnBlur={true}
-					disabled={disabled}
-					fill={true}
-					intent={intent}
-					leftIcon={icon}
-					max={max}
-					min={min}
-					majorStepSize={majorStepSize}
-					minorStepSize={minorStepSize}
-					onKeyDown={onKeyDown}
-					onValueChange={onValueChange}
-					placeholder={placeholder}
-					stepSize={stepSize}
-					value={value}
-				/>
-			</FormGroup>
-		);
-	}
-);
-
-NumberInput.displayName = "NumberInput";
+				leftIcon={icon}
+				max={max}
+				min={min}
+				majorStepSize={majorStepSize}
+				minorStepSize={minorStepSize}
+				onKeyDown={onKeyDown}
+				onValueChange={onValueChange}
+				placeholder={placeholder}
+				stepSize={stepSize}
+				value={value}
+			/>
+		</FormGroup>
+	);
+};

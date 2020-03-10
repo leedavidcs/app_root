@@ -1,0 +1,21 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StandardStory } from "./stories";
+import { Tooltip } from ".";
+
+<Meta title="general/tooltip" component={Tooltip} />
+
+# Tooltip
+
+## Description
+Positioned element, that acts as a limited feature set of [Popper.js](https://popper.js.org/).
+Interacts with hover events.
+
+## Props
+<Props of={Tooltip} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>

@@ -9,7 +9,7 @@ interface IGetCurrentPageArgs {
 }
 
 export const getPageCount = ({ count, first }: IGetPageCountArgs): number => {
-	return Math.floor(count / first);
+	return Math.ceil(count / first) || 1;
 };
 
 export const getCurrentPage = ({ first, skip }: IGetCurrentPageArgs): number => {

@@ -1,4 +1,7 @@
+import { NumberInput } from "@/client/components/input.component";
 import { Interactable } from "@/client/components/interactable.component";
+import { Tooltip } from "@/client/components/tooltip.component";
+import classnames from "classnames";
 import { head, initial, isUndefined, last, range } from "lodash";
 import React, { FC, Fragment, useCallback, useMemo } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -8,6 +11,8 @@ import { useStyles } from "./styles";
 
 const DEFAULT_INNER_PAGE_RANGE = 5;
 const DEFAULT_MARGIN_PAGE_RANGE = 2;
+
+const MAX_PAGE_LIMIT = 100;
 
 export interface IPaginationProps {
 	count: number;
@@ -23,7 +28,9 @@ interface IRangeOptions {
 }
 
 interface IProps extends IPaginationProps, Partial<IRangeOptions> {
+	className?: string;
 	onPage?: (props: IPaginationProps) => void;
+	showLimitConfig?: boolean;
 }
 
 interface IGetPageRangesProps extends IRangeOptions {
@@ -102,12 +109,14 @@ const getPageRanges = ({
 };
 
 export const Pagination: FC<IProps> = ({
+	className,
 	count,
 	first,
 	skip,
 	innerRange = DEFAULT_INNER_PAGE_RANGE,
 	marginRange = DEFAULT_MARGIN_PAGE_RANGE,
-	onPage = () => undefined
+	onPage = () => undefined,
+	showLimitConfig
 }) => {
 	const classes = useStyles();
 
@@ -119,37 +128,72 @@ export const Pagination: FC<IProps> = ({
 		[pageCount, currentPage, innerRange, marginRange]
 	);
 
-	const isLastPage = useCallback((i: number) => i === pageRanges.length - 1, [pageRanges]);
+	const isLastRange = useCallback((i: number) => i === pageRanges.length - 1, [pageRanges]);
+	const isFirstPage: boolean = currentPage === 0;
+	const isLastPage: boolean = currentPage === pageCount - 1;
 
 	const onClickPage = useCallback(
 		(page: number) => () => onPage?.({ count, first, skip: getSkipFromPage(page, first) }),
 		[onPage, count, first]
 	);
 
+	const onPreviousPage = useCallback(
+		() => onPage?.({ count, first, skip: getSkipFromPage(currentPage - 1, first) }),
+		[onPage, count, first, currentPage]
+	);
+
+	const onNextPage = useCallback(
+		() => onPage?.({ count, first, skip: getSkipFromPage(currentPage + 1, first) }),
+		[onPage, count, first, currentPage]
+	);
+
+	const onLimitChange = useCallback((value: number) => onPage?.({ count, first: value, skip }), [
+		onPage,
+		count,
+		skip
+	]);
+
 	return (
-		<div className={classes.root}>
-			<Interactable>
-				<FaAngleLeft />
-			</Interactable>
-			{pageRanges.map((pageRange, i) => (
-				<Fragment key={i}>
-					{pageRange.map((page) => (
-						<Interactable
-							key={page}
-							active={currentPage === page}
-							onClick={onClickPage(page)}
-						>
-							{page + 1}
-						</Interactable>
-					))}
-					{!isLastPage(i) && (
-						<PageSearch count={count} first={first} skip={skip} onPage={onPage} />
-					)}
-				</Fragment>
-			))}
-			<Interactable>
-				<FaAngleRight />
-			</Interactable>
+		<div className={classnames(classes.root, className)}>
+			<div className={classes.pagination}>
+				{!isFirstPage && (
+					<Interactable onClick={onPreviousPage}>
+						<FaAngleLeft />
+					</Interactable>
+				)}
+				{pageRanges.map((pageRange, i) => (
+					<Fragment key={i}>
+						{pageRange.map((page) => (
+							<Interactable
+								key={page}
+								active={currentPage === page}
+								onClick={onClickPage(page)}
+							>
+								{page + 1}
+							</Interactable>
+						))}
+						{!isLastRange(i) && (
+							<PageSearch count={count} first={first} skip={skip} onPage={onPage} />
+						)}
+					</Fragment>
+				))}
+				{!isLastPage && (
+					<Interactable onClick={onNextPage}>
+						<FaAngleRight />
+					</Interactable>
+				)}
+			</div>
+			{showLimitConfig && (
+				<Tooltip content={<p>Items per page</p>} position="bottom">
+					<NumberInput
+						className={classes.limitConfig}
+						max={MAX_PAGE_LIMIT}
+						min={1}
+						onValueChange={onLimitChange}
+						value={first}
+					/>
+				</Tooltip>
+			)}
 		</div>
 	);
 };

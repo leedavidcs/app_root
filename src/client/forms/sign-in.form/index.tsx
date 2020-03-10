@@ -107,10 +107,10 @@ export const SignInForm: FC = () => {
 	const validationResolver = useValidationResolver(validationContextRef.current);
 
 	const {
+		control,
 		errors,
 		formState: { isSubmitted },
-		handleSubmit,
-		register
+		handleSubmit
 	} = useForm<IFormData>({
 		validationContext: validationContextRef.current,
 		validateCriteriaMode: "all",
@@ -134,7 +134,7 @@ export const SignInForm: FC = () => {
 						label="Username or Email"
 						name="userIdentifier"
 						error={errors.userIdentifier?.message}
-						ref={register}
+						control={control}
 					/>
 					<TextInput
 						className={classes.textInput}
@@ -142,7 +142,7 @@ export const SignInForm: FC = () => {
 						name="password"
 						type="password"
 						error={passwordError}
-						ref={register}
+						control={control}
 					/>
 					<div className={classes.btnContainer}>
 						<Button intent="primary" type="submit">

@@ -252,6 +252,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
+    stockPortfolioCount: number | null; // Int
     stockPortfolios: NexusGenRootTypes['StockPortfolio'][]; // [StockPortfolio!]!
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
@@ -332,6 +333,10 @@ export interface NexusGenArgTypes {
     }
     stockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+    }
+    stockPortfolioCount: { // args
+      query?: string | null; // String
+      where?: NexusGenInputs['StockPortfolioHeaderWhereInput'] | null; // StockPortfolioHeaderWhereInput
     }
     stockPortfolios: { // args
       after?: NexusGenInputs['StockPortfolioWhereUniqueInput'] | null; // StockPortfolioWhereUniqueInput

@@ -7,20 +7,23 @@ import {
 	Queries
 } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
+import classnames from "classnames";
 import { range } from "lodash";
 import React, { FC, useCallback } from "react";
 import { useMutation, useQuery } from "react-apollo";
+import { useStyles } from "./styles";
 
 const LOADING_ELEMENTS = 3;
 
 interface IProps {
-	/** Variables to invoke the stockPortfolios query */
-	variables?: GetStockPortfoliosForPreviewVariables;
+	className?: string;
 	/** onClick listener, when a stock portfolio gets clicked on. Passes the id. */
 	onClickOpen: (id: string) => void;
+	/** Variables to invoke the stockPortfolios query */
+	variables?: GetStockPortfoliosForPreviewVariables;
 }
 
-const useClickDeleteStockPortfolio = (onCompleted: () => any) => {
+const useClickDelete = (onCompleted: () => any) => {
 	const onDeleteCompleted = useCallback(() => {
 		onCompleted();
 	}, [onCompleted]);
@@ -40,31 +43,39 @@ const useClickDeleteStockPortfolio = (onCompleted: () => any) => {
 	return onClickDeleteOption;
 };
 
-export const StockPortfolioList: FC<IProps> = ({ onClickOpen: propsOnClickOpen, variables }) => {
+export const StockPortfolioList: FC<IProps> = (props) => {
+	const { className, onClickOpen: propsOnClickOpen, variables } = props;
+
+	const classes = useStyles();
+
 	const { data, loading, refetch } = useQuery<GetStockPortfoliosForPreview>(
 		Queries.GetStockPortfoliosForPreview,
 		{ variables }
 	);
 
-	const onClickDeleteStockPortfolio = useClickDeleteStockPortfolio(refetch);
+	const onClickDelete = useClickDelete(refetch);
 
 	const onClickOpen = useCallback((id: string) => () => propsOnClickOpen(id), [propsOnClickOpen]);
 
 	const kebabOptions = useCallback(
 		(id: string): readonly IKebabMenuOption[] => [
-			{ text: "Delete", onClick: onClickDeleteStockPortfolio(id) }
+			{ text: "Delete", onClick: onClickDelete(id) }
 		],
-		[onClickDeleteStockPortfolio]
+		[onClickDelete]
 	);
 
 	if (loading || !data) {
 		return (
-			<List divider="full">
+			<List className={className} divider="full">
 				{range(LOADING_ELEMENTS).map((__, i) => (
 					<ListItem key={i}>
 						<ListItemText
-							primary={<div className={Classes.SKELETON} />}
-							secondary={<div className={Classes.SKELETON} />}
+							primary={
+								<div className={classnames(classes.loadName, Classes.SKELETON)} />
+							}
+							secondary={
+								<div className={classnames(classes.loadDate, Classes.SKELETON)} />
+							}
 						/>
 					</ListItem>
 				))}
@@ -73,7 +84,7 @@ export const StockPortfolioList: FC<IProps> = ({ onClickOpen: propsOnClickOpen, 
 	}
 
 	return (
-		<List divider="full">
+		<List className={className} divider="full">
 			{data.stockPortfolios.map(({ id, name, updatedAt }, i) => (
 				<ListItem key={id} onClick={onClickOpen(id)} ripple={false} selected={false}>
 					<ListItemText primary={name} secondary={`Updated at: ${updatedAt}`} />

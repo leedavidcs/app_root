@@ -1,21 +1,12 @@
-import {
-	ClickOutsideProvider,
-	GlobalStyles,
-	JssProvider,
-	ModalProvider
-} from "@/client/components";
-import { withApollo } from "@/client/hocs";
-import { Layout } from "@/client/page-parts/_app";
+import { ClickOutsideProvider, GlobalStyles, JssProvider } from "@/client/components";
 import "@blueprintjs/core/lib/css/blueprint.css";
-import { flow } from "lodash";
+import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import App from "next/app";
 import Head from "next/head";
 import { withRouter } from "next/router";
 import React, { Fragment } from "react";
 
-const compose = flow(withRouter, withApollo());
-
-export default compose(
+export default withRouter(
 	class extends App {
 		static getInitialProps: typeof App.getInitialProps = async ({ Component, ctx }) => {
 			return { pageProps: await Component.getInitialProps?.(ctx) };
@@ -59,11 +50,7 @@ export default compose(
 					<JssProvider>
 						<GlobalStyles>
 							<ClickOutsideProvider>
-								<ModalProvider>
-									<Layout>
-										<Component {...pageProps} />
-									</Layout>
-								</ModalProvider>
+								<Component {...pageProps} />
 							</ClickOutsideProvider>
 						</GlobalStyles>
 					</JssProvider>

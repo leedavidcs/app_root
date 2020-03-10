@@ -4,7 +4,11 @@ import { createUseStyles } from "react-jss";
 const styles = (theme: CustomTheme) => ({
 	root: {
 		display: "flex",
-		fontFamily: theme.fontPrimary,
+		justifyContent: "center",
+		fontFamily: theme.fontPrimary
+	},
+	pagination: {
+		display: "flex",
 		color: theme.onSurface,
 
 		"& > div": {
@@ -20,8 +24,8 @@ const styles = (theme: CustomTheme) => ({
 			margin: "0px 4px"
 		}
 	},
-	selected: {
-		color: "red"
+	limitConfig: {
+		width: 80
 	}
 });
 

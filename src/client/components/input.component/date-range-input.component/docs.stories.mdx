@@ -1,0 +1,22 @@
+import { Paper } from "@/client/components";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { DateRangeInput } from ".";
+
+<Meta title="general/inputs/date-range-input" component={DateRangeInput} />
+
+# DateRangeInput
+
+## Description
+A date-range input for filtering and forms.
+
+## Props
+<Props of={DateRangeInput} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<DateRangeInput label="Date range input" labelInfo="(required)" />
+		</Paper>
+	</Story>
+</Preview>

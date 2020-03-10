@@ -2,12 +2,9 @@ import { Popover } from "@/client/components/popover.component";
 import { Button, Menu } from "@blueprintjs/core";
 import { boolean } from "@storybook/addon-knobs";
 import React, { FC, useCallback, useState } from "react";
-import { useStyles } from "./styles";
 
 export const StandardStory: FC = () => {
-	const classes = useStyles();
-
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const onClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
 
@@ -15,7 +12,6 @@ export const StandardStory: FC = () => {
 
 	return (
 		<Popover
-			className={classes.root}
 			arrow={boolean("arrow", false)}
 			isOpen={isOpen}
 			onClose={onClose}
@@ -27,9 +23,12 @@ export const StandardStory: FC = () => {
 				</Menu>
 			}
 		>
-			<Button onClick={onClick} intent="primary" style={{ display: "inline-block" }}>
-				Toggle
-			</Button>
+			<Button
+				onClick={onClick}
+				intent="primary"
+				style={{ display: "inline-block" }}
+				text="Toggle"
+			/>
 		</Popover>
 	);
 };
