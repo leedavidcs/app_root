@@ -148,7 +148,7 @@ const useChildElement = (
 };
 
 export const ListItem: FC<IProps> = (props) => {
-	const { children, href, selected } = props;
+	const { children, className, href, selected } = props;
 
 	const classes = useStyles({ href, selected });
 
@@ -169,7 +169,8 @@ export const ListItem: FC<IProps> = (props) => {
 		<li
 			ref={listItemRef}
 			className={classnames(classes.root, {
-				[classes.padded]: !isDeferred(children)
+				[classes.padded]: !isDeferred(children),
+				[className || ""]: !isDeferred(children)
 			})}
 			{...outerHandlers}
 		>
