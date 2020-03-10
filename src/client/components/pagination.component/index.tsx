@@ -12,6 +12,8 @@ import { useStyles } from "./styles";
 const DEFAULT_INNER_PAGE_RANGE = 5;
 const DEFAULT_MARGIN_PAGE_RANGE = 2;
 
+const MAX_PAGE_LIMIT = 100;
+
 export interface IPaginationProps {
 	count: number;
 	first: number;
@@ -185,8 +187,8 @@ export const Pagination: FC<IProps> = ({
 				<Tooltip content={<p>Items per page</p>} position="bottom">
 					<NumberInput
 						className={classes.limitConfig}
+						max={MAX_PAGE_LIMIT}
 						min={1}
-						max={Math.max(1, count)}
 						onValueChange={onLimitChange}
 						value={first}
 					/>
