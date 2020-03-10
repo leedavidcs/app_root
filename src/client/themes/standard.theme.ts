@@ -1,8 +1,4 @@
 import { colors } from "@/client/themes/colors";
-import { lighten } from "polished";
-
-const GRID_ODD = 0.16;
-const GRID_EVEN = 0.1;
 
 export const standardTheme = {
 	background: "#121212",
