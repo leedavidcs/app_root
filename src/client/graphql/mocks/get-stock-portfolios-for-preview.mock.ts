@@ -10,7 +10,7 @@ const DATA_SIZE = 10;
 export const GetStockPortfoliosForPreviewMock: MockedResponse = {
 	request: {
 		query: Queries.GetStockPortfoliosForPreview,
-		variables: { first: 10, after: { id: "" } }
+		variables: { first: 10, skip: 0 }
 	},
 	result: {
 		data: {

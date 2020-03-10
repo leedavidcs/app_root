@@ -4,6 +4,29 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: CreateStockPortfolio
+// ====================================================
+
+export interface CreateStockPortfolio_createOneStockPortfolio {
+  readonly __typename: "StockPortfolio";
+  readonly id: string;
+  readonly name: string;
+}
+
+export interface CreateStockPortfolio {
+  readonly createOneStockPortfolio: CreateStockPortfolio_createOneStockPortfolio;
+}
+
+export interface CreateStockPortfolioVariables {
+  readonly name?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: DeleteStockPortfolio
 // ====================================================
 

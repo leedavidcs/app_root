@@ -1,3 +1,4 @@
+export * from "./create-stock-portfolio.mutation";
 export * from "./delete-stock-portfolio.mutation";
 export * from "./login-local-user.mutation";
 export * from "./refresh-access-token.mutation";

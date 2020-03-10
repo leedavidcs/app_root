@@ -4,14 +4,13 @@ import Faker from "faker";
 
 Faker.seed(1);
 
-export const DeleteStockPortfolioMock: MockedResponse = {
+export const CreateStockPortfolioMock: MockedResponse = {
 	request: {
-		query: Mutations.DeleteStockPortfolio,
-		variables: { id: "" }
+		query: Mutations.CreateStockPortfolio
 	},
 	result: {
 		data: {
-			deleteOneStockPortfolio: {
+			createOneStockPortfolio: {
 				id: Faker.random.uuid(),
 				name: Faker.lorem.word(),
 				__typename: "StockPortfolio"
