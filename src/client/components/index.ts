@@ -13,3 +13,4 @@ export * from "./paper.component";
 export * from "./popover.component";
 export * from "./ripple.component";
 export * from "./root-provider.component";
+export * from "./tooltip.component";
