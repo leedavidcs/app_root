@@ -30,8 +30,7 @@ const styles = (theme: CustomTheme) => ({
 			}
 		},
 		border: "none",
-		backgroundColor: theme.onSurface,
-		opacity: 0.12
+		backgroundColor: theme.divider
 	}
 });
 

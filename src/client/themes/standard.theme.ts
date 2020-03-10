@@ -41,11 +41,12 @@ export const standardTheme = {
 		"Segoe UI",
 		"sans-serif"
 	].join(),
-	gridOdd: lighten(GRID_ODD, "#000"),
-	gridEven: lighten(GRID_EVEN, "#000"),
+	gridOdd: "#1A1A1A",
+	gridEven: "#292929",
 	gridSelected: "#00B0FF",
 	surfaceLoading: "#323232",
 	surfaceLoadingHighlight: "#A6A6A6",
 	dialogBackground: "#333333",
-	dialogHeader: colors.darkGray2
+	dialogHeader: colors.darkGray2,
+	divider: colors.darkGray3
 };
