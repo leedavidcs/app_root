@@ -1,18 +1,17 @@
-import { Paper } from "@/client/components/paper.component";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { useCallback, useState } from "react";
-import { TextInput } from ".";
+import { SearchInput } from ".";
 
-<Meta title="general/inputs/text-input" component={TextInput} />
+<Meta title="general/inputs/search-input" component={SearchInput} />
 
-# TextInput
+# SearchInput
 
 ## Description
-A text-input for forms. Provides a wrapper around the native HTMLInputElement, with custom styles
-and additional features including validation.
+A text-input search. Provides a wrapper around the native HTMLInputElement, with custom styling
+additional features including validation.
 
 ## Props
-<Props of={TextInput} />
+<Props of={SearchInput} />
 
 ## StandardStory
 export const STANDARD_MAX_INPUT_LENGTH = 5;
@@ -29,12 +28,12 @@ export const STANDARD_MAX_INPUT_LENGTH = 5;
 			}, [setError]);
 			return (
 				<Paper>
-					<TextInput
-						label="Text input"
-						labelInfo="(Must be fewer than 5 chars)"
+					<SearchInput
 						error={error}
+						label="SearchInput"
+						labelInfo="(required)"
 						onChange={onChange}
-						placeholder="placeholder"
+						placeholder="search"
 						value={value}
 					/>
 				</Paper>
