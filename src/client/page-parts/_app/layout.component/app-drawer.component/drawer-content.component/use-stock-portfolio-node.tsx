@@ -65,7 +65,7 @@ export const useStockPortfoliosNode = (
 		() => ({
 			hasCaret: false,
 			onClick: () => {
-				router.push("/login");
+				router.replace("/login");
 			}
 		}),
 		[router]
