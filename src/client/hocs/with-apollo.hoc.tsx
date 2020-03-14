@@ -12,7 +12,7 @@ import { ApolloProvider } from "react-apollo";
 
 const isDevelopmentMode: boolean = process.env.NODE_ENV === "development";
 
-interface IWithApolloOptions {
+export interface IWithApolloOptions {
 	ssr: boolean;
 }
 
