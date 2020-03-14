@@ -261,18 +261,18 @@ interface NexusPrismaInputs {
 }
     stockPortfolioHeaders: {
   filtering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'
+  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'stockPortfolio'
 }
     stockPortfolios: {
   filtering: 'id' | 'name' | 'headers' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'name' | 'createdAt' | 'updatedAt'
+  ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
 }
 
   },
     User: {
     stockPortfolios: {
   filtering: 'id' | 'name' | 'headers' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'name' | 'createdAt' | 'updatedAt'
+  ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
 }
 
   },  StockPortfolioHeader: {
@@ -281,7 +281,7 @@ interface NexusPrismaInputs {
   },  StockPortfolio: {
     headers: {
   filtering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'
+  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'stockPortfolio'
 }
 
   }

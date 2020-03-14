@@ -95,10 +95,6 @@ type Mutation implements RequestRoot {
   viewer: Viewer
 }
 
-input NameCompoundUniqueInput {
-  name: String!
-}
-
 enum OrderByArg {
   asc
   desc
@@ -252,7 +248,7 @@ input StockPortfolioWhereInput {
 
 input StockPortfolioWhereUniqueInput {
   id: String
-  user_name: NameCompoundUniqueInput
+  user_name: UserNameCompoundUniqueInput
 }
 
 input StringFilter {
@@ -288,6 +284,10 @@ type User {
   id: String!
   updatedAt: DateTime!
   username: String!
+}
+
+input UserNameCompoundUniqueInput {
+  name: String!
 }
 
 """The plain-text password of a user to be hashed"""
