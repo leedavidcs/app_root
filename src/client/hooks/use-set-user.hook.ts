@@ -16,20 +16,26 @@ interface IUseSetUserOptions {
 	onCompleted?: (user: User | null) => any;
 }
 
-export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple => {
-	const { onCompleted: optOnCompleted = () => undefined } = options || {};
-
-	const [called, setCalled] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
-
+const useLocalUserState = (): User | null => {
 	const { data } = useQuery<GetUser>(Queries.GetUser);
 
 	const user: User | null = data ? data.user : null;
 
+	return user;
+};
+
+export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple => {
+	const { onCompleted: optOnCompleted } = options || {};
+
+	const [called, setCalled] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+
+	const user: User | null = useLocalUserState();
+
 	const onSetUserCompleted = useCallback(() => {
 		setLoading(false);
 
-		optOnCompleted(user);
+		optOnCompleted?.(user);
 	}, [setLoading, optOnCompleted, user]);
 
 	const [setUser] = useMutation<SetUser, SetUserVariables>(Mutations.SetUser, {
@@ -39,7 +45,7 @@ export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple =>
 	});
 
 	const onCompleted = useCallback(
-		(result: GetViewer) => setUser({ variables: { user: result?.viewer ?? null } }),
+		(result: GetViewer) => setUser({ variables: { user: result?.viewer } }),
 		[setUser]
 	);
 
