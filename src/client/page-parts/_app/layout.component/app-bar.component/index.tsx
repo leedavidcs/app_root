@@ -4,7 +4,7 @@ import { onInputValueChanged } from "@/client/utils";
 import { Alignment, Button, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import dynamic from "next/dynamic";
-import React, { FC, FormEventHandler, Fragment, useCallback, useState } from "react";
+import React, { FC, FormEventHandler, Fragment, ReactElement, useCallback, useState } from "react";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
 
@@ -12,6 +12,7 @@ const SignInModal = dynamic(() => import("@/client/modals/sign-in.modal"));
 const SignUpModal = dynamic(() => import("@/client/modals/sign-up.modal"));
 
 interface IProps {
+	icon?: ReactElement;
 	onSearch?: (text: string) => void;
 	title: string;
 	withMock?: boolean;
@@ -69,7 +70,7 @@ const useOnClickProfileIcon = (): [boolean, { onOpen: () => void; onClose: () =>
 };
 
 export const AppBar: FC<IProps> = (props) => {
-	const { title, withMock } = props;
+	const { icon, title, withMock } = props;
 
 	const classes = useStyles();
 
@@ -94,6 +95,11 @@ export const AppBar: FC<IProps> = (props) => {
 				className={classnames(classes.group, Classes.DARK)}
 				align={Alignment.LEFT}
 			>
+				{icon &&
+					React.cloneElement(icon, {
+						className: classnames(classes.icon, icon.props.className),
+						outlined: true
+					})}
 				<Navbar.Heading className={classes.title}>{title}</Navbar.Heading>
 				<ControlGroup className={classes.searchWrapper}>
 					<TextInput

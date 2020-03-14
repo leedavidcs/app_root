@@ -11,6 +11,9 @@ const styles = (theme: CustomTheme) => ({
 		width: "100%",
 		height: 56
 	},
+	icon: {
+		marginRight: 12
+	},
 	title: {
 		fontFamily: theme.fontPrimary,
 		fontSize: "1.2rem"

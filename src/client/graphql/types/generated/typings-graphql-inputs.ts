@@ -420,10 +420,6 @@ export interface LoginLocalUserInput {
   readonly password: string;
 }
 
-export interface NameCompoundUniqueInput {
-  readonly name: string;
-}
-
 export interface RefreshAccessTokenInput {
   readonly refreshToken: string;
 }
@@ -466,7 +462,7 @@ export interface StockPortfolioWhereInput {
 
 export interface StockPortfolioWhereUniqueInput {
   readonly id?: string | null;
-  readonly user_name?: NameCompoundUniqueInput | null;
+  readonly user_name?: UserNameCompoundUniqueInput | null;
 }
 
 export interface StringFilter {
@@ -502,6 +498,10 @@ export interface UserInput {
   readonly email: any;
   readonly emailVerified: boolean;
   readonly username: string;
+}
+
+export interface UserNameCompoundUniqueInput {
+  readonly name: string;
 }
 
 //==============================================================

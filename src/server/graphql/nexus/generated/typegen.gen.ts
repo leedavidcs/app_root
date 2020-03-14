@@ -47,9 +47,6 @@ export interface NexusGenInputs {
     password: string; // String!
     userIdentifier: string; // String!
   }
-  NameCompoundUniqueInput: { // input type
-    name: string; // String!
-  }
   RefreshAccessTokenInput: { // input type
     refreshToken: string; // String!
   }
@@ -112,7 +109,7 @@ export interface NexusGenInputs {
   }
   StockPortfolioWhereUniqueInput: { // input type
     id?: string | null; // String
-    user_name?: NexusGenInputs['NameCompoundUniqueInput'] | null; // NameCompoundUniqueInput
+    user_name?: NexusGenInputs['UserNameCompoundUniqueInput'] | null; // UserNameCompoundUniqueInput
   }
   StringFilter: { // input type
     contains?: string | null; // String
@@ -139,6 +136,9 @@ export interface NexusGenInputs {
     not?: any | null; // UUID
     notIn?: any[] | null; // [UUID!]
     startsWith?: any | null; // UUID
+  }
+  UserNameCompoundUniqueInput: { // input type
+    name: string; // String!
   }
 }
 
@@ -214,7 +214,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   DateTimeFilter: NexusGenInputs['DateTimeFilter'];
   IntFilter: NexusGenInputs['IntFilter'];
   LoginLocalUserInput: NexusGenInputs['LoginLocalUserInput'];
-  NameCompoundUniqueInput: NexusGenInputs['NameCompoundUniqueInput'];
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
   RegisterLocalUserInput: NexusGenInputs['RegisterLocalUserInput'];
   StockPortfolioCreateInput: NexusGenInputs['StockPortfolioCreateInput'];
@@ -228,6 +227,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
   StringFilter: NexusGenInputs['StringFilter'];
   UUIDFilter: NexusGenInputs['UUIDFilter'];
+  UserNameCompoundUniqueInput: NexusGenInputs['UserNameCompoundUniqueInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
   OrderByArg: NexusGenEnums['OrderByArg'];
 }
@@ -368,7 +368,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User" | "Viewer";
 
-export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NameCompoundUniqueInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioHeaderFilter" | "StockPortfolioHeaderInput" | "StockPortfolioHeaderWhereInput" | "StockPortfolioHeaderWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter";
+export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioHeaderFilter" | "StockPortfolioHeaderInput" | "StockPortfolioHeaderWhereInput" | "StockPortfolioHeaderWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg";
 
