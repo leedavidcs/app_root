@@ -2,7 +2,7 @@ import { ModalProvider } from "@/client/components";
 import { createApolloClient } from "@/client/graphql";
 import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
-import { NextComponentType, NextPageContext } from "next";
+import { NextPage, NextPageContext } from "next";
 import App, { AppContext } from "next/app";
 import Head from "next/head";
 import React from "react";
@@ -16,10 +16,9 @@ interface IWithApolloOptions {
 	ssr: boolean;
 }
 
-interface IWithApolloProps {
-	apolloClient: ApolloClient<NormalizedCacheObject>;
-	apolloState: NormalizedCacheObject;
-	[pageProp: string]: any;
+export interface IWithApolloProps {
+	apolloClient?: ApolloClient<NormalizedCacheObject>;
+	apolloState?: NormalizedCacheObject;
 }
 
 /**
@@ -72,8 +71,8 @@ const initOntoContext = <T extends AppContext | NextPageContext>(ctx: T): T => {
 	return ctx;
 };
 
-const runWrappedGetInitialProps = async (
-	PageComponent: NextComponentType,
+const runWrappedGetInitialProps = async <T extends Record<string, any>>(
+	PageComponent: NextPage<T>,
 	ctx: AppContext | NextPageContext
 ): Promise<Record<string, any>> => {
 	const pageProps = isAppContext(ctx)
@@ -112,11 +111,11 @@ const preRunGraphQLQueries = async (
 	Head.rewind();
 };
 
-const getInitialProps = async (
-	PageComponent: NextComponentType,
+const getInitialProps = async <T extends Record<string, any>>(
+	PageComponent: NextPage<T>,
 	ctx: AppContext | NextPageContext,
 	options: IWithApolloOptions
-): Promise<Record<string, any>> => {
+): Promise<IWithApolloProps> => {
 	const { apolloClient } = initOntoContext(ctx);
 
 	const pageProps: Record<string, any> = await runWrappedGetInitialProps(PageComponent, ctx);
@@ -146,9 +145,9 @@ const getInitialProps = async (
 };
 
 export const withApollo = (options: IWithApolloOptions = { ssr: false }) => (
-	PageComponent: NextComponentType
-) => {
-	const WithApollo: NextComponentType<NextPageContext, {}, IWithApolloProps> = ({
+	PageComponent: NextPage<Omit<NextPageContext, keyof IWithApolloProps>>
+): NextPage<NextPageContext, IWithApolloProps> => {
+	const WithApollo: NextPage<NextPageContext, IWithApolloProps> = ({
 		apolloClient,
 		apolloState,
 		...pageProps
