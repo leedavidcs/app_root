@@ -5,6 +5,7 @@ export const Mutations = gqlMutations;
 export const Queries = gqlQueries;
 
 export * from "./client";
+export * from "./mock-apollo";
 export * from "./mocks";
 export * from "./resolvers";
 export * from "./schemas";

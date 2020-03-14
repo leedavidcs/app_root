@@ -7,7 +7,13 @@ import {
 } from "apollo-boost";
 import { link } from "./links";
 
-export const createCache = (initialState?: NormalizedCacheObject): InMemoryCache => {
+interface ICreateCacheOptions {
+	initialState?: NormalizedCacheObject;
+}
+
+export const createCache = (options?: ICreateCacheOptions): InMemoryCache => {
+	const { initialState } = { ...options };
+
 	const cache = new InMemoryCache({
 		dataIdFromObject: defaultDataIdFromObject
 	}).restore(initialState || {});
@@ -32,7 +38,7 @@ export const createApolloClient = (
 	const isBrowser: boolean = typeof window !== "undefined";
 	const connectToDevTools: boolean = isDevelopmentMode;
 
-	const cache: InMemoryCache = createCache(initialState);
+	const cache: InMemoryCache = createCache({ initialState });
 
 	const client = new ApolloClient({
 		cache,
