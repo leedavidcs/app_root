@@ -5,9 +5,9 @@ import { useStyles } from "./styles";
 
 interface IProps {
 	arrow?: boolean;
-	children: ReactElement;
+	children: Maybe<ReactElement> | string;
 	className?: string;
-	content: Maybe<ReactElement>;
+	content: Maybe<ReactElement> | string;
 	disabled?: boolean;
 	flip?: boolean;
 	isOpen?: boolean;
