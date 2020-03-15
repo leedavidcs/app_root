@@ -1,8 +1,8 @@
 import { withApollo } from "@/client/hocs";
-import { NextComponentType } from "next";
+import { NextPage, NextPageContext } from "next";
 import React from "react";
 
-const Page: NextComponentType = () => {
+const Page: NextPage<NextPageContext> = () => {
 	return (
 		<main>
 			<div>Home page works~!</div>
@@ -10,4 +10,4 @@ const Page: NextComponentType = () => {
 	);
 };
 
-export default withApollo()(Page);
+export default withApollo({ ssr: false })(Page);

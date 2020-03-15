@@ -35,17 +35,29 @@ export const stockPortfolios = queryField("stockPortfolios", {
 		last: intArg(),
 		skip: intArg(),
 		orderBy: arg({ type: "StockPortfolioOrderByInput" }),
-		where: arg({ type: "StockPortfolioWhereInput" }),
+		where: arg({ type: "UserNameCompoundUniqueInput" }),
 		query: stringArg()
 	},
-	resolve: async (parent, args, { prisma }) => {
-		const { query, where, ...paginationArgs } = args;
+	resolve: async (parent, args, { prisma, user }) => {
+		const { query, where, after, before, ...paginationArgs } = args;
 
-		const result = await prisma.stockPortfolio.findMany({
+		return prisma.stockPortfolio.findMany({
 			...paginationArgs,
+			after: {
+				id: after?.id,
+				...(after?.user_name?.name && {
+					name: after?.user_name?.name,
+					user: user.id
+				})
+			},
+			before: {
+				id: before?.id,
+				...(before?.user_name?.name && {
+					name: before?.user_name?.name,
+					user: user.id
+				})
+			},
 			where: applyGenerators(where, [stringFilter("name", query)])
 		});
-
-		return result;
 	}
 });

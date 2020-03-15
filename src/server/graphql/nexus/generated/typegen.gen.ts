@@ -346,7 +346,7 @@ export interface NexusGenArgTypes {
       orderBy?: NexusGenInputs['StockPortfolioOrderByInput'] | null; // StockPortfolioOrderByInput
       query?: string | null; // String
       skip?: number | null; // Int
-      where?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
+      where?: NexusGenInputs['UserNameCompoundUniqueInput'] | null; // UserNameCompoundUniqueInput
     }
   }
   StockPortfolio: {
