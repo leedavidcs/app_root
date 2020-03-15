@@ -3,14 +3,11 @@ import { createApolloClient } from "@/client/graphql";
 import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { NextPage, NextPageContext } from "next";
-import App, { AppContext } from "next/app";
 import Head from "next/head";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 
 /* eslint-disable no-console */
-
-const isDevelopmentMode: boolean = process.env.NODE_ENV === "development";
 
 export interface IWithApolloOptions {
 	ssr: boolean;
@@ -27,10 +24,6 @@ export interface IWithApolloProps {
  */
 let clientSideApolloClient: Maybe<ApolloClient<NormalizedCacheObject>> = null;
 
-const isAppContext = (ctx: AppContext | NextPageContext): ctx is AppContext => {
-	return Object.prototype.hasOwnProperty.call(ctx, "ctx");
-};
-
 const initApolloClient = (
 	initialState: NormalizedCacheObject
 ): ApolloClient<NormalizedCacheObject> => {
@@ -44,9 +37,7 @@ const initApolloClient = (
 		return createApolloClient(initialState);
 	}
 
-	/**
-	 * @description Reuse the client on the client-side
-	 */
+	/** @description Reuse the client on the client-side */
 	if (!clientSideApolloClient) {
 		clientSideApolloClient = createApolloClient(initialState);
 	}
@@ -54,15 +45,7 @@ const initApolloClient = (
 	return clientSideApolloClient;
 };
 
-const initOntoContext = <T extends AppContext | NextPageContext>(ctx: T): T => {
-	if (isDevelopmentMode && isAppContext(ctx)) {
-		console.warn(
-			"Warning: You have opted-out of Automatic Static Optimization due to `withApollo` in \
-			`pages/_app`.\n\
-			Read more: https://err.sh/next.js/opt-out-auto-static-optimization \n"
-		);
-	}
-
+const initOntoContext = (ctx: NextPageContext): NextPageContext => {
 	const newApolloClient: ApolloClient<NormalizedCacheObject> =
 		ctx.apolloClient || initApolloClient(ctx.apolloState);
 
@@ -71,19 +54,8 @@ const initOntoContext = <T extends AppContext | NextPageContext>(ctx: T): T => {
 	return ctx;
 };
 
-const runWrappedGetInitialProps = async <T extends Record<string, any>>(
-	PageComponent: NextPage<T>,
-	ctx: AppContext | NextPageContext
-): Promise<Record<string, any>> => {
-	const pageProps = isAppContext(ctx)
-		? await App.getInitialProps(ctx)
-		: (await PageComponent.getInitialProps?.(ctx)) || {};
-
-	return pageProps;
-};
-
 const preRunGraphQLQueries = async (
-	{ AppTree }: AppContext,
+	{ AppTree }: NextPageContext,
 	pageProps: Record<string, any>,
 	apolloClient: ApolloClient<NormalizedCacheObject>
 ) => {
@@ -111,14 +83,14 @@ const preRunGraphQLQueries = async (
 	Head.rewind();
 };
 
-const getInitialProps = async <T extends Record<string, any>>(
-	PageComponent: NextPage<T>,
-	ctx: AppContext | NextPageContext,
+const getInitialProps = async <P extends Record<string, any>, IP extends Record<string, any>>(
+	PageComponent: NextPage<P, IP>,
+	ctx: NextPageContext,
 	options: IWithApolloOptions
-): Promise<IWithApolloProps> => {
+): Promise<IWithApolloProps & IP> => {
 	const { apolloClient } = initOntoContext(ctx);
 
-	const pageProps: Record<string, any> = await runWrappedGetInitialProps(PageComponent, ctx);
+	const pageProps: IP = ((await PageComponent.getInitialProps?.(ctx)) || {}) as IP;
 	const apolloState: NormalizedCacheObject = apolloClient.cache.extract();
 
 	const isBrowser = typeof window !== "undefined";
@@ -127,27 +99,26 @@ const getInitialProps = async <T extends Record<string, any>>(
 		return { ...pageProps, apolloState };
 	}
 
-	/**
-	 * @description When redirecting, the response is finished. No need in continuing to render
-	 */
-	if (!isAppContext(ctx) && ctx.res?.finished) {
+	/** @description When redirecting, the response is finished. No need in continuing to render */
+	if (ctx.res?.finished) {
 		return pageProps;
 	}
 
-	/**
-	 * @description Pre-run all GraphQL queries, for SSR
-	 */
-	if (isAppContext(ctx) && options.ssr) {
+	/** @description Pre-run all GraphQL queries, for SSR */
+	if (options.ssr) {
 		await preRunGraphQLQueries(ctx, pageProps, apolloClient);
 	}
 
 	return { ...pageProps, apolloState };
 };
 
-export const withApollo = (options: IWithApolloOptions = { ssr: false }) => (
-	PageComponent: NextPage<Omit<NextPageContext, keyof IWithApolloProps>>
-): NextPage<NextPageContext, IWithApolloProps> => {
-	const WithApollo: NextPage<NextPageContext, IWithApolloProps> = ({
+export const withApollo = <
+	P extends Record<string, any> = any,
+	IP extends Record<string, any> = any
+>(
+	options: IWithApolloOptions = { ssr: true }
+) => (PageComponent: NextPage<P, IP>): NextPage<P, IWithApolloProps & IP> => {
+	const WithApollo: NextPage<P, IWithApolloProps & IP> = ({
 		apolloClient,
 		apolloState,
 		...pageProps
@@ -159,7 +130,7 @@ export const withApollo = (options: IWithApolloOptions = { ssr: false }) => (
 			<ApolloProvider client={client}>
 				<ModalProvider>
 					<Layout>
-						<PageComponent {...pageProps} />
+						<PageComponent {...(pageProps as P)} />
 					</Layout>
 				</ModalProvider>
 			</ApolloProvider>
@@ -167,8 +138,8 @@ export const withApollo = (options: IWithApolloOptions = { ssr: false }) => (
 	};
 
 	if (options.ssr) {
-		WithApollo.getInitialProps = (ctx: AppContext | NextPageContext) => {
-			return getInitialProps(PageComponent, ctx, options);
+		WithApollo.getInitialProps = (ctx: NextPageContext) => {
+			return getInitialProps<P, IWithApolloProps & IP>(PageComponent, ctx, options);
 		};
 	}
 
