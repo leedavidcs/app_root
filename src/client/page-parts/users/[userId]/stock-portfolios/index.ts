@@ -1,1 +1,1 @@
-export * from "./stock-portfolio-list.component";
+export * from "./stock-portfolio-lookup.component";
