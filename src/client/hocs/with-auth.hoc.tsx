@@ -1,28 +1,28 @@
-import { useSetUser } from "@/client/hooks";
-import { NextPage, NextPageContext } from "next";
-import { NextRouter, useRouter } from "next/router";
+import { GetViewer, Queries } from "@/client/graphql";
+import HttpStatus from "http-status-codes";
+import { NextPage } from "next";
 import React from "react";
-import { IWithApolloOptions, IWithApolloProps, withApollo } from "./with-apollo.hoc";
+import { IWithApolloProps, withApollo } from "./with-apollo.hoc";
 
-export const withAuth = (options: IWithApolloOptions = { ssr: false }) => (
-	PageComponent: NextPage<Omit<NextPageContext, keyof IWithApolloProps>>
-) => {
-	const AuthedPage: NextPage<Omit<NextPageContext, keyof IWithApolloProps>> = (props) => {
-		const router: NextRouter = useRouter();
-		const [, { user, called, loading }] = useSetUser();
+export const withAuth = <T extends Record<string, any>>() => (PageComponent: NextPage<T>) => {
+	const AuthedPage: NextPage<T, IWithApolloProps> = (props) => <PageComponent {...props} />;
 
-		if (!called || loading) {
-			return <>loading...</>;
+	AuthedPage.getInitialProps = async ({ apolloClient, res }) => {
+		const { data } = await apolloClient
+			.query<GetViewer>({ query: Queries.GetViewer })
+			.catch(() => ({ data: { viewer: null } }));
+
+		const isLoggedIn = Boolean(data.viewer);
+
+		if (!isLoggedIn) {
+			res?.writeHead(HttpStatus.SEE_OTHER, { Location: "/login" });
+			res?.end();
+
+			return {};
 		}
 
-		if (!user) {
-			router.replace("/login");
-
-			return null;
-		}
-
-		return <PageComponent {...props} />;
+		return {};
 	};
 
-	return withApollo(options)(AuthedPage);
+	return withApollo<T>({ ssr: true })(AuthedPage);
 };
