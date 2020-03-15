@@ -12,6 +12,6 @@ export * from "./pagination.component";
 export * from "./paper.component";
 export * from "./popover.component";
 export * from "./ripple.component";
-export * from "./root-provider.component";
+export * from "./styles-provider.component";
 export * from "./tooltip.component";
 export * from "./window-drawer.component";
