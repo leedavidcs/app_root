@@ -11,13 +11,19 @@ interface IProps {
 }
 
 export const Layout: FC<IProps> = ({ children }) => {
-	const [setUser] = useSetUser();
+	const [setUser, { called, loading }] = useSetUser();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const onClickMenu = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
 	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
 
 	useEffect(() => setUser(), [setUser]);
+
+	const isLoaded: boolean = called && !loading;
+
+	if (!isLoaded) {
+		return null;
+	}
 
 	return (
 		<main>

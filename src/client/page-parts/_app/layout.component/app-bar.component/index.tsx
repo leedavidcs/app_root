@@ -74,7 +74,7 @@ export const AppBar: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
-	const [, { called, loading, user }] = useSetUser();
+	const [, { user }] = useSetUser();
 
 	const [searchText, onSearchChange] = useOnSearch(props);
 	const [isOpen, { onOpen, onClose }] = useOnClickProfileIcon();
@@ -82,12 +82,6 @@ export const AppBar: FC<IProps> = (props) => {
 	const onClickSignIn = useOnClickSignIn();
 	const onClickSignUp = useOnClickSignUp();
 	const onClickSignOut = useOnClickSignOut(onClose);
-
-	const isLoaded: boolean = called && !loading;
-
-	if (isLoaded) {
-		return null;
-	}
 
 	return (
 		<Navbar className={classes.root} fixedToTop={true}>
