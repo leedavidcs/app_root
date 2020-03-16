@@ -3,10 +3,13 @@ import { LoginLocalUserVariables } from "@/client/graphql";
 import { useAuth, useModal, useSetUser, useYupValidationResolver } from "@/client/hooks";
 import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
+import { NextRouter, useRouter } from "next/router";
 import React, { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
 import { useStyles } from "./styles";
+
+const FORM_SUBMIT_REDIRECT_DELAY = 500;
 
 const SignUpModal = dynamic(() => import("@/client/modals/sign-up.modal"));
 
@@ -47,6 +50,8 @@ const useSignUpHandler = () => {
  *     logged-in.
  */
 const useFormSubmitHandler = (onSuccess?: () => void) => {
+	const router: NextRouter = useRouter();
+
 	const [didSucceed, setDidSucceed] = useState<boolean>(false);
 
 	const { login } = useAuth();
@@ -67,8 +72,12 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 			}
 
 			setDidSucceed(Boolean(result));
+
+			setTimeout(() => {
+				router.push("/");
+			}, FORM_SUBMIT_REDIRECT_DELAY);
 		},
-		[login, onSuccess, setDidSucceed, setUser]
+		[login, onSuccess, router, setDidSucceed, setUser]
 	);
 
 	return { didSucceed, onFormSubmit };
@@ -127,7 +136,7 @@ export const SignInForm: FC = () => {
 
 	return (
 		<div>
-			<form className={classes.root} onSubmit={onSubmit}>
+			<form onSubmit={onSubmit}>
 				<div className={classes.formWrapper}>
 					<TextInput
 						className={classes.textInput}
