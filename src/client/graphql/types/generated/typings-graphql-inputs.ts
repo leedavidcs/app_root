@@ -430,6 +430,12 @@ export interface RegisterLocalUserInput {
   readonly username: string;
 }
 
+export interface StockPortfolioFilter {
+  readonly every?: StockPortfolioWhereInput | null;
+  readonly some?: StockPortfolioWhereInput | null;
+  readonly none?: StockPortfolioWhereInput | null;
+}
+
 export interface StockPortfolioHeaderFilter {
   readonly every?: StockPortfolioHeaderWhereInput | null;
   readonly some?: StockPortfolioHeaderWhereInput | null;
@@ -458,6 +464,7 @@ export interface StockPortfolioWhereInput {
   readonly AND?: ReadonlyArray<StockPortfolioWhereInput> | null;
   readonly OR?: ReadonlyArray<StockPortfolioWhereInput> | null;
   readonly NOT?: ReadonlyArray<StockPortfolioWhereInput> | null;
+  readonly user?: UserWhereInput | null;
 }
 
 export interface StockPortfolioWhereUniqueInput {
@@ -501,7 +508,22 @@ export interface UserInput {
 }
 
 export interface UserNameCompoundUniqueInput {
+  readonly user: string;
   readonly name: string;
+}
+
+export interface UserWhereInput {
+  readonly id?: UUIDFilter | null;
+  readonly email?: StringFilter | null;
+  readonly emailVerified?: BooleanFilter | null;
+  readonly password?: StringFilter | null;
+  readonly username?: StringFilter | null;
+  readonly createdAt?: DateTimeFilter | null;
+  readonly updatedAt?: DateTimeFilter | null;
+  readonly stockPortfolios?: StockPortfolioFilter | null;
+  readonly AND?: ReadonlyArray<UserWhereInput> | null;
+  readonly OR?: ReadonlyArray<UserWhereInput> | null;
+  readonly NOT?: ReadonlyArray<UserWhereInput> | null;
 }
 
 //==============================================================
