@@ -13,7 +13,7 @@ import fetch from "isomorphic-unfetch";
 
 /* eslint-disable no-console */
 
-const BASE_GRAPHQL_URL = `${process.env.REACT_APP_API_BASE_URL}/graphql`;
+const BASE_GRAPHQL_URL = `${process.env.REACT_APP_API_BASE_URL}/api/graphql`;
 
 const isServerError = (value: any): value is ServerError | ServerParseError => {
 	return Boolean(value.statusCode);
