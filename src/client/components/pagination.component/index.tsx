@@ -153,6 +153,10 @@ export const Pagination: FC<IProps> = ({
 		skip
 	]);
 
+	if (pageCount === 1) {
+		return null;
+	}
+
 	return (
 		<div className={classnames(classes.root, className)}>
 			<div className={classes.pagination}>
