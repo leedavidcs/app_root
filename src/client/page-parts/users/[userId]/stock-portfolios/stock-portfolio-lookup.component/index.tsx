@@ -1,6 +1,7 @@
 import { IPaginationProps, Pagination } from "@/client/components";
 import {
 	CreateStockPortfolio,
+	CreateStockPortfolioVariables,
 	GetStockPortfolioCount,
 	GetStockPortfoliosForPreviewVariables,
 	Mutations,
@@ -17,6 +18,7 @@ import { useStyles } from "./styles";
 const DEFAULT_PAGINATION_FIRST = 10;
 
 interface IProps {
+	className?: string;
 	onClickOpen: (id: string) => void;
 	userId?: string;
 }
@@ -38,7 +40,11 @@ const useOnPage = (
 	const [first, setFirst] = useState<number>(DEFAULT_PAGINATION_FIRST);
 	const [skip, setSkip] = useState<number>(0);
 
-	const pagination: IPaginationProps = { count, first, skip };
+	const pagination: IPaginationProps = useMemo(() => ({ count, first, skip }), [
+		count,
+		first,
+		skip
+	]);
 
 	const onPage = useCallback(
 		(value: IPaginationProps) => {
@@ -61,39 +67,55 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 		[onClickOpen]
 	);
 
-	const [createStockPortfolio] = useMutation<CreateStockPortfolio>(
+	const [createStockPortfolio] = useMutation<CreateStockPortfolio, CreateStockPortfolioVariables>(
 		Mutations.CreateStockPortfolio,
 		{ onCompleted }
 	);
 
 	return useCallback(() => {
-		createStockPortfolio();
+		createStockPortfolio({
+			variables: { name: "New_Portfolio" }
+		});
 	}, [createStockPortfolio]);
 };
 
 export const StockPortfolioLookup: FC<IProps> = (props) => {
-	const { onClickOpen, userId } = props;
+	const { className, onClickOpen, userId } = props;
 
 	const classes = useStyles();
 
-	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewVariables>({});
+	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewVariables>({
+		where: {
+			user: { id: { equals: userId } }
+		}
+	});
+	const [lastFilters, setLastFilters] = useState<GetStockPortfoliosForPreviewVariables>(filters);
 	const [pagination, onPage] = useOnPage(filters);
+
+	const onClickNew = useOnClickNew(props);
+
+	const onSubmitFilters = useCallback(
+		(value: GetStockPortfoliosForPreviewVariables) => setLastFilters({ ...value }),
+		[setLastFilters]
+	);
 
 	const variables = useMemo(
 		(): GetStockPortfoliosForPreviewVariables => ({
-			...filters,
+			...lastFilters,
 			first: pagination.first,
 			skip: pagination.skip,
 			where: { user: { id: { equals: userId } } }
 		}),
-		[filters, pagination, userId]
+		[lastFilters, pagination, userId]
 	);
 
-	const onClickNew = useOnClickNew(props);
-
 	return (
-		<div className={classnames(Classes.DARK, classes.root)}>
-			<StockPortfolioFilter variables={filters} onChange={setFilters} />
+		<div className={classnames(Classes.DARK, classes.root, className)}>
+			<StockPortfolioFilter
+				variables={filters}
+				onChange={setFilters}
+				onSubmit={onSubmitFilters}
+			/>
 			<div className={classes.resultsContainer}>
 				<div className={classes.createNewContainer}>
 					<Button intent="primary" onClick={onClickNew} text="Create new portfolio" />
