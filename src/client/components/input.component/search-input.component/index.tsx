@@ -8,7 +8,14 @@ import {
 	Intent
 } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { CSSProperties, FC, FormEventHandler, KeyboardEventHandler } from "react";
+import KeyCode from "keycode";
+import React, {
+	CSSProperties,
+	FC,
+	FormEventHandler,
+	KeyboardEventHandler,
+	useCallback
+} from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
@@ -18,8 +25,9 @@ interface IProps {
 	icon?: IconName;
 	label?: string;
 	labelInfo?: string;
-	onChange?: FormEventHandler<HTMLInputElement>;
+	onChange: FormEventHandler<HTMLInputElement>;
 	onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+	onSubmit?: (value?: string) => void;
 	placeholder?: string;
 	style?: CSSProperties;
 	value?: string;
@@ -33,7 +41,8 @@ export const SearchInput: FC<IProps> = ({
 	label,
 	labelInfo,
 	onChange,
-	onKeyDown,
+	onKeyDown: propsOnKeyDown,
+	onSubmit: propsOnSubmit,
 	placeholder = "search",
 	style,
 	value
@@ -41,6 +50,23 @@ export const SearchInput: FC<IProps> = ({
 	const classes = useStyles();
 
 	const intent: Intent = error ? "danger" : "none";
+
+	const onKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
+		(event) => {
+			const { keyCode } = event;
+
+			propsOnKeyDown?.(event);
+
+			if (keyCode === KeyCode.codes.enter) {
+				propsOnSubmit?.(value);
+			}
+		},
+		[propsOnKeyDown, propsOnSubmit, value]
+	);
+
+	const onSubmit = useCallback(() => {
+		propsOnSubmit?.(value);
+	}, [propsOnSubmit, value]);
 
 	return (
 		<FormGroup
@@ -63,7 +89,7 @@ export const SearchInput: FC<IProps> = ({
 					placeholder={placeholder}
 					value={value}
 				/>
-				<Button icon="arrow-right" intent="primary" />
+				<Button icon="arrow-right" intent="primary" onClick={onSubmit} />
 			</ControlGroup>
 		</FormGroup>
 	);
