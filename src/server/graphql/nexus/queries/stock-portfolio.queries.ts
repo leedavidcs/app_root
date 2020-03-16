@@ -32,7 +32,7 @@ export const stockPortfolioQueries = extendType({
 
 		t.int("stockPortfolioCount", {
 			args: {
-				where: arg({ type: "StockPortfolioHeaderWhereInput" }),
+				where: arg({ type: "StockPortfolioWhereInput" }),
 				query: stringArg()
 			},
 			resolve: async (parent, { query, where }, { prisma }) => {

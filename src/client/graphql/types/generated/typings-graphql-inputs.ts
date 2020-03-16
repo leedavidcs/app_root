@@ -18,7 +18,7 @@ export interface CreateStockPortfolio {
 }
 
 export interface CreateStockPortfolioVariables {
-  readonly name?: string | null;
+  readonly name: string;
 }
 
 /* tslint:disable */
