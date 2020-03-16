@@ -18,6 +18,7 @@ const DEFAULT_PAGINATION_FIRST = 10;
 
 interface IProps {
 	onClickOpen: (id: string) => void;
+	userId?: string;
 }
 
 const useCount = (filters: GetStockPortfoliosForPreviewVariables): number => {
@@ -71,20 +72,21 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 };
 
 export const StockPortfolioLookup: FC<IProps> = (props) => {
-	const { onClickOpen } = props;
+	const { onClickOpen, userId } = props;
 
 	const classes = useStyles();
 
 	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewVariables>({});
 	const [pagination, onPage] = useOnPage(filters);
 
-	const variables: GetStockPortfoliosForPreviewVariables = useMemo(
-		() => ({
+	const variables = useMemo(
+		(): GetStockPortfoliosForPreviewVariables => ({
 			...filters,
 			first: pagination.first,
-			skip: pagination.skip
+			skip: pagination.skip,
+			where: { user: { id: { equals: userId } } }
 		}),
-		[filters, pagination]
+		[filters, pagination, userId]
 	);
 
 	const onClickNew = useOnClickNew(props);

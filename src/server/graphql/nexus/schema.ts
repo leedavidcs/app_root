@@ -1,4 +1,4 @@
-import { makeSchema, queryComplexityPlugin } from "nexus";
+import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "nexus";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import path from "path";
 import * as mutations from "./mutations";
@@ -29,12 +29,10 @@ export const nexusSchema = makeSchema({
 	},
 	plugins: [
 		nexusPrismaPlugin({
-			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") },
-			computedInputs: {
-				user: ({ ctx }) => ({ connect: { id: ctx.user.id } })
-			}
+			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") }
 		}),
-		queryComplexityPlugin()
+		queryComplexityPlugin(),
+		fieldAuthorizePlugin()
 	],
 	typegenAutoConfig: {
 		sources: [{ source: getPath("../context.ts"), alias: "ctx" }],
