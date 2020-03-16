@@ -2,6 +2,7 @@ module.exports = {
 	target: "serverless",
 	env: {
 		PROJECT_DIRNAME: __dirname,
+		BRAND_NAME: process.env.BRAND_NAME,
 		WEBSITE_URL: process.env.WEBSITE_URL,
 		JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
 		JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,

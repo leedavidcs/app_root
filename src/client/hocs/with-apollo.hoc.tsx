@@ -4,12 +4,13 @@ import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
-import React from "react";
+import React, { ReactElement } from "react";
 import { ApolloProvider } from "react-apollo";
 
 /* eslint-disable no-console */
 
 export interface IWithApolloOptions {
+	layout: boolean;
 	ssr: boolean;
 }
 
@@ -17,6 +18,11 @@ export interface IWithApolloProps {
 	apolloClient?: ApolloClient<NormalizedCacheObject>;
 	apolloState?: NormalizedCacheObject;
 }
+
+const DEFAULT_OPTIONS: IWithApolloOptions = {
+	layout: true,
+	ssr: true
+};
 
 /**
  * @description For the client, the apollo client is stored in the following variable, to prevent
@@ -116,8 +122,10 @@ export const withApollo = <
 	P extends Record<string, any> = any,
 	IP extends Record<string, any> = any
 >(
-	options: IWithApolloOptions = { ssr: true }
+	options: Partial<IWithApolloOptions>
 ) => (PageComponent: NextPage<P, IP>): NextPage<P, IWithApolloProps & IP> => {
+	const finalOptions: IWithApolloOptions = { ...DEFAULT_OPTIONS, ...options };
+
 	const WithApollo: NextPage<P, IWithApolloProps & IP> = ({
 		apolloClient,
 		apolloState,
@@ -126,20 +134,24 @@ export const withApollo = <
 		const client: ApolloClient<NormalizedCacheObject> =
 			apolloClient || initApolloClient(apolloState);
 
+		const page: ReactElement = finalOptions.layout ? (
+			<Layout>
+				<PageComponent {...(pageProps as P)} />
+			</Layout>
+		) : (
+			<PageComponent {...(pageProps as P)} />
+		);
+
 		return (
 			<ApolloProvider client={client}>
-				<ModalProvider>
-					<Layout>
-						<PageComponent {...(pageProps as P)} />
-					</Layout>
-				</ModalProvider>
+				<ModalProvider>{page}</ModalProvider>
 			</ApolloProvider>
 		);
 	};
 
 	if (options.ssr) {
 		WithApollo.getInitialProps = (ctx: NextPageContext) => {
-			return getInitialProps<P, IWithApolloProps & IP>(PageComponent, ctx, options);
+			return getInitialProps<P, IWithApolloProps & IP>(PageComponent, ctx, finalOptions);
 		};
 	}
 

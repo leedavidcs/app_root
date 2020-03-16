@@ -31,7 +31,7 @@ export const useStockPortfoliosNode = (
 			return;
 		}
 
-		router.push(`/user/${user.id}/stock-portfolios`);
+		router.push(`/users/${user.id}/stock-portfolios`);
 	}, [router, user]);
 
 	const withUserProps: Omit<ITreeNode, "id" | "label"> = useMemo(

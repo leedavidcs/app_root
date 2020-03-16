@@ -1,8 +1,8 @@
 import { withApollo } from "@/client/hocs";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import React from "react";
 
-const Page: NextPage<NextPageContext> = () => {
+const Page: NextPage = () => {
 	return (
 		<main>
 			<div>Home page works~!</div>
