@@ -7,6 +7,11 @@ export const applyGenerators = (
 	...whereInput,
 	AND: [
 		...(whereInput?.AND || []),
-		...generators.reduce((acc, generator) => acc.concat(generator))
+		{
+			OR: [
+				...(whereInput?.AND?.OR || []),
+				...generators.reduce((acc, generator) => acc.concat(generator))
+			]
+		}
 	]
 });
