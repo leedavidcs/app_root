@@ -5,6 +5,7 @@
 
 import * as ctx from "../../context"
 import { QueryComplexity } from "nexus/dist/plugins/queryComplexityPlugin"
+import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 
 declare global {
@@ -58,6 +59,19 @@ export interface NexusGenInputs {
   StockPortfolioCreateInput: { // input type
     name: string; // String!
   }
+  StockPortfolioFilter: { // input type
+    every?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
+    none?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
+    some?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
+  }
+  StockPortfolioHeaderCreateWithoutStockPortfolioInput: { // input type
+    dataKey: string; // String!
+    frozen?: boolean | null; // Boolean
+    id?: string | null; // String
+    name: string; // String!
+    resizable?: boolean | null; // Boolean
+    width?: number | null; // Int
+  }
   StockPortfolioHeaderFilter: { // input type
     every?: NexusGenInputs['StockPortfolioHeaderWhereInput'] | null; // StockPortfolioHeaderWhereInput
     none?: NexusGenInputs['StockPortfolioHeaderWhereInput'] | null; // StockPortfolioHeaderWhereInput
@@ -69,6 +83,57 @@ export interface NexusGenInputs {
     name: string; // String!
     resizable: boolean; // Boolean!
     width: number; // Int!
+  }
+  StockPortfolioHeaderScalarWhereInput: { // input type
+    AND?: NexusGenInputs['StockPortfolioHeaderScalarWhereInput'][] | null; // [StockPortfolioHeaderScalarWhereInput!]
+    dataKey?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    frozen?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
+    id?: NexusGenInputs['UUIDFilter'] | null; // UUIDFilter
+    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['StockPortfolioHeaderScalarWhereInput'][] | null; // [StockPortfolioHeaderScalarWhereInput!]
+    OR?: NexusGenInputs['StockPortfolioHeaderScalarWhereInput'][] | null; // [StockPortfolioHeaderScalarWhereInput!]
+    resizable?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
+    width?: NexusGenInputs['IntFilter'] | null; // IntFilter
+  }
+  StockPortfolioHeaderUpdateManyDataInput: { // input type
+    dataKey?: string | null; // String
+    frozen?: boolean | null; // Boolean
+    id?: string | null; // String
+    name?: string | null; // String
+    resizable?: boolean | null; // Boolean
+    width?: number | null; // Int
+  }
+  StockPortfolioHeaderUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['StockPortfolioHeaderUpdateManyDataInput']; // StockPortfolioHeaderUpdateManyDataInput!
+    where: NexusGenInputs['StockPortfolioHeaderScalarWhereInput']; // StockPortfolioHeaderScalarWhereInput!
+  }
+  StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput'][] | null; // [StockPortfolioHeaderWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioHeaderCreateWithoutStockPortfolioInput'][] | null; // [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]
+    delete?: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput'][] | null; // [StockPortfolioHeaderWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['StockPortfolioHeaderScalarWhereInput'][] | null; // [StockPortfolioHeaderScalarWhereInput!]
+    disconnect?: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput'][] | null; // [StockPortfolioHeaderWhereUniqueInput!]
+    set?: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput'][] | null; // [StockPortfolioHeaderWhereUniqueInput!]
+    update?: NexusGenInputs['StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+    updateMany?: NexusGenInputs['StockPortfolioHeaderUpdateManyWithWhereNestedInput'][] | null; // [StockPortfolioHeaderUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+  }
+  StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    data: NexusGenInputs['StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput']; // StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput']; // StockPortfolioHeaderWhereUniqueInput!
+  }
+  StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput: { // input type
+    dataKey?: string | null; // String
+    frozen?: boolean | null; // Boolean
+    id?: string | null; // String
+    name?: string | null; // String
+    resizable?: boolean | null; // Boolean
+    width?: number | null; // Int
+  }
+  StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['StockPortfolioHeaderCreateWithoutStockPortfolioInput']; // StockPortfolioHeaderCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput']; // StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput']; // StockPortfolioHeaderWhereUniqueInput!
   }
   StockPortfolioHeaderWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioHeaderWhereInput'][] | null; // [StockPortfolioHeaderWhereInput!]
@@ -90,12 +155,15 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    user?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   StockPortfolioUpdateInput: { // input type
-    headers?: NexusGenInputs['StockPortfolioHeaderInput'][] | null; // [StockPortfolioHeaderInput!]
-    id: string; // ID!
+    headers?: NexusGenInputs['StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput'] | null; // StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput
     name?: string | null; // String
-    tickers?: string[] | null; // [String!]
+    tickers?: NexusGenInputs['StockPortfolioUpdatetickersInput'] | null; // StockPortfolioUpdatetickersInput
+  }
+  StockPortfolioUpdatetickersInput: { // input type
+    set?: string[] | null; // [String!]
   }
   StockPortfolioWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
@@ -106,6 +174,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
   }
   StockPortfolioWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -139,6 +208,20 @@ export interface NexusGenInputs {
   }
   UserNameCompoundUniqueInput: { // input type
     name: string; // String!
+    user: string; // String!
+  }
+  UserWhereInput: { // input type
+    AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    email?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    emailVerified?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
+    id?: NexusGenInputs['UUIDFilter'] | null; // UUIDFilter
+    NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    password?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    stockPortfolios?: NexusGenInputs['StockPortfolioFilter'] | null; // StockPortfolioFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
 }
 
@@ -217,17 +300,28 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
   RegisterLocalUserInput: NexusGenInputs['RegisterLocalUserInput'];
   StockPortfolioCreateInput: NexusGenInputs['StockPortfolioCreateInput'];
+  StockPortfolioFilter: NexusGenInputs['StockPortfolioFilter'];
+  StockPortfolioHeaderCreateWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioHeaderCreateWithoutStockPortfolioInput'];
   StockPortfolioHeaderFilter: NexusGenInputs['StockPortfolioHeaderFilter'];
   StockPortfolioHeaderInput: NexusGenInputs['StockPortfolioHeaderInput'];
+  StockPortfolioHeaderScalarWhereInput: NexusGenInputs['StockPortfolioHeaderScalarWhereInput'];
+  StockPortfolioHeaderUpdateManyDataInput: NexusGenInputs['StockPortfolioHeaderUpdateManyDataInput'];
+  StockPortfolioHeaderUpdateManyWithWhereNestedInput: NexusGenInputs['StockPortfolioHeaderUpdateManyWithWhereNestedInput'];
+  StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput'];
+  StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput'];
+  StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput: NexusGenInputs['StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput'];
+  StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput'];
   StockPortfolioHeaderWhereInput: NexusGenInputs['StockPortfolioHeaderWhereInput'];
   StockPortfolioHeaderWhereUniqueInput: NexusGenInputs['StockPortfolioHeaderWhereUniqueInput'];
   StockPortfolioOrderByInput: NexusGenInputs['StockPortfolioOrderByInput'];
   StockPortfolioUpdateInput: NexusGenInputs['StockPortfolioUpdateInput'];
+  StockPortfolioUpdatetickersInput: NexusGenInputs['StockPortfolioUpdatetickersInput'];
   StockPortfolioWhereInput: NexusGenInputs['StockPortfolioWhereInput'];
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
   StringFilter: NexusGenInputs['StringFilter'];
   UUIDFilter: NexusGenInputs['UUIDFilter'];
   UserNameCompoundUniqueInput: NexusGenInputs['UserNameCompoundUniqueInput'];
+  UserWhereInput: NexusGenInputs['UserWhereInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
   OrderByArg: NexusGenEnums['OrderByArg'];
 }
@@ -246,7 +340,7 @@ export interface NexusGenFieldTypes {
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
-    updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
   Query: { // field return type
@@ -323,6 +417,7 @@ export interface NexusGenArgTypes {
     }
     updateOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioUpdateInput']; // StockPortfolioUpdateInput!
+      where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
     }
   }
   Query: {
@@ -368,7 +463,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User" | "Viewer";
 
-export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioHeaderFilter" | "StockPortfolioHeaderInput" | "StockPortfolioHeaderWhereInput" | "StockPortfolioHeaderWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput";
+export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderCreateWithoutStockPortfolioInput" | "StockPortfolioHeaderFilter" | "StockPortfolioHeaderInput" | "StockPortfolioHeaderScalarWhereInput" | "StockPortfolioHeaderUpdateManyDataInput" | "StockPortfolioHeaderUpdateManyWithWhereNestedInput" | "StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput" | "StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput" | "StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioHeaderWhereInput" | "StockPortfolioHeaderWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioUpdatetickersInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput" | "UserWhereInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg";
 
@@ -410,6 +505,15 @@ declare global {
      * complexity for this field.
      */
     complexity?: QueryComplexity<TypeName, FieldName>
+    /**
+     * Authorization for an individual field. Returning "true"
+     * or "Promise<true>" means the field can be accessed.
+     * Returning "false" or "Promise<false>" will respond
+     * with a "Not Authorized" error for the field.
+     * Returning or throwing an error will also prevent the
+     * resolver from executing.
+     */
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
   }
   interface NexusGenPluginSchemaConfig {
   }

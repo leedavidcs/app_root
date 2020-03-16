@@ -89,7 +89,7 @@ type Mutation implements RequestRoot {
 
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
-  updateOneStockPortfolio(data: StockPortfolioUpdateInput!): StockPortfolio!
+  updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """The viewer of this request"""
   viewer: Viewer
@@ -181,6 +181,12 @@ input StockPortfolioCreateInput {
   name: String!
 }
 
+input StockPortfolioFilter {
+  every: StockPortfolioWhereInput
+  none: StockPortfolioWhereInput
+  some: StockPortfolioWhereInput
+}
+
 """A column configuration for the stock portfolio on the data grid"""
 type StockPortfolioHeader {
   dataKey: String!
@@ -188,6 +194,15 @@ type StockPortfolioHeader {
   name: String!
   resizable: Boolean!
   width: Int!
+}
+
+input StockPortfolioHeaderCreateWithoutStockPortfolioInput {
+  dataKey: String!
+  frozen: Boolean
+  id: String
+  name: String!
+  resizable: Boolean
+  width: Int
 }
 
 input StockPortfolioHeaderFilter {
@@ -202,6 +217,64 @@ input StockPortfolioHeaderInput {
   name: String!
   resizable: Boolean!
   width: Int!
+}
+
+input StockPortfolioHeaderScalarWhereInput {
+  AND: [StockPortfolioHeaderScalarWhereInput!]
+  dataKey: StringFilter
+  frozen: BooleanFilter
+  id: UUIDFilter
+  name: StringFilter
+  NOT: [StockPortfolioHeaderScalarWhereInput!]
+  OR: [StockPortfolioHeaderScalarWhereInput!]
+  resizable: BooleanFilter
+  width: IntFilter
+}
+
+input StockPortfolioHeaderUpdateManyDataInput {
+  dataKey: String
+  frozen: Boolean
+  id: String
+  name: String
+  resizable: Boolean
+  width: Int
+}
+
+input StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput {
+  connect: [StockPortfolioHeaderWhereUniqueInput!]
+  create: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]
+  delete: [StockPortfolioHeaderWhereUniqueInput!]
+  deleteMany: [StockPortfolioHeaderScalarWhereInput!]
+  disconnect: [StockPortfolioHeaderWhereUniqueInput!]
+  set: [StockPortfolioHeaderWhereUniqueInput!]
+  update: [StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+  updateMany: [StockPortfolioHeaderUpdateManyWithWhereNestedInput!]
+  upsert: [StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+}
+
+input StockPortfolioHeaderUpdateManyWithWhereNestedInput {
+  data: StockPortfolioHeaderUpdateManyDataInput!
+  where: StockPortfolioHeaderScalarWhereInput!
+}
+
+input StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput {
+  dataKey: String
+  frozen: Boolean
+  id: String
+  name: String
+  resizable: Boolean
+  width: Int
+}
+
+input StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput {
+  data: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
+  where: StockPortfolioHeaderWhereUniqueInput!
+}
+
+input StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput {
+  create: StockPortfolioHeaderCreateWithoutStockPortfolioInput!
+  update: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
+  where: StockPortfolioHeaderWhereUniqueInput!
 }
 
 input StockPortfolioHeaderWhereInput {
@@ -226,13 +299,17 @@ input StockPortfolioOrderByInput {
   id: OrderByArg
   name: OrderByArg
   updatedAt: OrderByArg
+  user: OrderByArg
 }
 
 input StockPortfolioUpdateInput {
-  headers: [StockPortfolioHeaderInput!]
-  id: ID!
+  headers: StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput
   name: String
-  tickers: [String!]
+  tickers: StockPortfolioUpdatetickersInput
+}
+
+input StockPortfolioUpdatetickersInput {
+  set: [String!]
 }
 
 input StockPortfolioWhereInput {
@@ -244,6 +321,7 @@ input StockPortfolioWhereInput {
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
   updatedAt: DateTimeFilter
+  user: UserWhereInput
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -288,10 +366,25 @@ type User {
 
 input UserNameCompoundUniqueInput {
   name: String!
+  user: String!
 }
 
 """The plain-text password of a user to be hashed"""
 scalar UserPassword
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  createdAt: DateTimeFilter
+  email: StringFilter
+  emailVerified: BooleanFilter
+  id: UUIDFilter
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  password: StringFilter
+  stockPortfolios: StockPortfolioFilter
+  updatedAt: DateTimeFilter
+  username: StringFilter
+}
 
 scalar UUID
 

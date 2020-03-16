@@ -1,34 +1,34 @@
-import { arg, inputObjectType, mutationField } from "nexus";
+import { extendType } from "nexus";
 
-export const StockPortfolioUpdateInput = inputObjectType({
-	name: "StockPortfolioUpdateInput",
+export const updateOneStockPortfolio = extendType({
+	type: "Mutation",
 	definition: (t) => {
-		t.id("id", { nullable: false });
-		t.string("name");
-		t.list.string("tickers");
-		t.list.field("headers", { type: "StockPortfolioHeaderInput" });
-	}
-});
+		t.field("updateOneStockPortfolio", {
+			type: "StockPortfolio",
+			authorize: async (parent, { where }, { prisma, user }) => {
+				const stockPortfolio = await prisma.stockPortfolio.findOne({
+					where,
+					include: {
+						user: true
+					}
+				});
 
-export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", {
-	type: "StockPortfolio",
-	nullable: false,
-	args: {
-		data: arg({
-			type: "StockPortfolioUpdateInput",
-			nullable: false
-		})
-	},
-	resolve: async (parent, { data }, { prisma }) => {
-		const updatedStockPortfolio = await prisma.stockPortfolio.update({
-			where: { id: data.id },
-			data: {
-				name: data.name,
-				tickers: { set: data.tickers || [] },
-				headers: { create: data.headers }
+				if (!stockPortfolio) {
+					return true;
+				}
+
+				const isOwnedByUser: boolean = stockPortfolio.user.id === user.id;
+
+				return isOwnedByUser;
 			}
 		});
-
-		return updatedStockPortfolio;
+		t.crud.updateOneStockPortfolio({
+			computedInputs: {
+				id: () => undefined,
+				createdAt: () => undefined,
+				updatedAt: () => undefined,
+				user: ({ ctx }) => ({ connect: { id: ctx.user.id } })
+			}
+		});
 	}
 });
