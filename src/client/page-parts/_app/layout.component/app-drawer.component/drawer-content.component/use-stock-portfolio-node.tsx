@@ -78,6 +78,7 @@ export const useStockPortfoliosNode = (
 			...(user ? withUserProps : withoutUserProps)
 		};
 	}, [id, user, withUserProps, withoutUserProps]);
+
 	useEffect(
 		() => {
 			contents[id] = node;

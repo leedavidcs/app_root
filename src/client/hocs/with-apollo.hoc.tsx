@@ -1,5 +1,5 @@
 import { ModalProvider } from "@/client/components";
-import { createApolloClient } from "@/client/graphql";
+import { createApolloClient, ICreateApolloClientOptions } from "@/client/graphql";
 import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { NextPage, NextPageContext } from "next";
@@ -30,9 +30,14 @@ const DEFAULT_OPTIONS: IWithApolloOptions = {
  */
 let clientSideApolloClient: Maybe<ApolloClient<NormalizedCacheObject>> = null;
 
-const initApolloClient = (
-	initialState: NormalizedCacheObject
-): ApolloClient<NormalizedCacheObject> => {
+const initApolloClient = (ctx: NextPageContext): ApolloClient<NormalizedCacheObject> => {
+	const { apolloState, req } = ctx;
+
+	const options: ICreateApolloClientOptions = {
+		initialState: apolloState,
+		req
+	};
+
 	const isBrowser = typeof window !== "undefined";
 
 	/**
@@ -40,12 +45,12 @@ const initApolloClient = (
 	 *     not shared between connections
 	 */
 	if (!isBrowser) {
-		return createApolloClient(initialState);
+		return createApolloClient(options);
 	}
 
 	/** @description Reuse the client on the client-side */
 	if (!clientSideApolloClient) {
-		clientSideApolloClient = createApolloClient(initialState);
+		clientSideApolloClient = createApolloClient(options);
 	}
 
 	return clientSideApolloClient;
@@ -53,7 +58,7 @@ const initApolloClient = (
 
 const initOntoContext = (ctx: NextPageContext): NextPageContext => {
 	const newApolloClient: ApolloClient<NormalizedCacheObject> =
-		ctx.apolloClient || initApolloClient(ctx.apolloState);
+		ctx.apolloClient || initApolloClient(ctx);
 
 	ctx.apolloClient = newApolloClient;
 
