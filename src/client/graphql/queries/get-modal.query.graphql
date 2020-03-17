@@ -1,0 +1,3 @@
+query GetModal {
+	modal @client
+}

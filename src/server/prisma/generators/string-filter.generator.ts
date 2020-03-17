@@ -1,5 +1,5 @@
 import { StringFilter } from "@prisma/client";
-import { isNil, lowerCase, upperCase, upperFirst } from "lodash-es";
+import { isNil, lowerCase, upperCase, upperFirst } from "lodash";
 
 export const stringFilter = (
 	name: string,

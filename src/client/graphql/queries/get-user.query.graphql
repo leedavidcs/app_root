@@ -1,0 +1,8 @@
+query GetUser {
+	user @client {
+		id
+		email
+		emailVerified
+		username
+	}
+}

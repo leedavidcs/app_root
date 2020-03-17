@@ -1,4 +1,4 @@
-import { debounce } from "lodash-es";
+import { debounce } from "lodash";
 import { MouseEvent, MutableRefObject, TouchEvent, useCallback, useRef } from "react";
 
 const DOUBLE_CLICK_TIMEOUT = 200;

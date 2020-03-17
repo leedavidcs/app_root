@@ -10,7 +10,7 @@ import { onInputValueChanged } from "@/client/utils";
 import { Button } from "@blueprintjs/core/lib/esm";
 import { DateRange } from "@blueprintjs/datetime";
 import { DateTimeFilter } from "@prisma/client";
-import { isNil } from "lodash-es";
+import { isNil } from "lodash";
 import React, { FC, FormEventHandler, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 interface IProps {

@@ -1,7 +1,7 @@
 import { IServerContext } from "@/server/graphql/context";
 import { StockPortfolioHeader } from "@prisma/client";
 import { IMiddlewareGenerator } from "graphql-middleware";
-import { uniqBy } from "lodash-es";
+import { uniqBy } from "lodash";
 import { guardRails } from "./guard-rails";
 
 const USERNAME_MIN_LENGTH = 3;

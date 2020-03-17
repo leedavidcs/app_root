@@ -6,7 +6,7 @@ import {
 } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
-import { range } from "lodash-es";
+import { range } from "lodash";
 import React, { FC, memo, useCallback } from "react";
 import { useStyles } from "./styles";
 

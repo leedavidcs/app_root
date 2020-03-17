@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es";
+import { isEmpty } from "lodash";
 export * from "./string-filter.generator";
 
 export const applyGenerators = (
