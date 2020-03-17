@@ -1,12 +1,12 @@
 import { GetModalQuery, IClientContext } from "@/client/graphql";
-import * as Queries from "@/client/graphql/queries";
+import { GetModalDocument } from "@/client/graphql/generated";
 
 const toggleModal: LocalResolver<any, IClientContext, { force?: boolean }> = (
 	parent,
 	{ force },
 	{ cache }
 ) => {
-	const query = Queries.GetModal;
+	const query = GetModalDocument;
 
 	const previous = cache.readQuery<GetModalQuery, {}>({ query });
 

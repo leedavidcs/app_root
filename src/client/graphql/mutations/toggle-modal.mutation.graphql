@@ -1,0 +1,3 @@
+mutation ToggleModal($force: Boolean) {
+	toggleModal(force: $force) @client
+}

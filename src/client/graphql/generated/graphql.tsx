@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
+// This file was generated on: Mar 17th 2020 10:38:11 am
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -460,7 +462,7 @@ export type DeleteStockPortfolioMutationVariables = {
 
 export type DeleteStockPortfolioMutation = (
   { __typename?: 'Mutation' }
-  & { deleteOneStockPortfolio: Maybe<(
+  & { deleteOneStockPortfolio?: Maybe<(
     { __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name'>
   )> }
@@ -473,7 +475,7 @@ export type LoginLocalUserMutationVariables = {
 
 export type LoginLocalUserMutation = (
   { __typename?: 'Mutation' }
-  & { loginLocalUser: Maybe<(
+  & { loginLocalUser?: Maybe<(
     { __typename?: 'TokenPayload' }
     & Pick<TokenPayload, 'token' | 'refreshToken'>
   )> }
@@ -486,7 +488,7 @@ export type RefreshAccessTokenMutationVariables = {
 
 export type RefreshAccessTokenMutation = (
   { __typename?: 'Mutation' }
-  & { refreshAccessToken: Maybe<(
+  & { refreshAccessToken?: Maybe<(
     { __typename?: 'TokenPayload' }
     & Pick<TokenPayload, 'token' | 'refreshToken'>
   )> }
@@ -499,10 +501,10 @@ export type RegisterLocalUserMutationVariables = {
 
 export type RegisterLocalUserMutation = (
   { __typename?: 'Mutation' }
-  & { registerLocalUser: Maybe<(
+  & { registerLocalUser?: Maybe<(
     { __typename?: 'RegisterLocalUserPayload' }
     & Pick<RegisterLocalUserPayload, 'success' | 'error'>
-    & { user: Maybe<(
+    & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
     )> }
@@ -514,7 +516,7 @@ export type ResendVerifyEmailMutationVariables = {};
 
 export type ResendVerifyEmailMutation = (
   { __typename?: 'Mutation' }
-  & { resendVerifyEmail: Maybe<(
+  & { resendVerifyEmail?: Maybe<(
     { __typename?: 'ResendVerifyEmailPayload' }
     & Pick<ResendVerifyEmailPayload, 'success'>
   )> }
@@ -527,7 +529,7 @@ export type SetUserMutationVariables = {
 
 export type SetUserMutation = (
   { __typename?: 'Mutation' }
-  & { setUser: Maybe<(
+  & { setUser?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
@@ -558,7 +560,7 @@ export type GetOneStockPortfolioQueryVariables = {
 
 export type GetOneStockPortfolioQuery = (
   { __typename?: 'Query' }
-  & { stockPortfolio: Maybe<(
+  & { stockPortfolio?: Maybe<(
     { __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
     & { headers: Array<(
@@ -601,7 +603,7 @@ export type GetUserQueryVariables = {};
 
 export type GetUserQuery = (
   { __typename?: 'Query' }
-  & { user: Maybe<(
+  & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
@@ -612,7 +614,7 @@ export type GetViewerQueryVariables = {};
 
 export type GetViewerQuery = (
   { __typename?: 'Query' }
-  & { viewer: Maybe<(
+  & { viewer?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
