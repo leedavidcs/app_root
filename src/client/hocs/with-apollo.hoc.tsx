@@ -58,12 +58,12 @@ const initApolloClient = (
 };
 
 const initOntoContext = (ctx: NextPageContext): NextPageContext => {
+	const { apolloClient, apolloState, req } = ctx;
+
 	const newApolloClient: ApolloClient<NormalizedCacheObject> =
-		ctx.apolloClient || initApolloClient(ctx);
+		apolloClient || initApolloClient({ initialState: apolloState, req });
 
-	ctx.apolloClient = newApolloClient;
-
-	return ctx;
+	return { ...ctx, apolloClient: newApolloClient };
 };
 
 const preRunGraphQLQueries = async (
@@ -100,9 +100,10 @@ const getInitialProps = async <P extends Record<string, any>, IP extends Record<
 	ctx: NextPageContext,
 	options: IWithApolloOptions
 ): Promise<IWithApolloProps & IP> => {
-	const { apolloClient } = initOntoContext(ctx);
+	const newCtx = initOntoContext(ctx);
+	const { apolloClient } = newCtx;
 
-	const pageProps: IP = ((await PageComponent.getInitialProps?.(ctx)) || {}) as IP;
+	const pageProps: IP = ((await PageComponent.getInitialProps?.(newCtx)) || {}) as IP;
 	const apolloState: NormalizedCacheObject = apolloClient.cache.extract();
 
 	const isBrowser = typeof window !== "undefined";
@@ -112,13 +113,13 @@ const getInitialProps = async <P extends Record<string, any>, IP extends Record<
 	}
 
 	/** @description When redirecting, the response is finished. No need in continuing to render */
-	if (ctx.res?.finished) {
+	if (newCtx.res?.finished) {
 		return pageProps;
 	}
 
 	/** @description Pre-run all GraphQL queries, for SSR */
 	if (options.ssr) {
-		await preRunGraphQLQueries(ctx, pageProps, apolloClient);
+		await preRunGraphQLQueries(newCtx, pageProps, apolloClient);
 	}
 
 	return { ...pageProps, apolloState };
