@@ -1,7 +1,8 @@
 import { ModalProvider } from "@/client/components";
-import { createApolloClient, ICreateApolloClientOptions } from "@/client/graphql";
+import { createApolloClient } from "@/client/graphql";
 import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import { IncomingMessage } from "http";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
@@ -19,6 +20,11 @@ export interface IWithApolloProps {
 	apolloState?: NormalizedCacheObject;
 }
 
+interface IInitApolloClientOptions {
+	initialState?: NormalizedCacheObject;
+	req?: IncomingMessage;
+}
+
 const DEFAULT_OPTIONS: IWithApolloOptions = {
 	layout: true,
 	ssr: true
@@ -30,14 +36,9 @@ const DEFAULT_OPTIONS: IWithApolloOptions = {
  */
 let clientSideApolloClient: Maybe<ApolloClient<NormalizedCacheObject>> = null;
 
-const initApolloClient = (ctx: NextPageContext): ApolloClient<NormalizedCacheObject> => {
-	const { apolloState, req } = ctx;
-
-	const options: ICreateApolloClientOptions = {
-		initialState: apolloState,
-		req
-	};
-
+const initApolloClient = (
+	options: IInitApolloClientOptions
+): ApolloClient<NormalizedCacheObject> => {
 	const isBrowser = typeof window !== "undefined";
 
 	/**
@@ -137,7 +138,7 @@ export const withApollo = <
 		...pageProps
 	}) => {
 		const client: ApolloClient<NormalizedCacheObject> =
-			apolloClient || initApolloClient(apolloState);
+			apolloClient || initApolloClient({ initialState: apolloState });
 
 		const page: ReactElement = finalOptions.layout ? (
 			<Layout>

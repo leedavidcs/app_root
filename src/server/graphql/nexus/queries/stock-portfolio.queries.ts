@@ -20,7 +20,7 @@ export const stockPortfolioQueries = extendType({
 				where: arg({ type: "StockPortfolioWhereInput" }),
 				query: stringArg()
 			},
-			resolve: async (parent, args, { prisma, user }) => {
+			resolve: async (parent, args, { prisma }) => {
 				const { query, where, ...paginationArgs } = args;
 
 				return prisma.stockPortfolio.findMany({
