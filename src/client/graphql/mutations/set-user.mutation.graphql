@@ -1,0 +1,8 @@
+mutation SetUser($user: UserInput) {
+	setUser(user: $user) @client {
+		id
+		email
+		emailVerified
+		username
+	}
+}

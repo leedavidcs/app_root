@@ -1,7 +1,7 @@
 import {
+	GetUserDocument,
 	GetUserQuery,
 	GetViewerQuery,
-	Queries,
 	useGetUserQuery,
 	useGetViewerLazyQuery,
 	useSetUserMutation
@@ -41,7 +41,7 @@ export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple =>
 
 	const [setUser] = useSetUserMutation({
 		awaitRefetchQueries: true,
-		refetchQueries: [{ query: Queries.GetUser }],
+		refetchQueries: [{ query: GetUserDocument }],
 		onCompleted: onSetUserCompleted
 	});
 

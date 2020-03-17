@@ -1,10 +1,5 @@
 import { InMemoryCache } from "apollo-boost";
 import { User } from "./generated";
-import * as gqlMutations from "./mutations";
-import * as gqlQueries from "./queries";
-
-export const Mutations = gqlMutations;
-export const Queries = gqlQueries;
 
 export * from "./client";
 export * from "./generated";

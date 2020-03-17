@@ -1,4 +1,4 @@
-import * as Queries from "@/client/graphql/queries";
+import { GetUserDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
 
@@ -6,7 +6,7 @@ Faker.seed(1);
 
 export const GetUserMock: MockedResponse = {
 	request: {
-		query: Queries.GetUser
+		query: GetUserDocument
 	},
 	result: {
 		data: {

@@ -1,4 +1,4 @@
-import * as Queries from "@/client/graphql/queries";
+import { GetStockPortfoliosForPreviewDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
 import { range } from "lodash";
@@ -9,7 +9,7 @@ const DATA_SIZE = 10;
 
 export const GetStockPortfoliosForPreviewMock: MockedResponse = {
 	request: {
-		query: Queries.GetStockPortfoliosForPreview,
+		query: GetStockPortfoliosForPreviewDocument,
 		variables: { first: 10, skip: 0 }
 	},
 	result: {

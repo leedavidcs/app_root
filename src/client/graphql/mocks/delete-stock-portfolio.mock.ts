@@ -1,4 +1,4 @@
-import * as Mutations from "@/client/graphql/mutations";
+import { DeleteStockPortfolioDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
 
@@ -6,7 +6,7 @@ Faker.seed(1);
 
 export const DeleteStockPortfolioMock: MockedResponse = {
 	request: {
-		query: Mutations.DeleteStockPortfolio,
+		query: DeleteStockPortfolioDocument,
 		variables: { id: "" }
 	},
 	result: {
