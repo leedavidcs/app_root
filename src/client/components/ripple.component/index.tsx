@@ -1,5 +1,5 @@
 import { useClickThrough } from "@/client/hooks";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import React, { CSSProperties, FC, useCallback, useEffect, useRef, useState } from "react";
 import { useStyles } from "./styles";
 

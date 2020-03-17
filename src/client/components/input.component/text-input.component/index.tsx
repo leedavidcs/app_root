@@ -1,4 +1,4 @@
-import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
+import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core/lib/esm";
 import React, {
 	CSSProperties,
 	FC,

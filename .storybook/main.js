@@ -1,5 +1,5 @@
 const path = require("path");
-const _ = require("lodash");
+const flow = require("lodash/flow");
 const webpackCraOverrides = require("./webpack-cra-overrides");
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 		}
 	],
 	webpackFinal: async (config) => {
-		const tmpConfig = _.flow.apply(null, webpackCraOverrides)(config);
+		const tmpConfig = flow.apply(null, webpackCraOverrides)(config);
 
 		tmpConfig.node = { ...tmpConfig.node, fs: "empty" };
 		tmpConfig.resolve.extensions.push(".mdx");

@@ -5,7 +5,7 @@ import {
 	useCreateStockPortfolioMutation,
 	useGetStockPortfolioCountQuery
 } from "@/client/graphql";
-import { Button, Classes } from "@blueprintjs/core";
+import { Button, Classes } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { StockPortfolioFilter } from "./stock-portfolio-filter.component";

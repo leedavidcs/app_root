@@ -1,4 +1,4 @@
-import { Anchor, PasswordStrength, TextInput } from "@/client/components";
+import { Anchor, TextInput } from "@/client/components";
 import {
 	LoginLocalUserMutationVariables,
 	RegisterLocalUserMutationVariables,
@@ -7,7 +7,7 @@ import {
 } from "@/client/graphql";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core/lib/esm";
 import dynamic from "next/dynamic";
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -88,7 +88,7 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 	const handleRegisterPayload = useCallback(
 		async (
 			{ email: userIdentifier, password }: IFormData,
-			{ success, error }: RegisterLocalUserPayload
+			{ success, error }: Pick<RegisterLocalUserPayload, "success" | "error">
 		): Promise<void> => {
 			if (!success) {
 				setErrorMessage(error || null);
@@ -142,7 +142,7 @@ export const SignUpForm: FC = () => {
 
 	const setEmail = useSetEmail();
 	const onClickSignIn = useSignInHandler();
-	const { password, onPasswordChange } = usePasswordChangeHandler();
+	const { onPasswordChange } = usePasswordChangeHandler();
 
 	const onSuccess = useCallback(() => setEmail(getValues().email), [setEmail, getValues]);
 	const { errorMessage, onFormSubmit } = useFormSubmitHandler(onSuccess);
@@ -174,7 +174,6 @@ export const SignUpForm: FC = () => {
 					type="password"
 					control={control}
 				/>
-				<PasswordStrength className={classes.passwordStrength} password={password} />
 				<TextInput
 					label="Confirm password"
 					name="confirmPassword"

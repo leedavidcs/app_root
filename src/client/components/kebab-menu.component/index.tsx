@@ -2,9 +2,9 @@ import { List, ListItem, ListItemText } from "@/client/components/list.component
 import { Overlay } from "@/client/components/overlay.component";
 import { Popover } from "@/client/components/popover.component";
 import { useHover, useTheme } from "@/client/hooks";
+import { Icon } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback, useMemo, useState } from "react";
-import { FaEllipsisV } from "react-icons/fa";
 import { useStyles } from "./styles";
 
 export interface IKebabMenuOption {
@@ -68,7 +68,7 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 			content={tooltip}
 		>
 			<div ref={hoverRef} className={classnames(classes.root, className)} onClick={onClick}>
-				<FaEllipsisV />
+				<Icon icon="more" />
 				<Overlay
 					active={isOpen || isHovered}
 					opacity={isOpen ? theme.surfaceOverlayFocused : theme.surfaceOverlayHovered}

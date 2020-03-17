@@ -1,4 +1,4 @@
-import { Classes, FormGroup, Intent } from "@blueprintjs/core";
+import { Classes, FormGroup, Intent } from "@blueprintjs/core/lib/esm";
 import { DateRange, DateRangeInput as BpDateRangeInput } from "@blueprintjs/datetime";
 import classnames from "classnames";
 import React, { CSSProperties, FC } from "react";

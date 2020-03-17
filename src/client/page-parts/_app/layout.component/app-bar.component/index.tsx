@@ -1,7 +1,7 @@
 import { Popover, TextInput } from "@/client/components";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
-import { Alignment, Button, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
+import { Alignment, Button, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import dynamic from "next/dynamic";
 import React, { FC, FormEventHandler, Fragment, ReactElement, useCallback, useState } from "react";

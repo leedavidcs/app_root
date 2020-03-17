@@ -7,10 +7,10 @@ import {
 } from "@/client/components";
 import { GetStockPortfoliosForPreviewQueryVariables } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core/lib/esm";
 import { DateRange } from "@blueprintjs/datetime";
 import { DateTimeFilter } from "@prisma/client";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import React, { FC, FormEventHandler, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 interface IProps {

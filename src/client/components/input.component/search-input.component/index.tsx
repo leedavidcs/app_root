@@ -6,7 +6,7 @@ import {
 	IconName,
 	InputGroup,
 	Intent
-} from "@blueprintjs/core";
+} from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import KeyCode from "keycode";
 import React, {

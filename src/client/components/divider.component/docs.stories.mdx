@@ -1,7 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from "@/client/components/list.component";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { themes } from "@storybook/theming";
-import { FaApple, FaBacon } from "react-icons/fa";
 import { Divider } from ".";
 
 <Meta
@@ -73,16 +72,10 @@ Divider (hr) that is typically used between list items.
 	<Story name="inset">
 		<List>
 			<ListItem>
-				<ListItemIcon>
-					<FaBacon />
-				</ListItemIcon>
 				<ListItemText primary="Banana" />
 			</ListItem>
 			<Divider list={true} variant="inset" />
 			<ListItem>
-				<ListItemIcon>
-					<FaApple />
-				</ListItemIcon>
 				<ListItemText primary="Apple" />
 			</ListItem>
 		</List>

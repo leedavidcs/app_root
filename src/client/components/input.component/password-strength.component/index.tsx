@@ -46,3 +46,5 @@ export const PasswordStrength: FC<IProps> = ({ className, password = "" }) => {
 		</div>
 	);
 };
+
+export default PasswordStrength;

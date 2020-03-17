@@ -1,5 +1,5 @@
-import { Classes, Dialog } from "@blueprintjs/core";
-import { isEmpty } from "lodash";
+import { Classes, Dialog } from "@blueprintjs/core/lib/esm";
+import { isEmpty } from "lodash-es";
 import React, { FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
 

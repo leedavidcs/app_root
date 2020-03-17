@@ -4,7 +4,7 @@ import { Overlay } from "@/client/components/overlay.component";
 import { Ripple } from "@/client/components/ripple.component";
 import { useHover, useIsLastChild } from "@/client/hooks";
 import classnames from "classnames";
-import { flow } from "lodash";
+import { flow } from "lodash-es";
 import memoizeOne from "memoize-one";
 import Link from "next/link";
 import React, {

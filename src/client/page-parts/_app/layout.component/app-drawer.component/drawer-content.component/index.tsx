@@ -1,4 +1,4 @@
-import { ITreeNode, Tree } from "@blueprintjs/core";
+import { ITreeNode, Tree } from "@blueprintjs/core/lib/esm";
 import React, { FC, useCallback, useState } from "react";
 import { useStockPortfoliosNode } from "./use-stock-portfolio-node";
 

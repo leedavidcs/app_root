@@ -1,7 +1,7 @@
 import { IKebabMenuOption, KebabMenu } from "@/client/components/kebab-menu.component";
 import { action } from "@storybook/addon-actions";
 import Faker from "faker";
-import { range } from "lodash";
+import { range } from "lodash-es";
 import React, { FC, useMemo } from "react";
 import { useStyles } from "./styles";
 

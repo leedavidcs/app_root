@@ -1,6 +1,6 @@
+import { Icon } from "@blueprintjs/core/lib/esm";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { themes } from "@storybook/theming";
-import { FaApple, FaBacon } from "react-icons/fa";
 import { SelectableStory } from "./stories";
 import { List, ListItem, ListItemIcon, ListItemText } from ".";
 
@@ -53,13 +53,13 @@ styling.
 		<List divider="full">
 			<ListItem>
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Banana" />
 			</ListItem>
 			<ListItem>
 				<ListItemIcon>
-					<FaApple />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Apple" />
 			</ListItem>
@@ -97,13 +97,13 @@ export const SelectableStory: FC = () => {
 		<List divider="full">
 			<ListItem selected={selectedIndex === 0} onClick={onClick(0)}>
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Banana" />
 			</ListItem>
 			<ListItem selected={selectedIndex === 1} onClick={onClick(1)}>
 				<ListItemIcon>
-					<FaApple />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Apple" />
 			</ListItem>
@@ -121,13 +121,13 @@ export const SelectableStory: FC = () => {
 		<List divider="full">
 			<ListItem href="https://google.com">
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Banana" />
 			</ListItem>
 			<ListItem>
 				<ListItemIcon>
-					<FaApple />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Apple" />
 			</ListItem>
