@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 17th 2020 10:38:11 am
+// This file was generated on: Mar 17th 2020 4:05:28 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {

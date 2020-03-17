@@ -1,7 +1,7 @@
 import { IServerContext, IServerContextWithUser } from "@/server/graphql/context";
 import { DataKeys, Prefixes, PREFIX_PROP_DELIMITER } from "@/server/data-keys";
 import { doesExist } from "@/server/utils";
-import { isNil } from "lodash-es";
+import { isNil } from "lodash";
 import { getIexCompanyData } from "./get-iex-company-data";
 import { getIexKeyStatsData } from "./get-iex-key-stats-data";
 import { getIexPreviousDayPriceData } from "./get-iex-previous-day-price-data";

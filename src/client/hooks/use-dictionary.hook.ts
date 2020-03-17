@@ -1,4 +1,4 @@
-import { uniqueId } from "lodash-es";
+import { uniqueId } from "lodash";
 import { useCallback, useMemo, useRef } from "react";
 
 interface IOptions<T> {

@@ -1,7 +1,7 @@
 import { DataGrid, IHeaderConfig } from "@/client/components/data-grid.component";
 import { Paper } from "@/client/components/paper.component";
 import Faker from "faker";
-import { range, uniq } from "lodash-es";
+import { range, uniq } from "lodash";
 import React, { FC, useCallback, useState } from "react";
 
 const MAX_DATA_SIZE = 100;

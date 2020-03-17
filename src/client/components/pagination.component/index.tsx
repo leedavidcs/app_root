@@ -3,7 +3,7 @@ import { Interactable } from "@/client/components/interactable.component";
 import { Tooltip } from "@/client/components/tooltip.component";
 import { Icon } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
-import { head, initial, isUndefined, last, range } from "lodash-es";
+import { head, initial, isUndefined, last, range } from "lodash";
 import React, { FC, Fragment, useCallback, useMemo } from "react";
 import { getCurrentPage, getPageCount, getSkipFromPage } from "./get-page-info";
 import { PageSearch } from "./page-search.component";

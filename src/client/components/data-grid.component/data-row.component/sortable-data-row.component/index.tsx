@@ -5,7 +5,7 @@ import {
 	ScrollContext,
 	SelectedCellContext
 } from "@/client/components/data-grid.component";
-import { takeRightWhile, takeWhile } from "lodash-es";
+import { takeRightWhile, takeWhile } from "lodash";
 import React, { CSSProperties, ReactElement, useCallback, useContext, useMemo } from "react";
 import { SortableElement } from "react-sortable-hoc";
 import { DataCell } from "./data-cell.component";

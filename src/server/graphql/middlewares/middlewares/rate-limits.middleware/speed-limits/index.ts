@@ -10,7 +10,7 @@ import {
 	GraphQLRateLimitConfig,
 	GraphQLRateLimitDirectiveArgs
 } from "graphql-rate-limit/build/main/lib/types";
-import { isFunction } from "lodash-es";
+import { isFunction } from "lodash";
 
 type RateLimitFunction<TContext = any> = (
 	parent: any,

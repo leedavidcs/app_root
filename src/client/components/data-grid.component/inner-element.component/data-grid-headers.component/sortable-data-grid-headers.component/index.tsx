@@ -1,6 +1,6 @@
 import { IHeaderConfig, ScrollContext } from "@/client/components/data-grid.component";
 import classnames from "classnames";
-import { takeRightWhile, takeWhile } from "lodash-es";
+import { takeRightWhile, takeWhile } from "lodash";
 import React, { ReactElement, useCallback, useContext, useMemo } from "react";
 import { SortableContainer } from "react-sortable-hoc";
 import { SortableHeaderItem } from "./sortable-header-item.component";

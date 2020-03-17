@@ -1,0 +1,8 @@
+query GetViewer {
+	viewer {
+		id
+		email
+		emailVerified
+		username
+	}
+}

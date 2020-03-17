@@ -4,7 +4,7 @@ import {
 } from "@/server/graphql/middlewares/create-middleware";
 import { GraphQLResolveInfo } from "graphql";
 import { IMiddlewareGenerator } from "graphql-middleware";
-import { isFunction } from "lodash-es";
+import { isFunction } from "lodash";
 import { array, boolean, date, number, object, ObjectSchemaDefinition, string } from "yup";
 
 /**
