@@ -1,16 +1,13 @@
 import { IPaginationProps, Pagination } from "@/client/components";
 import {
-	CreateStockPortfolio,
-	CreateStockPortfolioVariables,
-	GetStockPortfolioCount,
-	GetStockPortfoliosForPreviewVariables,
-	Mutations,
-	Queries
+	CreateStockPortfolioMutation,
+	GetStockPortfoliosForPreviewQueryVariables,
+	useCreateStockPortfolioMutation,
+	useGetStockPortfolioCountQuery
 } from "@/client/graphql";
 import { Button, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, useCallback, useMemo, useState } from "react";
-import { useMutation, useQuery } from "react-apollo";
 import { StockPortfolioFilter } from "./stock-portfolio-filter.component";
 import { StockPortfolioList } from "./stock-portfolio-list.component";
 import { useStyles } from "./styles";
@@ -23,8 +20,8 @@ interface IProps {
 	userId?: string;
 }
 
-const useCount = (filters: GetStockPortfoliosForPreviewVariables): number => {
-	const { data } = useQuery<GetStockPortfolioCount>(Queries.GetStockPortfolioCount, {
+const useCount = (filters: GetStockPortfoliosForPreviewQueryVariables): number => {
+	const { data } = useGetStockPortfolioCountQuery({
 		variables: filters
 	});
 
@@ -34,7 +31,7 @@ const useCount = (filters: GetStockPortfoliosForPreviewVariables): number => {
 };
 
 const useOnPage = (
-	filters: GetStockPortfoliosForPreviewVariables
+	filters: GetStockPortfoliosForPreviewQueryVariables
 ): [IPaginationProps, (value: IPaginationProps) => void] => {
 	const count: number = useCount(filters);
 	const [first, setFirst] = useState<number>(DEFAULT_PAGINATION_FIRST);
@@ -59,7 +56,7 @@ const useOnPage = (
 
 const useOnClickNew = ({ onClickOpen }: IProps) => {
 	const onCompleted = useCallback(
-		(data: CreateStockPortfolio) => {
+		(data: CreateStockPortfolioMutation) => {
 			const { id } = data.createOneStockPortfolio;
 
 			onClickOpen(id);
@@ -67,10 +64,7 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 		[onClickOpen]
 	);
 
-	const [createStockPortfolio] = useMutation<CreateStockPortfolio, CreateStockPortfolioVariables>(
-		Mutations.CreateStockPortfolio,
-		{ onCompleted }
-	);
+	const [createStockPortfolio] = useCreateStockPortfolioMutation({ onCompleted });
 
 	return useCallback(() => {
 		createStockPortfolio({
@@ -84,23 +78,25 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
-	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewVariables>({
+	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewQueryVariables>({
 		where: {
 			user: { id: { equals: userId } }
 		}
 	});
-	const [lastFilters, setLastFilters] = useState<GetStockPortfoliosForPreviewVariables>(filters);
+	const [lastFilters, setLastFilters] = useState<GetStockPortfoliosForPreviewQueryVariables>(
+		filters
+	);
 	const [pagination, onPage] = useOnPage(filters);
 
 	const onClickNew = useOnClickNew(props);
 
 	const onSubmitFilters = useCallback(
-		(value: GetStockPortfoliosForPreviewVariables) => setLastFilters({ ...value }),
+		(value: GetStockPortfoliosForPreviewQueryVariables) => setLastFilters({ ...value }),
 		[setLastFilters]
 	);
 
 	const variables = useMemo(
-		(): GetStockPortfoliosForPreviewVariables => ({
+		(): GetStockPortfoliosForPreviewQueryVariables => ({
 			...lastFilters,
 			first: pagination.first,
 			skip: pagination.skip,

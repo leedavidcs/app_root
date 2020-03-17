@@ -357,7 +357,7 @@ type User {
   createdAt: DateTime!
 
   """The user's email"""
-  email: EmailAddress
+  email: EmailAddress!
   emailVerified: Boolean!
   id: String!
   updatedAt: DateTime!

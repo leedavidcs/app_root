@@ -1,17 +1,15 @@
 import { Anchor, PasswordStrength, TextInput } from "@/client/components";
 import {
-	LoginLocalUserVariables,
-	Mutations,
-	RegisterLocalUserVariables,
-	RegisterLocalUser_registerLocalUser,
-	ResendVerifyEmail
+	LoginLocalUserMutationVariables,
+	RegisterLocalUserMutationVariables,
+	RegisterLocalUserPayload,
+	useResendVerifyEmailMutation
 } from "@/client/graphql";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
-import { useMutation } from "react-apollo";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
 import { useStyles } from "./styles";
@@ -45,7 +43,7 @@ const validationResolver = getYupValidationResolver(validationSchema);
  */
 const useSetEmail = () => {
 	const [email, setEmail] = useState<string>("");
-	const [resendVerifyEmail] = useMutation<ResendVerifyEmail>(Mutations.ResendVerifyEmail);
+	const [resendVerifyEmail] = useResendVerifyEmailMutation();
 
 	const { setContent, toggle } = useModal();
 
@@ -90,15 +88,15 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 	const handleRegisterPayload = useCallback(
 		async (
 			{ email: userIdentifier, password }: IFormData,
-			{ success, error }: RegisterLocalUser_registerLocalUser
+			{ success, error }: RegisterLocalUserPayload
 		): Promise<void> => {
 			if (!success) {
-				setErrorMessage(error);
+				setErrorMessage(error || null);
 
 				return;
 			}
 
-			const variables: LoginLocalUserVariables = {
+			const variables: LoginLocalUserMutationVariables = {
 				input: { userIdentifier, password }
 			};
 
@@ -111,7 +109,7 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 
 	const onFormSubmit = useCallback(
 		async (data: IFormData): Promise<void> => {
-			const variables: RegisterLocalUserVariables = { input: data };
+			const variables: RegisterLocalUserMutationVariables = { input: data };
 			const result = await register({ variables });
 
 			return result

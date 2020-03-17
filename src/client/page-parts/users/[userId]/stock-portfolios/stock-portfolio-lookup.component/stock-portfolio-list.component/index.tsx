@@ -1,16 +1,13 @@
 import { IKebabMenuOption, KebabMenu, List, ListItem, ListItemText } from "@/client/components";
 import {
-	DeleteStockPortfolio,
-	GetStockPortfoliosForPreview,
-	GetStockPortfoliosForPreviewVariables,
-	Mutations,
-	Queries
+	GetStockPortfoliosForPreviewQueryVariables,
+	useDeleteStockPortfolioMutation,
+	useGetStockPortfoliosForPreviewQuery
 } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { range } from "lodash";
 import React, { FC, memo, useCallback } from "react";
-import { useMutation, useQuery } from "react-apollo";
 import { useStyles } from "./styles";
 
 const LOADING_ELEMENTS = 3;
@@ -20,7 +17,7 @@ interface IProps {
 	/** onClick listener, when a stock portfolio gets clicked on. Passes the id. */
 	onClickOpen: (id: string) => void;
 	/** Variables to invoke the stockPortfolios query */
-	variables?: GetStockPortfoliosForPreviewVariables;
+	variables?: GetStockPortfoliosForPreviewQueryVariables;
 }
 
 const useClickDelete = (onCompleted: () => any) => {
@@ -28,10 +25,9 @@ const useClickDelete = (onCompleted: () => any) => {
 		onCompleted();
 	}, [onCompleted]);
 
-	const [deleteStockPortfolio] = useMutation<DeleteStockPortfolio>(
-		Mutations.DeleteStockPortfolio,
-		{ onCompleted: onDeleteCompleted }
-	);
+	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({
+		onCompleted: onDeleteCompleted
+	});
 
 	const onClickDeleteOption = useCallback(
 		(id: string) => () => {
@@ -48,10 +44,7 @@ export const StockPortfolioList: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
-	const { data, loading, refetch } = useQuery<GetStockPortfoliosForPreview>(
-		Queries.GetStockPortfoliosForPreview,
-		{ variables }
-	);
+	const { data, loading, refetch } = useGetStockPortfoliosForPreviewQuery({ variables });
 
 	const onClickDelete = useClickDelete(refetch);
 

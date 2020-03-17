@@ -1,29 +1,35 @@
 import {
-	LoginLocalUser,
-	LoginLocalUserVariables,
-	LoginLocalUser_loginLocalUser,
-	Mutations,
-	RegisterLocalUser,
-	RegisterLocalUserVariables,
-	RegisterLocalUser_registerLocalUser
+	LoginLocalUserMutation,
+	LoginLocalUserMutationVariables,
+	RegisterLocalUserMutation,
+	RegisterLocalUserMutationVariables,
+	TokenPayload,
+	useLoginLocalUserMutation,
+	useRegisterLocalUserMutation
 } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks/use-set-user.hook";
 import { logout, writeCookie } from "@/server/authentication/cookie-utils";
 import { ApolloError, ExecutionResult } from "apollo-boost";
 import { useCallback } from "react";
-import { MutationFunctionOptions, useMutation } from "react-apollo";
+import { MutationFunctionOptions } from "react-apollo";
 
 interface IUseAuthOptions {
-	onLoginCompleted?: (tokens: Maybe<LoginLocalUser["loginLocalUser"]>) => any;
+	onLoginCompleted?: (tokens: Maybe<TokenPayload>) => any;
 	onLoginError?: (errors: readonly string[]) => any;
-	onRegisterCompleted?: (tokens: Maybe<RegisterLocalUser["registerLocalUser"]>) => any;
+	onRegisterCompleted?: (payload: Maybe<RegisterLocalUserMutation["registerLocalUser"]>) => any;
 }
 
-type LoginOptions = MutationFunctionOptions<LoginLocalUser, LoginLocalUserVariables>;
-type LoginResult = Maybe<LoginLocalUser["loginLocalUser"]>;
+type LoginOptions = MutationFunctionOptions<
+	LoginLocalUserMutation,
+	LoginLocalUserMutationVariables
+>;
+type LoginResult = Maybe<TokenPayload>;
 
-type RegisterOptions = MutationFunctionOptions<RegisterLocalUser, RegisterLocalUserVariables>;
-type RegisterResult = Maybe<RegisterLocalUser["registerLocalUser"]>;
+type RegisterOptions = MutationFunctionOptions<
+	RegisterLocalUserMutation,
+	RegisterLocalUserMutationVariables
+>;
+type RegisterResult = Maybe<RegisterLocalUserMutation["registerLocalUser"]>;
 
 interface IUseAuthResult {
 	login: (options: LoginOptions) => Promise<LoginResult>;
@@ -32,16 +38,12 @@ interface IUseAuthResult {
 }
 
 const useLogin = ({ onLoginCompleted, onLoginError }: IUseAuthOptions = {}) => {
-	const [loginUser] = useMutation<LoginLocalUser, LoginLocalUserVariables>(
-		Mutations.LoginLocalUser
-	);
+	const [loginUser] = useLoginLocalUserMutation();
 	const [setUser] = useSetUser();
 
 	return useCallback(
-		async (
-			options: Parameters<typeof loginUser>[0]
-		): Promise<Maybe<LoginLocalUser_loginLocalUser>> => {
-			let result: ExecutionResult<LoginLocalUser>;
+		async (options: Parameters<typeof loginUser>[0]): Promise<Maybe<TokenPayload>> => {
+			let result: ExecutionResult<LoginLocalUserMutation>;
 
 			try {
 				result = await loginUser(options);
@@ -74,14 +76,12 @@ const useLogin = ({ onLoginCompleted, onLoginError }: IUseAuthOptions = {}) => {
 };
 
 const useRegister = ({ onRegisterCompleted }: IUseAuthOptions = {}) => {
-	const [registerUser] = useMutation<RegisterLocalUser, RegisterLocalUserVariables>(
-		Mutations.RegisterLocalUser
-	);
+	const [registerUser] = useRegisterLocalUserMutation();
 
 	return useCallback(
 		async (
 			options: Parameters<typeof registerUser>[0]
-		): Promise<Maybe<RegisterLocalUser_registerLocalUser>> => {
+		): Promise<Maybe<RegisterLocalUserMutation["registerLocalUser"]>> => {
 			const result = await registerUser(options);
 			const registerLocalUser = result.data?.registerLocalUser;
 

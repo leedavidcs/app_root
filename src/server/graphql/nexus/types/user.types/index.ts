@@ -5,7 +5,11 @@ export const User = objectType({
 	description: "Basic user of the application",
 	definition: (t) => {
 		t.model.id();
-		t.field("email", { type: "EmailAddress", description: "The user's email" });
+		t.field("email", {
+			type: "EmailAddress",
+			nullable: false,
+			description: "The user's email"
+		});
 		t.model.emailVerified();
 		t.model.username();
 		t.model.createdAt();

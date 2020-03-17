@@ -1,6 +1,7 @@
-import { IClientContext, SetUserVariables } from "@/client/graphql/types";
+import { IClientContext } from "@/client/graphql";
+import { SetUserMutationVariables } from "@/client/graphql/generated";
 
-const setUser: LocalResolver<any, IClientContext, SetUserVariables> = (
+const setUser: LocalResolver<any, IClientContext, SetUserMutationVariables> = (
 	parent,
 	{ user },
 	{ cache }

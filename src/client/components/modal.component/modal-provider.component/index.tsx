@@ -1,8 +1,7 @@
 import { Modal, ModalContext } from "@/client/components/modal.component";
 import { Overlay } from "@/client/components/overlay.component";
-import { GetModal, Mutations, Queries, ToggleModal, ToggleModalVariables } from "@/client/graphql";
+import { ToggleModalMutation, useGetModalQuery, useToggleModalMutation } from "@/client/graphql";
 import React, { FC, ReactElement, useCallback, useMemo, useState } from "react";
-import { useMutation, useQuery } from "react-apollo";
 
 export * from "./modal.context";
 
@@ -12,12 +11,12 @@ interface IContent {
 }
 
 export const ModalProvider: FC = ({ children }) => {
-	const { data } = useQuery<GetModal>(Queries.GetModal);
+	const { data } = useGetModalQuery();
 
 	const [content, setContent] = useState<IContent | null>(null);
 
 	const onCompleted = useCallback(
-		(result: ToggleModal) => {
+		(result: ToggleModalMutation) => {
 			const isOff = !result.toggleModal;
 
 			if (isOff) {
@@ -27,9 +26,7 @@ export const ModalProvider: FC = ({ children }) => {
 		[setContent]
 	);
 
-	const [toggleModal] = useMutation<ToggleModal, ToggleModalVariables>(Mutations.ToggleModal, {
-		onCompleted
-	});
+	const [toggleModal] = useToggleModalMutation({ onCompleted });
 
 	const { title, body } = content || { title: "", body: null };
 	const active: boolean = data?.modal || false;
@@ -42,10 +39,6 @@ export const ModalProvider: FC = ({ children }) => {
 	);
 
 	const onClose = useCallback(() => toggle(false), [toggle]);
-
-	// const setContent2 = useCallback(() => {
-
-	// }, []);
 
 	const value = useMemo(() => ({ active, setContent, toggle }), [active, setContent, toggle]);
 

@@ -1,7 +1,7 @@
+import { IClientState } from "@/client/graphql";
 import { createCache } from "@/client/graphql/client";
 import { mocks } from "@/client/graphql/mocks";
 import { resolvers } from "@/client/graphql/resolvers";
-import { IClientState } from "@/client/graphql/types";
 import { MockedProvider } from "@apollo/react-testing";
 import Faker from "faker";
 import React, { FC, ReactElement, useMemo } from "react";
@@ -15,6 +15,8 @@ const MOCK_CACHE_STATE: IClientState = {
 		email: Faker.internet.email(),
 		emailVerified: Faker.random.boolean(),
 		username: Faker.name.firstName(),
+		createdAt: Faker.date.past(),
+		updatedAt: Faker.date.recent(),
 		__typename: "User"
 	}
 };

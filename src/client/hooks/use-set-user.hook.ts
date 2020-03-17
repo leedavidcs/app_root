@@ -1,25 +1,26 @@
 import {
-	GetUser,
-	GetUser_user as User,
-	GetViewer,
-	Mutations,
+	GetUserQuery,
+	GetViewerQuery,
 	Queries,
-	SetUser,
-	SetUserVariables
+	useGetUserQuery,
+	useGetViewerLazyQuery,
+	useSetUserMutation
 } from "@/client/graphql";
 import { useCallback, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from "react-apollo";
 
-type SetUserResultsTuple = [() => void, { user: User | null; called: boolean; loading: boolean }];
+type SetUserResultsTuple = [
+	() => void,
+	{ user: GetUserQuery["user"] | null; called: boolean; loading: boolean }
+];
 
 interface IUseSetUserOptions {
-	onCompleted?: (user: User | null) => any;
+	onCompleted?: (user: GetUserQuery["user"] | null) => any;
 }
 
-const useLocalUserState = (): User | null => {
-	const { data } = useQuery<GetUser>(Queries.GetUser);
+const useLocalUserState = (): GetUserQuery["user"] | null => {
+	const { data } = useGetUserQuery();
 
-	const user: User | null = data ? data.user : null;
+	const user: GetUserQuery["user"] | null = data ? data.user : null;
 
 	return user;
 };
@@ -30,7 +31,7 @@ export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple =>
 	const [called, setCalled] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const user: User | null = useLocalUserState();
+	const user: GetUserQuery["user"] | null = useLocalUserState();
 
 	const onSetUserCompleted = useCallback(() => {
 		setLoading(false);
@@ -38,20 +39,20 @@ export const useSetUser = (options?: IUseSetUserOptions): SetUserResultsTuple =>
 		optOnCompleted?.(user);
 	}, [setLoading, optOnCompleted, user]);
 
-	const [setUser] = useMutation<SetUser, SetUserVariables>(Mutations.SetUser, {
+	const [setUser] = useSetUserMutation({
 		awaitRefetchQueries: true,
 		refetchQueries: [{ query: Queries.GetUser }],
 		onCompleted: onSetUserCompleted
 	});
 
 	const onCompleted = useCallback(
-		(result: GetViewer) => setUser({ variables: { user: result?.viewer } }),
+		(result: GetViewerQuery) => setUser({ variables: { user: result?.viewer } }),
 		[setUser]
 	);
 
 	const onError = useCallback(() => setUser({ variables: { user: null } }), [setUser]);
 
-	const [getViewer] = useLazyQuery<GetViewer>(Queries.GetViewer, {
+	const [getViewer] = useGetViewerLazyQuery({
 		fetchPolicy: "no-cache",
 		onCompleted,
 		onError
