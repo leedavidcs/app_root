@@ -1,9 +1,9 @@
+import { IconName } from "@blueprintjs/core";
 import {
 	Button,
 	Classes,
 	ControlGroup,
 	FormGroup,
-	IconName,
 	InputGroup,
 	Intent
 } from "@blueprintjs/core/lib/esm";

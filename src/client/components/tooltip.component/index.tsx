@@ -1,5 +1,6 @@
 import { useTheme } from "@/client/hooks";
-import { PopoverPosition, PopperModifiers, Tooltip as BpTooltip } from "@blueprintjs/core/lib/esm";
+import { PopperModifiers } from "@blueprintjs/core";
+import { PopoverPosition, Tooltip as BpTooltip } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import React, { FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";

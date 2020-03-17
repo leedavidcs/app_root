@@ -1,7 +1,7 @@
 import { Anchor, Tooltip } from "@/client/components";
 import { useGetStockPortfoliosForPreviewQuery } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
-import { ITreeNode } from "@blueprintjs/core/lib/esm";
+import { ITreeNode } from "@blueprintjs/core";
 import { NextRouter, useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
 
