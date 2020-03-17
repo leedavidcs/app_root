@@ -1,8 +1,4 @@
-import { Mutations } from "@/client/graphql";
-import {
-	RefreshAccessTokenVariables,
-	RefreshAccessToken_refreshAccessToken
-} from "@/client/graphql/types";
+import { Mutations, RefreshAccessTokenMutationVariables, TokenPayload } from "@/client/graphql";
 import { getRefreshToken, getToken, writeCookie } from "@/server/authentication/cookie-utils";
 import { ApolloLink, FetchResult, Observable, Operation } from "apollo-boost";
 import { onError } from "apollo-link-error";
@@ -31,7 +27,9 @@ const doRefreshToken = async (): Promise<string | null> => {
 		return null;
 	}
 
-	const variables: RefreshAccessTokenVariables = { input: { refreshToken: oldRefreshToken } };
+	const variables: RefreshAccessTokenMutationVariables = {
+		input: { refreshToken: oldRefreshToken }
+	};
 	const tokenRequest = await fetch(BASE_GRAPHQL_URL, {
 		body: JSON.stringify({
 			mutation: print(Mutations.RefreshAccessToken),
@@ -49,10 +47,7 @@ const doRefreshToken = async (): Promise<string | null> => {
 		return null;
 	}
 
-	const {
-		refreshToken: newRefreshToken,
-		token
-	}: RefreshAccessToken_refreshAccessToken = await tokenRequest.json();
+	const { refreshToken: newRefreshToken, token }: TokenPayload = await tokenRequest.json();
 
 	writeCookie(token, {
 		refreshToken: newRefreshToken

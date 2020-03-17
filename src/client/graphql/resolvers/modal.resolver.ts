@@ -1,5 +1,5 @@
+import { GetModalQuery, IClientContext } from "@/client/graphql";
 import * as Queries from "@/client/graphql/queries";
-import { GetModal, IClientContext } from "@/client/graphql/types";
 
 const toggleModal: LocalResolver<any, IClientContext, { force?: boolean }> = (
 	parent,
@@ -8,7 +8,7 @@ const toggleModal: LocalResolver<any, IClientContext, { force?: boolean }> = (
 ) => {
 	const query = Queries.GetModal;
 
-	const previous = cache.readQuery<GetModal, {}>({ query });
+	const previous = cache.readQuery<GetModalQuery, {}>({ query });
 
 	// prettier-ignore
 	const modal: boolean =
