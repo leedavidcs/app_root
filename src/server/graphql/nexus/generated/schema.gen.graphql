@@ -92,7 +92,7 @@ type Mutation implements RequestRoot {
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """The viewer of this request"""
-  viewer: Viewer
+  viewer: User
 }
 
 enum OrderByArg {
@@ -116,11 +116,11 @@ type Query implements RequestRoot {
     provider: String
   ): [DataKeyOption!]!
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
-  stockPortfolioCount(query: String, where: StockPortfolioHeaderWhereInput): Int
+  stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
 
   """The viewer of this request"""
-  viewer: Viewer
+  viewer: User
 }
 
 input RefreshAccessTokenInput {
@@ -154,7 +154,7 @@ type RegisterLocalUserPayload {
 """Common properties for Query, Mutation and Subscription types"""
 interface RequestRoot {
   """The viewer of this request"""
-  viewer: Viewer
+  viewer: User
 }
 
 """The response object from a resend verify email request"""
@@ -400,19 +400,4 @@ input UUIDFilter {
   not: UUID
   notIn: [UUID!]
   startsWith: UUID
-}
-
-"""The viewer of this request"""
-type Viewer {
-  """The viewer's email"""
-  email: String!
-
-  """Whether this viewer verified their email address"""
-  emailVerified: Boolean!
-
-  """The viewer's id"""
-  id: ID!
-
-  """The viewer's username"""
-  username: String!
 }

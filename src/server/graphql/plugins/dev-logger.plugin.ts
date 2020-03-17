@@ -23,6 +23,7 @@ export const devLoggerPlugin: ApolloServerPlugin = {
 			return;
 		}
 
+		console.log(JSON.stringify(request.variables, null, 2));
 		console.log(request.query);
 
 		return {

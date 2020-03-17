@@ -13,9 +13,9 @@ import { DateTimeFilter } from "@prisma/client";
 import { isNil } from "lodash";
 import React, { FC, FormEventHandler, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
-
 interface IProps {
 	onChange: (variables: GetStockPortfoliosForPreviewVariables) => void;
+	onSubmit: (variables: GetStockPortfoliosForPreviewVariables) => void;
 	variables: GetStockPortfoliosForPreviewVariables;
 }
 
@@ -26,9 +26,7 @@ const useOnQuery = ({
 	const query: string | undefined = variables.query || undefined;
 
 	const onQuery = useCallback(
-		onInputValueChanged((value) => {
-			onChange({ ...variables, query: value });
-		}),
+		onInputValueChanged((value) => onChange({ ...variables, query: value })),
 		[onChange, variables]
 	);
 
@@ -85,6 +83,8 @@ const useOnShowFilters = (): [boolean, () => void] => {
 };
 
 export const StockPortfolioFilter: FC<IProps> = (props) => {
+	const { onSubmit: _onSubmit, variables } = props;
+
 	const [dateRange, setDateRange] = useOnUpdatedAt(props);
 	const [query, onQuery] = useOnQuery(props);
 	const [showFilters, onShowFilters] = useOnShowFilters();
@@ -92,6 +92,10 @@ export const StockPortfolioFilter: FC<IProps> = (props) => {
 	const classes = useStyles();
 
 	const SearchType = showFilters ? TextInput : SearchInput;
+
+	const onSubmit = useCallback(() => {
+		_onSubmit(variables);
+	}, [_onSubmit, variables]);
 
 	return (
 		<ExpansionPanel
@@ -102,6 +106,7 @@ export const StockPortfolioFilter: FC<IProps> = (props) => {
 						className={classes.searchInput}
 						icon="search"
 						onChange={onQuery}
+						onSubmit={onSubmit}
 						placeholder="Filter"
 						value={query}
 					/>
@@ -120,7 +125,7 @@ export const StockPortfolioFilter: FC<IProps> = (props) => {
 					value={dateRange}
 					shortcuts={false}
 				/>
-				<Button text="Filter" intent="primary" />
+				<Button text="Filter" intent="primary" onClick={onSubmit} />
 			</div>
 		</ExpansionPanel>
 	);

@@ -1,4 +1,5 @@
 import { withAuth } from "@/client/hocs";
+import { useSetUser } from "@/client/hooks";
 import { StockPortfolioLookup } from "@/client/page-parts/users/[userId]/stock-portfolios";
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
@@ -7,13 +8,27 @@ import React, { useCallback } from "react";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	root: {}
+	root: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center",
+		color: theme.onBackground
+	},
+	lookupHeader: {
+		fontSize: 24
+	},
+	lookup: {
+		width: "100%"
+	}
 });
 
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
 const Page: NextPage = () => {
-	useStyles();
+	const [, { user }] = useSetUser();
+
+	const classes = useStyles();
 
 	const router: NextRouter = useRouter();
 
@@ -26,10 +41,17 @@ const Page: NextPage = () => {
 		[router, userId]
 	);
 
+	const userDisplayName: string = user?.id === userId ? "My" : user?.username || "";
+
 	return (
-		<div>
-			<StockPortfolioLookup onClickOpen={onClickOpen} userId={userId.toString()} />
-		</div>
+		<main className={classes.root}>
+			<h3 className={classes.lookupHeader}>{userDisplayName} Stock Portfolios</h3>
+			<StockPortfolioLookup
+				className={classes.lookup}
+				onClickOpen={onClickOpen}
+				userId={userId.toString()}
+			/>
+		</main>
 	);
 };
 

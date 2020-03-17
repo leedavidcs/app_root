@@ -23,7 +23,13 @@ export const useStockPortfoliosNode = (
 
 	const { data } = useQuery<GetStockPortfoliosForPreview, GetStockPortfoliosForPreviewVariables>(
 		Queries.GetStockPortfoliosForPreview,
-		{ variables: { first: 10, skip: 0 } }
+		{
+			variables: {
+				first: 10,
+				skip: 0,
+				where: { user: { id: { equals: user?.id } } }
+			}
+		}
 	);
 
 	const onShowMore = useCallback(() => {

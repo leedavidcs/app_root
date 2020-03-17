@@ -9,7 +9,7 @@ import {
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { range } from "lodash";
-import React, { FC, useCallback } from "react";
+import React, { FC, memo, useCallback } from "react";
 import { useMutation, useQuery } from "react-apollo";
 import { useStyles } from "./styles";
 
@@ -43,7 +43,7 @@ const useClickDelete = (onCompleted: () => any) => {
 	return onClickDeleteOption;
 };
 
-export const StockPortfolioList: FC<IProps> = (props) => {
+export const StockPortfolioList: FC<IProps> = memo((props) => {
 	const { className, onClickOpen: propsOnClickOpen, variables } = props;
 
 	const classes = useStyles();
@@ -93,4 +93,6 @@ export const StockPortfolioList: FC<IProps> = (props) => {
 			))}
 		</List>
 	);
-};
+});
+
+StockPortfolioList.displayName = "StockPortfolioList";

@@ -1,7 +1,8 @@
 import { ModalProvider } from "@/client/components";
-import { createApolloClient, ICreateApolloClientOptions } from "@/client/graphql";
+import { createApolloClient } from "@/client/graphql";
 import { Layout } from "@/client/page-parts/_app";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import { IncomingMessage } from "http";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
@@ -19,6 +20,11 @@ export interface IWithApolloProps {
 	apolloState?: NormalizedCacheObject;
 }
 
+interface IInitApolloClientOptions {
+	initialState?: NormalizedCacheObject;
+	req?: IncomingMessage;
+}
+
 const DEFAULT_OPTIONS: IWithApolloOptions = {
 	layout: true,
 	ssr: true
@@ -30,14 +36,9 @@ const DEFAULT_OPTIONS: IWithApolloOptions = {
  */
 let clientSideApolloClient: Maybe<ApolloClient<NormalizedCacheObject>> = null;
 
-const initApolloClient = (ctx: NextPageContext): ApolloClient<NormalizedCacheObject> => {
-	const { apolloState, req } = ctx;
-
-	const options: ICreateApolloClientOptions = {
-		initialState: apolloState,
-		req
-	};
-
+const initApolloClient = (
+	options: IInitApolloClientOptions
+): ApolloClient<NormalizedCacheObject> => {
 	const isBrowser = typeof window !== "undefined";
 
 	/**
@@ -57,12 +58,12 @@ const initApolloClient = (ctx: NextPageContext): ApolloClient<NormalizedCacheObj
 };
 
 const initOntoContext = (ctx: NextPageContext): NextPageContext => {
+	const { apolloClient, apolloState, req } = ctx;
+
 	const newApolloClient: ApolloClient<NormalizedCacheObject> =
-		ctx.apolloClient || initApolloClient(ctx);
+		apolloClient || initApolloClient({ initialState: apolloState, req });
 
-	ctx.apolloClient = newApolloClient;
-
-	return ctx;
+	return { ...ctx, apolloClient: newApolloClient };
 };
 
 const preRunGraphQLQueries = async (
@@ -99,9 +100,10 @@ const getInitialProps = async <P extends Record<string, any>, IP extends Record<
 	ctx: NextPageContext,
 	options: IWithApolloOptions
 ): Promise<IWithApolloProps & IP> => {
-	const { apolloClient } = initOntoContext(ctx);
+	const newCtx = initOntoContext(ctx);
+	const { apolloClient } = newCtx;
 
-	const pageProps: IP = ((await PageComponent.getInitialProps?.(ctx)) || {}) as IP;
+	const pageProps: IP = ((await PageComponent.getInitialProps?.(newCtx)) || {}) as IP;
 	const apolloState: NormalizedCacheObject = apolloClient.cache.extract();
 
 	const isBrowser = typeof window !== "undefined";
@@ -111,13 +113,13 @@ const getInitialProps = async <P extends Record<string, any>, IP extends Record<
 	}
 
 	/** @description When redirecting, the response is finished. No need in continuing to render */
-	if (ctx.res?.finished) {
+	if (newCtx.res?.finished) {
 		return pageProps;
 	}
 
 	/** @description Pre-run all GraphQL queries, for SSR */
 	if (options.ssr) {
-		await preRunGraphQLQueries(ctx, pageProps, apolloClient);
+		await preRunGraphQLQueries(newCtx, pageProps, apolloClient);
 	}
 
 	return { ...pageProps, apolloState };
@@ -137,7 +139,7 @@ export const withApollo = <
 		...pageProps
 	}) => {
 		const client: ApolloClient<NormalizedCacheObject> =
-			apolloClient || initApolloClient(apolloState);
+			apolloClient || initApolloClient({ initialState: apolloState });
 
 		const page: ReactElement = finalOptions.layout ? (
 			<Layout>

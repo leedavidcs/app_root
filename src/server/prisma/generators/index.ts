@@ -1,12 +1,14 @@
+import { isEmpty } from "lodash";
 export * from "./string-filter.generator";
 
 export const applyGenerators = (
 	whereInput: Maybe<Record<string, any>>,
 	generators: readonly (readonly Record<string, any>[])[]
-) => ({
-	...whereInput,
-	AND: [
-		...(whereInput?.AND || []),
-		...generators.reduce((acc, generator) => acc.concat(generator))
-	]
-});
+) => {
+	const filters = generators.reduce((acc, generator) => acc.concat(generator));
+
+	return {
+		...whereInput,
+		AND: [...(whereInput?.AND || []), ...(isEmpty(filters) ? [] : [{ OR: filters }])]
+	};
+};

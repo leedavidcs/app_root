@@ -5,7 +5,7 @@ export const RequestRoot = interfaceType({
 	description: "Common properties for Query, Mutation and Subscription types",
 	definition: (t) => {
 		t.field("viewer", {
-			type: "Viewer",
+			type: "User",
 			description: "The viewer of this request",
 			resolve: (parent, args, { user }) => user
 		});

@@ -18,7 +18,7 @@ export interface CreateStockPortfolio {
 }
 
 export interface CreateStockPortfolioVariables {
-  readonly name?: string | null;
+  readonly name: string;
 }
 
 /* tslint:disable */
@@ -353,22 +353,13 @@ export interface GetUser {
 // ====================================================
 
 export interface GetViewer_viewer {
-  readonly __typename: "Viewer";
-  /**
-   * The viewer's id
-   */
+  readonly __typename: "User";
   readonly id: string;
   /**
-   * The viewer's email
+   * The user's email
    */
-  readonly email: string;
-  /**
-   * Whether this viewer verified their email address
-   */
+  readonly email: any | null;
   readonly emailVerified: boolean;
-  /**
-   * The viewer's username
-   */
   readonly username: string;
 }
 
