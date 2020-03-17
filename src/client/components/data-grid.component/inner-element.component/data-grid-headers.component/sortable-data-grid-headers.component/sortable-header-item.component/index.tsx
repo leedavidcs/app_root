@@ -2,7 +2,7 @@ import { ClickOutside } from "@/client/components/click-outside.component";
 import { IHeaderConfig } from "@/client/components/data-grid.component";
 import { Popover } from "@/client/components/popover.component";
 import { useContextMenu } from "@/client/hooks";
-import { Menu } from "@blueprintjs/core/lib/esm";
+import { Menu } from "@blueprintjs/core";
 import { codes } from "keycode";
 import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";

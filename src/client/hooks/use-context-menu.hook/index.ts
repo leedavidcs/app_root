@@ -1,4 +1,4 @@
-import { ContextMenu } from "@blueprintjs/core/lib/esm";
+import { ContextMenu } from "@blueprintjs/core";
 import { MouseEvent, MouseEventHandler, ReactElement, useCallback, useState } from "react";
 
 interface IOptions {

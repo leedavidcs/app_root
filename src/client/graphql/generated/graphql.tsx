@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 17th 2020 4:05:28 pm
+// This file was generated on: Mar 17th 2020 4:09:34 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -566,7 +566,10 @@ export type GetOneStockPortfolioQuery = (
     & { headers: Array<(
       { __typename?: 'StockPortfolioHeader' }
       & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'>
-    )> }
+    )>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
   )> }
 );
 
@@ -933,6 +936,9 @@ export const GetOneStockPortfolioDocument = gql`
     tickers
     createdAt
     updatedAt
+    user {
+      id
+    }
   }
 }
     `;

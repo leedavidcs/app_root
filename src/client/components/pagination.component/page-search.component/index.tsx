@@ -8,7 +8,7 @@ import {
 } from "@/client/components/pagination.component/get-page-info";
 import { Paper } from "@/client/components/paper.component";
 import { Popover } from "@/client/components/popover.component";
-import { Icon } from "@blueprintjs/core/lib/esm";
+import { Icon } from "@blueprintjs/core";
 import Keycode from "keycode";
 import React, { FC, KeyboardEvent, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";

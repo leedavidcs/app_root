@@ -1,5 +1,5 @@
-import { IconName } from "@blueprintjs/core";
-import { Classes, Drawer, Position } from "@blueprintjs/core/lib/esm";
+import { Classes, Drawer, IconName, Position } from "@blueprintjs/core";
+
 import classnames from "classnames";
 import React, { CSSProperties, FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";

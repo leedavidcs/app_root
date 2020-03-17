@@ -7,7 +7,7 @@ import {
 } from "@/client/components";
 import { GetStockPortfoliosForPreviewQueryVariables } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
-import { Button } from "@blueprintjs/core/lib/esm";
+import { Button } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
 import { DateTimeFilter } from "@prisma/client";
 import { isNil } from "lodash";
