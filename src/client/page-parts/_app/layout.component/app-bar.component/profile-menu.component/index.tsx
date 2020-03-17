@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from "@/client/components/list.component";
+import { Icon } from "@blueprintjs/core/lib/esm";
 import React, { FC } from "react";
-import { FaBacon } from "react-icons/fa";
 
 interface IProps {
 	onClickSignOut?: () => void;
@@ -11,13 +11,13 @@ export const ProfileMenu: FC<IProps> = ({ onClickSignOut = () => undefined }) =>
 		<List>
 			<ListItem selected={false}>
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Your profile" />
 			</ListItem>
 			<ListItem selected={false} onClick={onClickSignOut}>
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary={"Sign out"} />
 			</ListItem>

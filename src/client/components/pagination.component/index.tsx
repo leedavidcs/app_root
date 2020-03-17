@@ -1,10 +1,10 @@
 import { NumberInput } from "@/client/components/input.component";
 import { Interactable } from "@/client/components/interactable.component";
 import { Tooltip } from "@/client/components/tooltip.component";
+import { Icon } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
-import { head, initial, isUndefined, last, range } from "lodash";
+import { head, initial, isUndefined, last, range } from "lodash-es";
 import React, { FC, Fragment, useCallback, useMemo } from "react";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { getCurrentPage, getPageCount, getSkipFromPage } from "./get-page-info";
 import { PageSearch } from "./page-search.component";
 import { useStyles } from "./styles";
@@ -162,7 +162,7 @@ export const Pagination: FC<IProps> = ({
 			<div className={classes.pagination}>
 				{!isFirstPage && (
 					<Interactable onClick={onPreviousPage}>
-						<FaAngleLeft />
+						<Icon icon="chevron-left" />
 					</Interactable>
 				)}
 				{pageRanges.map((pageRange, i) => (
@@ -183,7 +183,7 @@ export const Pagination: FC<IProps> = ({
 				))}
 				{!isLastPage && (
 					<Interactable onClick={onNextPage}>
-						<FaAngleRight />
+						<Icon icon="chevron-right" />
 					</Interactable>
 				)}
 			</div>

@@ -1,4 +1,5 @@
-import { Classes, Drawer, IDrawerProps, Position } from "@blueprintjs/core";
+import { IconName } from "@blueprintjs/core";
+import { Classes, Drawer, Position } from "@blueprintjs/core/lib/esm";
 import classnames from "classnames";
 import React, { CSSProperties, FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
@@ -6,7 +7,7 @@ import { useStyles } from "./styles";
 interface IProps {
 	children?: ReactElement | null;
 	className?: string;
-	icon?: IDrawerProps["icon"];
+	icon?: IconName;
 	isOpen?: boolean;
 	onClose?: (event?: SyntheticEvent) => void;
 	position?: Position;

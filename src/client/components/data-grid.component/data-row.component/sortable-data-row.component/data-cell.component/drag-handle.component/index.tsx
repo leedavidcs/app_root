@@ -1,5 +1,5 @@
+import { Icon } from "@blueprintjs/core/lib/esm";
 import React, { ComponentClass } from "react";
-import { GoGrabber } from "react-icons/go";
 import { SortableHandle } from "react-sortable-hoc";
 import { useStyles } from "./styles";
 
@@ -8,7 +8,7 @@ export const DragHandle: ComponentClass<{}> = SortableHandle(() => {
 
 	return (
 		<div className={classes.root}>
-			<GoGrabber />
+			<Icon icon="drag-handle-vertical" />
 		</div>
 	);
 });

@@ -1,4 +1,8 @@
-module.exports = {
+const bundleAnalyzer = require("@next/bundle-analyzer");
+
+const enhance = bundleAnalyzer({ enabled: process.env.ANALYZE === "true" });
+
+const config = {
 	target: "serverless",
 	env: {
 		PROJECT_DIRNAME: __dirname,
@@ -20,3 +24,5 @@ module.exports = {
 		REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL
 	}
 };
+
+module.exports = enhance(config);

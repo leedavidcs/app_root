@@ -1,7 +1,7 @@
 import { GetStockPortfoliosForPreviewDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
-import { range } from "lodash";
+import { range } from "lodash-es";
 
 Faker.seed(1);
 

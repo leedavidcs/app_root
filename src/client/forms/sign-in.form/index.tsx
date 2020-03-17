@@ -1,7 +1,7 @@
 import { Anchor, TextInput } from "@/client/components";
 import { MutationLoginLocalUserArgs } from "@/client/graphql";
 import { useAuth, useModal, useSetUser, useYupValidationResolver } from "@/client/hooks";
-import { Button } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core/lib/esm";
 import dynamic from "next/dynamic";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";

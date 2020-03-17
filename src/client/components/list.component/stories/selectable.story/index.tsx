@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemIcon, ListItemText } from "@/client/components/list.component";
+import { Icon } from "@blueprintjs/core/lib/esm";
 import React, { FC, useCallback, useState } from "react";
-import { FaApple, FaBacon } from "react-icons/fa";
 
 export const SelectableStory: FC = () => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -13,13 +13,13 @@ export const SelectableStory: FC = () => {
 		<List divider="full">
 			<ListItem selected={selectedIndex === 0} onClick={onClick(0)}>
 				<ListItemIcon>
-					<FaBacon />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Banana" />
 			</ListItem>
 			<ListItem selected={selectedIndex === 1} onClick={onClick(1)}>
 				<ListItemIcon>
-					<FaApple />
+					<Icon icon="badge" />
 				</ListItemIcon>
 				<ListItemText primary="Apple" />
 			</ListItem>
