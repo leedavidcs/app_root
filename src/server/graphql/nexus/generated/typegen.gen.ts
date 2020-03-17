@@ -267,7 +267,7 @@ export interface NexusGenRootTypes {
   }
   User: { // root type
     createdAt: any; // DateTime!
-    email?: any | null; // EmailAddress
+    email: any; // EmailAddress!
     emailVerified: boolean; // Boolean!
     id: string; // String!
     updatedAt: any; // DateTime!
@@ -375,7 +375,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     createdAt: any; // DateTime!
-    email: any | null; // EmailAddress
+    email: any; // EmailAddress!
     emailVerified: boolean; // Boolean!
     id: string; // String!
     updatedAt: any; // DateTime!

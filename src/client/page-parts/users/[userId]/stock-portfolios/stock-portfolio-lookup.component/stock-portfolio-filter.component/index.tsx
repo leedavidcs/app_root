@@ -5,7 +5,7 @@ import {
 	SearchInput,
 	TextInput
 } from "@/client/components";
-import { GetStockPortfoliosForPreviewVariables } from "@/client/graphql";
+import { GetStockPortfoliosForPreviewQueryVariables } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import { DateRange } from "@blueprintjs/datetime";
@@ -14,9 +14,9 @@ import { isNil } from "lodash";
 import React, { FC, FormEventHandler, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 interface IProps {
-	onChange: (variables: GetStockPortfoliosForPreviewVariables) => void;
-	onSubmit: (variables: GetStockPortfoliosForPreviewVariables) => void;
-	variables: GetStockPortfoliosForPreviewVariables;
+	onChange: (variables: GetStockPortfoliosForPreviewQueryVariables) => void;
+	onSubmit: (variables: GetStockPortfoliosForPreviewQueryVariables) => void;
+	variables: GetStockPortfoliosForPreviewQueryVariables;
 }
 
 const useOnQuery = ({

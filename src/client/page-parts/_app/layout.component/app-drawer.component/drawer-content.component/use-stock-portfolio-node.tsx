@@ -1,14 +1,9 @@
 import { Anchor, Tooltip } from "@/client/components";
-import {
-	GetStockPortfoliosForPreview,
-	GetStockPortfoliosForPreviewVariables,
-	Queries
-} from "@/client/graphql";
+import { useGetStockPortfoliosForPreviewQuery } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
 import { ITreeNode } from "@blueprintjs/core";
 import { NextRouter, useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { useQuery } from "react-apollo";
 
 interface IProps {
 	id: number;
@@ -21,16 +16,13 @@ export const useStockPortfoliosNode = (
 	const router: NextRouter = useRouter();
 	const [, { user }] = useSetUser();
 
-	const { data } = useQuery<GetStockPortfoliosForPreview, GetStockPortfoliosForPreviewVariables>(
-		Queries.GetStockPortfoliosForPreview,
-		{
-			variables: {
-				first: 10,
-				skip: 0,
-				where: { user: { id: { equals: user?.id } } }
-			}
+	const { data } = useGetStockPortfoliosForPreviewQuery({
+		variables: {
+			first: 10,
+			skip: 0,
+			where: { user: { id: { equals: user?.id } } }
 		}
-	);
+	});
 
 	const onShowMore = useCallback(() => {
 		if (!user) {

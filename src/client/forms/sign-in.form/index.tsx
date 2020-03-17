@@ -1,5 +1,5 @@
 import { Anchor, TextInput } from "@/client/components";
-import { LoginLocalUserVariables } from "@/client/graphql";
+import { MutationLoginLocalUserArgs } from "@/client/graphql";
 import { useAuth, useModal, useSetUser, useYupValidationResolver } from "@/client/hooks";
 import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
@@ -63,7 +63,7 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 
 	const onFormSubmit = useCallback(
 		async (data: IFormData): Promise<void> => {
-			const variables: LoginLocalUserVariables = { input: data };
+			const variables: MutationLoginLocalUserArgs = { input: data };
 			const result = await login({ variables });
 
 			if (result) {
