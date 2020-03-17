@@ -273,12 +273,6 @@ export interface NexusGenRootTypes {
     updatedAt: any; // DateTime!
     username: string; // String!
   }
-  Viewer: { // root type
-    email: string; // String!
-    emailVerified: boolean; // Boolean!
-    id: string; // ID!
-    username: string; // String!
-  }
   RequestRoot: NexusGenRootTypes['Query'] | NexusGenRootTypes['Mutation'];
   String: string;
   Int: number;
@@ -341,14 +335,14 @@ export interface NexusGenFieldTypes {
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
-    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
+    viewer: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     stockPortfolioCount: number | null; // Int
     stockPortfolios: NexusGenRootTypes['StockPortfolio'][]; // [StockPortfolio!]!
-    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
+    viewer: NexusGenRootTypes['User'] | null; // User
   }
   RegisterLocalUserPayload: { // field return type
     error: string | null; // String
@@ -387,14 +381,8 @@ export interface NexusGenFieldTypes {
     updatedAt: any; // DateTime!
     username: string; // String!
   }
-  Viewer: { // field return type
-    email: string; // String!
-    emailVerified: boolean; // Boolean!
-    id: string; // ID!
-    username: string; // String!
-  }
   RequestRoot: { // field return type
-    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
+    viewer: NexusGenRootTypes['User'] | null; // User
   }
 }
 
@@ -431,7 +419,7 @@ export interface NexusGenArgTypes {
     }
     stockPortfolioCount: { // args
       query?: string | null; // String
-      where?: NexusGenInputs['StockPortfolioHeaderWhereInput'] | null; // StockPortfolioHeaderWhereInput
+      where?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
     }
     stockPortfolios: { // args
       after?: NexusGenInputs['StockPortfolioWhereUniqueInput'] | null; // StockPortfolioWhereUniqueInput
@@ -461,7 +449,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User" | "Viewer";
+export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
 export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderCreateWithoutStockPortfolioInput" | "StockPortfolioHeaderFilter" | "StockPortfolioHeaderInput" | "StockPortfolioHeaderScalarWhereInput" | "StockPortfolioHeaderUpdateManyDataInput" | "StockPortfolioHeaderUpdateManyWithWhereNestedInput" | "StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput" | "StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput" | "StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioHeaderWhereInput" | "StockPortfolioHeaderWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioUpdatetickersInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput" | "UserWhereInput";
 
