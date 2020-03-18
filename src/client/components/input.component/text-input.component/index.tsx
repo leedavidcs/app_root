@@ -64,10 +64,9 @@ export const TextInput: FC<IProps> = (props) => {
 			name,
 			onKeyDown,
 			placeholder,
-			type,
-			value
+			type
 		}),
-		[classes, defaultValue, disabled, icon, intent, name, onKeyDown, placeholder, type, value]
+		[classes, defaultValue, disabled, icon, intent, name, onKeyDown, placeholder, type]
 	);
 
 	const getAsController = useCallback(
