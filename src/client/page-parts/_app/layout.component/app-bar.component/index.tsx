@@ -4,6 +4,7 @@ import { onInputValueChanged } from "@/client/utils";
 import { Alignment, Button, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import dynamic from "next/dynamic";
+import { NextRouter, useRouter } from "next/router";
 import React, { FC, FormEventHandler, Fragment, ReactElement, useCallback, useState } from "react";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
@@ -69,6 +70,14 @@ const useOnClickProfileIcon = (): [boolean, { onOpen: () => void; onClose: () =>
 	return [isOpen, { onOpen, onClose }];
 };
 
+const useOnClickBrand = () => {
+	const router: NextRouter = useRouter();
+
+	return useCallback(() => {
+		router.push("/");
+	}, [router]);
+};
+
 export const AppBar: FC<IProps> = (props) => {
 	const { icon, title, withMock } = props;
 
@@ -82,6 +91,7 @@ export const AppBar: FC<IProps> = (props) => {
 	const onClickSignIn = useOnClickSignIn();
 	const onClickSignUp = useOnClickSignUp();
 	const onClickSignOut = useOnClickSignOut(onClose);
+	const onClickBrand = useOnClickBrand();
 
 	return (
 		<Navbar className={classes.root} fixedToTop={true}>
@@ -94,7 +104,9 @@ export const AppBar: FC<IProps> = (props) => {
 						className: classnames(classes.icon, icon.props.className),
 						outlined: true
 					})}
-				<Navbar.Heading className={classes.title}>{title}</Navbar.Heading>
+				<Navbar.Heading className={classes.title} onClick={onClickBrand}>
+					{title}
+				</Navbar.Heading>
 				<ControlGroup className={classes.searchWrapper}>
 					<TextInput
 						className={classes.search}

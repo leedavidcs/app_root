@@ -16,7 +16,8 @@ const styles = (theme: CustomTheme) => ({
 	},
 	title: {
 		fontFamily: theme.fontPrimary,
-		fontSize: "1.2rem"
+		fontSize: "1.2rem",
+		cursor: "pointer"
 	},
 	searchWrapper: {
 		flexGrow: 1
