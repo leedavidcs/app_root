@@ -1,4 +1,4 @@
-import { withAuth } from "@/client/hocs";
+import { withApollo } from "@/client/hocs";
 import { useSetUser } from "@/client/hooks";
 import { StockPortfolioLookup } from "@/client/page-parts/users/[userId]/stock-portfolios";
 import { CustomTheme } from "@/client/themes";
@@ -55,4 +55,4 @@ const Page: NextPage = () => {
 	);
 };
 
-export default withAuth()(Page);
+export default withApollo({ ssr: false })(Page);
