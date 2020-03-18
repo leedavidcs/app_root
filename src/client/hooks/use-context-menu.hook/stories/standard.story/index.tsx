@@ -1,6 +1,6 @@
 import { Paper } from "@/client/components";
 import { useContextMenu } from "@/client/hooks";
-import { Classes, Menu } from "@blueprintjs/core/lib/esm";
+import { Classes, Menu } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC } from "react";
 import { useStyles } from "./styles";

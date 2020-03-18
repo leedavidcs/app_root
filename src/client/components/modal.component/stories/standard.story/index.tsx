@@ -1,5 +1,5 @@
 import { Modal } from "@/client/components/modal.component";
-import { Button } from "@blueprintjs/core/lib/esm";
+import { Button } from "@blueprintjs/core";
 import { text } from "@storybook/addon-knobs";
 import Faker from "faker";
 import React, { FC, useCallback, useState } from "react";

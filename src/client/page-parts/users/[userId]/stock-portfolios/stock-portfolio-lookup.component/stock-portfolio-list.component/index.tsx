@@ -4,7 +4,7 @@ import {
 	useDeleteStockPortfolioMutation,
 	useGetStockPortfoliosForPreviewQuery
 } from "@/client/graphql";
-import { Classes } from "@blueprintjs/core/lib/esm";
+import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { range } from "lodash";
 import React, { FC, memo, useCallback } from "react";

@@ -2,7 +2,7 @@ import { List, ListItem, ListItemText } from "@/client/components/list.component
 import { Overlay } from "@/client/components/overlay.component";
 import { Popover } from "@/client/components/popover.component";
 import { useHover, useTheme } from "@/client/hooks";
-import { Icon } from "@blueprintjs/core/lib/esm";
+import { Icon } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";

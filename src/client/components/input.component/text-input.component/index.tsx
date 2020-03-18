@@ -1,5 +1,5 @@
-import { IconName } from "@blueprintjs/core";
-import { FormGroup, InputGroup, Intent } from "@blueprintjs/core/lib/esm";
+import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
+
 import React, {
 	CSSProperties,
 	FC,
@@ -64,10 +64,9 @@ export const TextInput: FC<IProps> = (props) => {
 			name,
 			onKeyDown,
 			placeholder,
-			type,
-			value
+			type
 		}),
-		[classes, defaultValue, disabled, icon, intent, name, onKeyDown, placeholder, type, value]
+		[classes, defaultValue, disabled, icon, intent, name, onKeyDown, placeholder, type]
 	);
 
 	const getAsController = useCallback(

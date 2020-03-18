@@ -1,7 +1,7 @@
 import { NumberInput } from "@/client/components/input.component";
 import { Interactable } from "@/client/components/interactable.component";
 import { Tooltip } from "@/client/components/tooltip.component";
-import { Icon } from "@blueprintjs/core/lib/esm";
+import { Icon } from "@blueprintjs/core";
 import classnames from "classnames";
 import { head, initial, isUndefined, last, range } from "lodash";
 import React, { FC, Fragment, useCallback, useMemo } from "react";

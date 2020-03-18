@@ -1,5 +1,5 @@
 import { useSetUser } from "@/client/hooks";
-import { Button } from "@blueprintjs/core/lib/esm";
+import { Button } from "@blueprintjs/core";
 import React, { FC, ReactElement, useCallback, useEffect, useState } from "react";
 import { AppBar } from "./app-bar.component";
 import { AppDrawer } from "./app-drawer.component";

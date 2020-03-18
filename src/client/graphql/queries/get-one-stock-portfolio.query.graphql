@@ -12,5 +12,8 @@ query GetOneStockPortfolio($id: String) {
 		tickers
 		createdAt
 		updatedAt
+		user {
+			id
+		}
 	}
 }

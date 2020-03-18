@@ -25,7 +25,7 @@ export const withAuth = <P extends Record<string, any>>() => (PageComponent: Nex
 		const user = data.viewer;
 
 		if (!user) {
-			res?.writeHead(HttpStatus.SEE_OTHER, { Location: "/login" });
+			res?.writeHead(HttpStatus.UNAUTHORIZED, { Location: "/login" });
 			res?.end();
 
 			return {};

@@ -1,5 +1,5 @@
-import { IconName } from "@blueprintjs/core";
-import { FormGroup, Intent, NumericInput } from "@blueprintjs/core/lib/esm";
+import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
+
 import React, { CSSProperties, FC, KeyboardEventHandler } from "react";
 import { useStyles } from "./styles";
 

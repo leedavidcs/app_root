@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemIcon, ListItemText } from "@/client/components/list.component";
-import { Icon } from "@blueprintjs/core/lib/esm";
+import { Icon } from "@blueprintjs/core";
 import React, { FC } from "react";
 
 interface IProps {

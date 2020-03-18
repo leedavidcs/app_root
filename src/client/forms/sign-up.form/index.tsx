@@ -7,7 +7,7 @@ import {
 } from "@/client/graphql";
 import { useAuth, useModal, useSetUser } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core/lib/esm";
+import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

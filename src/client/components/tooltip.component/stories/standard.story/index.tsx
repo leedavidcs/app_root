@@ -1,5 +1,5 @@
 import { Tooltip } from "@/client/components/tooltip.component";
-import { Button, Menu } from "@blueprintjs/core/lib/esm";
+import { Button, Menu } from "@blueprintjs/core";
 import { boolean } from "@storybook/addon-knobs";
 import React, { FC, useCallback, useState } from "react";
 
