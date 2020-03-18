@@ -10,6 +10,7 @@ import {
 import { useSetUser } from "@/client/hooks/use-set-user.hook";
 import { logout, writeCookie } from "@/server/authentication/cookie-utils";
 import { ApolloError, ExecutionResult } from "apollo-boost";
+import { NextRouter, useRouter } from "next/router";
 import { useCallback } from "react";
 import { MutationFunctionOptions } from "react-apollo";
 
@@ -94,12 +95,14 @@ const useRegister = ({ onRegisterCompleted }: IUseAuthOptions = {}) => {
 };
 
 const useLogout = () => {
+	const router: NextRouter = useRouter();
 	const [setUser] = useSetUser();
 
 	return useCallback(() => {
 		logout();
 		setUser();
-	}, [setUser]);
+		router.push("/");
+	}, [router, setUser]);
 };
 
 export const useAuth = (options: IUseAuthOptions = {}): IUseAuthResult => {
