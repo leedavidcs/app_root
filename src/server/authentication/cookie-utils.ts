@@ -14,9 +14,10 @@ export const writeCookie = (
 	{ refreshToken, sessionOnly = false }: IWriteCookieProps
 ): void => {
 	document.cookie = Cookie.serialize("token", token, {
-		sameSite: true,
+		domain: document.domain,
+		maxAge: sessionOnly ? undefined : jwtExpiresIn,
 		path: "/",
-		maxAge: sessionOnly ? undefined : jwtExpiresIn
+		sameSite: true
 	});
 
 	if (!refreshToken) {
@@ -24,16 +25,25 @@ export const writeCookie = (
 	}
 
 	document.cookie = Cookie.serialize("refreshToken", refreshToken, {
-		sameSite: true,
+		domain: document.domain,
+		maxAge: sessionOnly ? undefined : jwtRefreshExpiresIn,
 		path: "/",
-		maxAge: sessionOnly ? undefined : jwtRefreshExpiresIn
+		sameSite: true
 	});
 };
 
 export const logout = (): void => {
 	// Expire the cookies immediately
-	document.cookie = Cookie.serialize("token", "", { maxAge: -1 });
-	document.cookie = Cookie.serialize("refreshToken", "", { maxAge: -1 });
+	document.cookie = Cookie.serialize("token", "", {
+		domain: document.domain,
+		maxAge: -1,
+		path: "/"
+	});
+	document.cookie = Cookie.serialize("refreshToken", "", {
+		domain: document.domain,
+		maxAge: -1,
+		path: "/"
+	});
 };
 
 export const getToken = (req?: IncomingMessage): Maybe<string> => {
