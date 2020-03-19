@@ -12,6 +12,6 @@ export const IexCompanyDataKeyOptions = Object.keys(IexCompanyDataKeys).reduce((
 		name: `iex.company.${prop}`,
 		dataKey,
 		description: `Property (${prop}) in Company. (see: https://iexcloud.io/docs/api/#company)`,
-		provider: "IEX Cloud"
+		provider: "IEX_CLOUD"
 	});
 }, [] as any[]);

@@ -15,7 +15,7 @@ export const IexPreviousDayPriceDataKeyOptions = Object.keys(IexPreviousDayPrice
 			description:
 				`Property (${prop}) in Previous Day Price. (see: ` +
 				"https://iexcloud.io/docs/api/#previous-day-price)",
-			provider: "IEX Cloud"
+			provider: "IEX_CLOUD"
 		});
 	},
 	[] as any[]
