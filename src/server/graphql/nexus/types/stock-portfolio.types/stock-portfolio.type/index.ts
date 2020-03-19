@@ -12,11 +12,12 @@ export const StockPortfolio = objectType({
 		t.model.tickers();
 		t.list.field("data", {
 			type: "JSONObject",
+			list: true,
 			nullable: false,
 			description: "The data that gets resolved based on headers and tickers",
 			resolve: (parent, args, ctx) => getStockPortfolioData(parent, ctx)
 		});
-		t.model.createdAt(),
-		t.model.updatedAt()
+		t.model.createdAt();
+		t.model.updatedAt();
 	}
 });
