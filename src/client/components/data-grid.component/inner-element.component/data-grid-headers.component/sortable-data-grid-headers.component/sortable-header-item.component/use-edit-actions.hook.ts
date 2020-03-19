@@ -1,7 +1,19 @@
 import { HeadersContext } from "@/client/components/data-grid.component";
 import { useCallback, useContext, useMemo, useState } from "react";
 
-export const useEditActions = (index: number) => {
+interface IEditActionsStates {
+	isEditing: boolean;
+	value: string;
+}
+
+interface IEditActions {
+	setValue: (value: string) => void;
+	start: () => void;
+	stop: () => void;
+	updateLabel: () => void;
+}
+
+export const useEditActions = (index: number): [IEditActionsStates, IEditActions] => {
 	const { headers, setHeaderLabel } = useContext(HeadersContext);
 
 	const { label } = headers[index];
@@ -15,25 +27,21 @@ export const useEditActions = (index: number) => {
 		value
 	]);
 
-	const stopEditing = useCallback(() => {
+	const stop = useCallback(() => {
 		setValue(label);
 		setIsEditing(false);
 	}, [label, setIsEditing, setValue]);
 
-	const startEditing = useCallback(() => {
+	const start = useCallback(() => {
 		setValue(label);
 		setIsEditing(true);
 	}, [label, setValue, setIsEditing]);
 
 	return useMemo(
-		() => ({
-			inputValue: value,
-			isEditing,
-			setInputValue: setValue,
-			startEditing,
-			stopEditing,
-			updateLabel
-		}),
-		[isEditing, setValue, startEditing, stopEditing, updateLabel, value]
+		() => [
+			{ isEditing, value },
+			{ setValue, start, stop, updateLabel }
+		],
+		[isEditing, setValue, start, stop, updateLabel, value]
 	);
 };

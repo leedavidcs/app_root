@@ -1,10 +1,10 @@
 import { ClickOutside } from "@/client/components/click-outside.component";
 import { IHeaderConfig } from "@/client/components/data-grid.component";
 import { Popover } from "@/client/components/popover.component";
-import { useContextMenu } from "@/client/hooks";
+import { useContextMenu, useKeyDown } from "@/client/hooks";
 import { Menu } from "@blueprintjs/core";
 import { codes } from "keycode";
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useMemo } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
 import { HeaderSelect } from "./header-select.component";
@@ -23,47 +23,37 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 
 	const classes = useStyles();
 
-	const {
-		inputValue,
-		isEditing,
-		setInputValue,
-		startEditing,
-		stopEditing,
-		updateLabel
-	} = useEditActions(index);
-	const { freezeAction, freezeActionLabel } = useFreezeActions(index);
-	const { closeSelect, openSelect, isSelected, selectOption } = useSelectActions(index);
+	const [editStates, editActions] = useEditActions(index);
+	const [freezeLabel, freezeActions] = useFreezeActions(index);
+	const [isSelected, selectActions] = useSelectActions(index);
 
 	const stopOperations = useCallback(() => {
-		closeSelect();
-		stopEditing();
-	}, [closeSelect, stopEditing]);
+		selectActions.close();
+		editActions.stop();
+	}, [editActions, selectActions]);
 
 	const onInputChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value),
-		[setInputValue]
+		(event: ChangeEvent<HTMLInputElement>) => editActions.setValue(event.target.value),
+		[editActions]
 	);
 
-	const onInputKeyDown = useCallback(
-		({ keyCode }: KeyboardEvent<HTMLInputElement>) => {
-			switch (keyCode) {
-				case codes.esc:
-					stopEditing();
-					break;
-				case codes.enter:
-					updateLabel();
-					stopEditing();
-					break;
-				default:
+	const keyMap = useMemo(
+		() => ({
+			esc: editActions.stop,
+			enter: () => {
+				editActions.updateLabel();
+				editActions.stop();
 			}
-		},
-		[stopEditing, updateLabel]
+		}),
+		[editActions]
 	);
+
+	const onInputKeyDown = useKeyDown(keyMap);
 
 	const [onContextMenu] = useContextMenu(
 		<Menu className={classes.contextMenu}>
-			<Menu.Item icon="edit" text="Edit label" onClick={startEditing} />
-			<Menu.Item text={freezeActionLabel} onClick={freezeAction} />
+			<Menu.Item icon="edit" text="Edit label" onClick={editActions.start} />
+			<Menu.Item text={freezeLabel} onClick={freezeActions.freeze} />
 		</Menu>,
 		{ onOpen: stopOperations }
 	);
@@ -75,20 +65,22 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 				minimal={true}
 				position="bottom-left"
 				onClose={stopOperations}
-				content={<HeaderSelect onSelect={selectOption} options={options} value={value} />}
+				content={
+					<HeaderSelect onSelect={selectActions.select} options={options} value={value} />
+				}
 			>
 				<div onContextMenu={onContextMenu} style={{ height: "100%", width }}>
-					{isEditing ? (
+					{editStates.isEditing ? (
 						<input
 							className={classes.editLabel}
-							value={inputValue}
+							value={editStates.value}
 							onChange={onInputChange}
 							onKeyDown={onInputKeyDown}
 							autoFocus={true}
 							spellCheck={false}
 						/>
 					) : (
-						<HeaderItem index={index} onClick={openSelect} {...headerProps} />
+						<HeaderItem index={index} onClick={selectActions.open} {...headerProps} />
 					)}
 				</div>
 			</Popover>
