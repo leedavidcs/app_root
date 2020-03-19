@@ -3,8 +3,7 @@ import { IHeaderConfig } from "@/client/components/data-grid.component";
 import { Popover } from "@/client/components/popover.component";
 import { useContextMenu, useKeyDown } from "@/client/hooks";
 import { Menu } from "@blueprintjs/core";
-import { codes } from "keycode";
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback, useMemo } from "react";
+import React, { ChangeEvent, FC, memo, useCallback, useMemo } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
 import { HeaderSelect } from "./header-select.component";
@@ -17,7 +16,7 @@ interface IProps extends IHeaderConfig {
 	headerIndex: number;
 }
 
-const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
+const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 	const { headerIndex: index, ...headerProps } = props;
 	const { options, value, width } = headerProps;
 
@@ -88,14 +87,14 @@ const BaseHeaderItemComponent: FC<IProps> = memo((props: IProps) => {
 	);
 });
 
-BaseHeaderItemComponent.displayName = "BaseHeaderItemComponent";
+BaseHeaderItem.displayName = "BaseHeaderItem";
 
-const SortableHeaderItemComponent = SortableElement<IProps>(BaseHeaderItemComponent);
+const SortableHeaderItemComponent = SortableElement<IProps>(BaseHeaderItem);
 
 export const SortableHeaderItem: FC<IProps & SortableElementProps> = memo((props) => {
 	const { disabled } = props;
 
-	const ComponentType = disabled ? BaseHeaderItemComponent : SortableHeaderItemComponent;
+	const ComponentType = disabled ? BaseHeaderItem : SortableHeaderItemComponent;
 
 	return <ComponentType {...props} />;
 });
