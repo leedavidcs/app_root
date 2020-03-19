@@ -41,11 +41,11 @@ const Page: NextPage = () => {
 		[router, userId]
 	);
 
-	const userDisplayName: string = user?.id === userId ? "My" : user?.username || "";
+	const username: Maybe<string> = user?.id === userId ? "My" : user?.username;
 
 	return (
 		<main className={classes.root}>
-			<h3 className={classes.lookupHeader}>{userDisplayName} Stock Portfolios</h3>
+			{username && <h3 className={classes.lookupHeader}>{username} Stock Portfolios</h3>}
 			<StockPortfolioLookup
 				className={classes.lookup}
 				onClickOpen={onClickOpen}
