@@ -1,5 +1,5 @@
 import { Anchor, Tooltip } from "@/client/components";
-import { useGetStockPortfoliosForPreviewQuery } from "@/client/graphql";
+import { useGetManyStockPortfoliosQuery } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
 import { ITreeNode } from "@blueprintjs/core";
 import { NextRouter, useRouter } from "next/router";
@@ -16,7 +16,7 @@ export const useStockPortfoliosNode = (
 	const router: NextRouter = useRouter();
 	const [, { user }] = useSetUser();
 
-	const { data } = useGetStockPortfoliosForPreviewQuery({
+	const { data } = useGetManyStockPortfoliosQuery({
 		variables: {
 			first: 10,
 			skip: 0,

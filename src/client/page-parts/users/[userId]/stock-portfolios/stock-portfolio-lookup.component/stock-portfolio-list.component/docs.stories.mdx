@@ -1,6 +1,11 @@
 import { action } from "@storybook/addon-actions";
+import { boolean } from "@storybook/addon-knobs";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import Faker from "faker";
+import { range } from "lodash";
 import { StockPortfolioList } from ".";
+//
+Faker.seed(1);
 
 <Meta title="page-parts/users/[userId]/stock-portfolios/stock-portfolio-list" component={StockPortfolioList} />
 
@@ -18,13 +23,21 @@ A list that displays the stock portfolios that the user has created.
 ## Props
 <Props of={StockPortfolioList} />
 
+export const stockPortfolios = range(10).map(() => ({
+	id: Faker.random.uuid(),
+	name: Faker.name.firstName(),
+	updatedAt: Faker.date.recent().toDateString()
+}));
+
 ## StandardStory
 <Preview>
 	<Story name="standard">
 		<div style={{ width: 500 }}>
 			<StockPortfolioList
+				loading={boolean("loading", false)}
 				onClickOpen={action("onClickOpen")}
-				variables={{ first: 10, skip: 0 }}
+				onClickDelete={action("onClickDelete")}
+				stockPortfolios={stockPortfolios}
 			/>
 		</div>
 	</Story>

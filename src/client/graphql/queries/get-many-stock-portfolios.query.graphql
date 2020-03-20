@@ -1,4 +1,4 @@
-query GetStockPortfoliosForPreview(
+query GetManyStockPortfolios(
 	$first: Int
 	$after: StockPortfolioWhereUniqueInput
 	$skip: Int
@@ -10,4 +10,5 @@ query GetStockPortfoliosForPreview(
 		name
 		updatedAt
 	}
+	count: stockPortfolioCount(where: $where, query: $query)
 }
