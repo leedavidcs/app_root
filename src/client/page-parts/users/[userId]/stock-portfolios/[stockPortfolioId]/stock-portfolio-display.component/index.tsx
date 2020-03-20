@@ -1,16 +1,15 @@
 import { DataGrid, IHeaderConfig, IHeaderOption, Paper } from "@/client/components";
 import {
 	DataKeyOption,
-	StockPortfolio,
-	StockPortfolioWhereUniqueInput,
-	useGetDataKeyOptionsQuery,
-	useGetOneStockPortfolioQuery
+	GetOneStockPortfolioQuery,
+	useGetDataKeyOptionsQuery
 } from "@/client/graphql";
 import React, { FC, memo, useMemo } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
-	where: StockPortfolioWhereUniqueInput;
+	loading: boolean;
+	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
 }
 
 const useDataKeyOptions = () => {
@@ -21,15 +20,7 @@ const useDataKeyOptions = () => {
 	return dataKeyOptions;
 };
 
-const useStockPortfolio = ({ where }: IProps) => {
-	const { data } = useGetOneStockPortfolioQuery({ variables: { where } });
-
-	const stockPortfolio: Maybe<Omit<StockPortfolio, "user">> = data?.stockPortfolio;
-
-	return stockPortfolio;
-};
-
-const useStockPortfolioHeaders = (stockPortfolio: ReturnType<typeof useStockPortfolio>) => {
+const useStockPortfolioHeaders = ({ stockPortfolio }: IProps) => {
 	const dataKeyOptions = useDataKeyOptions();
 
 	const options: readonly IHeaderOption[] = useMemo(
@@ -53,14 +44,19 @@ const useStockPortfolioHeaders = (stockPortfolio: ReturnType<typeof useStockPort
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
+	const { loading, stockPortfolio } = props;
+
 	const classes = useStyles();
 
-	const stockPortfolio = useStockPortfolio(props);
+	const headers: readonly IHeaderConfig[] = useStockPortfolioHeaders(props);
 
-	const data: readonly Record<string, any>[] = stockPortfolio?.data ?? [];
-	const headers: readonly IHeaderConfig[] = useStockPortfolioHeaders(stockPortfolio);
-	const name = stockPortfolio?.name;
-	const updatedAt = stockPortfolio?.updatedAt;
+	if (loading || !stockPortfolio) {
+		return <p>loading...</p>;
+	}
+
+	const data: readonly Record<string, any>[] = stockPortfolio.data ?? [];
+	const { name, updatedAt, user } = stockPortfolio;
+	const createdBy: string = user.username;
 
 	return (
 		<div className={classes.root}>
@@ -68,7 +64,10 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 			<Paper className={classes.portfolioContainer}>
 				<DataGrid data={data} headers={headers} />
 			</Paper>
-			{updatedAt && <p className={classes.lastUpdated}>Last updated: {updatedAt}</p>}
+			<div className={classes.portfolioFooter}>
+				<p className={classes.createdBy}>Created By: {createdBy}</p>
+				<p className={classes.lastUpdated}>Last updated: {updatedAt}</p>
+			</div>
 		</div>
 	);
 });

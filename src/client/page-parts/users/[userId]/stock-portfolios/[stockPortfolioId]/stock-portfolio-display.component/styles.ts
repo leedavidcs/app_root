@@ -13,9 +13,16 @@ const styles = (theme: CustomTheme) => ({
 	portfolioContainer: {
 		height: 500
 	},
-	lastUpdated: {
+	portfolioFooter: {
 		marginTop: 20,
+		display: "flex"
+	},
+	createdBy: {
+		flexGrow: 1,
 		paddingLeft: 20
+	},
+	lastUpdated: {
+		paddingRight: 20
 	}
 });
 
