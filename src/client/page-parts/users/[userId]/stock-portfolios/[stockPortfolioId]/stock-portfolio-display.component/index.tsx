@@ -12,6 +12,7 @@ import { useStyles } from "./styles";
 interface IProps {
 	loading: boolean;
 	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
+	withData?: boolean;
 }
 
 const useDataKeyOptions = () => {
@@ -25,27 +26,28 @@ const useDataKeyOptions = () => {
 const useStockPortfolioHeaders = ({ stockPortfolio }: IProps) => {
 	const dataKeyOptions = useDataKeyOptions();
 
-	const options: readonly IHeaderOption[] = useMemo(
-		() =>
-			dataKeyOptions.map(({ name, dataKey }) => ({
-				label: name,
-				value: dataKey
-			})),
-		[dataKeyOptions]
-	);
-
-	const headers: readonly IHeaderConfig[] =
-		stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
+	const options: readonly IHeaderOption[] = useMemo(() => {
+		return dataKeyOptions.map(({ name, dataKey }) => ({
 			label: name,
-			value: dataKey,
-			...header,
-			options
-		})) ?? [];
+			value: dataKey
+		}));
+	}, [dataKeyOptions]);
+
+	const headers: readonly IHeaderConfig[] = useMemo(() => {
+		return (
+			stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
+				label: name,
+				value: dataKey,
+				...header,
+				options
+			})) ?? []
+		);
+	}, [options, stockPortfolio]);
 
 	return headers;
 };
 
-const useData = ({ stockPortfolio }: IProps): readonly Record<string, any>[] => {
+const useData = ({ stockPortfolio, withData }: IProps): readonly Record<string, any>[] => {
 	const [getStockData, { data }] = useGetStockDataLazyQuery();
 
 	const headers = stockPortfolio?.headers || [];
@@ -57,7 +59,11 @@ const useData = ({ stockPortfolio }: IProps): readonly Record<string, any>[] => 
 		tickers
 	]);
 
-	useEffect(() => getStockData({ variables }), [getStockData, variables]);
+	useEffect(() => {
+		if (withData) {
+			getStockData({ variables });
+		}
+	}, [getStockData, variables, withData]);
 
 	const result: readonly Record<string, any>[] = data?.stockData || [];
 
