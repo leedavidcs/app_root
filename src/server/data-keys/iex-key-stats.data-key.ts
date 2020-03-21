@@ -34,7 +34,7 @@ export const IexKeyStatsDataKeys = {
 	IEX_KEY_STATS__DAY_5_CHANGE_PERCENT: "IEX_KEY_STATS__DAY_5_CHANGE_PERCENT"
 };
 
-export const IexKeyStatsSuffixToPropMap: { [key: string]: keyof KeyStats } = {
+export const IexKeyStatsSuffixToPropMap: Record<string, keyof KeyStats> = {
 	COMPANY_NAME: "companyName",
 	MARKET_CAP: "marketcap",
 	WEEK_52_HIGH: "week52high",

@@ -40,7 +40,7 @@ export const IexQuoteDataKeys = {
 	IEX_QUOTE__YTD_CHANGE: "IEX_QUOTE__YTD_CHANGE"
 };
 
-export const IexQuoteSuffixToPropMap: { [key: string]: keyof Quote } = {
+export const IexQuoteSuffixToPropMap: Record<string, keyof Quote> = {
 	SYMBOL: "symbol",
 	COMPANY_NAME: "companyName",
 	CALCULATION_PRICE: "calculationPrice",

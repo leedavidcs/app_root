@@ -13,7 +13,7 @@ export const IexPreviousDayPriceDataKeys = {
 	IEX_PREVIOUS_DAY_PRICE__CHANGE_PERCENT: "IEX_PREVIOUS_DAY_PRICE__CHANGE_PERCENT"
 };
 
-export const IexPreviousDayPriceSuffixToPropMap: { [key: string]: keyof PreviousDay } = {
+export const IexPreviousDayPriceSuffixToPropMap: Record<string, keyof PreviousDay> = {
 	SYMBOL: "symbol",
 	DATE: "date",
 	OPEN: "open",

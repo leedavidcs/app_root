@@ -15,7 +15,7 @@ export const IexCompanyDataKeys = {
 	IEX_COMPANY__EMPLOYEES: "IEX_COMPANY__EMPLOYEES"
 };
 
-export const IexCompanySuffixToPropMap: { [key: string]: keyof Company } = {
+export const IexCompanySuffixToPropMap: Record<string, keyof Company> = {
 	SYMBOL: "symbol",
 	COMPANY_NAME: "companyName",
 	CEO: "CEO",
