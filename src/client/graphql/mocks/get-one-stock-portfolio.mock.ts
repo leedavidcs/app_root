@@ -1,4 +1,4 @@
-import { GetOneStockPortfolioDocument } from "@/client/graphql/generated";
+import { GetOneStockPortfolioDocument, GetStockDataDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
 import { range, uniqBy } from "lodash";
@@ -52,9 +52,28 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 					username: Faker.name.findName(),
 					__typename: "User"
 				},
-				data: mockData,
 				__typename: "StockPortfolio"
 			}
 		}
 	}
 };
+
+export const GetStockDataForOnePortfolioMock: MockedResponse = {
+	request: {
+		query: GetStockDataDocument,
+		variables: {
+			tickers: mockTickers,
+			dataKeys: mockHeaders.map(({ dataKey }) => dataKey)
+		}
+	},
+	result: {
+		data: {
+			stockData: mockData
+		}
+	}
+};
+
+export const GetOneStockPortfolioMocks: readonly MockedResponse[] = [
+	GetOneStockPortfolioMock,
+	GetStockDataForOnePortfolioMock
+];

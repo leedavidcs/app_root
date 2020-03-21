@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 20th 2020 4:26:55 pm
+// This file was generated on: Mar 20th 2020 10:12:48 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -130,6 +130,7 @@ export type Query = RequestRoot & {
    __typename?: 'Query';
   dataKeyOptions: Array<DataKeyOption>;
   modal: Scalars['Boolean'];
+  stockData?: Maybe<Array<Scalars['JSONObject']>>;
   stockPortfolio?: Maybe<StockPortfolio>;
   stockPortfolioCount?: Maybe<Scalars['Int']>;
   stockPortfolios: Array<StockPortfolio>;
@@ -142,6 +143,12 @@ export type QueryDataKeyOptionsArgs = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
   provider?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryStockDataArgs = {
+  tickers: Array<Scalars['String']>;
+  dataKeys: Array<Scalars['String']>;
 };
 
 
@@ -595,7 +602,7 @@ export type GetOneStockPortfolioQuery = (
   { __typename?: 'Query' }
   & { stockPortfolio?: Maybe<(
     { __typename?: 'StockPortfolio' }
-    & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt' | 'data'>
+    & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
     & { headers: Array<(
       { __typename?: 'StockPortfolioHeader' }
       & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'>
@@ -604,6 +611,17 @@ export type GetOneStockPortfolioQuery = (
       & Pick<User, 'id' | 'username'>
     ) }
   )> }
+);
+
+export type GetStockDataQueryVariables = {
+  tickers: Array<Scalars['String']>;
+  dataKeys: Array<Scalars['String']>;
+};
+
+
+export type GetStockDataQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'stockData'>
 );
 
 export type GetUserQueryVariables = {};
@@ -1023,7 +1041,6 @@ export const GetOneStockPortfolioDocument = gql`
       id
       username
     }
-    data
   }
 }
     `;
@@ -1053,6 +1070,38 @@ export function useGetOneStockPortfolioLazyQuery(baseOptions?: ApolloReactHooks.
 export type GetOneStockPortfolioQueryHookResult = ReturnType<typeof useGetOneStockPortfolioQuery>;
 export type GetOneStockPortfolioLazyQueryHookResult = ReturnType<typeof useGetOneStockPortfolioLazyQuery>;
 export type GetOneStockPortfolioQueryResult = ApolloReactCommon.QueryResult<GetOneStockPortfolioQuery, GetOneStockPortfolioQueryVariables>;
+export const GetStockDataDocument = gql`
+    query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
+  stockData(tickers: $tickers, dataKeys: $dataKeys)
+}
+    `;
+
+/**
+ * __useGetStockDataQuery__
+ *
+ * To run a query within a React component, call `useGetStockDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStockDataQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStockDataQuery({
+ *   variables: {
+ *      tickers: // value for 'tickers'
+ *      dataKeys: // value for 'dataKeys'
+ *   },
+ * });
+ */
+export function useGetStockDataQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
+      }
+export function useGetStockDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
+        }
+export type GetStockDataQueryHookResult = ReturnType<typeof useGetStockDataQuery>;
+export type GetStockDataLazyQueryHookResult = ReturnType<typeof useGetStockDataLazyQuery>;
+export type GetStockDataQueryResult = ApolloReactCommon.QueryResult<GetStockDataQuery, GetStockDataQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser {
   user @client {

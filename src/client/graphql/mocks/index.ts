@@ -3,7 +3,7 @@ import { CreateStockPortfolioMock } from "./create-stock-portfolio.mock";
 import { DeleteStockPortfolioMock } from "./delete-stock-portfolio.mock";
 import { GetDataKeyOptionsMock } from "./get-data-key-options.mock";
 import { GetManyStockPortfoliosMock } from "./get-many-stock-portfolios.mock";
-import { GetOneStockPortfolioMock } from "./get-one-stock-portfolio.mock";
+import { GetOneStockPortfolioMocks } from "./get-one-stock-portfolio.mock";
 import { GetUserMock } from "./get-user.mock";
 
 export const mocks: readonly MockedResponse[] = [
@@ -11,6 +11,6 @@ export const mocks: readonly MockedResponse[] = [
 	DeleteStockPortfolioMock,
 	GetDataKeyOptionsMock,
 	GetManyStockPortfoliosMock,
-	GetOneStockPortfolioMock,
+	...GetOneStockPortfolioMocks,
 	GetUserMock
 ];

@@ -2,9 +2,11 @@ import { DataGrid, IHeaderConfig, IHeaderOption, Paper } from "@/client/componen
 import {
 	DataKeyOption,
 	GetOneStockPortfolioQuery,
-	useGetDataKeyOptionsQuery
+	GetStockDataQueryVariables,
+	useGetDataKeyOptionsQuery,
+	useGetStockDataLazyQuery
 } from "@/client/graphql";
-import React, { FC, memo, useMemo } from "react";
+import React, { FC, memo, useEffect, useMemo } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
@@ -43,18 +45,37 @@ const useStockPortfolioHeaders = ({ stockPortfolio }: IProps) => {
 	return headers;
 };
 
+const useData = ({ stockPortfolio }: IProps): readonly Record<string, any>[] => {
+	const [getStockData, { data }] = useGetStockDataLazyQuery();
+
+	const headers = stockPortfolio?.headers || [];
+	const tickers = stockPortfolio?.tickers || [];
+	const dataKeys = useMemo(() => headers.map(({ dataKey }) => dataKey), [headers]);
+
+	const variables: GetStockDataQueryVariables = useMemo(() => ({ tickers, dataKeys }), [
+		dataKeys,
+		tickers
+	]);
+
+	useEffect(() => getStockData({ variables }), [getStockData, variables]);
+
+	const result: readonly Record<string, any>[] = data?.stockData || [];
+
+	return result;
+};
+
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	const { loading, stockPortfolio } = props;
 
 	const classes = useStyles();
 
 	const headers: readonly IHeaderConfig[] = useStockPortfolioHeaders(props);
+	const data: readonly Record<string, any>[] = useData(props);
 
 	if (loading || !stockPortfolio) {
 		return <p>loading...</p>;
 	}
 
-	const data: readonly Record<string, any>[] = stockPortfolio.data ?? [];
 	const { name, updatedAt, user } = stockPortfolio;
 	const createdBy: string = user.username;
 

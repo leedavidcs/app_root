@@ -16,6 +16,5 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 			id
 			username
 		}
-		data
 	}
 }
