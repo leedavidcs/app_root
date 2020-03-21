@@ -12,6 +12,6 @@ export const IexQuoteDataKeyOptions = Object.keys(IexQuoteDataKeys).reduce((acc,
 		name: `iex.quote.${prop}`,
 		dataKey,
 		description: `Property (${prop}) in Quote. (see: https://iexcloud.io/docs/api/#quote)`,
-		provider: "IEX Cloud"
+		provider: "IEX_CLOUD"
 	});
 }, [] as any[]);

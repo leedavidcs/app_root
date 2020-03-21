@@ -18,16 +18,16 @@ A single data key option that can be selected for a stock portfolio header
 """
 type DataKeyOption {
   """A unique data key for fetching stock portfolio data"""
-  dataKey: String
+  dataKey: String!
 
   """A description of the data that is fetched with this data key"""
-  description: String
+  description: String!
 
   """A more normal name. This can be shown to users."""
-  name: String
+  name: String!
 
   """The name of the provider"""
-  provider: DataKey_Provider
+  provider: DataKey_Provider!
 }
 
 scalar DateTime
@@ -115,6 +115,7 @@ type Query implements RequestRoot {
     """Filter by provider (partial works)"""
     provider: String
   ): [DataKeyOption!]!
+  stockData(dataKeys: [String!]!, tickers: [String!]!): [JSONObject!]
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!

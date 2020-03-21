@@ -6,6 +6,7 @@ export * from "./use-double-click.hook";
 export * from "./use-focus.hook";
 export * from "./use-global-hotkey.hook";
 export * from "./use-hover.hook";
+export * from "./use-key-down.hook";
 export * from "./use-is-last-child.hook";
 export * from "./use-isomorphic-layout-effect.hook";
 export * from "./use-modal.hook";

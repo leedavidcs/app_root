@@ -1,9 +1,5 @@
 import { IKebabMenuOption, KebabMenu, List, ListItem, ListItemText } from "@/client/components";
-import {
-	GetStockPortfoliosForPreviewQueryVariables,
-	useDeleteStockPortfolioMutation,
-	useGetStockPortfoliosForPreviewQuery
-} from "@/client/graphql";
+import { GetManyStockPortfoliosQuery } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { range } from "lodash";
@@ -14,41 +10,27 @@ const LOADING_ELEMENTS = 3;
 
 interface IProps {
 	className?: string;
+	loading: boolean;
 	/** onClick listener, when a stock portfolio gets clicked on. Passes the id. */
 	onClickOpen: (id: string) => void;
-	/** Variables to invoke the stockPortfolios query */
-	variables?: GetStockPortfoliosForPreviewQueryVariables;
+	onClickDelete: (id: string) => void;
+	stockPortfolios: Maybe<GetManyStockPortfoliosQuery["stockPortfolios"]>;
 }
 
-const useClickDelete = (onCompleted: () => any) => {
-	const onDeleteCompleted = useCallback(() => {
-		onCompleted();
-	}, [onCompleted]);
-
-	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({
-		onCompleted: onDeleteCompleted
-	});
-
-	const onClickDeleteOption = useCallback(
-		(id: string) => () => {
-			deleteStockPortfolio({ variables: { id } });
-		},
-		[deleteStockPortfolio]
-	);
-
-	return onClickDeleteOption;
-};
-
 export const StockPortfolioList: FC<IProps> = memo((props) => {
-	const { className, onClickOpen: propsOnClickOpen, variables } = props;
+	const {
+		className,
+		loading,
+		onClickDelete: _onClickDelete,
+		onClickOpen: _onClickOpen,
+		stockPortfolios
+	} = props;
 
 	const classes = useStyles();
 
-	const { data, loading, refetch } = useGetStockPortfoliosForPreviewQuery({ variables });
+	const onClickDelete = useCallback((id: string) => () => _onClickDelete(id), [_onClickDelete]);
 
-	const onClickDelete = useClickDelete(refetch);
-
-	const onClickOpen = useCallback((id: string) => () => propsOnClickOpen(id), [propsOnClickOpen]);
+	const onClickOpen = useCallback((id: string) => () => _onClickOpen(id), [_onClickOpen]);
 
 	const kebabOptions = useCallback(
 		(id: string): readonly IKebabMenuOption[] => [
@@ -57,7 +39,7 @@ export const StockPortfolioList: FC<IProps> = memo((props) => {
 		[onClickDelete]
 	);
 
-	if (loading || !data) {
+	if (loading || !stockPortfolios) {
 		return (
 			<List className={className} divider="full">
 				{range(LOADING_ELEMENTS).map((__, i) => (
@@ -78,7 +60,7 @@ export const StockPortfolioList: FC<IProps> = memo((props) => {
 
 	return (
 		<List className={className} divider="full">
-			{data.stockPortfolios.map(({ id, name, updatedAt }, i) => (
+			{stockPortfolios.map(({ id, name, updatedAt }, i) => (
 				<ListItem key={id} onClick={onClickOpen(id)} ripple={false} selected={false}>
 					<ListItemText primary={name} secondary={`Updated at: ${updatedAt}`} />
 					<KebabMenu options={kebabOptions(id)} />

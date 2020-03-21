@@ -84,7 +84,7 @@
 			"warn",
 			{
 				"code": 100,
-				"ignorePattern": "https?://.+"
+				"ignorePattern": "((https?://.+)|(import.+\"@/client/page-parts/.+;$))"
 			}
 		],
 		"mdx/no-unused-expressions": "off",

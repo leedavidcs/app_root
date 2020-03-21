@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 17th 2020 4:09:34 pm
+// This file was generated on: Mar 20th 2020 10:12:48 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -30,10 +30,10 @@ export enum DataKey_Provider {
 
 export type DataKeyOption = {
    __typename?: 'DataKeyOption';
-  name?: Maybe<Scalars['String']>;
-  dataKey?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  provider?: Maybe<DataKey_Provider>;
+  name: Scalars['String'];
+  dataKey: Scalars['String'];
+  description: Scalars['String'];
+  provider: DataKey_Provider;
 };
 
 
@@ -130,6 +130,7 @@ export type Query = RequestRoot & {
    __typename?: 'Query';
   dataKeyOptions: Array<DataKeyOption>;
   modal: Scalars['Boolean'];
+  stockData?: Maybe<Array<Scalars['JSONObject']>>;
   stockPortfolio?: Maybe<StockPortfolio>;
   stockPortfolioCount?: Maybe<Scalars['Int']>;
   stockPortfolios: Array<StockPortfolio>;
@@ -142,6 +143,12 @@ export type QueryDataKeyOptionsArgs = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
   provider?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryStockDataArgs = {
+  tickers: Array<Scalars['String']>;
+  dataKeys: Array<Scalars['String']>;
 };
 
 
@@ -456,7 +463,7 @@ export type CreateStockPortfolioMutation = (
 );
 
 export type DeleteStockPortfolioMutationVariables = {
-  id?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
 };
 
 
@@ -545,6 +552,39 @@ export type ToggleModalMutation = (
   & Pick<Mutation, 'toggleModal'>
 );
 
+export type GetDataKeyOptionsQueryVariables = {
+  name?: Maybe<Scalars['String']>;
+  dataKey?: Maybe<Scalars['String']>;
+  provider?: Maybe<Scalars['String']>;
+};
+
+
+export type GetDataKeyOptionsQuery = (
+  { __typename?: 'Query' }
+  & { dataKeyOptions: Array<(
+    { __typename?: 'DataKeyOption' }
+    & Pick<DataKeyOption, 'name' | 'dataKey' | 'description' | 'provider'>
+  )> }
+);
+
+export type GetManyStockPortfoliosQueryVariables = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<StockPortfolioWhereUniqueInput>;
+  skip?: Maybe<Scalars['Int']>;
+  where?: Maybe<StockPortfolioWhereInput>;
+  query?: Maybe<Scalars['String']>;
+};
+
+
+export type GetManyStockPortfoliosQuery = (
+  { __typename?: 'Query' }
+  & { count: Query['stockPortfolioCount'] }
+  & { stockPortfolios: Array<(
+    { __typename?: 'StockPortfolio' }
+    & Pick<StockPortfolio, 'id' | 'name' | 'updatedAt'>
+  )> }
+);
+
 export type GetModalQueryVariables = {};
 
 
@@ -554,7 +594,7 @@ export type GetModalQuery = (
 );
 
 export type GetOneStockPortfolioQueryVariables = {
-  id?: Maybe<Scalars['String']>;
+  where: StockPortfolioWhereUniqueInput;
 };
 
 
@@ -568,37 +608,20 @@ export type GetOneStockPortfolioQuery = (
       & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'>
     )>, user: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'username'>
     ) }
   )> }
 );
 
-export type GetStockPortfolioCountQueryVariables = {
-  where?: Maybe<StockPortfolioWhereInput>;
-  query?: Maybe<Scalars['String']>;
+export type GetStockDataQueryVariables = {
+  tickers: Array<Scalars['String']>;
+  dataKeys: Array<Scalars['String']>;
 };
 
 
-export type GetStockPortfolioCountQuery = (
+export type GetStockDataQuery = (
   { __typename?: 'Query' }
-  & Pick<Query, 'stockPortfolioCount'>
-);
-
-export type GetStockPortfoliosForPreviewQueryVariables = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<StockPortfolioWhereUniqueInput>;
-  skip?: Maybe<Scalars['Int']>;
-  where?: Maybe<StockPortfolioWhereInput>;
-  query?: Maybe<Scalars['String']>;
-};
-
-
-export type GetStockPortfoliosForPreviewQuery = (
-  { __typename?: 'Query' }
-  & { stockPortfolios: Array<(
-    { __typename?: 'StockPortfolio' }
-    & Pick<StockPortfolio, 'id' | 'name' | 'updatedAt'>
-  )> }
+  & Pick<Query, 'stockData'>
 );
 
 export type GetUserQueryVariables = {};
@@ -658,7 +681,7 @@ export type CreateStockPortfolioMutationHookResult = ReturnType<typeof useCreate
 export type CreateStockPortfolioMutationResult = ApolloReactCommon.MutationResult<CreateStockPortfolioMutation>;
 export type CreateStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStockPortfolioMutation, CreateStockPortfolioMutationVariables>;
 export const DeleteStockPortfolioDocument = gql`
-    mutation DeleteStockPortfolio($id: String) {
+    mutation DeleteStockPortfolio($id: String!) {
   deleteOneStockPortfolio(where: {id: $id}) {
     id
     name
@@ -891,6 +914,84 @@ export function useToggleModalMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type ToggleModalMutationHookResult = ReturnType<typeof useToggleModalMutation>;
 export type ToggleModalMutationResult = ApolloReactCommon.MutationResult<ToggleModalMutation>;
 export type ToggleModalMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleModalMutation, ToggleModalMutationVariables>;
+export const GetDataKeyOptionsDocument = gql`
+    query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
+  dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
+    name
+    dataKey
+    description
+    provider
+  }
+}
+    `;
+
+/**
+ * __useGetDataKeyOptionsQuery__
+ *
+ * To run a query within a React component, call `useGetDataKeyOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDataKeyOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDataKeyOptionsQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *      dataKey: // value for 'dataKey'
+ *      provider: // value for 'provider'
+ *   },
+ * });
+ */
+export function useGetDataKeyOptionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>(GetDataKeyOptionsDocument, baseOptions);
+      }
+export function useGetDataKeyOptionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>(GetDataKeyOptionsDocument, baseOptions);
+        }
+export type GetDataKeyOptionsQueryHookResult = ReturnType<typeof useGetDataKeyOptionsQuery>;
+export type GetDataKeyOptionsLazyQueryHookResult = ReturnType<typeof useGetDataKeyOptionsLazyQuery>;
+export type GetDataKeyOptionsQueryResult = ApolloReactCommon.QueryResult<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>;
+export const GetManyStockPortfoliosDocument = gql`
+    query GetManyStockPortfolios($first: Int, $after: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
+  stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {
+    id
+    name
+    updatedAt
+  }
+  count: stockPortfolioCount(where: $where, query: $query)
+}
+    `;
+
+/**
+ * __useGetManyStockPortfoliosQuery__
+ *
+ * To run a query within a React component, call `useGetManyStockPortfoliosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetManyStockPortfoliosQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetManyStockPortfoliosQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *      skip: // value for 'skip'
+ *      where: // value for 'where'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetManyStockPortfoliosQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManyStockPortfoliosQuery, GetManyStockPortfoliosQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetManyStockPortfoliosQuery, GetManyStockPortfoliosQueryVariables>(GetManyStockPortfoliosDocument, baseOptions);
+      }
+export function useGetManyStockPortfoliosLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManyStockPortfoliosQuery, GetManyStockPortfoliosQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetManyStockPortfoliosQuery, GetManyStockPortfoliosQueryVariables>(GetManyStockPortfoliosDocument, baseOptions);
+        }
+export type GetManyStockPortfoliosQueryHookResult = ReturnType<typeof useGetManyStockPortfoliosQuery>;
+export type GetManyStockPortfoliosLazyQueryHookResult = ReturnType<typeof useGetManyStockPortfoliosLazyQuery>;
+export type GetManyStockPortfoliosQueryResult = ApolloReactCommon.QueryResult<GetManyStockPortfoliosQuery, GetManyStockPortfoliosQueryVariables>;
 export const GetModalDocument = gql`
     query GetModal {
   modal @client
@@ -922,8 +1023,8 @@ export type GetModalQueryHookResult = ReturnType<typeof useGetModalQuery>;
 export type GetModalLazyQueryHookResult = ReturnType<typeof useGetModalLazyQuery>;
 export type GetModalQueryResult = ApolloReactCommon.QueryResult<GetModalQuery, GetModalQueryVariables>;
 export const GetOneStockPortfolioDocument = gql`
-    query GetOneStockPortfolio($id: String) {
-  stockPortfolio(where: {id: $id}) {
+    query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
+  stockPortfolio(where: $where) {
     id
     name
     headers {
@@ -938,6 +1039,7 @@ export const GetOneStockPortfolioDocument = gql`
     updatedAt
     user {
       id
+      username
     }
   }
 }
@@ -955,7 +1057,7 @@ export const GetOneStockPortfolioDocument = gql`
  * @example
  * const { data, loading, error } = useGetOneStockPortfolioQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      where: // value for 'where'
  *   },
  * });
  */
@@ -968,77 +1070,38 @@ export function useGetOneStockPortfolioLazyQuery(baseOptions?: ApolloReactHooks.
 export type GetOneStockPortfolioQueryHookResult = ReturnType<typeof useGetOneStockPortfolioQuery>;
 export type GetOneStockPortfolioLazyQueryHookResult = ReturnType<typeof useGetOneStockPortfolioLazyQuery>;
 export type GetOneStockPortfolioQueryResult = ApolloReactCommon.QueryResult<GetOneStockPortfolioQuery, GetOneStockPortfolioQueryVariables>;
-export const GetStockPortfolioCountDocument = gql`
-    query GetStockPortfolioCount($where: StockPortfolioWhereInput, $query: String) {
-  stockPortfolioCount(where: $where, query: $query)
+export const GetStockDataDocument = gql`
+    query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
+  stockData(tickers: $tickers, dataKeys: $dataKeys)
 }
     `;
 
 /**
- * __useGetStockPortfolioCountQuery__
+ * __useGetStockDataQuery__
  *
- * To run a query within a React component, call `useGetStockPortfolioCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetStockPortfolioCountQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * To run a query within a React component, call `useGetStockDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStockDataQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetStockPortfolioCountQuery({
+ * const { data, loading, error } = useGetStockDataQuery({
  *   variables: {
- *      where: // value for 'where'
- *      query: // value for 'query'
+ *      tickers: // value for 'tickers'
+ *      dataKeys: // value for 'dataKeys'
  *   },
  * });
  */
-export function useGetStockPortfolioCountQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockPortfolioCountQuery, GetStockPortfolioCountQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetStockPortfolioCountQuery, GetStockPortfolioCountQueryVariables>(GetStockPortfolioCountDocument, baseOptions);
+export function useGetStockDataQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
       }
-export function useGetStockPortfolioCountLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockPortfolioCountQuery, GetStockPortfolioCountQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetStockPortfolioCountQuery, GetStockPortfolioCountQueryVariables>(GetStockPortfolioCountDocument, baseOptions);
+export function useGetStockDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
         }
-export type GetStockPortfolioCountQueryHookResult = ReturnType<typeof useGetStockPortfolioCountQuery>;
-export type GetStockPortfolioCountLazyQueryHookResult = ReturnType<typeof useGetStockPortfolioCountLazyQuery>;
-export type GetStockPortfolioCountQueryResult = ApolloReactCommon.QueryResult<GetStockPortfolioCountQuery, GetStockPortfolioCountQueryVariables>;
-export const GetStockPortfoliosForPreviewDocument = gql`
-    query GetStockPortfoliosForPreview($first: Int, $after: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
-  stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {
-    id
-    name
-    updatedAt
-  }
-}
-    `;
-
-/**
- * __useGetStockPortfoliosForPreviewQuery__
- *
- * To run a query within a React component, call `useGetStockPortfoliosForPreviewQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetStockPortfoliosForPreviewQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetStockPortfoliosForPreviewQuery({
- *   variables: {
- *      first: // value for 'first'
- *      after: // value for 'after'
- *      skip: // value for 'skip'
- *      where: // value for 'where'
- *      query: // value for 'query'
- *   },
- * });
- */
-export function useGetStockPortfoliosForPreviewQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockPortfoliosForPreviewQuery, GetStockPortfoliosForPreviewQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetStockPortfoliosForPreviewQuery, GetStockPortfoliosForPreviewQueryVariables>(GetStockPortfoliosForPreviewDocument, baseOptions);
-      }
-export function useGetStockPortfoliosForPreviewLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockPortfoliosForPreviewQuery, GetStockPortfoliosForPreviewQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetStockPortfoliosForPreviewQuery, GetStockPortfoliosForPreviewQueryVariables>(GetStockPortfoliosForPreviewDocument, baseOptions);
-        }
-export type GetStockPortfoliosForPreviewQueryHookResult = ReturnType<typeof useGetStockPortfoliosForPreviewQuery>;
-export type GetStockPortfoliosForPreviewLazyQueryHookResult = ReturnType<typeof useGetStockPortfoliosForPreviewLazyQuery>;
-export type GetStockPortfoliosForPreviewQueryResult = ApolloReactCommon.QueryResult<GetStockPortfoliosForPreviewQuery, GetStockPortfoliosForPreviewQueryVariables>;
+export type GetStockDataQueryHookResult = ReturnType<typeof useGetStockDataQuery>;
+export type GetStockDataLazyQueryHookResult = ReturnType<typeof useGetStockDataLazyQuery>;
+export type GetStockDataQueryResult = ApolloReactCommon.QueryResult<GetStockDataQuery, GetStockDataQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser {
   user @client {

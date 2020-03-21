@@ -13,7 +13,7 @@ export const IexKeyStatsDataKeyOptions = Object.keys(IexKeyStatsDataKeys).reduce
 		name: `iex.keyStats.${prop}`,
 		dataKey,
 		description: `Property (${prop}) in Key Stats. (see: https://iexcloud.io/docs/api/#key-stats)`,
-		provider: "IEX Cloud"
+		provider: "IEX_CLOUD"
 	});
 	/* eslint-enable max-len */
 }, [] as any[]);

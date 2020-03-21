@@ -1,9 +1,11 @@
 import { IPaginationProps, Pagination } from "@/client/components";
 import {
 	CreateStockPortfolioMutation,
-	GetStockPortfoliosForPreviewQueryVariables,
+	DeleteStockPortfolioMutation,
+	GetManyStockPortfoliosQueryVariables,
 	useCreateStockPortfolioMutation,
-	useGetStockPortfolioCountQuery
+	useDeleteStockPortfolioMutation,
+	useGetManyStockPortfoliosQuery
 } from "@/client/graphql";
 import { Button, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -20,25 +22,13 @@ interface IProps {
 	userId?: string;
 }
 
-const useCount = (filters: GetStockPortfoliosForPreviewQueryVariables): number => {
-	const { data } = useGetStockPortfolioCountQuery({
-		variables: filters
-	});
-
-	const count: number = data?.stockPortfolioCount || 0;
-
-	return count;
-};
-
 const useOnPage = (
-	filters: GetStockPortfoliosForPreviewQueryVariables
-): [IPaginationProps, (value: IPaginationProps) => void] => {
-	const count: number = useCount(filters);
+	filters: GetManyStockPortfoliosQueryVariables
+): [Pick<IPaginationProps, "first" | "skip">, (value: IPaginationProps) => void] => {
 	const [first, setFirst] = useState<number>(DEFAULT_PAGINATION_FIRST);
 	const [skip, setSkip] = useState<number>(0);
 
-	const pagination: IPaginationProps = useMemo(() => ({ count, first, skip }), [
-		count,
+	const pagination: Pick<IPaginationProps, "first" | "skip"> = useMemo(() => ({ first, skip }), [
 		first,
 		skip
 	]);
@@ -73,30 +63,39 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 	}, [createStockPortfolio]);
 };
 
+const useOnClickDelete = (onCompleted: (data: DeleteStockPortfolioMutation) => void) => {
+	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({ onCompleted });
+
+	return useCallback(
+		(id: string) => {
+			deleteStockPortfolio({ variables: { id } });
+		},
+		[deleteStockPortfolio]
+	);
+};
+
 export const StockPortfolioLookup: FC<IProps> = (props) => {
 	const { className, onClickOpen, userId } = props;
 
 	const classes = useStyles();
 
-	const [filters, setFilters] = useState<GetStockPortfoliosForPreviewQueryVariables>({
+	const [filters, setFilters] = useState<GetManyStockPortfoliosQueryVariables>({
 		where: {
 			user: { id: { equals: userId } }
 		}
 	});
-	const [lastFilters, setLastFilters] = useState<GetStockPortfoliosForPreviewQueryVariables>(
-		filters
-	);
+	const [lastFilters, setLastFilters] = useState<GetManyStockPortfoliosQueryVariables>(filters);
 	const [pagination, onPage] = useOnPage(filters);
 
 	const onClickNew = useOnClickNew(props);
 
 	const onSubmitFilters = useCallback(
-		(value: GetStockPortfoliosForPreviewQueryVariables) => setLastFilters({ ...value }),
+		(value: GetManyStockPortfoliosQueryVariables) => setLastFilters({ ...value }),
 		[setLastFilters]
 	);
 
 	const variables = useMemo(
-		(): GetStockPortfoliosForPreviewQueryVariables => ({
+		(): GetManyStockPortfoliosQueryVariables => ({
 			...lastFilters,
 			first: pagination.first,
 			skip: pagination.skip,
@@ -104,6 +103,12 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 		}),
 		[lastFilters, pagination, userId]
 	);
+
+	const { data, loading, refetch } = useGetManyStockPortfoliosQuery({ variables });
+
+	const onDeleteCompleted = useCallback(() => refetch(variables), [refetch, variables]);
+
+	const onClickDelete = useOnClickDelete(onDeleteCompleted);
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root, className)}>
@@ -118,13 +123,17 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 				</div>
 				<StockPortfolioList
 					className={classes.results}
+					loading={loading}
+					onClickDelete={onClickDelete}
 					onClickOpen={onClickOpen}
-					variables={variables}
+					stockPortfolios={data?.stockPortfolios}
 				/>
 			</div>
 			<Pagination
 				className={classes.pagination}
-				{...pagination}
+				first={pagination.first}
+				skip={pagination.skip}
+				count={data?.count ?? 0}
 				onPage={onPage}
 				showLimitConfig={true}
 			/>

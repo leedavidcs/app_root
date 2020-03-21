@@ -1,4 +1,4 @@
-mutation DeleteStockPortfolio($id: String) {
+mutation DeleteStockPortfolio($id: String!) {
 	deleteOneStockPortfolio(where: { id: $id }) {
 		id
 		name

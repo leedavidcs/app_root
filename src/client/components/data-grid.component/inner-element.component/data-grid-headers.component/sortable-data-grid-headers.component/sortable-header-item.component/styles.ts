@@ -23,8 +23,10 @@ const styles = (theme: CustomTheme) => ({
 		}
 	},
 	contextMenu: {
+		borderRadius: "unset",
 		backgroundColor: theme.surface,
-		color: theme.onSurface
+		color: theme.onSurface,
+		overflow: "hidden"
 	}
 });
 

@@ -1,5 +1,5 @@
 import React, { FC, memo } from "react";
-import { FixedSizeList } from "react-window";
+import { FixedSizeList, ListOnItemsRenderedProps } from "react-window";
 import { DataGridProvider } from "./data-grid-provider.component";
 import { DataRow } from "./data-row.component";
 import { InnerElement } from "./inner-element.component";
@@ -33,6 +33,8 @@ interface IProps {
 	data: readonly Record<string, any>[];
 	/** Column data is: `data[headers[i].value]` */
 	headers: readonly IHeaderConfig[];
+	/** The number of rows (data) in this data-grid */
+	itemCount?: number;
 	/**
 	 * Function to derive the key prop for each row of the data-grid. Defaults to index.
 	 *
@@ -51,17 +53,21 @@ interface IProps {
 	 * @default () => undefined
 	 */
 	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
+	/** See `onItemsRendered` (https://react-window.now.sh/#/api/FixedSizeList) */
+	onItemsRendered?: (props: ListOnItemsRenderedProps) => void;
 }
 
 export const DataGrid: FC<IProps> = memo(
 	({
 		data,
 		headers,
+		itemCount: _itemCount,
 		itemKey = (index: number) => index.toString(),
 		onDataChange = () => undefined,
-		onHeadersChange = () => undefined
+		onHeadersChange = () => undefined,
+		onItemsRendered
 	}) => {
-		const itemCount: number = data.length;
+		const itemCount = typeof _itemCount === "number" ? _itemCount : data.length;
 
 		return (
 			<DataGridProvider
@@ -79,6 +85,7 @@ export const DataGrid: FC<IProps> = memo(
 						itemKey={itemKey}
 						itemSize={DEFAULT_ROW_HEIGHT}
 						innerElementType={InnerElement}
+						onItemsRendered={onItemsRendered}
 						outerElementType={OuterElement}
 					>
 						{DataRow}

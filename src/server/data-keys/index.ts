@@ -13,7 +13,7 @@ export const Prefixes = {
 	IEX_KEY_STATS: "IEX_KEY_STATS",
 	IEX_PREVIOUS_DAY_PRICE: "IEX_PREVIOUS_DAY_PRICE",
 	IEX_QUOTE: "IEX_QUOTE"
-};
+} as const;
 
 export const PREFIX_PROP_DELIMITER = "__";
 

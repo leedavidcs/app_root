@@ -21,7 +21,7 @@ export const StandardStory: FC = () => {
 
 	return (
 		<div className={classes.root}>
-			<KebabMenu options={options} />;
+			<KebabMenu options={options} />
 		</div>
 	);
 };

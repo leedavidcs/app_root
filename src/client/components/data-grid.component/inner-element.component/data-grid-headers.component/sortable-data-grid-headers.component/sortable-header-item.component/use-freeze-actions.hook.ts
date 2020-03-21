@@ -1,24 +1,22 @@
 import { HeadersContext } from "@/client/components/data-grid.component";
 import { useCallback, useContext, useMemo } from "react";
 
-export const useFreezeActions = (index: number) => {
+interface IFreezeActions {
+	freeze: () => void;
+}
+
+export const useFreezeActions = (index: number): [string, IFreezeActions] => {
 	const { headers, setHeaderFreeze } = useContext(HeadersContext);
 
 	const { frozen } = headers[index];
 
-	const freezeActionLabel: string = frozen ? "Unfreeze" : "Freeze";
+	const label: string = frozen ? "Unfreeze" : "Freeze";
 
-	const freezeAction: () => void = useCallback(() => setHeaderFreeze(!frozen, index), [
+	const freeze = useCallback(() => setHeaderFreeze(!frozen, index), [
 		frozen,
 		index,
 		setHeaderFreeze
 	]);
 
-	return useMemo(
-		() => ({
-			freezeAction,
-			freezeActionLabel
-		}),
-		[freezeAction, freezeActionLabel]
-	);
+	return useMemo(() => [label, { freeze }], [freeze, label]);
 };

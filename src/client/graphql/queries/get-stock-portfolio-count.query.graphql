@@ -1,3 +1,0 @@
-query GetStockPortfolioCount($where: StockPortfolioWhereInput, $query: String) {
-	stockPortfolioCount(where: $where, query: $query)
-}
