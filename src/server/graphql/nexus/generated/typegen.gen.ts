@@ -232,10 +232,10 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   DataKeyOption: { // root type
-    dataKey?: string | null; // String
-    description?: string | null; // String
-    name?: string | null; // String
-    provider?: NexusGenEnums['DataKey_Provider'] | null; // DataKey_Provider
+    dataKey: string; // String!
+    description: string; // String!
+    name: string; // String!
+    provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
   Mutation: {};
   Query: {};
@@ -322,10 +322,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   DataKeyOption: { // field return type
-    dataKey: string | null; // String
-    description: string | null; // String
-    name: string | null; // String
-    provider: NexusGenEnums['DataKey_Provider'] | null; // DataKey_Provider
+    dataKey: string; // String!
+    description: string; // String!
+    name: string; // String!
+    provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
   Mutation: { // field return type
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
@@ -339,6 +339,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
+    stockData: any[] | null; // [JSONObject!]
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     stockPortfolioCount: number | null; // Int
     stockPortfolios: NexusGenRootTypes['StockPortfolio'][]; // [StockPortfolio!]!
@@ -413,6 +414,10 @@ export interface NexusGenArgTypes {
       dataKey?: string | null; // String
       name?: string | null; // String
       provider?: string | null; // String
+    }
+    stockData: { // args
+      dataKeys: string[]; // [String!]!
+      tickers: string[]; // [String!]!
     }
     stockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!

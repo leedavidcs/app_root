@@ -6,6 +6,12 @@ export class AuthorizationError extends ApolloError {
 	}
 }
 
+export class BadInputError extends ApolloError {
+	constructor(message = "This operation contains invalid arguments.") {
+		super(message, "BAD_REQUEST");
+	}
+}
+
 export class ComplexityError extends ApolloError {
 	constructor(message = "This operation is exceeds max complexity constraints.") {
 		super(message, "FORBIDDEN");
