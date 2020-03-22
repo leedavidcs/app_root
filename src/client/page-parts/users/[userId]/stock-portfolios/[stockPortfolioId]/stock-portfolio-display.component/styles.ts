@@ -4,13 +4,20 @@ import { createUseStyles } from "react-jss";
 const styles = (theme: CustomTheme) => ({
 	root: {
 		width: "100%",
-		maxWidth: 1280,
 		color: theme.onBackground
+	},
+	btnContainer: {
+		display: "flex",
+		justifyContent: "flex-end"
+	},
+	creatorActions: {
+		flexGrow: 1
 	},
 	portfolioName: {
 		textAlign: "center"
 	},
 	portfolioContainer: {
+		width: "100%",
 		height: 500
 	},
 	portfolioFooter: {

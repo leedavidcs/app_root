@@ -8,6 +8,9 @@ const styles = (theme: CustomTheme) => ({
 			margin: 0,
 			padding: 0,
 			backgroundColor: theme.background
+		},
+		".bp3-overlay-backdrop": {
+			backgroundColor: [theme.backdrop, "!important"]
 		}
 	},
 	root: {

@@ -9,11 +9,9 @@ export const getYupValidationResolver = <TData extends object = any, TContext = 
 		context: TContext
 	) => {
 		try {
-			const values = object()
-				.shape(validationSchema(data, context))
-				.validateSync(data, {
-					abortEarly: false
-				});
+			const values = object().shape(validationSchema(data, context)).validateSync(data, {
+				abortEarly: false
+			});
 
 			return { values, errors: {} };
 		} catch (errors) {
