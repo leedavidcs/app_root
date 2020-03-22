@@ -7,6 +7,7 @@ import {
 	useDeleteStockPortfolioMutation,
 	useGetManyStockPortfoliosQuery
 } from "@/client/graphql";
+import { useToast } from "@/client/hooks";
 import { Button, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, useCallback, useMemo, useState } from "react";
@@ -64,7 +65,25 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 };
 
 const useOnClickDelete = (onCompleted: (data: DeleteStockPortfolioMutation) => void) => {
-	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({ onCompleted });
+	const toaster = useToast();
+
+	const _onCompleted = useCallback(
+		(data: DeleteStockPortfolioMutation) => {
+			const deleted = data.deleteOneStockPortfolio;
+
+			if (deleted) {
+				toaster.show({
+					intent: "success",
+					message: `Deleted portfolio: ${deleted.name}`
+				});
+			}
+
+			onCompleted(data);
+		},
+		[onCompleted, toaster]
+	);
+
+	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({ onCompleted: _onCompleted });
 
 	return useCallback(
 		(id: string) => {
