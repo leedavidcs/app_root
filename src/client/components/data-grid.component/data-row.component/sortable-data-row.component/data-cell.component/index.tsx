@@ -51,7 +51,7 @@ export const DataCell: FC<IProps> = memo(
 					[classes.firstColumn]: isFirstColumn
 				})}
 				onClick={onClick}
-				style={{ minWidth: width }}
+				style={{ minWidth: width, width }}
 			>
 				{isFirstColumn && <DragHandle />}
 				{value}
