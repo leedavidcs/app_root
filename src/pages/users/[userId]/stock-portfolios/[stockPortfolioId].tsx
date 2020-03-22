@@ -56,11 +56,9 @@ export const Page: NextPage = () => {
 
 	const { data, loading } = useStockPortfolio();
 
-	const stockPortfolio = data?.stockPortfolio;
-
 	return (
 		<main className={classnames(Classes.DARK, classes.root)}>
-			<StockPortfolioDisplay stockPortfolio={stockPortfolio} loading={loading} />
+			<StockPortfolioDisplay stockPortfolio={data?.stockPortfolio} loading={loading} />
 		</main>
 	);
 };
