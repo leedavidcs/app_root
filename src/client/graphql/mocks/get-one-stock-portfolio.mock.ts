@@ -2,6 +2,7 @@ import { GetOneStockPortfolioDocument, GetStockDataDocument } from "@/client/gra
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
 import { range, uniqBy } from "lodash";
+import { mockUser } from "./get-user.mock";
 
 Faker.seed(1);
 
@@ -21,15 +22,15 @@ const uniqueMockHeaders = uniqBy(mockHeaders, "name");
 
 const mockTickers = range(TICKERS_COUNT).map(() => Faker.name.findName());
 
-const mockData = mockTickers.map(() => {
+const mockData = mockTickers.map((ticker) => {
 	const headerKeys: readonly string[] = uniqueMockHeaders.map(({ dataKey }) => dataKey);
 
-	return headerKeys.reduce<Record<string, number>>(
+	return headerKeys.reduce<Record<string, any>>(
 		(acc, key) => ({
 			...acc,
 			[key]: Faker.random.number({ min: -100, max: 100 })
 		}),
-		{}
+		{ ticker }
 	);
 });
 
@@ -48,8 +49,8 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 				createdAt: Faker.date.past().toDateString(),
 				updatedAt: Faker.date.recent().toDateString(),
 				user: {
-					id: Faker.random.uuid(),
-					username: Faker.name.findName(),
+					id: mockUser.id,
+					username: mockUser.username,
 					__typename: "User"
 				},
 				__typename: "StockPortfolio"
