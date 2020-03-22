@@ -16,26 +16,17 @@ export const stringFilter = (
 		{ [name]: { contains: upperFirst(value) } },
 		{
 			[name]: {
-				contains: value
-					.split(" ")
-					.map(lowerCase)
-					.join(" ")
+				contains: value.split(" ").map(lowerCase).join(" ")
 			}
 		},
 		{
 			[name]: {
-				contains: value
-					.split(" ")
-					.map(upperCase)
-					.join(" ")
+				contains: value.split(" ").map(upperCase).join(" ")
 			}
 		},
 		{
 			[name]: {
-				contains: value
-					.split(" ")
-					.map(upperFirst)
-					.join(" ")
+				contains: value.split(" ").map(upperFirst).join(" ")
 			}
 		}
 	];
