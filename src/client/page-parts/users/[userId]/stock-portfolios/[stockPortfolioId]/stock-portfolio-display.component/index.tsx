@@ -1,54 +1,53 @@
-import { DataGrid, IHeaderConfig, IHeaderOption, Paper } from "@/client/components";
+import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
 import {
-	DataKeyOption,
 	GetOneStockPortfolioQuery,
+	GetStockDataQueryResult,
 	GetStockDataQueryVariables,
-	useGetDataKeyOptionsQuery,
 	useGetStockDataLazyQuery
 } from "@/client/graphql";
-import React, { FC, memo, useEffect, useMemo } from "react";
+import { useSetUser } from "@/client/hooks";
+import { Button, ButtonGroup, Classes, NonIdealState } from "@blueprintjs/core";
+import classnames from "classnames";
+import React, { FC, memo, useCallback, useMemo, useState } from "react";
+import { CreatorActions } from "./creator-actions.component";
 import { useStyles } from "./styles";
 
 interface IProps {
 	loading: boolean;
+	onDelete?: () => void;
+	onEdit?: () => void;
 	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
-	withData?: boolean;
 }
 
-const useDataKeyOptions = () => {
-	const { data } = useGetDataKeyOptionsQuery();
+const baseHeaders: readonly IHeaderConfig[] = [
+	{
+		label: "ticker",
+		value: "ticker",
+		options: null,
+		frozen: true,
+		resizable: true,
+		width: 100
+	}
+];
 
-	const dataKeyOptions: readonly DataKeyOption[] = data?.dataKeyOptions || [];
-
-	return dataKeyOptions;
-};
-
-const useStockPortfolioHeaders = ({ stockPortfolio }: IProps) => {
-	const dataKeyOptions = useDataKeyOptions();
-
-	const options: readonly IHeaderOption[] = useMemo(() => {
-		return dataKeyOptions.map(({ name, dataKey }) => ({
+const useStockPortfolioHeaders = ({
+	stockPortfolio
+}: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
+	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
+		...baseHeaders,
+		...(stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
 			label: name,
-			value: dataKey
-		}));
-	}, [dataKeyOptions]);
+			value: dataKey,
+			...header,
+			options: null
+		})) ?? [])
+	]);
 
-	const headers: readonly IHeaderConfig[] = useMemo(() => {
-		return (
-			stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
-				label: name,
-				value: dataKey,
-				...header,
-				options
-			})) ?? []
-		);
-	}, [options, stockPortfolio]);
-
-	return headers;
+	return [headers, setHeaders];
 };
 
-const useData = ({ stockPortfolio, withData }: IProps): readonly Record<string, any>[] => {
-	const [getStockData, { data }] = useGetStockDataLazyQuery();
+const useData = ({ stockPortfolio }: IProps): [() => void, GetStockDataQueryResult] => {
+	const [getStockData, result] = useGetStockDataLazyQuery();
 
 	const headers = stockPortfolio?.headers || [];
 	const tickers = stockPortfolio?.tickers || [];
@@ -59,15 +58,17 @@ const useData = ({ stockPortfolio, withData }: IProps): readonly Record<string, 
 		tickers
 	]);
 
-	useEffect(() => {
-		if (withData) {
-			getStockData({ variables });
-		}
-	}, [getStockData, variables, withData]);
+	const getData = useCallback(() => getStockData({ variables }), [getStockData, variables]);
 
-	const result: readonly Record<string, any>[] = data?.stockData || [];
+	return [getData, result];
+};
 
-	return result;
+const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
+	const [, { user }] = useSetUser();
+
+	const isCreator = Boolean(user && stockPortfolio && user.id === stockPortfolio.user.id);
+
+	return isCreator;
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
@@ -75,21 +76,61 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
-	const headers: readonly IHeaderConfig[] = useStockPortfolioHeaders(props);
-	const data: readonly Record<string, any>[] = useData(props);
+	const [headers, setHeaders] = useStockPortfolioHeaders(props);
+	const [getData, dataResult] = useData(props);
+
+	const isCreator: boolean = useIsCreator(props);
 
 	if (loading || !stockPortfolio) {
 		return <p>loading...</p>;
 	}
 
-	const { name, updatedAt, user } = stockPortfolio;
+	const data = dataResult.data?.stockData ?? [];
+	const { name, tickers, updatedAt, user } = stockPortfolio;
 	const createdBy: string = user.username;
 
+	const dataNotRequested: boolean = !dataResult.called || dataResult.loading;
+	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
+
 	return (
-		<div className={classes.root}>
+		<div className={classnames(Classes.DARK, classes.root)}>
+			<div className={classes.btnContainer}>
+				{isCreator && (
+					<CreatorActions
+						className={classes.creatorActions}
+						stockPortfolio={stockPortfolio}
+					/>
+				)}
+				<ButtonGroup>
+					<Button icon="refresh" onClick={getData} text="Refresh" />
+				</ButtonGroup>
+			</div>
 			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
-				<DataGrid data={data} headers={headers} />
+				{dataNotRequested ? (
+					<NonIdealState
+						icon="search"
+						title="Data not yet requested"
+						description={
+							<p>
+								To load new data, press the <strong>Refresh</strong> button above.
+							</p>
+						}
+					/>
+				) : noDataAvailable ? (
+					<NonIdealState
+						icon="search"
+						title="No data available"
+						description={
+							<>
+								<p>This portfolio has no data to display.</p>
+								<p>Tickers or headers may not be configured for this portfolio.</p>
+							</>
+						}
+					/>
+				) : (
+					<DataGrid data={data} headers={headers} onHeadersChange={setHeaders} />
+				)}
 			</Paper>
 			<div className={classes.portfolioFooter}>
 				<p className={classes.createdBy}>Created By: {createdBy}</p>
