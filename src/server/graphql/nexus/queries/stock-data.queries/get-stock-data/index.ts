@@ -89,7 +89,7 @@ export const getStockData = async (
 
 			const result = await operation({ ticker, suffixes }, context);
 
-			return result;
+			return { ...result, ticker };
 		})
 	);
 
