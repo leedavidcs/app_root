@@ -33,7 +33,7 @@ interface IProps {
 export const TextInput: FC<IProps> = (props) => {
 	const {
 		className,
-		control: useFormControl,
+		control: _control,
 		defaultValue,
 		disabled,
 		error,
@@ -71,9 +71,11 @@ export const TextInput: FC<IProps> = (props) => {
 
 	const getAsController = useCallback(
 		(control: NonNullable<IProps["control"]>) => {
-			return (
-				<Controller as={InputGroup} control={control} {...inputProps} name={name || ""} />
-			);
+			if (!name) {
+				throw new Error("Input is used in a form without a name!");
+			}
+
+			return <Controller as={InputGroup} control={control} {...inputProps} name={name} />;
 		},
 		[name, inputProps]
 	);
@@ -93,7 +95,7 @@ export const TextInput: FC<IProps> = (props) => {
 			intent={intent}
 			style={style}
 		>
-			{useFormControl ? getAsController(useFormControl) : getAsInput()}
+			{_control ? getAsController(_control) : getAsInput()}
 		</FormGroup>
 	);
 };
