@@ -249,7 +249,6 @@ type GetNexusPrisma<
 // Generated
 interface ModelTypes {
   User: prisma.User
-  StockPortfolioHeader: prisma.StockPortfolioHeader
   StockPortfolio: prisma.StockPortfolio
 }
   
@@ -259,30 +258,20 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
-    stockPortfolioHeaders: {
-  filtering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'stockPortfolio'
-}
     stockPortfolios: {
-  filtering: 'id' | 'name' | 'headers' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
 }
 
   },
     User: {
     stockPortfolios: {
-  filtering: 'id' | 'name' | 'headers' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
 }
 
-  },  StockPortfolioHeader: {
-
-
   },  StockPortfolio: {
-    headers: {
-  filtering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable' | 'stockPortfolio'
-}
+
 
   }
 }
@@ -291,8 +280,6 @@ interface NexusPrismaTypes {
   Query: {
     user: 'User'
     users: 'User'
-    stockPortfolioHeader: 'StockPortfolioHeader'
-    stockPortfolioHeaders: 'StockPortfolioHeader'
     stockPortfolio: 'StockPortfolio'
     stockPortfolios: 'StockPortfolio'
 
@@ -304,12 +291,6 @@ interface NexusPrismaTypes {
     deleteOneUser: 'User'
     deleteManyUser: 'BatchPayload'
     upsertOneUser: 'User'
-    createOneStockPortfolioHeader: 'StockPortfolioHeader'
-    updateOneStockPortfolioHeader: 'StockPortfolioHeader'
-    updateManyStockPortfolioHeader: 'BatchPayload'
-    deleteOneStockPortfolioHeader: 'StockPortfolioHeader'
-    deleteManyStockPortfolioHeader: 'BatchPayload'
-    upsertOneStockPortfolioHeader: 'StockPortfolioHeader'
     createOneStockPortfolio: 'StockPortfolio'
     updateOneStockPortfolio: 'StockPortfolio'
     updateManyStockPortfolio: 'BatchPayload'
@@ -328,20 +309,11 @@ interface NexusPrismaTypes {
     updatedAt: 'DateTime'
     stockPortfolios: 'StockPortfolio'
 
-},  StockPortfolioHeader: {
-    id: 'String'
-    name: 'String'
-    dataKey: 'String'
-    width: 'Int'
-    frozen: 'Boolean'
-    resizable: 'Boolean'
-    stockPortfolio: 'StockPortfolio'
-
 },  StockPortfolio: {
     id: 'String'
     user: 'User'
     name: 'String'
-    headers: 'StockPortfolioHeader'
+    headers: 'String'
     tickers: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
@@ -351,7 +323,6 @@ interface NexusPrismaTypes {
 
 interface NexusPrismaMethods {
   User: NexusPrismaFields<'User'>
-  StockPortfolioHeader: NexusPrismaFields<'StockPortfolioHeader'>
   StockPortfolio: NexusPrismaFields<'StockPortfolio'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>

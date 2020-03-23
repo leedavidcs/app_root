@@ -39,24 +39,26 @@ const useStockPortfolioHeaders = ({
 }: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
 	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
 		...baseHeaders,
-		...(stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
-			label: name,
-			value: dataKey,
-			...header,
-			options: null
-		})) ?? [])
+		...(stockPortfolio?.headers ?? []).map((header) => {
+			const { name, dataKey, ...headerProps } = JSON.parse(header);
+
+			return {
+				label: name,
+				value: dataKey,
+				...headerProps,
+				options: null
+			};
+		})
 	]);
 
 	return [headers, setHeaders];
 };
 
-const useData = ({ stockPortfolio }: IProps): UseDataResult => {
+const useData = (tickers: string[], headers: readonly IHeaderConfig[]): UseDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
 	const [getStockData, result] = useGetStockDataLazyQuery();
 
-	const headers = stockPortfolio?.headers || [];
-	const tickers = stockPortfolio?.tickers || [];
-	const dataKeys = useMemo(() => headers.map(({ dataKey }) => dataKey), [headers]);
+	const dataKeys = useMemo(() => headers.map(({ value }) => value), [headers]);
 
 	const variables: GetStockDataQueryVariables = useMemo(() => ({ tickers, dataKeys }), [
 		dataKeys,
@@ -97,8 +99,10 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
+	const tickers = stockPortfolio?.tickers ?? [];
+
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
-	const [dataActions, dataResult] = useData(props);
+	const [dataActions, dataResult] = useData(tickers, headers);
 
 	const isCreator: boolean = useIsCreator(props);
 
@@ -107,7 +111,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	}
 
 	const data = dataResult.data;
-	const { name, tickers, updatedAt, user } = stockPortfolio;
+	const { name, updatedAt, user } = stockPortfolio;
 	const createdBy: string = user.username;
 
 	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;

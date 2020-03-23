@@ -48,12 +48,16 @@ const useHeaders = (
 			resizable: true,
 			width: 100
 		},
-		...(stockPortfolio?.headers || []).map(({ name, dataKey, ...header }) => ({
-			label: name,
-			value: dataKey,
-			...header,
-			options
-		}))
+		...(stockPortfolio?.headers || []).map((header) => {
+			const { name, dataKey, ...headerProps } = JSON.parse(header);
+
+			return {
+				label: name,
+				value: dataKey,
+				...headerProps,
+				options
+			};
+		})
 	]);
 
 	useEffect(() => {

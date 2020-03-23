@@ -2,14 +2,10 @@ mutation UpdateOneStockPortfolio(
 	$id: String!
 	$name: String
 	$tickers: [String!] = []
-	$headers: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]
+	$headers: [StockPortfolioHeaderInput!]
 ) {
 	updateOneStockPortfolio(
-		data: {
-			name: $name,
-			tickers: { set: $tickers },
-			headers: { create: $headers }
-		}
+		data: { name: $name, tickers: $tickers, headers: $headers }
 		where: { id: $id }
 	) {
 		id

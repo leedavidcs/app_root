@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 22nd 2020 7:07:32 pm
+// This file was generated on: Mar 22nd 2020 9:16:01 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -48,17 +48,6 @@ export type DateTimeFilter = {
   gte?: Maybe<Scalars['DateTime']>;
 };
 
-
-export type IntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  not?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-};
 
 
 export type LoginLocalUserInput = {
@@ -205,20 +194,11 @@ export type StockPortfolio = {
   id: Scalars['String'];
   user: User;
   name: Scalars['String'];
-  headers: Array<StockPortfolioHeader>;
+  headers: Array<Scalars['String']>;
   tickers: Array<Scalars['String']>;
   data: Array<Scalars['JSONObject']>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-};
-
-
-export type StockPortfolioHeadersArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<StockPortfolioHeaderWhereUniqueInput>;
-  before?: Maybe<StockPortfolioHeaderWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
 };
 
 export type StockPortfolioCreateInput = {
@@ -231,111 +211,12 @@ export type StockPortfolioFilter = {
   none?: Maybe<StockPortfolioWhereInput>;
 };
 
-export type StockPortfolioHeader = {
-   __typename?: 'StockPortfolioHeader';
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  width: Scalars['Int'];
-  frozen: Scalars['Boolean'];
-  resizable: Scalars['Boolean'];
-};
-
-export type StockPortfolioHeaderCreateWithoutStockPortfolioInput = {
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderFilter = {
-  every?: Maybe<StockPortfolioHeaderWhereInput>;
-  some?: Maybe<StockPortfolioHeaderWhereInput>;
-  none?: Maybe<StockPortfolioHeaderWhereInput>;
-};
-
 export type StockPortfolioHeaderInput = {
   name: Scalars['String'];
   dataKey: Scalars['String'];
   width: Scalars['Int'];
   frozen: Scalars['Boolean'];
   resizable: Scalars['Boolean'];
-};
-
-export type StockPortfolioHeaderScalarWhereInput = {
-  id?: Maybe<UuidFilter>;
-  name?: Maybe<StringFilter>;
-  dataKey?: Maybe<StringFilter>;
-  width?: Maybe<IntFilter>;
-  frozen?: Maybe<BooleanFilter>;
-  resizable?: Maybe<BooleanFilter>;
-  AND?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  OR?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  NOT?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-};
-
-export type StockPortfolioHeaderUpdateManyDataInput = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  dataKey?: Maybe<Scalars['String']>;
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput = {
-  create?: Maybe<Array<StockPortfolioHeaderCreateWithoutStockPortfolioInput>>;
-  connect?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  set?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  disconnect?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  delete?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  update?: Maybe<Array<StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput>>;
-  updateMany?: Maybe<Array<StockPortfolioHeaderUpdateManyWithWhereNestedInput>>;
-  deleteMany?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  upsert?: Maybe<Array<StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput>>;
-};
-
-export type StockPortfolioHeaderUpdateManyWithWhereNestedInput = {
-  where: StockPortfolioHeaderScalarWhereInput;
-  data: StockPortfolioHeaderUpdateManyDataInput;
-};
-
-export type StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  dataKey?: Maybe<Scalars['String']>;
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput = {
-  where: StockPortfolioHeaderWhereUniqueInput;
-  data: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput;
-};
-
-export type StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput = {
-  where: StockPortfolioHeaderWhereUniqueInput;
-  update: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput;
-  create: StockPortfolioHeaderCreateWithoutStockPortfolioInput;
-};
-
-export type StockPortfolioHeaderWhereInput = {
-  id?: Maybe<UuidFilter>;
-  name?: Maybe<StringFilter>;
-  dataKey?: Maybe<StringFilter>;
-  width?: Maybe<IntFilter>;
-  frozen?: Maybe<BooleanFilter>;
-  resizable?: Maybe<BooleanFilter>;
-  AND?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  OR?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  NOT?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type StockPortfolioHeaderWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
 };
 
 export type StockPortfolioOrderByInput = {
@@ -348,18 +229,13 @@ export type StockPortfolioOrderByInput = {
 
 export type StockPortfolioUpdateInput = {
   name?: Maybe<Scalars['String']>;
-  tickers?: Maybe<StockPortfolioUpdatetickersInput>;
-  headers?: Maybe<StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput>;
-};
-
-export type StockPortfolioUpdatetickersInput = {
-  set?: Maybe<Array<Scalars['String']>>;
+  headers?: Maybe<Array<StockPortfolioHeaderInput>>;
+  tickers?: Maybe<Array<Scalars['String']>>;
 };
 
 export type StockPortfolioWhereInput = {
   id?: Maybe<UuidFilter>;
   name?: Maybe<StringFilter>;
-  headers?: Maybe<StockPortfolioHeaderFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   AND?: Maybe<Array<StockPortfolioWhereInput>>;
@@ -556,7 +432,7 @@ export type UpdateOneStockPortfolioMutationVariables = {
   id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   tickers?: Maybe<Array<Scalars['String']>>;
-  headers?: Maybe<Array<StockPortfolioHeaderCreateWithoutStockPortfolioInput>>;
+  headers?: Maybe<Array<StockPortfolioHeaderInput>>;
 };
 
 
@@ -618,11 +494,8 @@ export type GetOneStockPortfolioQuery = (
   { __typename?: 'Query' }
   & { stockPortfolio?: Maybe<(
     { __typename?: 'StockPortfolio' }
-    & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
-    & { headers: Array<(
-      { __typename?: 'StockPortfolioHeader' }
-      & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'>
-    )>, user: (
+    & Pick<StockPortfolio, 'id' | 'name' | 'headers' | 'tickers' | 'createdAt' | 'updatedAt'>
+    & { user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -931,8 +804,8 @@ export type ToggleModalMutationHookResult = ReturnType<typeof useToggleModalMuta
 export type ToggleModalMutationResult = ApolloReactCommon.MutationResult<ToggleModalMutation>;
 export type ToggleModalMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleModalMutation, ToggleModalMutationVariables>;
 export const UpdateOneStockPortfolioDocument = gql`
-    mutation UpdateOneStockPortfolio($id: String!, $name: String, $tickers: [String!] = [], $headers: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]) {
-  updateOneStockPortfolio(data: {name: $name, tickers: {set: $tickers}, headers: {create: $headers}}, where: {id: $id}) {
+    mutation UpdateOneStockPortfolio($id: String!, $name: String, $tickers: [String!] = [], $headers: [StockPortfolioHeaderInput!]) {
+  updateOneStockPortfolio(data: {name: $name, tickers: $tickers, headers: $headers}, where: {id: $id}) {
     id
     name
   }
@@ -1079,13 +952,7 @@ export const GetOneStockPortfolioDocument = gql`
   stockPortfolio(where: $where) {
     id
     name
-    headers {
-      name
-      dataKey
-      width
-      frozen
-      resizable
-    }
+    headers
     tickers
     createdAt
     updatedAt

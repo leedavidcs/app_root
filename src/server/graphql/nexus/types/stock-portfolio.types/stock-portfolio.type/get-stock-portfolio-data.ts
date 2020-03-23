@@ -10,7 +10,7 @@ export const getStockPortfolioData = async (stockPortfolio, context: IServerCont
 		.filter((dataKey) => !dataKey);
 
 	const result: Record<string, any>[] = await Promise.all(
-		tickers.map((ticker) => getStockData({ ticker, dataKeys }, context))
+		(tickers as string[]).map((ticker) => getStockData({ ticker, dataKeys }, context))
 	);
 
 	return result;

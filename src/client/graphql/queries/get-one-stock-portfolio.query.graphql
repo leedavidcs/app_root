@@ -2,13 +2,7 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 	stockPortfolio(where: $where) {
 		id
 		name
-		headers {
-			name
-			dataKey
-			width
-			frozen
-			resizable
-		}
+		headers
 		tickers
 		createdAt
 		updatedAt

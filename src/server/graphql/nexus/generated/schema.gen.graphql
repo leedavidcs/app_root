@@ -49,17 +49,6 @@ specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
 scalar EmailAddress
 
-input IntFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: Int
-  notIn: [Int!]
-}
-
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -170,7 +159,7 @@ type StockPortfolio {
 
   """The data that gets resolved based on headers and tickers"""
   data: [JSONObject!]!
-  headers(after: StockPortfolioHeaderWhereUniqueInput, before: StockPortfolioHeaderWhereUniqueInput, first: Int, last: Int, skip: Int): [StockPortfolioHeader!]!
+  headers: [String!]!
   id: String!
   name: String!
   tickers: [String!]!
@@ -188,111 +177,12 @@ input StockPortfolioFilter {
   some: StockPortfolioWhereInput
 }
 
-"""A column configuration for the stock portfolio on the data grid"""
-type StockPortfolioHeader {
-  dataKey: String!
-  frozen: Boolean!
-  name: String!
-  resizable: Boolean!
-  width: Int!
-}
-
-input StockPortfolioHeaderCreateWithoutStockPortfolioInput {
-  dataKey: String!
-  frozen: Boolean
-  id: String
-  name: String!
-  resizable: Boolean
-  width: Int
-}
-
-input StockPortfolioHeaderFilter {
-  every: StockPortfolioHeaderWhereInput
-  none: StockPortfolioHeaderWhereInput
-  some: StockPortfolioHeaderWhereInput
-}
-
 input StockPortfolioHeaderInput {
   dataKey: String!
   frozen: Boolean!
   name: String!
   resizable: Boolean!
   width: Int!
-}
-
-input StockPortfolioHeaderScalarWhereInput {
-  AND: [StockPortfolioHeaderScalarWhereInput!]
-  dataKey: StringFilter
-  frozen: BooleanFilter
-  id: UUIDFilter
-  name: StringFilter
-  NOT: [StockPortfolioHeaderScalarWhereInput!]
-  OR: [StockPortfolioHeaderScalarWhereInput!]
-  resizable: BooleanFilter
-  width: IntFilter
-}
-
-input StockPortfolioHeaderUpdateManyDataInput {
-  dataKey: String
-  frozen: Boolean
-  id: String
-  name: String
-  resizable: Boolean
-  width: Int
-}
-
-input StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput {
-  connect: [StockPortfolioHeaderWhereUniqueInput!]
-  create: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]
-  delete: [StockPortfolioHeaderWhereUniqueInput!]
-  deleteMany: [StockPortfolioHeaderScalarWhereInput!]
-  disconnect: [StockPortfolioHeaderWhereUniqueInput!]
-  set: [StockPortfolioHeaderWhereUniqueInput!]
-  update: [StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput!]
-  updateMany: [StockPortfolioHeaderUpdateManyWithWhereNestedInput!]
-  upsert: [StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput!]
-}
-
-input StockPortfolioHeaderUpdateManyWithWhereNestedInput {
-  data: StockPortfolioHeaderUpdateManyDataInput!
-  where: StockPortfolioHeaderScalarWhereInput!
-}
-
-input StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput {
-  dataKey: String
-  frozen: Boolean
-  id: String
-  name: String
-  resizable: Boolean
-  width: Int
-}
-
-input StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput {
-  data: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
-  where: StockPortfolioHeaderWhereUniqueInput!
-}
-
-input StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput {
-  create: StockPortfolioHeaderCreateWithoutStockPortfolioInput!
-  update: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput!
-  where: StockPortfolioHeaderWhereUniqueInput!
-}
-
-input StockPortfolioHeaderWhereInput {
-  AND: [StockPortfolioHeaderWhereInput!]
-  dataKey: StringFilter
-  frozen: BooleanFilter
-  id: UUIDFilter
-  name: StringFilter
-  NOT: [StockPortfolioHeaderWhereInput!]
-  OR: [StockPortfolioHeaderWhereInput!]
-  resizable: BooleanFilter
-  stockPortfolio: StockPortfolioWhereInput
-  width: IntFilter
-}
-
-input StockPortfolioHeaderWhereUniqueInput {
-  id: String
 }
 
 input StockPortfolioOrderByInput {
@@ -304,19 +194,14 @@ input StockPortfolioOrderByInput {
 }
 
 input StockPortfolioUpdateInput {
-  headers: StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput
+  headers: [StockPortfolioHeaderInput!]
   name: String
-  tickers: StockPortfolioUpdatetickersInput
-}
-
-input StockPortfolioUpdatetickersInput {
-  set: [String!]
+  tickers: [String!]
 }
 
 input StockPortfolioWhereInput {
   AND: [StockPortfolioWhereInput!]
   createdAt: DateTimeFilter
-  headers: StockPortfolioHeaderFilter
   id: UUIDFilter
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
