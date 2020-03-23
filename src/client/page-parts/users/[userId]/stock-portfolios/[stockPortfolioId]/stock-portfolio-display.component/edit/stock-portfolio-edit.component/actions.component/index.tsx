@@ -5,6 +5,7 @@ import {
 	GetOneStockPortfolioQuery,
 	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
+import { onInputValueChanged } from "@/client/utils";
 import { Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
@@ -51,7 +52,14 @@ export const Actions: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
+	const [newTicker, setNewTicker] = useState<string>("");
+
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
+
+	const onAddTickerChange = useCallback(
+		onInputValueChanged((value) => setNewTicker(value)),
+		[]
+	);
 
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);
@@ -64,7 +72,12 @@ export const Actions: FC<IProps> = (props) => {
 		<>
 			<div className={classes.root}>
 				{onAddTicker && (
-					<TextInput className={classes.addTickerInput} placeholder="Add ticker">
+					<TextInput
+						className={classes.addTickerInput}
+						onChange={onAddTickerChange}
+						placeholder="Add ticker"
+						value={newTicker}
+					>
 						<Button icon="plus" />
 					</TextInput>
 				)}
