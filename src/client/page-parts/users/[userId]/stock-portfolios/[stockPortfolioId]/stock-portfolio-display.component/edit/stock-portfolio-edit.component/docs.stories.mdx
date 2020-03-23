@@ -1,3 +1,4 @@
+import { GetOneStockPortfolioMock } from "@/client/graphql/mocks/get-one-stock-portfolio.mock";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { StockPortfolioEdit } from ".";
 
@@ -16,8 +17,12 @@ able to update their stock-portfolio without incurring additional costs.
 <Props of={StockPortfolioEdit} />
 
 ## StandardStory
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
 <Preview>
 	<Story name="standard">
-		<div>Placeholder for now</div>
+		<div style={{ maxWidth: 1280 }}>
+			<StockPortfolioEdit stockPortfolio={stockPortfolio} />
+		</div>
 	</Story>
 </Preview>

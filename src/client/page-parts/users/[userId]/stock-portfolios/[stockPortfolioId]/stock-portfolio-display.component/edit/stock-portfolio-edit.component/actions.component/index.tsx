@@ -1,17 +1,20 @@
+import { TextInput } from "@/client/components";
 import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
 	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
-import { AnchorButton, Button, ButtonGroup } from "@blueprintjs/core";
-import Link from "next/link";
+import { Button, ButtonGroup, Classes } from "@blueprintjs/core";
+import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
+import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
+	onAddTicker?: (tickers?: readonly string[]) => void;
+	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
 const useOnDelete = ({ stockPortfolio }: IProps) => {
@@ -43,8 +46,10 @@ const useOnDelete = ({ stockPortfolio }: IProps) => {
 	}, [deletePortfolio, stockPortfolio]);
 };
 
-export const CreatorActions: FC<IProps> = (props) => {
-	const { className, stockPortfolio } = props;
+export const Actions: FC<IProps> = (props) => {
+	const { className, onAddTicker, stockPortfolio } = props;
+
+	const classes = useStyles();
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
@@ -53,20 +58,21 @@ export const CreatorActions: FC<IProps> = (props) => {
 
 	const onDelete = useOnDelete(props);
 
-	if (!stockPortfolio) {
-		return null;
-	}
-
-	const { id, name, user } = stockPortfolio;
+	const { name } = stockPortfolio;
 
 	return (
 		<>
-			<ButtonGroup className={className}>
-				<Link href={`/users/${user.id}/stock-portfolios/${id}/edit`} passHref={true}>
-					<AnchorButton icon="edit" text="Edit" />
-				</Link>
-				<Button icon="trash" onClick={onBtnDelete} text="Delete" />
-			</ButtonGroup>
+			<div className={classes.root}>
+				{onAddTicker && (
+					<TextInput className={classes.addTickerInput} placeholder="Add ticker">
+						<Button icon="plus" />
+					</TextInput>
+				)}
+				<ButtonGroup className={classnames(Classes.DARK, className)}>
+					<Button icon="saved" text="Save" type="submit" />
+					<Button icon="trash" onClick={onBtnDelete} text="Delete" />
+				</ButtonGroup>
+			</div>
 			<Alert
 				cancelButtonText="Cancel"
 				confirmButtonText="Delete"

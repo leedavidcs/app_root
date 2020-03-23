@@ -1,10 +1,11 @@
-import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
+import { ControlGroup, FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
 
 import React, {
 	CSSProperties,
 	FC,
 	FormEventHandler,
 	KeyboardEventHandler,
+	ReactElement,
 	useCallback,
 	useMemo
 } from "react";
@@ -12,6 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
+	children?: ReactElement;
 	className?: string;
 	control?: ReturnType<typeof useForm>["control"];
 	defaultValue?: string;
@@ -32,6 +34,7 @@ interface IProps {
 
 export const TextInput: FC<IProps> = (props) => {
 	const {
+		children,
 		className,
 		control: _control,
 		defaultValue,
@@ -95,7 +98,10 @@ export const TextInput: FC<IProps> = (props) => {
 			intent={intent}
 			style={style}
 		>
-			{_control ? getAsController(_control) : getAsInput()}
+			<ControlGroup>
+				{_control ? getAsController(_control) : getAsInput()}
+				{children}
+			</ControlGroup>
 		</FormGroup>
 	);
 };

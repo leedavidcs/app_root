@@ -3,25 +3,15 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		width: "100%",
-		color: theme.onBackground
-	},
-	portfolioName: {
-		textAlign: "center"
-	},
-	portfolioContainer: {
-		height: 500
-	},
-	portfolioFooter: {
-		marginTop: 20,
 		display: "flex"
 	},
-	createdBy: {
+	addTickerInput: {
 		flexGrow: 1,
-		paddingLeft: 20
-	},
-	lastUpdated: {
-		paddingRight: 20
+		margin: 0,
+
+		"& .bp3-input-group": {
+			width: 100
+		}
 	}
 });
 
