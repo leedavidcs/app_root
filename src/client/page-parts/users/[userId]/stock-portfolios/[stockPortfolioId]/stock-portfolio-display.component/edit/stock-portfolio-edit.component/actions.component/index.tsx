@@ -13,7 +13,7 @@ import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	onAddTicker?: (tickers?: readonly string[]) => void;
+	onAddTicker?: (ticker: string) => void;
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 

@@ -72,12 +72,6 @@ const useHeaders = (
 	return [headers, setHeaders];
 };
 
-const useData = ({ stockPortfolio }: IProps) => {
-	return useState<readonly Record<string, any>[]>(
-		stockPortfolio.tickers.map((ticker) => ({ ticker }))
-	);
-};
-
 const useFormSubmitHandler = (handleSubmit: FormContextValues<IFormData>["handleSubmit"]) => {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -96,20 +90,29 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
+	const [tickers, setTickers] = useState<readonly string[]>(stockPortfolio.tickers);
+	const [data, setData] = useState<readonly Record<string, any>[]>(
+		tickers.map((ticker) => ({ ticker }))
+	);
+
+	useEffect(() => setData(tickers.map((ticker) => ({ ticker }))), [tickers]);
+
 	const { control, errors, handleSubmit } = useForm<IFormData>({ validationSchema });
 	const { errorMessage, onFormSubmit } = useFormSubmitHandler(handleSubmit);
 
 	const optionsResult = useOptions();
 	const [headers, setHeaders] = useHeaders(props, optionsResult.options);
-	const [data, setData] = useData(props);
-
 	const { name, updatedAt, user } = stockPortfolio;
+
+	const onAddTicker = useCallback((newTicker: string) => setTickers([...tickers, newTicker]), [
+		tickers
+	]);
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<form onSubmit={onFormSubmit}>
 				<div>
-					<Actions onAddTicker={() => undefined} stockPortfolio={stockPortfolio} />
+					<Actions onAddTicker={onAddTicker} stockPortfolio={stockPortfolio} />
 				</div>
 				<h2 className={classes.portfolioName}>
 					<EditableText
