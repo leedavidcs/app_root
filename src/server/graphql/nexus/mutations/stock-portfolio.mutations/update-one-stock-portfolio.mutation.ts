@@ -12,14 +12,8 @@ export const StockPortfolioUpdateInput = inputObjectType({
 export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", {
 	type: "StockPortfolio",
 	args: {
-		data: arg({
-			type: "StockPortfolioUpdateInput",
-			nullable: false
-		}),
-		where: arg({
-			type: "StockPortfolioWhereUniqueInput",
-			nullable: false
-		})
+		data: arg({ type: "StockPortfolioUpdateInput", nullable: false }),
+		where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 	},
 	authorize: async (parent, { where }, { prisma, user }) => {
 		const stockPortfolio = await prisma.stockPortfolio.findOne({

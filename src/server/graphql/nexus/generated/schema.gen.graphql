@@ -159,7 +159,7 @@ type StockPortfolio {
 
   """The data that gets resolved based on headers and tickers"""
   data: [JSONObject!]!
-  headers: [String!]!
+  headers: [StockPortfolioHeader!]!
   id: String!
   name: String!
   tickers: [String!]!
@@ -175,6 +175,14 @@ input StockPortfolioFilter {
   every: StockPortfolioWhereInput
   none: StockPortfolioWhereInput
   some: StockPortfolioWhereInput
+}
+
+type StockPortfolioHeader {
+  dataKey: String!
+  frozen: Boolean!
+  name: String!
+  resizable: Boolean!
+  width: Int!
 }
 
 input StockPortfolioHeaderInput {

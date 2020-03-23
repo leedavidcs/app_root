@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 22nd 2020 9:16:01 pm
+// This file was generated on: Mar 23rd 2020 1:54:13 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -194,7 +194,7 @@ export type StockPortfolio = {
   id: Scalars['String'];
   user: User;
   name: Scalars['String'];
-  headers: Array<Scalars['String']>;
+  headers: Array<StockPortfolioHeader>;
   tickers: Array<Scalars['String']>;
   data: Array<Scalars['JSONObject']>;
   createdAt: Scalars['DateTime'];
@@ -209,6 +209,15 @@ export type StockPortfolioFilter = {
   every?: Maybe<StockPortfolioWhereInput>;
   some?: Maybe<StockPortfolioWhereInput>;
   none?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type StockPortfolioHeader = {
+   __typename?: 'StockPortfolioHeader';
+  name: Scalars['String'];
+  dataKey: Scalars['String'];
+  frozen: Scalars['Boolean'];
+  resizable: Scalars['Boolean'];
+  width: Scalars['Int'];
 };
 
 export type StockPortfolioHeaderInput = {
@@ -494,8 +503,11 @@ export type GetOneStockPortfolioQuery = (
   { __typename?: 'Query' }
   & { stockPortfolio?: Maybe<(
     { __typename?: 'StockPortfolio' }
-    & Pick<StockPortfolio, 'id' | 'name' | 'headers' | 'tickers' | 'createdAt' | 'updatedAt'>
-    & { user: (
+    & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
+    & { headers: Array<(
+      { __typename?: 'StockPortfolioHeader' }
+      & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
+    )>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -952,7 +964,13 @@ export const GetOneStockPortfolioDocument = gql`
   stockPortfolio(where: $where) {
     id
     name
-    headers
+    headers {
+      name
+      dataKey
+      frozen
+      resizable
+      width
+    }
     tickers
     createdAt
     updatedAt

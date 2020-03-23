@@ -156,11 +156,17 @@ export interface NexusGenRootTypes {
   }
   StockPortfolio: { // root type
     createdAt: any; // DateTime!
-    headers: string[]; // [String!]!
     id: string; // String!
     name: string; // String!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
+  }
+  StockPortfolioHeader: { // root type
+    dataKey: string; // String!
+    frozen: boolean; // Boolean!
+    name: string; // String!
+    resizable: boolean; // Boolean!
+    width: number; // Int!
   }
   TokenPayload: { // root type
     refreshToken: string; // String!
@@ -244,12 +250,19 @@ export interface NexusGenFieldTypes {
   StockPortfolio: { // field return type
     createdAt: any; // DateTime!
     data: any[]; // [JSONObject!]!
-    headers: string[]; // [String!]!
+    headers: NexusGenRootTypes['StockPortfolioHeader'][]; // [StockPortfolioHeader!]!
     id: string; // String!
     name: string; // String!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
     user: NexusGenRootTypes['User']; // User!
+  }
+  StockPortfolioHeader: { // field return type
+    dataKey: string; // String!
+    frozen: boolean; // Boolean!
+    name: string; // String!
+    resizable: boolean; // Boolean!
+    width: number; // Int!
   }
   TokenPayload: { // field return type
     refreshToken: string; // String!
@@ -326,7 +339,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "TokenPayload" | "User";
+export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
 export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput" | "UserWhereInput";
 
