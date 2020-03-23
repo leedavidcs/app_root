@@ -1,0 +1,18 @@
+mutation UpdateOneStockPortfolio(
+	$id: String!
+	$name: String
+	$tickers: [String!] = []
+	$headers: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]
+) {
+	updateOneStockPortfolio(
+		data: {
+			name: $name,
+			tickers: { set: $tickers },
+			headers: { create: $headers }
+		}
+		where: { id: $id }
+	) {
+		id
+		name
+	}
+}

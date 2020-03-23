@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 20th 2020 10:12:48 pm
+// This file was generated on: Mar 22nd 2020 7:07:32 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -552,6 +552,22 @@ export type ToggleModalMutation = (
   & Pick<Mutation, 'toggleModal'>
 );
 
+export type UpdateOneStockPortfolioMutationVariables = {
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  tickers?: Maybe<Array<Scalars['String']>>;
+  headers?: Maybe<Array<StockPortfolioHeaderCreateWithoutStockPortfolioInput>>;
+};
+
+
+export type UpdateOneStockPortfolioMutation = (
+  { __typename?: 'Mutation' }
+  & { updateOneStockPortfolio?: Maybe<(
+    { __typename?: 'StockPortfolio' }
+    & Pick<StockPortfolio, 'id' | 'name'>
+  )> }
+);
+
 export type GetDataKeyOptionsQueryVariables = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
@@ -914,6 +930,42 @@ export function useToggleModalMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type ToggleModalMutationHookResult = ReturnType<typeof useToggleModalMutation>;
 export type ToggleModalMutationResult = ApolloReactCommon.MutationResult<ToggleModalMutation>;
 export type ToggleModalMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleModalMutation, ToggleModalMutationVariables>;
+export const UpdateOneStockPortfolioDocument = gql`
+    mutation UpdateOneStockPortfolio($id: String!, $name: String, $tickers: [String!] = [], $headers: [StockPortfolioHeaderCreateWithoutStockPortfolioInput!]) {
+  updateOneStockPortfolio(data: {name: $name, tickers: {set: $tickers}, headers: {create: $headers}}, where: {id: $id}) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateOneStockPortfolioMutationFn = ApolloReactCommon.MutationFunction<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
+
+/**
+ * __useUpdateOneStockPortfolioMutation__
+ *
+ * To run a mutation, you first call `useUpdateOneStockPortfolioMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOneStockPortfolioMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOneStockPortfolioMutation, { data, loading, error }] = useUpdateOneStockPortfolioMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      tickers: // value for 'tickers'
+ *      headers: // value for 'headers'
+ *   },
+ * });
+ */
+export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>(UpdateOneStockPortfolioDocument, baseOptions);
+      }
+export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
+export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
+export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
 export const GetDataKeyOptionsDocument = gql`
     query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
