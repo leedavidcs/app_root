@@ -115,15 +115,10 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<div className={classes.btnContainer}>
-				{isCreator && (
-					<CreatorActions
-						className={classes.creatorActions}
-						stockPortfolio={stockPortfolio}
-					/>
-				)}
-				<ButtonGroup>
+				<ButtonGroup className={classes.refreshAction}>
 					<Button icon="refresh" onClick={dataActions.getData} text="Refresh" />
 				</ButtonGroup>
+				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
 			</div>
 			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
