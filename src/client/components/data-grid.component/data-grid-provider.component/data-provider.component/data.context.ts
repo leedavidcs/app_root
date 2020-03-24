@@ -1,15 +1,13 @@
-import { Context, createContext } from "react";
-
-export type DataValue = number | string | null;
+import { Context, createContext, FC } from "react";
 
 interface IDataContextProps {
-	data: readonly { [key: string]: DataValue }[];
-	onDataChange: (data: readonly { [key: string]: DataValue }[]) => void;
+	data: readonly Record<string, any>[];
+	onDataChange?: (data: readonly Record<string, any>[]) => void;
+	onRowContextMenu?: FC<Record<string, any>>;
 }
 
 export const DataContext: Context<IDataContextProps> = createContext<IDataContextProps>({
-	data: [],
-	onDataChange: () => undefined
+	data: []
 });
 
 DataContext.displayName = "DataContext";

@@ -28,9 +28,9 @@ export interface IHeaderConfig extends IHeaderOption {
 	width: number;
 }
 
-interface IProps {
+export interface IDataGridProps<T extends Record<string, any>> {
 	/** Entities array */
-	data: readonly Record<string, any>[];
+	data: readonly T[];
 	/** Column data is: `data[headers[i].value]` */
 	headers: readonly IHeaderConfig[];
 	/** The number of rows (data) in this data-grid */
@@ -40,13 +40,13 @@ interface IProps {
 	 *
 	 * @default (index: number) => index.toString()
 	 */
-	itemKey?: (index: number, data: readonly Record<string, any>[]) => string;
+	itemKey?: (index: number, data: readonly T[]) => string;
 	/**
 	 * `data` is a controlled property, to be set externally through `onDataChange`
 	 *
 	 * @default () => undefined
 	 */
-	onDataChange?: (data: readonly Record<string, any>[]) => void;
+	onDataChange?: (data: readonly T[]) => void;
 	/**
 	 * `headers` is a controlled property, to be set externally through `onHeadersChange`
 	 *
@@ -55,45 +55,64 @@ interface IProps {
 	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
 	/** See `onItemsRendered` (https://react-window.now.sh/#/api/FixedSizeList) */
 	onItemsRendered?: (props: ListOnItemsRenderedProps) => void;
+	/** Render a context menu when a row is right-clicked, using the data from the row */
+	onRowContextMenu?: FC<T>;
 }
 
-export const DataGrid: FC<IProps> = memo(
-	({
-		data,
-		headers,
-		itemCount: _itemCount,
-		itemKey = (index: number) => index.toString(),
-		onDataChange = () => undefined,
-		onHeadersChange = () => undefined,
-		onItemsRendered
-	}) => {
-		const itemCount = typeof _itemCount === "number" ? _itemCount : data.length;
+interface IWithStaticExports {
+	asTyped: <T extends Record<string, any>>() => FC<IDataGridProps<T>>;
+}
 
-		return (
-			<DataGridProvider
-				data={data}
-				onDataChange={onDataChange}
-				headers={headers}
-				onHeadersChange={onHeadersChange}
-			>
-				{({ height, width }) => (
-					<FixedSizeList
-						height={height}
-						width={width}
-						itemCount={itemCount}
-						itemData={data}
-						itemKey={itemKey}
-						itemSize={DEFAULT_ROW_HEIGHT}
-						innerElementType={InnerElement}
-						onItemsRendered={onItemsRendered}
-						outerElementType={OuterElement}
-					>
-						{DataRow}
-					</FixedSizeList>
-				)}
-			</DataGridProvider>
-		);
-	}
-);
+const asTyped = <T extends Record<string, any>>() => {
+	const component: FC<IDataGridProps<T>> = memo(
+		({
+			data,
+			headers,
+			itemCount: _itemCount,
+			itemKey = (index: number) => index.toString(),
+			onDataChange,
+			onHeadersChange,
+			onItemsRendered,
+			onRowContextMenu
+		}) => {
+			const itemCount = typeof _itemCount === "number" ? _itemCount : data.length;
 
-DataGrid.displayName = "DataGrid";
+			return (
+				<DataGridProvider
+					data={data}
+					onDataChange={onDataChange as (data: readonly Record<string, any>[]) => void}
+					headers={headers}
+					onHeadersChange={onHeadersChange}
+					onRowContextMenu={onRowContextMenu as FC<Record<string, any>>}
+				>
+					{({ height, width }) => (
+						<FixedSizeList
+							height={height}
+							width={width}
+							itemCount={itemCount}
+							itemData={data}
+							itemKey={itemKey}
+							itemSize={DEFAULT_ROW_HEIGHT}
+							innerElementType={InnerElement}
+							onItemsRendered={onItemsRendered}
+							outerElementType={OuterElement}
+						>
+							{DataRow}
+						</FixedSizeList>
+					)}
+				</DataGridProvider>
+			);
+		}
+	);
+
+	component.displayName = "TypedDataGrid";
+
+	return component;
+};
+
+const _DataGrid: FC<IDataGridProps<Record<string, any>>> = asTyped<Record<string, any>>();
+_DataGrid.displayName = "DataGrid";
+
+(_DataGrid as FC<IDataGridProps<Record<string, any>>> & IWithStaticExports).asTyped = asTyped;
+
+export const DataGrid = _DataGrid as FC<IDataGridProps<Record<string, any>>> & IWithStaticExports;

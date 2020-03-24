@@ -9,7 +9,7 @@ export * from "./headers.context";
 interface IProps {
 	children: ReactNode;
 	headers: readonly IHeaderConfig[];
-	onHeadersChange: (headers: readonly IHeaderConfig[]) => void;
+	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
 }
 
 export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersChange }) => {
@@ -23,7 +23,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 				newIndex
 			);
 
-			onHeadersChange(sortedHeaders);
+			onHeadersChange?.(sortedHeaders);
 		},
 		[headers, onHeadersChange]
 	);
@@ -53,7 +53,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 			);
 			const newHeaders: readonly IHeaderConfig[] = arrayMove(withUpdate, index, toMoveIndex);
 
-			onHeadersChange(newHeaders);
+			onHeadersChange?.(newHeaders);
 		},
 		[headers, onHeadersChange]
 	);
@@ -67,7 +67,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 				updatedHeader
 			);
 
-			onHeadersChange(newHeaders);
+			onHeadersChange?.(newHeaders);
 		},
 		[headers, onHeadersChange]
 	);
@@ -81,7 +81,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 				updatedHeader
 			);
 
-			onHeadersChange(newHeaders);
+			onHeadersChange?.(newHeaders);
 		},
 		[headers, onHeadersChange]
 	);
@@ -95,7 +95,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 				updatedHeader
 			);
 
-			onHeadersChange(newHeaders);
+			onHeadersChange?.(newHeaders);
 		},
 		[headers, onHeadersChange]
 	);

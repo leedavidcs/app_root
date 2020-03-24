@@ -12,7 +12,7 @@ type UseContextMenuResult<T> = readonly [
 ];
 
 export const useContextMenu = <T extends Element>(
-	content: ReactElement,
+	content: Maybe<ReactElement>,
 	options?: IOptions
 ): UseContextMenuResult<T> => {
 	const { onOpen, onClose } = options || {};
@@ -22,6 +22,10 @@ export const useContextMenu = <T extends Element>(
 	const onContextMenu = useCallback(
 		(event: MouseEvent<T>) => {
 			event.preventDefault();
+
+			if (!content) {
+				return;
+			}
 
 			ContextMenu.show(content, { left: event.clientX, top: event.clientY }, () => {
 				onClose?.();

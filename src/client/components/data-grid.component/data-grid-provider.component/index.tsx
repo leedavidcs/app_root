@@ -2,7 +2,7 @@ import { IHeaderConfig } from "@/client/components/data-grid.component";
 import React, { FC, memo, ReactNode } from "react";
 import { Size } from "react-virtualized-auto-sizer";
 import { AutoSizerProvider } from "./auto-sizer-provider.component";
-import { DataProvider, DataValue } from "./data-provider.component";
+import { DataProvider } from "./data-provider.component";
 import { HeadersProvider } from "./headers-provider.component";
 import { ScrollProvider } from "./scroll-provider.component";
 
@@ -13,10 +13,11 @@ export * from "./scroll-provider.component";
 
 interface IProps {
 	children: (size: Size) => ReactNode;
-	data: readonly { [key: string]: DataValue }[];
+	data: readonly Record<string, any>[];
 	headers: readonly IHeaderConfig[];
-	onDataChange: (data: readonly { [key: string]: DataValue }[]) => void;
-	onHeadersChange: (headers: readonly IHeaderConfig[]) => void;
+	onDataChange?: (data: readonly Record<string, any>[]) => void;
+	onRowContextMenu?: FC<Record<string, any>>;
+	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
 }
 
 /**
@@ -25,9 +26,13 @@ interface IProps {
  *     directly
  */
 export const DataGridProvider: FC<IProps> = memo(
-	({ children, data, onDataChange, headers, onHeadersChange }) => {
+	({ children, data, onDataChange, headers, onHeadersChange, onRowContextMenu }) => {
 		return (
-			<DataProvider data={data} onDataChange={onDataChange}>
+			<DataProvider
+				data={data}
+				onDataChange={onDataChange}
+				onRowContextMenu={onRowContextMenu}
+			>
 				<HeadersProvider headers={headers} onHeadersChange={onHeadersChange}>
 					<ScrollProvider>
 						<AutoSizerProvider>{children}</AutoSizerProvider>

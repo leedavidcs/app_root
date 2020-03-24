@@ -1,10 +1,11 @@
 import {
-	DataValue,
+	DataContext,
 	HeadersContext,
 	IHeaderConfig,
 	ScrollContext,
 	SelectedCellContext
 } from "@/client/components/data-grid.component";
+import { useContextMenu } from "@/client/hooks";
 import classnames from "classnames";
 import { takeRightWhile, takeWhile } from "lodash";
 import React, { CSSProperties, ReactElement, useCallback, useContext, useMemo } from "react";
@@ -13,7 +14,7 @@ import { DataCell } from "./data-cell.component";
 import { useStyles } from "./styles";
 
 interface IProps {
-	data: readonly { [key: string]: DataValue }[];
+	data: readonly Record<string, any>[];
 	rowIndex: number;
 	style: CSSProperties;
 }
@@ -25,10 +26,18 @@ export const SortableDataRow = SortableElement<IProps>((props: IProps) => {
 
 	const classes = useStyles({ xOffset });
 
+	const { onRowContextMenu } = useContext(DataContext);
 	const { headers } = useContext(HeadersContext);
 	const { setSelectedCell } = useContext(SelectedCellContext);
 
-	const rowData: { [key: string]: DataValue } = data[rowIndex];
+	const rowData: Record<string, any> = data[rowIndex];
+
+	const contextMenu: Maybe<ReactElement> = useMemo(() => onRowContextMenu?.(rowData), [
+		onRowContextMenu,
+		rowData
+	]);
+
+	const [onContextMenu] = useContextMenu(contextMenu);
 
 	const onClick = useCallback(
 		(_, location: { x: number; y: number }) => setSelectedCell(location),
@@ -41,7 +50,7 @@ export const SortableDataRow = SortableElement<IProps>((props: IProps) => {
 				const { value, width } = header;
 				const adjIndex: number = i + offset;
 
-				const cellData: DataValue = rowData[value];
+				const cellData = rowData[value];
 
 				return (
 					<DataCell
@@ -71,7 +80,11 @@ export const SortableDataRow = SortableElement<IProps>((props: IProps) => {
 	const isEven: boolean = rowIndex % 2 === 0;
 
 	return (
-		<div className={classnames(classes.root, { [classes.evenRow]: isEven })} style={style}>
+		<div
+			className={classnames(classes.root, { [classes.evenRow]: isEven })}
+			onContextMenu={onContextMenu}
+			style={style}
+		>
 			<div className={classes.frozenPanel}>{frozenCells}</div>
 			{unfrozenCells}
 		</div>

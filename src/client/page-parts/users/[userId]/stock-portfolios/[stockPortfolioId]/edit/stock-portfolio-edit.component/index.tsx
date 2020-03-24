@@ -30,9 +30,17 @@ type UseHeadersResult = [
 ];
 
 type UseDataResult = [
-	{ data: readonly Record<string, any>[]; tickers: readonly string[] },
-	{ addTicker: (ticker: string) => void; setData: (data: readonly Record<string, any>[]) => void }
+	{ data: readonly IStockPortfolioEditData[]; tickers: readonly string[] },
+	{
+		addTicker: (ticker: string) => void;
+		setData: (data: readonly IStockPortfolioEditData[]) => void;
+	}
 ];
+
+interface IStockPortfolioEditData {
+	ticker: string;
+	[key: string]: any;
+}
 
 const validationSchema = () => ({ name: string().min(1) });
 const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
@@ -88,6 +96,7 @@ const useHeaders = (
 		_setGridHeaders(newGridHeaders);
 	}, []);
 
+	/** Re-render, whenever gridHeader options are changed */
 	useEffect(() => {
 		gridHeaders.forEach((gridHeader) => {
 			if (gridHeader.value !== "ticker") {
@@ -110,7 +119,7 @@ const useHeaders = (
 
 const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 	const [tickers, setTickers] = useState<readonly string[]>(stockPortfolio.tickers);
-	const [data, _setData] = useState<readonly Record<string, any>[]>(
+	const [data, _setData] = useState<readonly IStockPortfolioEditData[]>(
 		tickers.map((ticker) => ({ ticker }))
 	);
 
@@ -124,7 +133,7 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 		[tickers]
 	);
 
-	const setData = useCallback((newData: readonly Record<string, any>[]) => {
+	const setData = useCallback((newData: readonly IStockPortfolioEditData[]) => {
 		const newTickers: readonly string[] = newData
 			.map(({ ticker }) => ticker)
 			.filter((ticker) => !ticker);
@@ -164,6 +173,8 @@ const useFormSubmitHandler = (
 
 	return useMemo(() => ({ errorMessage, onFormSubmit }), [errorMessage, onFormSubmit]);
 };
+
+const TypedDataGrid = DataGrid.asTyped<IStockPortfolioEditData>();
 
 export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 	const { stockPortfolio } = props;
@@ -208,11 +219,12 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 					{!optionsResult.loaded ? (
 						<NonIdealState icon={<Spinner />} title="Loading..." />
 					) : (
-						<DataGrid
+						<TypedDataGrid
 							data={dataStates.data}
 							headers={headerStates.gridHeaders}
 							onDataChange={dataActions.setData}
 							onHeadersChange={headerActions.setGridHeaders}
+							onRowContextMenu={({ ticker }) => <div>{ticker}</div>}
 						/>
 					)}
 				</Paper>
