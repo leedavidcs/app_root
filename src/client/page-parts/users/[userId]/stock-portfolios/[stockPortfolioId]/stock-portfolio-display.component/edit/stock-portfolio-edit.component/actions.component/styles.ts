@@ -10,7 +10,7 @@ const styles = (theme: CustomTheme) => ({
 		margin: 0,
 
 		"& .bp3-input-group": {
-			width: 100
+			maxWidth: 100
 		}
 	}
 });
