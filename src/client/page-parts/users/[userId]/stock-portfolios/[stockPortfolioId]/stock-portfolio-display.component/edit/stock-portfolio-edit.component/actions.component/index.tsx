@@ -60,6 +60,11 @@ export const Actions: FC<IProps> = (props) => {
 		onInputValueChanged((value) => setNewTicker(value)),
 		[]
 	);
+	const onAddTickerBtn = useCallback(() => {
+		onAddTicker?.(newTicker);
+
+		setNewTicker("");
+	}, [newTicker, onAddTicker]);
 
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);
@@ -78,7 +83,7 @@ export const Actions: FC<IProps> = (props) => {
 						placeholder="Add ticker"
 						value={newTicker}
 					>
-						<Button icon="plus" />
+						<Button icon="plus" onClick={onAddTickerBtn} />
 					</TextInput>
 				)}
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
