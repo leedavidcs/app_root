@@ -50,7 +50,7 @@ const useStockPortfolioHeaders = ({
 	return [headers, setHeaders];
 };
 
-const useData = (tickers: string[], headers: readonly IHeaderConfig[]): UseDataResult => {
+const useData = (tickers: readonly string[], headers: readonly IHeaderConfig[]): UseDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
 	const [getStockData, result] = useGetStockDataLazyQuery();
 
