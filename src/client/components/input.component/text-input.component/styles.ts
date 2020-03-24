@@ -2,6 +2,11 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
+	root: {
+		"& .bp3-input-group": {
+			flexGrow: 1
+		}
+	},
 	input: {
 		backgroundColor: theme.code,
 

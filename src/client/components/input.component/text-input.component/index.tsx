@@ -1,5 +1,5 @@
 import { ControlGroup, FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
-
+import classnames from "classnames";
 import React, {
 	CSSProperties,
 	FC,
@@ -89,7 +89,7 @@ export const TextInput: FC<IProps> = (props) => {
 
 	return (
 		<FormGroup
-			className={className}
+			className={classnames(classes.root, className)}
 			disabled={disabled}
 			helperText={error}
 			inline={inline}
