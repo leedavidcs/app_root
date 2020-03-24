@@ -12,10 +12,9 @@ import { CreatorActions } from "./creator-actions.component";
 import { useStyles } from "./styles";
 
 interface IProps {
-	loading: boolean;
 	onDelete?: () => void;
 	onEdit?: () => void;
-	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
+	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
 type UseDataResult = [
@@ -39,7 +38,7 @@ const useStockPortfolioHeaders = ({
 }: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
 	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
 		...baseHeaders,
-		...(stockPortfolio?.headers ?? []).map(({ name, dataKey, ...headerProps }) => ({
+		...stockPortfolio.headers.map(({ name, dataKey, ...headerProps }) => ({
 			label: name,
 			value: dataKey,
 			...headerProps,
@@ -85,29 +84,24 @@ const useData = (tickers: readonly string[], headers: readonly IHeaderConfig[]):
 const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 	const [, { user }] = useSetUser();
 
-	const isCreator = Boolean(user && stockPortfolio && user.id === stockPortfolio.user.id);
+	const isCreator = user?.id === stockPortfolio.user.id;
 
 	return isCreator;
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
-	const { loading, stockPortfolio } = props;
+	const { stockPortfolio } = props;
 
 	const classes = useStyles();
 
-	const tickers = stockPortfolio?.tickers ?? [];
+	const { name, tickers, updatedAt, user } = stockPortfolio;
 
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
 	const [dataActions, dataResult] = useData(tickers, headers);
 
 	const isCreator: boolean = useIsCreator(props);
 
-	if (loading || !stockPortfolio) {
-		return <p>loading...</p>;
-	}
-
 	const data = dataResult.data;
-	const { name, updatedAt, user } = stockPortfolio;
 	const createdBy: string = user.username;
 
 	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
