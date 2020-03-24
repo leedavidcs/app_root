@@ -4,8 +4,6 @@ import React, { FC, memo, useCallback, useContext, useMemo } from "react";
 import { DragHandle } from "./drag-handle.component";
 import { useStyles } from "./styles";
 
-const EVEN = 2;
-
 interface IProps {
 	columnIndex: number;
 	onClick: (value: DataValue, location: { x: number; y: number }) => void;
@@ -20,7 +18,6 @@ export const DataCell: FC<IProps> = memo(
 
 		const { selectedCell } = useContext(SelectedCellContext);
 
-		const isEvenRow: boolean = rowIndex % EVEN === 0;
 		const isFirstColumn: boolean = columnIndex === 0;
 
 		const isSelected: boolean = useMemo(() => {
@@ -47,7 +44,6 @@ export const DataCell: FC<IProps> = memo(
 			<div
 				className={classnames(classes.root, {
 					[classes.selected]: isSelected,
-					[classes.evenRow]: isEvenRow,
 					[classes.firstColumn]: isFirstColumn
 				})}
 				onClick={onClick}

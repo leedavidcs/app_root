@@ -7,7 +7,7 @@ const styles = (theme: CustomTheme) => ({
 		alignItems: "center",
 		boxSizing: "border-box",
 		height: "100%",
-		backgroundColor: theme.gridOdd,
+		backgroundColor: "transparent",
 		color: theme.onSurface,
 		whiteSpace: "nowrap",
 		overflow: "hidden",
@@ -20,9 +20,6 @@ const styles = (theme: CustomTheme) => ({
 			width: 1
 		},
 		zIndex: getZIndex("data-grid-selected-cell")
-	},
-	evenRow: {
-		backgroundColor: theme.gridEven
 	},
 	firstColumn: {
 		paddingLeft: 0
