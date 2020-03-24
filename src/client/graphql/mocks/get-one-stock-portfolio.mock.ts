@@ -44,7 +44,7 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 			stockPortfolio: {
 				id: Faker.random.uuid(),
 				name: Faker.name.findName(),
-				headers: uniqueMockHeaders.map((header) => JSON.stringify(header)),
+				headers: uniqueMockHeaders,
 				tickers: mockTickers,
 				createdAt: Faker.date.past().toDateString(),
 				updatedAt: Faker.date.recent().toDateString(),
