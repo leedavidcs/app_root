@@ -1,4 +1,4 @@
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { breakpoints, CustomTheme, getZIndex } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -10,7 +10,8 @@ const styles = (theme: CustomTheme) => ({
 			backgroundColor: theme.background
 		},
 		".bp3-overlay-backdrop": {
-			backgroundColor: [theme.backdrop, "!important"]
+			backgroundColor: [theme.backdrop, "!important"],
+			zIndex: getZIndex("backdrop")
 		}
 	},
 	root: {

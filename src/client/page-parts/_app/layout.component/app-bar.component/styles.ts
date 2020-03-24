@@ -1,11 +1,12 @@
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { breakpoints, CustomTheme, getZIndex } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
 		backgroundColor: theme.surface,
 		color: theme.onSurface,
-		height: 56
+		height: 56,
+		zIndex: getZIndex("app-bar")
 	},
 	group: {
 		width: "100%",
