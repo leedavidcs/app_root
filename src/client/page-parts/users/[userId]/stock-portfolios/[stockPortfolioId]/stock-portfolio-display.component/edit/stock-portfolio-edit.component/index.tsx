@@ -4,10 +4,11 @@ import {
 	UpdateOneStockPortfolioMutationVariables,
 	useGetDataKeyOptionsQuery
 } from "@/client/graphql";
+import { getYupValidationResolver } from "@/client/utils";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
-import { FormContextValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { string } from "yup";
 import { Actions } from "./actions.component";
 import { useStyles } from "./styles";
@@ -17,10 +18,7 @@ interface IProps {
 }
 
 interface IFormData {
-	id: string;
-	headers: StockPortfolioHeaders;
 	name: string;
-	tickers: readonly string[];
 }
 
 type StockPortfolioHeaders = IProps["stockPortfolio"]["headers"];
@@ -35,7 +33,8 @@ type UseDataResult = [
 	{ addTicker: (ticker: string) => void; setData: (data: readonly Record<string, any>[]) => void }
 ];
 
-const validationSchema = () => ({ name: string().required("Name is required").min(1) });
+const validationSchema = () => ({ name: string().min(1) });
+const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
 
 const useOptions = (): { loaded: boolean; options: readonly IHeaderOption[] } => {
 	const { called, data, loading } = useGetDataKeyOptionsQuery();
@@ -139,20 +138,23 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 	return result;
 };
 
-const useFormSubmitHandler = (handleSubmit: FormContextValues<IFormData>["handleSubmit"]) => {
+const useFormSubmitHandler = (
+	values: Pick<UpdateOneStockPortfolioMutationVariables, "headers" | "id" | "tickers">
+) => {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 	const onFormSubmit = useCallback(
-		handleSubmit((data: IFormData) => {
-			const variables: UpdateOneStockPortfolioMutationVariables = data;
+		(data: IFormData) => {
+			const variables: UpdateOneStockPortfolioMutationVariables = { ...data, ...values };
 
 			console.log(variables);
 
 			setErrorMessage("Not yet implemented");
-		}),
-		[handleSubmit, setErrorMessage]
+		},
+		[values]
 	);
 
-	return { errorMessage, onFormSubmit };
+	return useMemo(() => ({ errorMessage, onFormSubmit }), [errorMessage, onFormSubmit]);
 };
 
 export const StockPortfolioEdit: FC<IProps> = memo((props) => {
@@ -160,25 +162,29 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
-	const { control, errors, handleSubmit, setValue } = useForm<IFormData>({ validationSchema });
-
-	const { errorMessage, onFormSubmit } = useFormSubmitHandler(handleSubmit);
-
+	const { control, errors, handleSubmit } = useForm<IFormData>({
+		validationResolver
+	});
 	const optionsResult = useOptions();
 	const [headerStates, headerActions] = useHeaders(props, optionsResult.options);
 	const [dataStates, dataActions] = useData(props);
 
-	useEffect(() => {
-		setValue("id", stockPortfolio.id);
-		setValue("tickers", dataStates.tickers);
-		setValue("headers", headerStates.headers);
-	}, [dataStates.tickers, headerStates.headers, setValue, stockPortfolio.id]);
+	const values = useMemo(
+		() => ({
+			id: stockPortfolio.id,
+			tickers: dataStates.tickers,
+			headers: headerStates.headers
+		}),
+		[dataStates.tickers, headerStates.headers, stockPortfolio.id]
+	);
+
+	const { errorMessage, onFormSubmit } = useFormSubmitHandler(values);
 
 	const { name, updatedAt, user } = stockPortfolio;
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
-			<form onSubmit={onFormSubmit}>
+			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div>
 					<Actions onAddTicker={dataActions.addTicker} stockPortfolio={stockPortfolio} />
 				</div>
