@@ -42,7 +42,7 @@ Page.getInitialProps = async ({ apolloClient, query, user }) => {
 		return { errorCode: HttpStatus.NOT_FOUND };
 	}
 
-	const isCreator: boolean = user?.id === stockPortfolio.id;
+	const isCreator: boolean = user?.id === stockPortfolio.user.id;
 
 	if (!isCreator) {
 		return { errorCode: HttpStatus.FORBIDDEN };
