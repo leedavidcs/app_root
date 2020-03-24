@@ -1,5 +1,9 @@
 import { DataGrid, EditableText, IHeaderConfig, IHeaderOption, Paper } from "@/client/components";
-import { GetOneStockPortfolioQuery, useGetDataKeyOptionsQuery } from "@/client/graphql";
+import {
+	GetOneStockPortfolioQuery,
+	UpdateOneStockPortfolioMutationVariables,
+	useGetDataKeyOptionsQuery
+} from "@/client/graphql";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -13,12 +17,25 @@ interface IProps {
 }
 
 interface IFormData {
+	id: string;
+	headers: StockPortfolioHeaders;
 	name: string;
+	tickers: readonly string[];
 }
 
-const validationSchema = ({ name }: IFormData) => ({
-	name: string().required("Name is required").min(1)
-});
+type StockPortfolioHeaders = IProps["stockPortfolio"]["headers"];
+
+type UseHeadersResult = [
+	{ headers: StockPortfolioHeaders; gridHeaders: readonly IHeaderConfig[] },
+	{ setGridHeaders: (gridHeaders: readonly IHeaderConfig[]) => void }
+];
+
+type UseDataResult = [
+	{ data: readonly Record<string, any>[]; tickers: readonly string[] },
+	{ addTicker: (ticker: string) => void; setData: (data: readonly Record<string, any>[]) => void }
+];
+
+const validationSchema = () => ({ name: string().required("Name is required").min(1) });
 
 const useOptions = (): { loaded: boolean; options: readonly IHeaderOption[] } => {
 	const { called, data, loading } = useGetDataKeyOptionsQuery();
@@ -38,8 +55,9 @@ const useOptions = (): { loaded: boolean; options: readonly IHeaderOption[] } =>
 const useHeaders = (
 	{ stockPortfolio }: IProps,
 	options: readonly IHeaderOption[]
-): [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
-	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
+): UseHeadersResult => {
+	const [headers, setHeaders] = useState<StockPortfolioHeaders>(stockPortfolio.headers);
+	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>([
 		{
 			label: "ticker",
 			value: "ticker",
@@ -48,35 +66,87 @@ const useHeaders = (
 			resizable: true,
 			width: 100
 		},
-		...(stockPortfolio?.headers || []).map(({ name, dataKey, ...headerProps }) => ({
+		...headers.map(({ name, dataKey, ...commonProps }) => ({
 			label: name,
 			value: dataKey,
-			...headerProps,
+			...commonProps,
 			options
 		}))
 	]);
 
+	/** Always maintain an update-request compatible version of headers to simplify the request */
+	const setGridHeaders = useCallback((newGridHeaders: readonly IHeaderConfig[]) => {
+		const newHeaders: StockPortfolioHeaders = newGridHeaders
+			.filter(({ value }) => value !== "ticker")
+			.map(({ label, value, options: _options, ...commonProps }) => ({
+				name: label,
+				dataKey: value,
+				...commonProps
+			}));
+
+		setHeaders(newHeaders);
+		_setGridHeaders(newGridHeaders);
+	}, []);
+
 	useEffect(() => {
-		/**
-		 * !HACK
-		 * @description This results in the same header instance, so that an infinite render loop
-		 * can be avoided.
-		 * @author David Lee
-		 * @date March 21, 2020
-		 */
-		headers.forEach((header) => (header.options = options));
+		gridHeaders.forEach((gridHeader) => (gridHeader.options = options));
 
-		setHeaders(headers);
-	}, [headers, options, setHeaders]);
+		_setGridHeaders(gridHeaders);
+	}, [gridHeaders, options]);
 
-	return [headers, setHeaders];
+	const result: UseHeadersResult = useMemo(() => {
+		const states = { headers, gridHeaders };
+		const actions = { setGridHeaders };
+
+		return [states, actions];
+	}, [gridHeaders, headers, setGridHeaders]);
+
+	return result;
+};
+
+const useData = ({ stockPortfolio }: IProps): UseDataResult => {
+	const [tickers, setTickers] = useState<readonly string[]>(stockPortfolio.tickers);
+	const [data, _setData] = useState<readonly Record<string, any>[]>(
+		tickers.map((ticker) => ({ ticker }))
+	);
+
+	const addTicker = useCallback(
+		(newTicker: string) => {
+			const newTickers: readonly string[] = [...tickers, newTicker];
+
+			setTickers(newTickers);
+			_setData(newTickers.map((ticker) => ({ ticker })));
+		},
+		[tickers]
+	);
+
+	const setData = useCallback((newData: readonly Record<string, any>[]) => {
+		const newTickers: readonly string[] = newData
+			.map(({ ticker }) => ticker)
+			.filter((ticker) => !ticker);
+
+		setTickers(newTickers);
+		_setData(newData);
+	}, []);
+
+	const result: UseDataResult = useMemo(() => {
+		const states = { tickers, data };
+		const actions = { addTicker, setData };
+
+		return [states, actions];
+	}, [addTicker, data, setData, tickers]);
+
+	return result;
 };
 
 const useFormSubmitHandler = (handleSubmit: FormContextValues<IFormData>["handleSubmit"]) => {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
 	const onFormSubmit = useCallback(
 		handleSubmit((data: IFormData) => {
+			const variables: UpdateOneStockPortfolioMutationVariables = data;
+
+			console.log(variables);
+
 			setErrorMessage("Not yet implemented");
 		}),
 		[handleSubmit, setErrorMessage]
@@ -90,29 +160,27 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
-	const [tickers, setTickers] = useState<readonly string[]>(stockPortfolio.tickers);
-	const [data, setData] = useState<readonly Record<string, any>[]>(
-		tickers.map((ticker) => ({ ticker }))
-	);
+	const { control, errors, handleSubmit, setValue } = useForm<IFormData>({ validationSchema });
 
-	useEffect(() => setData(tickers.map((ticker) => ({ ticker }))), [tickers]);
-
-	const { control, errors, handleSubmit } = useForm<IFormData>({ validationSchema });
 	const { errorMessage, onFormSubmit } = useFormSubmitHandler(handleSubmit);
 
 	const optionsResult = useOptions();
-	const [headers, setHeaders] = useHeaders(props, optionsResult.options);
-	const { name, updatedAt, user } = stockPortfolio;
+	const [headerStates, headerActions] = useHeaders(props, optionsResult.options);
+	const [dataStates, dataActions] = useData(props);
 
-	const onAddTicker = useCallback((newTicker: string) => setTickers([...tickers, newTicker]), [
-		tickers
-	]);
+	useEffect(() => {
+		setValue("id", stockPortfolio.id);
+		setValue("tickers", dataStates.tickers);
+		setValue("headers", headerStates.headers);
+	}, [dataStates.tickers, headerStates.headers, setValue, stockPortfolio.id]);
+
+	const { name, updatedAt, user } = stockPortfolio;
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<form onSubmit={onFormSubmit}>
 				<div>
-					<Actions onAddTicker={onAddTicker} stockPortfolio={stockPortfolio} />
+					<Actions onAddTicker={dataActions.addTicker} stockPortfolio={stockPortfolio} />
 				</div>
 				<h2 className={classes.portfolioName}>
 					<EditableText
@@ -127,10 +195,10 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 						<NonIdealState icon={<Spinner />} title="Loading..." />
 					) : (
 						<DataGrid
-							data={data}
-							headers={headers}
-							onDataChange={setData}
-							onHeadersChange={setHeaders}
+							data={dataStates.data}
+							headers={headerStates.gridHeaders}
+							onDataChange={dataActions.setData}
+							onHeadersChange={headerActions.setGridHeaders}
 						/>
 					)}
 				</Paper>
