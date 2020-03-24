@@ -89,7 +89,11 @@ const useHeaders = (
 	}, []);
 
 	useEffect(() => {
-		gridHeaders.forEach((gridHeader) => (gridHeader.options = options));
+		gridHeaders.forEach((gridHeader) => {
+			if (gridHeader.value !== "ticker") {
+				gridHeader.options = options;
+			}
+		});
 
 		_setGridHeaders(gridHeaders);
 	}, [gridHeaders, options]);
