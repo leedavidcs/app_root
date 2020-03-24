@@ -7,8 +7,7 @@ const zIndices = [
 	"text-input-label",
 	"kebab-menu",
 	"context-menu",
-	"app-bar",
-	"backdrop"
+	"app-bar"
 ] as const;
 
 export const getZIndex = (name: typeof zIndices[number]): number => {

@@ -5,6 +5,7 @@ import {
 	ScrollContext,
 	SelectedCellContext
 } from "@/client/components/data-grid.component";
+import classnames from "classnames";
 import { takeRightWhile, takeWhile } from "lodash";
 import React, { CSSProperties, ReactElement, useCallback, useContext, useMemo } from "react";
 import { SortableElement } from "react-sortable-hoc";
@@ -67,8 +68,10 @@ export const SortableDataRow = SortableElement<IProps>((props: IProps) => {
 		[getCellItems, headers, frozenCells.length]
 	);
 
+	const isEven: boolean = rowIndex % 2 === 0;
+
 	return (
-		<div className={classes.root} style={style}>
+		<div className={classnames(classes.root, { [classes.evenRow]: isEven })} style={style}>
 			<div className={classes.frozenPanel}>{frozenCells}</div>
 			{unfrozenCells}
 		</div>

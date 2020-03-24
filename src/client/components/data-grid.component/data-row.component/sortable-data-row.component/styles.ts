@@ -3,12 +3,16 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		display: "flex"
+		display: "flex",
+		backgroundColor: theme.gridOdd
 	},
 	frozenPanel: {
 		display: "flex",
 		transform: ({ xOffset }) => `translateX(${xOffset}px)`,
 		zIndex: getZIndex("data-grid-frozen-cell")
+	},
+	evenRow: {
+		backgroundColor: theme.gridEven
 	}
 });
 
