@@ -3,7 +3,7 @@ import { IHeaderConfig } from "@/client/components/data-grid.component";
 import { Popover } from "@/client/components/popover.component";
 import { useContextMenu, useKeyDown } from "@/client/hooks";
 import { Menu } from "@blueprintjs/core";
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
 import { HeaderSelect } from "./header-select.component";
@@ -36,18 +36,22 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 		[editActions]
 	);
 
-	const keyMap = useMemo(
-		() => ({
-			esc: editActions.stop,
-			enter: () => {
-				editActions.updateLabel();
-				editActions.stop();
-			}
-		}),
-		[editActions]
+	const onEscKey = useKeyDown("esc", editActions.stop);
+	const onEnterKey = useKeyDown(
+		"enter",
+		useCallback(() => {
+			editActions.updateLabel();
+			editActions.stop();
+		}, [editActions])
 	);
 
-	const onInputKeyDown = useKeyDown(keyMap);
+	const onInputKeyDown = useCallback(
+		(event: KeyboardEvent<HTMLInputElement>) => {
+			onEscKey(event);
+			onEnterKey(event);
+		},
+		[onEnterKey, onEscKey]
+	);
 
 	const [onContextMenu] = useContextMenu(
 		<Menu className={classes.contextMenu}>
