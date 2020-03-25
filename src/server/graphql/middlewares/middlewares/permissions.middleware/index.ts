@@ -1,7 +1,7 @@
 import { IServerContext } from "@/server/graphql/context";
 import { IMiddlewareGenerator } from "graphql-middleware";
-import { and, not, shield } from "graphql-shield";
-import { doesUserOwnStockPortfolio, isAuthenticated } from "./rules";
+import { not, shield } from "graphql-shield";
+import { isAuthenticated } from "./rules";
 
 const isDebug: boolean = process.env.NODE_ENV !== "production";
 
@@ -13,8 +13,8 @@ export const permissions: IMiddlewareGenerator<any, IServerContext, any> = shiel
 			refreshAccessToken: isAuthenticated,
 			resendVerifyEmail: isAuthenticated,
 			createOneStockPortfolio: isAuthenticated,
-			updateOneStockPortfolio: and(isAuthenticated, doesUserOwnStockPortfolio),
-			deleteOneStockPortfolio: and(isAuthenticated, doesUserOwnStockPortfolio)
+			updateOneStockPortfolio: isAuthenticated,
+			deleteOneStockPortfolio: isAuthenticated
 		}
 	},
 	{
