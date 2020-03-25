@@ -3,11 +3,9 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		display: "flex"
-	},
-	addTickerInput: {
-		flexGrow: 1,
-		margin: 0
+		"& .bp3-input-group": {
+			maxWidth: 100
+		}
 	}
 });
 

@@ -1,20 +1,19 @@
-import { TextInput } from "@/client/components";
 import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
 	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
-import { onInputValueChanged } from "@/client/utils";
 import { Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
+import { AddTickerInput } from "./add-ticker-input.component";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	onAddTicker?: (ticker: string) => void;
+	onAddTicker: (ticker: string) => void;
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
@@ -52,19 +51,7 @@ export const Actions: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
-	const [newTicker, setNewTicker] = useState<string>("");
-
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
-
-	const onAddTickerChange = useCallback(
-		onInputValueChanged((value) => setNewTicker(value)),
-		[]
-	);
-	const onAddTickerBtn = useCallback(() => {
-		onAddTicker?.(newTicker);
-
-		setNewTicker("");
-	}, [newTicker, onAddTicker]);
 
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);
@@ -76,16 +63,7 @@ export const Actions: FC<IProps> = (props) => {
 	return (
 		<>
 			<div className={classes.root}>
-				{onAddTicker && (
-					<TextInput
-						className={classes.addTickerInput}
-						onChange={onAddTickerChange}
-						placeholder="Add ticker"
-						value={newTicker}
-					>
-						<Button icon="plus" onClick={onAddTickerBtn} />
-					</TextInput>
-				)}
+				<AddTickerInput className={classes.addTickerInput} onAddTicker={onAddTicker} />
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
 					<Button icon="saved" text="Save" type="submit" />
 					<Button icon="trash" onClick={onBtnDelete} text="Delete" />
