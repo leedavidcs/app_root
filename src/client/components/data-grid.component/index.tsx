@@ -60,10 +60,10 @@ export interface IDataGridProps<T extends Record<string, any>> {
 }
 
 interface IWithStaticExports {
-	asTyped: <T extends Record<string, any>>() => FC<IDataGridProps<T>>;
+	ofType: <T extends Record<string, any>>() => FC<IDataGridProps<T>>;
 }
 
-const asTyped = <T extends Record<string, any>>() => {
+const ofType = <T extends Record<string, any>>() => {
 	const component: FC<IDataGridProps<T>> = memo(
 		({
 			data,
@@ -110,9 +110,9 @@ const asTyped = <T extends Record<string, any>>() => {
 	return component;
 };
 
-const _DataGrid: FC<IDataGridProps<Record<string, any>>> = asTyped<Record<string, any>>();
+const _DataGrid: FC<IDataGridProps<Record<string, any>>> = ofType<Record<string, any>>();
 _DataGrid.displayName = "DataGrid";
 
-(_DataGrid as FC<IDataGridProps<Record<string, any>>> & IWithStaticExports).asTyped = asTyped;
+(_DataGrid as FC<IDataGridProps<Record<string, any>>> & IWithStaticExports).ofType = ofType;
 
 export const DataGrid = _DataGrid as FC<IDataGridProps<Record<string, any>>> & IWithStaticExports;

@@ -43,7 +43,7 @@ interface IStockPortfolioEditData {
 	[key: string]: any;
 }
 
-const TypedDataGrid = DataGrid.asTyped<IStockPortfolioEditData>();
+const TypedDataGrid = DataGrid.ofType<IStockPortfolioEditData>();
 
 const validationSchema = () => ({ name: string().min(1) });
 const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
