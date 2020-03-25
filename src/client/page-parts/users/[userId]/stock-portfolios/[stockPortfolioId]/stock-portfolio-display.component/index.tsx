@@ -36,7 +36,7 @@ const baseHeaders: readonly IHeaderConfig[] = [
 const useStockPortfolioHeaders = ({
 	stockPortfolio
 }: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
-	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
+	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>(() => [
 		...baseHeaders,
 		...stockPortfolio.headers.map(({ name, dataKey, ...headerProps }) => ({
 			label: name,

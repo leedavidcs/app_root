@@ -33,6 +33,7 @@ type UseDataResult = [
 	{ data: readonly IStockPortfolioEditData[]; tickers: readonly string[] },
 	{
 		addTicker: (ticker: string) => void;
+		removeTicker: (ticker: string) => void;
 		setData: (data: readonly IStockPortfolioEditData[]) => void;
 	}
 ];
@@ -41,6 +42,8 @@ interface IStockPortfolioEditData {
 	ticker: string;
 	[key: string]: any;
 }
+
+const TypedDataGrid = DataGrid.asTyped<IStockPortfolioEditData>();
 
 const validationSchema = () => ({ name: string().min(1) });
 const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
@@ -65,7 +68,7 @@ const useHeaders = (
 	options: readonly IHeaderOption[]
 ): UseHeadersResult => {
 	const [headers, setHeaders] = useState<StockPortfolioHeaders>(stockPortfolio.headers);
-	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>([
+	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>(() => [
 		{
 			label: "ticker",
 			value: "ticker",
@@ -125,7 +128,28 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 
 	const addTicker = useCallback(
 		(newTicker: string) => {
-			const newTickers: readonly string[] = [...tickers, newTicker];
+			const isDuplicate = Boolean(tickers.find((ticker) => ticker === newTicker));
+
+			if (!newTicker || isDuplicate) {
+				return;
+			}
+
+			const newTickers: readonly string[] = [newTicker, ...tickers];
+
+			setTickers(newTickers);
+			_setData(newTickers.map((ticker) => ({ ticker })));
+		},
+		[tickers]
+	);
+
+	const removeTicker = useCallback(
+		(toRemove: string) => {
+			const newTickers: readonly string[] = tickers.filter((ticker) => ticker !== toRemove);
+			const isUnchanged: boolean = newTickers.length === tickers.length;
+
+			if (isUnchanged) {
+				return;
+			}
 
 			setTickers(newTickers);
 			_setData(newTickers.map((ticker) => ({ ticker })));
@@ -144,12 +168,27 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 
 	const result: UseDataResult = useMemo(() => {
 		const states = { tickers, data };
-		const actions = { addTicker, setData };
+		const actions = { addTicker, removeTicker, setData };
 
 		return [states, actions];
-	}, [addTicker, data, setData, tickers]);
+	}, [addTicker, data, removeTicker, setData, tickers]);
 
 	return result;
+};
+
+const useOnRowContextMenu = ({ removeTicker }: UseDataResult[1]) => {
+	const onDelete = useCallback((ticker: string) => () => removeTicker(ticker), [removeTicker]);
+
+	const onRowContextMenu = useCallback(
+		({ ticker }: IStockPortfolioEditData) => (
+			<Menu>
+				<Menu.Item onClick={onDelete(ticker)} text="Delete" />
+			</Menu>
+		),
+		[onDelete]
+	);
+
+	return onRowContextMenu;
 };
 
 const useFormSubmitHandler = (
@@ -173,8 +212,6 @@ const useFormSubmitHandler = (
 
 	return useMemo(() => ({ errorMessage, onFormSubmit }), [errorMessage, onFormSubmit]);
 };
-
-const TypedDataGrid = DataGrid.asTyped<IStockPortfolioEditData>();
 
 export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 	const { stockPortfolio } = props;
@@ -201,14 +238,7 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const { name, updatedAt, user } = stockPortfolio;
 
-	const onRowContextMenu = useCallback(
-		() => (
-			<Menu>
-				<Menu.Item text="Delete" />
-			</Menu>
-		),
-		[]
-	);
+	const onRowContextMenu = useOnRowContextMenu(dataActions);
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
