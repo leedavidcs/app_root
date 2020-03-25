@@ -1,5 +1,7 @@
-import { ContextMenu } from "@blueprintjs/core";
-import { MouseEvent, MouseEventHandler, ReactElement, useCallback, useState } from "react";
+import { Classes, ContextMenu } from "@blueprintjs/core";
+import classnames from "classnames";
+import React, { MouseEvent, MouseEventHandler, ReactElement, useCallback, useState } from "react";
+import { useStyles } from "./styles";
 
 interface IOptions {
 	onOpen?: () => void;
@@ -17,6 +19,8 @@ export const useContextMenu = <T extends Element>(
 ): UseContextMenuResult<T> => {
 	const { onOpen, onClose } = options || {};
 
+	const classes = useStyles();
+
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const onContextMenu = useCallback(
@@ -27,15 +31,19 @@ export const useContextMenu = <T extends Element>(
 				return;
 			}
 
-			ContextMenu.show(content, { left: event.clientX, top: event.clientY }, () => {
-				onClose?.();
-				setIsOpen(false);
-			});
+			ContextMenu.show(
+				<div className={classnames(Classes.DARK, classes.root)}>{content}</div>,
+				{ left: event.clientX, top: event.clientY },
+				() => {
+					onClose?.();
+					setIsOpen(false);
+				}
+			);
 
 			onOpen?.();
 			setIsOpen(true);
 		},
-		[content, onClose, onOpen, setIsOpen]
+		[classes.root, content, onClose, onOpen]
 	);
 
 	const close = ContextMenu.hide;

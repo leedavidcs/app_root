@@ -6,7 +6,7 @@ import {
 	useUpdateOneStockPortfolioMutation
 } from "@/client/graphql";
 import { getYupValidationResolver } from "@/client/utils";
-import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Classes, Menu, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -201,6 +201,15 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const { name, updatedAt, user } = stockPortfolio;
 
+	const onRowContextMenu = useCallback(
+		() => (
+			<Menu>
+				<Menu.Item text="Delete" />
+			</Menu>
+		),
+		[]
+	);
+
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
@@ -224,7 +233,7 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 							headers={headerStates.gridHeaders}
 							onDataChange={dataActions.setData}
 							onHeadersChange={headerActions.setGridHeaders}
-							onRowContextMenu={({ ticker }) => <div>{ticker}</div>}
+							onRowContextMenu={onRowContextMenu}
 						/>
 					)}
 				</Paper>
