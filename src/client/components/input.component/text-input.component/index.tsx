@@ -1,9 +1,11 @@
 import { ControlGroup, FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
 import classnames from "classnames";
+import Keycode from "keycode";
 import React, {
 	CSSProperties,
 	FC,
 	FormEventHandler,
+	KeyboardEvent,
 	KeyboardEventHandler,
 	ReactElement,
 	useCallback,
@@ -46,7 +48,7 @@ export const TextInput: FC<IProps> = (props) => {
 		labelInfo,
 		name,
 		onChange,
-		onKeyDown,
+		onKeyDown: _onKeyDown,
 		placeholder,
 		style,
 		type,
@@ -56,6 +58,22 @@ export const TextInput: FC<IProps> = (props) => {
 	const classes = useStyles();
 
 	const intent: Intent = error ? "danger" : "none";
+
+	const onKeyDown = useCallback(
+		(event: KeyboardEvent<HTMLInputElement>) => {
+			const { keyCode } = event;
+
+			switch (keyCode) {
+				case Keycode.codes.enter:
+					event.preventDefault();
+					break;
+				default:
+			}
+
+			_onKeyDown?.(event);
+		},
+		[_onKeyDown]
+	);
 
 	const inputProps = useMemo(
 		() => ({
