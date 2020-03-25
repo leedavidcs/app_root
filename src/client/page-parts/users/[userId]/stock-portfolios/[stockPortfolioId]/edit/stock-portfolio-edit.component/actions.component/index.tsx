@@ -63,7 +63,9 @@ export const Actions: FC<IProps> = (props) => {
 	return (
 		<>
 			<div className={classes.root}>
-				<AddTickerInput className={classes.addTickerInput} onAddTicker={onAddTicker} />
+				<div className={classes.addInputContainers}>
+					<AddTickerInput className={classes.addTicker} onAddTicker={onAddTicker} />
+				</div>
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
 					<Button icon="saved" text="Save" type="submit" />
 					<Button icon="trash" onClick={onBtnDelete} text="Delete" />

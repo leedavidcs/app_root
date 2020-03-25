@@ -5,8 +5,10 @@ const styles = (theme: CustomTheme) => ({
 	root: {
 		display: "flex"
 	},
-	addTickerInput: {
-		flexGrow: 1,
+	addInputContainers: {
+		flexGrow: 1
+	},
+	addTicker: {
 		margin: 0
 	}
 });
