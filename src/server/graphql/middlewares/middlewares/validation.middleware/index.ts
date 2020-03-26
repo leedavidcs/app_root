@@ -1,5 +1,4 @@
 import { IServerContext } from "@/server/graphql/context";
-import { StockPortfolioHeader } from "@prisma/client";
 import { IMiddlewareGenerator } from "graphql-middleware";
 import { uniqBy } from "lodash";
 import { guardRails } from "./guard-rails";
@@ -25,7 +24,7 @@ export const validation: IMiddlewareGenerator<any, IServerContext, any> = guardR
 						.test(
 							"uniqueBy",
 							"Headers must have unique names",
-							(headers: readonly StockPortfolioHeader[]) => {
+							(headers: readonly string[]) => {
 								const hasUniqNames: boolean =
 									uniqBy(headers, "name").length === headers.length;
 

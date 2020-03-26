@@ -1,30 +1,23 @@
 import Keycode from "keycode";
 import { KeyboardEvent, KeyboardEventHandler, useCallback } from "react";
 
-type KeyMap = Partial<Record<keyof typeof Keycode["codes"], () => void>>;
-type CodeMap = Record<string | number, () => void>;
-
 export const useKeyDown = <T extends HTMLElement>(
-	keyMap: KeyMap,
-	fallback: () => void = () => undefined
+	key: keyof typeof Keycode["codes"],
+	callback: KeyboardEventHandler<T>
 ) => {
-	const onKeyDown: KeyboardEventHandler<T> = useCallback(
-		({ keyCode }: KeyboardEvent<T>) => {
-			const keys = Object.keys(keyMap);
+	const onKeyDown = useCallback(
+		(event: KeyboardEvent<T>): KeyboardEvent<T> => {
+			const { keyCode } = event;
 
-			const codeMap = keys.reduce<CodeMap>(
-				(acc, key) => ({
-					...acc,
-					[Keycode.codes[key]]: keyMap[key]
-				}),
-				{ default: fallback }
-			);
+			if (keyCode !== Keycode.codes[key]) {
+				return event;
+			}
 
-			const handler: () => void = codeMap[keyCode] ?? codeMap.default;
+			callback(event);
 
-			handler();
+			return event;
 		},
-		[fallback, keyMap]
+		[callback, key]
 	);
 
 	return onKeyDown;

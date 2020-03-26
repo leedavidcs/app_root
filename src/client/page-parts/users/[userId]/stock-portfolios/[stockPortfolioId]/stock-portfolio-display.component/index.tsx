@@ -1,23 +1,26 @@
 import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
 import {
 	GetOneStockPortfolioQuery,
-	GetStockDataQueryResult,
 	GetStockDataQueryVariables,
 	useGetStockDataLazyQuery
 } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
 import { Button, ButtonGroup, Classes, NonIdealState } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, memo, useCallback, useMemo, useState } from "react";
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CreatorActions } from "./creator-actions.component";
 import { useStyles } from "./styles";
 
 interface IProps {
-	loading: boolean;
 	onDelete?: () => void;
 	onEdit?: () => void;
-	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
+	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
+
+type UseDataResult = [
+	{ getData: () => void; setData: (data: readonly Record<string, any>[]) => void },
+	{ data: readonly Record<string, any>[]; requested: boolean }
+];
 
 const baseHeaders: readonly IHeaderConfig[] = [
 	{
@@ -33,25 +36,24 @@ const baseHeaders: readonly IHeaderConfig[] = [
 const useStockPortfolioHeaders = ({
 	stockPortfolio
 }: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
-	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>([
+	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>(() => [
 		...baseHeaders,
-		...(stockPortfolio?.headers.map(({ name, dataKey, ...header }) => ({
+		...stockPortfolio.headers.map(({ name, dataKey, ...headerProps }) => ({
 			label: name,
 			value: dataKey,
-			...header,
+			...headerProps,
 			options: null
-		})) ?? [])
+		}))
 	]);
 
 	return [headers, setHeaders];
 };
 
-const useData = ({ stockPortfolio }: IProps): [() => void, GetStockDataQueryResult] => {
+const useData = (tickers: readonly string[], headers: readonly IHeaderConfig[]): UseDataResult => {
+	const [data, setData] = useState<readonly Record<string, any>[]>([]);
 	const [getStockData, result] = useGetStockDataLazyQuery();
 
-	const headers = stockPortfolio?.headers || [];
-	const tickers = stockPortfolio?.tickers || [];
-	const dataKeys = useMemo(() => headers.map(({ dataKey }) => dataKey), [headers]);
+	const dataKeys = useMemo(() => headers.map(({ value }) => value), [headers]);
 
 	const variables: GetStockDataQueryVariables = useMemo(() => ({ tickers, dataKeys }), [
 		dataKeys,
@@ -60,54 +62,61 @@ const useData = ({ stockPortfolio }: IProps): [() => void, GetStockDataQueryResu
 
 	const getData = useCallback(() => getStockData({ variables }), [getStockData, variables]);
 
-	return [getData, result];
+	useEffect(() => {
+		const stockData = result.data?.stockData;
+
+		if (stockData) {
+			setData(stockData);
+		}
+	}, [result.data]);
+
+	const requested: boolean = result.called && !result.loading;
+
+	return useMemo(
+		() => [
+			{ getData, setData },
+			{ data, requested }
+		],
+		[data, getData, requested]
+	);
 };
 
 const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 	const [, { user }] = useSetUser();
 
-	const isCreator = Boolean(user && stockPortfolio && user.id === stockPortfolio.user.id);
+	const isCreator = user?.id === stockPortfolio.user.id;
 
 	return isCreator;
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
-	const { loading, stockPortfolio } = props;
+	const { stockPortfolio } = props;
 
 	const classes = useStyles();
 
+	const { name, tickers, updatedAt, user } = stockPortfolio;
+
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
-	const [getData, dataResult] = useData(props);
+	const [dataActions, dataResult] = useData(tickers, headers);
 
 	const isCreator: boolean = useIsCreator(props);
 
-	if (loading || !stockPortfolio) {
-		return <p>loading...</p>;
-	}
-
-	const data = dataResult.data?.stockData ?? [];
-	const { name, tickers, updatedAt, user } = stockPortfolio;
+	const data = dataResult.data;
 	const createdBy: string = user.username;
 
-	const dataNotRequested: boolean = !dataResult.called || dataResult.loading;
 	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<div className={classes.btnContainer}>
-				{isCreator && (
-					<CreatorActions
-						className={classes.creatorActions}
-						stockPortfolio={stockPortfolio}
-					/>
-				)}
-				<ButtonGroup>
-					<Button icon="refresh" onClick={getData} text="Refresh" />
+				<ButtonGroup className={classes.refreshAction}>
+					<Button icon="refresh" onClick={dataActions.getData} text="Refresh" />
 				</ButtonGroup>
+				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
 			</div>
 			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
-				{dataNotRequested ? (
+				{!dataResult.requested ? (
 					<NonIdealState
 						icon="search"
 						title="Data not yet requested"
@@ -129,7 +138,12 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 						}
 					/>
 				) : (
-					<DataGrid data={data} headers={headers} onHeadersChange={setHeaders} />
+					<DataGrid
+						data={data}
+						headers={headers}
+						onDataChange={dataActions.setData}
+						onHeadersChange={setHeaders}
+					/>
 				)}
 			</Paper>
 			<div className={classes.portfolioFooter}>

@@ -5,9 +5,9 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 		headers {
 			name
 			dataKey
-			width
 			frozen
 			resizable
+			width
 		}
 		tickers
 		createdAt

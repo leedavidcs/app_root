@@ -10,7 +10,7 @@ const styles = (theme: CustomTheme) => ({
 		display: "flex",
 		justifyContent: "flex-end"
 	},
-	creatorActions: {
+	refreshAction: {
 		flexGrow: 1
 	},
 	portfolioName: {

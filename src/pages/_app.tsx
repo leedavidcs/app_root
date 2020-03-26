@@ -1,6 +1,7 @@
 import { ClickOutsideProvider, StylesProvider } from "@/client/components";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
 import { NextComponentType } from "next";
 import { AppInitialProps, AppProps } from "next/app";
 import { AppContext } from "next/dist/pages/_app";

@@ -28,7 +28,7 @@ export const DataGridBody: FC<IProps> = memo(({ children }) => {
 				newIndex
 			);
 
-			onDataChange(sortedData);
+			onDataChange?.(sortedData);
 		},
 		[data, onDataChange]
 	);

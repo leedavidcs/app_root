@@ -6,7 +6,8 @@ const zIndices = [
 	"data-grid-frozen-header",
 	"text-input-label",
 	"kebab-menu",
-	"context-menu"
+	"context-menu",
+	"app-bar"
 ] as const;
 
 export const getZIndex = (name: typeof zIndices[number]): number => {

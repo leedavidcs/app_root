@@ -4,7 +4,8 @@ import { Context, createContext } from "react";
 interface IHeadersContextProps {
 	headers: readonly IHeaderConfig[];
 	moveHeaderItem: (oldIndex: number, newIndex: number) => void;
-	onHeadersChange: (headers: readonly IHeaderConfig[]) => void;
+	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
+	removeHeaderItem: (index: number) => void;
 	setHeaderFreeze: (freeze: boolean, index: number) => void;
 	setHeaderLabel: (label: string, index: number) => void;
 	setHeaderOption: (option: IHeaderOption, index: number) => void;
@@ -14,7 +15,7 @@ interface IHeadersContextProps {
 export const HeadersContext: Context<IHeadersContextProps> = createContext<IHeadersContextProps>({
 	headers: [],
 	moveHeaderItem: () => undefined,
-	onHeadersChange: () => undefined,
+	removeHeaderItem: () => undefined,
 	setHeaderFreeze: () => undefined,
 	setHeaderLabel: () => undefined,
 	setHeaderOption: () => undefined,

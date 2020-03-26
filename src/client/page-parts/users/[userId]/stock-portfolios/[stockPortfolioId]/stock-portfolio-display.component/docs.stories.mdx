@@ -17,15 +17,17 @@ and configuration.
 ## Props
 <Props of={StockPortfolioDisplay} />
 
-## Standard
+## StandardStory
 export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
 
 <Preview>
 	<Story name="standard">
-		<StockPortfolioDisplay
-			loading={boolean("loading", false)}
-			stockPortfolio={stockPortfolio}
-		/>
+		<div style={{ maxWidth: 1280 }}>
+			<StockPortfolioDisplay
+				loading={boolean("loading", false)}
+				stockPortfolio={stockPortfolio}
+			/>
+		</div>
 	</Story>
 </Preview>
 

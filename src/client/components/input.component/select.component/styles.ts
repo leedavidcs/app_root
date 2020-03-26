@@ -2,9 +2,16 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	root: {
-		maxHeight: 200,
-		overflowY: "scroll"
+	"@global": {
+		".bp3-popover.bp3-select-popover": {
+			"& .bp3-input-group": {
+				backgroundColor: theme.code
+			},
+
+			"& .bp3-popover-content, .bp3-menu": {
+				backgroundColor: theme.surface
+			}
+		}
 	}
 });
 

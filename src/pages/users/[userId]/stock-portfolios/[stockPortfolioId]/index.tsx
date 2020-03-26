@@ -8,9 +8,11 @@ import { StockPortfolioDisplay } from "@/client/page-parts/users/[userId]/stock-
 import { CustomTheme } from "@/client/themes";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
+import HttpStatus from "http-status-codes";
 import { NextPage } from "next";
+import Error from "next/error";
 import { NextRouter, useRouter } from "next/router";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -18,11 +20,6 @@ const styles = (theme: CustomTheme) => ({
 		maxWidth: 1280,
 		margin: "0 auto",
 		color: theme.onBackground
-	},
-	ownerActionsContainer: {
-		display: "flex",
-		justifyContent: "flex-end",
-		marginTop: 60
 	}
 });
 
@@ -40,27 +37,27 @@ const useStockPortfolio = (): GetOneStockPortfolioQueryResult => {
 
 	const result = useGetOneStockPortfolioQuery({ variables: { where } });
 
-	const { called, data, loading } = result;
-
-	useEffect(() => {
-		if (called && !loading && !data?.stockPortfolio) {
-			router.push("/not-found");
-		}
-	}, [called, data, loading, router]);
-
 	return result;
 };
 
 export const Page: NextPage = () => {
 	const classes = useStyles();
 
-	const { data, loading } = useStockPortfolio();
+	const { called, data, loading } = useStockPortfolio();
 
-	const stockPortfolio = data?.stockPortfolio;
+	const notFound: boolean = called && !loading && !data;
+
+	if (notFound) {
+		return <Error statusCode={HttpStatus.NOT_FOUND} title="Resource was not found" />;
+	}
 
 	return (
 		<main className={classnames(Classes.DARK, classes.root)}>
-			<StockPortfolioDisplay stockPortfolio={stockPortfolio} loading={loading} />
+			{loading || !data?.stockPortfolio ? (
+				<p>loading...</p>
+			) : (
+				<StockPortfolioDisplay stockPortfolio={data?.stockPortfolio} />
+			)}
 		</main>
 	);
 };

@@ -1,5 +1,4 @@
 import { Popover as BpPopover, PopoverPosition, PopperModifiers } from "@blueprintjs/core";
-
 import classnames from "classnames";
 import React, { FC, memo, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";

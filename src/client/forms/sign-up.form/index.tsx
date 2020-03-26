@@ -183,12 +183,10 @@ export const SignUpForm: FC = () => {
 					control={control}
 				/>
 				<div className={classes.btnContainer}>
-					<Button intent="primary" type="submit">
-						SIGN UP
-					</Button>
+					<Button intent="primary" text="SIGN UP" type="submit" />
 				</div>
 			</form>
-			{errorMessage ? <div className={classes.error}>{errorMessage}</div> : null}
+			{errorMessage && <p className={classes.error}>{errorMessage}</p>}
 			<div className={classes.signInWrapper}>
 				Already a member? {<Anchor value="SIGN IN" onClick={onClickSignIn} />}
 			</div>

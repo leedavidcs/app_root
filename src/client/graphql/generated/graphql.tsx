@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 20th 2020 10:12:48 pm
+// This file was generated on: Mar 23rd 2020 5:42:53 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -20,8 +20,8 @@ export type Scalars = {
 
 
 export type BooleanFilter = {
-  equals?: Maybe<Scalars['Boolean']>;
-  not?: Maybe<Scalars['Boolean']>;
+  readonly equals?: Maybe<Scalars['Boolean']>;
+  readonly not?: Maybe<Scalars['Boolean']>;
 };
 
 export enum DataKey_Provider {
@@ -29,55 +29,44 @@ export enum DataKey_Provider {
 }
 
 export type DataKeyOption = {
-   __typename?: 'DataKeyOption';
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  description: Scalars['String'];
-  provider: DataKey_Provider;
+  readonly __typename?: 'DataKeyOption';
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+  readonly description: Scalars['String'];
+  readonly provider: DataKey_Provider;
 };
 
 
 export type DateTimeFilter = {
-  equals?: Maybe<Scalars['DateTime']>;
-  not?: Maybe<Scalars['DateTime']>;
-  in?: Maybe<Array<Scalars['DateTime']>>;
-  notIn?: Maybe<Array<Scalars['DateTime']>>;
-  lt?: Maybe<Scalars['DateTime']>;
-  lte?: Maybe<Scalars['DateTime']>;
-  gt?: Maybe<Scalars['DateTime']>;
-  gte?: Maybe<Scalars['DateTime']>;
+  readonly equals?: Maybe<Scalars['DateTime']>;
+  readonly not?: Maybe<Scalars['DateTime']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly lt?: Maybe<Scalars['DateTime']>;
+  readonly lte?: Maybe<Scalars['DateTime']>;
+  readonly gt?: Maybe<Scalars['DateTime']>;
+  readonly gte?: Maybe<Scalars['DateTime']>;
 };
 
-
-export type IntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  not?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-};
 
 
 export type LoginLocalUserInput = {
-  userIdentifier: Scalars['String'];
-  password: Scalars['String'];
+  readonly userIdentifier: Scalars['String'];
+  readonly password: Scalars['String'];
 };
 
 export type Mutation = RequestRoot & {
-   __typename?: 'Mutation';
-  createOneStockPortfolio: StockPortfolio;
-  deleteOneStockPortfolio?: Maybe<StockPortfolio>;
-  loginLocalUser?: Maybe<TokenPayload>;
-  refreshAccessToken?: Maybe<TokenPayload>;
-  registerLocalUser?: Maybe<RegisterLocalUserPayload>;
-  resendVerifyEmail?: Maybe<ResendVerifyEmailPayload>;
-  setUser?: Maybe<User>;
-  toggleModal: Scalars['Boolean'];
-  updateOneStockPortfolio?: Maybe<StockPortfolio>;
-  viewer?: Maybe<User>;
+  readonly __typename?: 'Mutation';
+  readonly createOneStockPortfolio: StockPortfolio;
+  readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
+  readonly loginLocalUser?: Maybe<TokenPayload>;
+  readonly refreshAccessToken?: Maybe<TokenPayload>;
+  readonly registerLocalUser?: Maybe<RegisterLocalUserPayload>;
+  readonly resendVerifyEmail?: Maybe<ResendVerifyEmailPayload>;
+  readonly setUser?: Maybe<User>;
+  readonly toggleModal: Scalars['Boolean'];
+  readonly updateOneStockPortfolio?: Maybe<StockPortfolio>;
+  readonly viewer?: Maybe<User>;
 };
 
 
@@ -127,15 +116,15 @@ export enum OrderByArg {
 }
 
 export type Query = RequestRoot & {
-   __typename?: 'Query';
-  dataKeyOptions: Array<DataKeyOption>;
-  modal: Scalars['Boolean'];
-  stockData?: Maybe<Array<Scalars['JSONObject']>>;
-  stockPortfolio?: Maybe<StockPortfolio>;
-  stockPortfolioCount?: Maybe<Scalars['Int']>;
-  stockPortfolios: Array<StockPortfolio>;
-  user?: Maybe<User>;
-  viewer?: Maybe<User>;
+  readonly __typename?: 'Query';
+  readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
+  readonly modal: Scalars['Boolean'];
+  readonly stockData?: Maybe<ReadonlyArray<Scalars['JSONObject']>>;
+  readonly stockPortfolio?: Maybe<StockPortfolio>;
+  readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
+  readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
+  readonly user?: Maybe<User>;
+  readonly viewer?: Maybe<User>;
 };
 
 
@@ -147,8 +136,8 @@ export type QueryDataKeyOptionsArgs = {
 
 
 export type QueryStockDataArgs = {
-  tickers: Array<Scalars['String']>;
-  dataKeys: Array<Scalars['String']>;
+  tickers: ReadonlyArray<Scalars['String']>;
+  dataKeys: ReadonlyArray<Scalars['String']>;
 };
 
 
@@ -175,278 +164,174 @@ export type QueryStockPortfoliosArgs = {
 };
 
 export type RefreshAccessTokenInput = {
-  refreshToken: Scalars['String'];
+  readonly refreshToken: Scalars['String'];
 };
 
 export type RegisterLocalUserInput = {
-  email: Scalars['EmailAddress'];
-  password: Scalars['UserPassword'];
-  username: Scalars['String'];
+  readonly email: Scalars['EmailAddress'];
+  readonly password: Scalars['UserPassword'];
+  readonly username: Scalars['String'];
 };
 
 export type RegisterLocalUserPayload = {
-   __typename?: 'RegisterLocalUserPayload';
-  success: Scalars['Boolean'];
-  error?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
+  readonly __typename?: 'RegisterLocalUserPayload';
+  readonly success: Scalars['Boolean'];
+  readonly error?: Maybe<Scalars['String']>;
+  readonly user?: Maybe<User>;
 };
 
 export type RequestRoot = {
-  viewer?: Maybe<User>;
+  readonly viewer?: Maybe<User>;
 };
 
 export type ResendVerifyEmailPayload = {
-   __typename?: 'ResendVerifyEmailPayload';
-  success: Scalars['Boolean'];
+  readonly __typename?: 'ResendVerifyEmailPayload';
+  readonly success: Scalars['Boolean'];
 };
 
 export type StockPortfolio = {
-   __typename?: 'StockPortfolio';
-  id: Scalars['String'];
-  user: User;
-  name: Scalars['String'];
-  headers: Array<StockPortfolioHeader>;
-  tickers: Array<Scalars['String']>;
-  data: Array<Scalars['JSONObject']>;
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-};
-
-
-export type StockPortfolioHeadersArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<StockPortfolioHeaderWhereUniqueInput>;
-  before?: Maybe<StockPortfolioHeaderWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  readonly __typename?: 'StockPortfolio';
+  readonly id: Scalars['String'];
+  readonly user: User;
+  readonly name: Scalars['String'];
+  readonly headers: ReadonlyArray<StockPortfolioHeader>;
+  readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly data: ReadonlyArray<Scalars['JSONObject']>;
+  readonly createdAt: Scalars['DateTime'];
+  readonly updatedAt: Scalars['DateTime'];
 };
 
 export type StockPortfolioCreateInput = {
-  name: Scalars['String'];
+  readonly name: Scalars['String'];
 };
 
 export type StockPortfolioFilter = {
-  every?: Maybe<StockPortfolioWhereInput>;
-  some?: Maybe<StockPortfolioWhereInput>;
-  none?: Maybe<StockPortfolioWhereInput>;
+  readonly every?: Maybe<StockPortfolioWhereInput>;
+  readonly some?: Maybe<StockPortfolioWhereInput>;
+  readonly none?: Maybe<StockPortfolioWhereInput>;
 };
 
 export type StockPortfolioHeader = {
-   __typename?: 'StockPortfolioHeader';
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  width: Scalars['Int'];
-  frozen: Scalars['Boolean'];
-  resizable: Scalars['Boolean'];
-};
-
-export type StockPortfolioHeaderCreateWithoutStockPortfolioInput = {
-  id?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderFilter = {
-  every?: Maybe<StockPortfolioHeaderWhereInput>;
-  some?: Maybe<StockPortfolioHeaderWhereInput>;
-  none?: Maybe<StockPortfolioHeaderWhereInput>;
+  readonly __typename?: 'StockPortfolioHeader';
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+  readonly frozen: Scalars['Boolean'];
+  readonly resizable: Scalars['Boolean'];
+  readonly width: Scalars['Int'];
 };
 
 export type StockPortfolioHeaderInput = {
-  name: Scalars['String'];
-  dataKey: Scalars['String'];
-  width: Scalars['Int'];
-  frozen: Scalars['Boolean'];
-  resizable: Scalars['Boolean'];
-};
-
-export type StockPortfolioHeaderScalarWhereInput = {
-  id?: Maybe<UuidFilter>;
-  name?: Maybe<StringFilter>;
-  dataKey?: Maybe<StringFilter>;
-  width?: Maybe<IntFilter>;
-  frozen?: Maybe<BooleanFilter>;
-  resizable?: Maybe<BooleanFilter>;
-  AND?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  OR?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  NOT?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-};
-
-export type StockPortfolioHeaderUpdateManyDataInput = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  dataKey?: Maybe<Scalars['String']>;
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput = {
-  create?: Maybe<Array<StockPortfolioHeaderCreateWithoutStockPortfolioInput>>;
-  connect?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  set?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  disconnect?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  delete?: Maybe<Array<StockPortfolioHeaderWhereUniqueInput>>;
-  update?: Maybe<Array<StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput>>;
-  updateMany?: Maybe<Array<StockPortfolioHeaderUpdateManyWithWhereNestedInput>>;
-  deleteMany?: Maybe<Array<StockPortfolioHeaderScalarWhereInput>>;
-  upsert?: Maybe<Array<StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput>>;
-};
-
-export type StockPortfolioHeaderUpdateManyWithWhereNestedInput = {
-  where: StockPortfolioHeaderScalarWhereInput;
-  data: StockPortfolioHeaderUpdateManyDataInput;
-};
-
-export type StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  dataKey?: Maybe<Scalars['String']>;
-  width?: Maybe<Scalars['Int']>;
-  frozen?: Maybe<Scalars['Boolean']>;
-  resizable?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioHeaderUpdateWithWhereUniqueWithoutStockPortfolioInput = {
-  where: StockPortfolioHeaderWhereUniqueInput;
-  data: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput;
-};
-
-export type StockPortfolioHeaderUpsertWithWhereUniqueWithoutStockPortfolioInput = {
-  where: StockPortfolioHeaderWhereUniqueInput;
-  update: StockPortfolioHeaderUpdateWithoutStockPortfolioDataInput;
-  create: StockPortfolioHeaderCreateWithoutStockPortfolioInput;
-};
-
-export type StockPortfolioHeaderWhereInput = {
-  id?: Maybe<UuidFilter>;
-  name?: Maybe<StringFilter>;
-  dataKey?: Maybe<StringFilter>;
-  width?: Maybe<IntFilter>;
-  frozen?: Maybe<BooleanFilter>;
-  resizable?: Maybe<BooleanFilter>;
-  AND?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  OR?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  NOT?: Maybe<Array<StockPortfolioHeaderWhereInput>>;
-  stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type StockPortfolioHeaderWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+  readonly width: Scalars['Int'];
+  readonly frozen: Scalars['Boolean'];
+  readonly resizable: Scalars['Boolean'];
 };
 
 export type StockPortfolioOrderByInput = {
-  id?: Maybe<OrderByArg>;
-  user?: Maybe<OrderByArg>;
-  name?: Maybe<OrderByArg>;
-  createdAt?: Maybe<OrderByArg>;
-  updatedAt?: Maybe<OrderByArg>;
+  readonly id?: Maybe<OrderByArg>;
+  readonly user?: Maybe<OrderByArg>;
+  readonly name?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+  readonly updatedAt?: Maybe<OrderByArg>;
 };
 
 export type StockPortfolioUpdateInput = {
-  name?: Maybe<Scalars['String']>;
-  tickers?: Maybe<StockPortfolioUpdatetickersInput>;
-  headers?: Maybe<StockPortfolioHeaderUpdateManyWithoutStockPortfolioInput>;
-};
-
-export type StockPortfolioUpdatetickersInput = {
-  set?: Maybe<Array<Scalars['String']>>;
+  readonly name?: Maybe<Scalars['String']>;
+  readonly headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
+  readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
 };
 
 export type StockPortfolioWhereInput = {
-  id?: Maybe<UuidFilter>;
-  name?: Maybe<StringFilter>;
-  headers?: Maybe<StockPortfolioHeaderFilter>;
-  createdAt?: Maybe<DateTimeFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
-  AND?: Maybe<Array<StockPortfolioWhereInput>>;
-  OR?: Maybe<Array<StockPortfolioWhereInput>>;
-  NOT?: Maybe<Array<StockPortfolioWhereInput>>;
-  user?: Maybe<UserWhereInput>;
+  readonly id?: Maybe<UuidFilter>;
+  readonly name?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
 };
 
 export type StockPortfolioWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-  user_name?: Maybe<UserNameCompoundUniqueInput>;
+  readonly id?: Maybe<Scalars['String']>;
+  readonly user_name?: Maybe<UserNameCompoundUniqueInput>;
 };
 
 export type StringFilter = {
-  equals?: Maybe<Scalars['String']>;
-  not?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  contains?: Maybe<Scalars['String']>;
-  startsWith?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
+  readonly equals?: Maybe<Scalars['String']>;
+  readonly not?: Maybe<Scalars['String']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly lt?: Maybe<Scalars['String']>;
+  readonly lte?: Maybe<Scalars['String']>;
+  readonly gt?: Maybe<Scalars['String']>;
+  readonly gte?: Maybe<Scalars['String']>;
+  readonly contains?: Maybe<Scalars['String']>;
+  readonly startsWith?: Maybe<Scalars['String']>;
+  readonly endsWith?: Maybe<Scalars['String']>;
 };
 
 export type TokenPayload = {
-   __typename?: 'TokenPayload';
-  token: Scalars['String'];
-  refreshToken: Scalars['String'];
+  readonly __typename?: 'TokenPayload';
+  readonly token: Scalars['String'];
+  readonly refreshToken: Scalars['String'];
 };
 
 export type User = {
-   __typename?: 'User';
-  id: Scalars['String'];
-  email: Scalars['EmailAddress'];
-  emailVerified: Scalars['Boolean'];
-  username: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  readonly __typename?: 'User';
+  readonly id: Scalars['String'];
+  readonly email: Scalars['EmailAddress'];
+  readonly emailVerified: Scalars['Boolean'];
+  readonly username: Scalars['String'];
+  readonly createdAt: Scalars['DateTime'];
+  readonly updatedAt: Scalars['DateTime'];
 };
 
 export type UserInput = {
   /** The id of the user */
-  id: Scalars['ID'];
+  readonly id: Scalars['ID'];
   /** The user's email */
-  email: Scalars['EmailAddress'];
+  readonly email: Scalars['EmailAddress'];
   /** Whether the user verified their email address */
-  emailVerified: Scalars['Boolean'];
+  readonly emailVerified: Scalars['Boolean'];
   /** The user's encoded password */
-  username: Scalars['String'];
+  readonly username: Scalars['String'];
 };
 
 export type UserNameCompoundUniqueInput = {
-  user: Scalars['String'];
-  name: Scalars['String'];
+  readonly user: Scalars['String'];
+  readonly name: Scalars['String'];
 };
 
 
 export type UserWhereInput = {
-  id?: Maybe<UuidFilter>;
-  email?: Maybe<StringFilter>;
-  emailVerified?: Maybe<BooleanFilter>;
-  password?: Maybe<StringFilter>;
-  username?: Maybe<StringFilter>;
-  createdAt?: Maybe<DateTimeFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
-  stockPortfolios?: Maybe<StockPortfolioFilter>;
-  AND?: Maybe<Array<UserWhereInput>>;
-  OR?: Maybe<Array<UserWhereInput>>;
-  NOT?: Maybe<Array<UserWhereInput>>;
+  readonly id?: Maybe<UuidFilter>;
+  readonly email?: Maybe<StringFilter>;
+  readonly emailVerified?: Maybe<BooleanFilter>;
+  readonly password?: Maybe<StringFilter>;
+  readonly username?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly stockPortfolios?: Maybe<StockPortfolioFilter>;
+  readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
 };
 
 
 export type UuidFilter = {
-  equals?: Maybe<Scalars['UUID']>;
-  not?: Maybe<Scalars['UUID']>;
-  in?: Maybe<Array<Scalars['UUID']>>;
-  notIn?: Maybe<Array<Scalars['UUID']>>;
-  lt?: Maybe<Scalars['UUID']>;
-  lte?: Maybe<Scalars['UUID']>;
-  gt?: Maybe<Scalars['UUID']>;
-  gte?: Maybe<Scalars['UUID']>;
-  contains?: Maybe<Scalars['UUID']>;
-  startsWith?: Maybe<Scalars['UUID']>;
-  endsWith?: Maybe<Scalars['UUID']>;
+  readonly equals?: Maybe<Scalars['UUID']>;
+  readonly not?: Maybe<Scalars['UUID']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['UUID']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['UUID']>>;
+  readonly lt?: Maybe<Scalars['UUID']>;
+  readonly lte?: Maybe<Scalars['UUID']>;
+  readonly gt?: Maybe<Scalars['UUID']>;
+  readonly gte?: Maybe<Scalars['UUID']>;
+  readonly contains?: Maybe<Scalars['UUID']>;
+  readonly startsWith?: Maybe<Scalars['UUID']>;
+  readonly endsWith?: Maybe<Scalars['UUID']>;
 };
 
 export type CreateStockPortfolioMutationVariables = {
@@ -455,9 +340,9 @@ export type CreateStockPortfolioMutationVariables = {
 
 
 export type CreateStockPortfolioMutation = (
-  { __typename?: 'Mutation' }
-  & { createOneStockPortfolio: (
-    { __typename?: 'StockPortfolio' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly createOneStockPortfolio: (
+    { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name'>
   ) }
 );
@@ -468,9 +353,9 @@ export type DeleteStockPortfolioMutationVariables = {
 
 
 export type DeleteStockPortfolioMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteOneStockPortfolio?: Maybe<(
-    { __typename?: 'StockPortfolio' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly deleteOneStockPortfolio?: Maybe<(
+    { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name'>
   )> }
 );
@@ -481,9 +366,9 @@ export type LoginLocalUserMutationVariables = {
 
 
 export type LoginLocalUserMutation = (
-  { __typename?: 'Mutation' }
-  & { loginLocalUser?: Maybe<(
-    { __typename?: 'TokenPayload' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly loginLocalUser?: Maybe<(
+    { readonly __typename?: 'TokenPayload' }
     & Pick<TokenPayload, 'token' | 'refreshToken'>
   )> }
 );
@@ -494,9 +379,9 @@ export type RefreshAccessTokenMutationVariables = {
 
 
 export type RefreshAccessTokenMutation = (
-  { __typename?: 'Mutation' }
-  & { refreshAccessToken?: Maybe<(
-    { __typename?: 'TokenPayload' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly refreshAccessToken?: Maybe<(
+    { readonly __typename?: 'TokenPayload' }
     & Pick<TokenPayload, 'token' | 'refreshToken'>
   )> }
 );
@@ -507,12 +392,12 @@ export type RegisterLocalUserMutationVariables = {
 
 
 export type RegisterLocalUserMutation = (
-  { __typename?: 'Mutation' }
-  & { registerLocalUser?: Maybe<(
-    { __typename?: 'RegisterLocalUserPayload' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly registerLocalUser?: Maybe<(
+    { readonly __typename?: 'RegisterLocalUserPayload' }
     & Pick<RegisterLocalUserPayload, 'success' | 'error'>
-    & { user?: Maybe<(
-      { __typename?: 'User' }
+    & { readonly user?: Maybe<(
+      { readonly __typename?: 'User' }
       & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
     )> }
   )> }
@@ -522,9 +407,9 @@ export type ResendVerifyEmailMutationVariables = {};
 
 
 export type ResendVerifyEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { resendVerifyEmail?: Maybe<(
-    { __typename?: 'ResendVerifyEmailPayload' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly resendVerifyEmail?: Maybe<(
+    { readonly __typename?: 'ResendVerifyEmailPayload' }
     & Pick<ResendVerifyEmailPayload, 'success'>
   )> }
 );
@@ -535,9 +420,9 @@ export type SetUserMutationVariables = {
 
 
 export type SetUserMutation = (
-  { __typename?: 'Mutation' }
-  & { setUser?: Maybe<(
-    { __typename?: 'User' }
+  { readonly __typename?: 'Mutation' }
+  & { readonly setUser?: Maybe<(
+    { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
 );
@@ -548,8 +433,24 @@ export type ToggleModalMutationVariables = {
 
 
 export type ToggleModalMutation = (
-  { __typename?: 'Mutation' }
+  { readonly __typename?: 'Mutation' }
   & Pick<Mutation, 'toggleModal'>
+);
+
+export type UpdateOneStockPortfolioMutationVariables = {
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
+  headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
+};
+
+
+export type UpdateOneStockPortfolioMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly updateOneStockPortfolio?: Maybe<(
+    { readonly __typename?: 'StockPortfolio' }
+    & Pick<StockPortfolio, 'id' | 'name'>
+  )> }
 );
 
 export type GetDataKeyOptionsQueryVariables = {
@@ -560,9 +461,9 @@ export type GetDataKeyOptionsQueryVariables = {
 
 
 export type GetDataKeyOptionsQuery = (
-  { __typename?: 'Query' }
-  & { dataKeyOptions: Array<(
-    { __typename?: 'DataKeyOption' }
+  { readonly __typename?: 'Query' }
+  & { readonly dataKeyOptions: ReadonlyArray<(
+    { readonly __typename?: 'DataKeyOption' }
     & Pick<DataKeyOption, 'name' | 'dataKey' | 'description' | 'provider'>
   )> }
 );
@@ -577,10 +478,10 @@ export type GetManyStockPortfoliosQueryVariables = {
 
 
 export type GetManyStockPortfoliosQuery = (
-  { __typename?: 'Query' }
+  { readonly __typename?: 'Query' }
   & { count: Query['stockPortfolioCount'] }
-  & { stockPortfolios: Array<(
-    { __typename?: 'StockPortfolio' }
+  & { readonly stockPortfolios: ReadonlyArray<(
+    { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name' | 'updatedAt'>
   )> }
 );
@@ -589,7 +490,7 @@ export type GetModalQueryVariables = {};
 
 
 export type GetModalQuery = (
-  { __typename?: 'Query' }
+  { readonly __typename?: 'Query' }
   & Pick<Query, 'modal'>
 );
 
@@ -599,28 +500,28 @@ export type GetOneStockPortfolioQueryVariables = {
 
 
 export type GetOneStockPortfolioQuery = (
-  { __typename?: 'Query' }
-  & { stockPortfolio?: Maybe<(
-    { __typename?: 'StockPortfolio' }
+  { readonly __typename?: 'Query' }
+  & { readonly stockPortfolio?: Maybe<(
+    { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
-    & { headers: Array<(
-      { __typename?: 'StockPortfolioHeader' }
-      & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'width' | 'frozen' | 'resizable'>
-    )>, user: (
-      { __typename?: 'User' }
+    & { readonly headers: ReadonlyArray<(
+      { readonly __typename?: 'StockPortfolioHeader' }
+      & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
+    )>, readonly user: (
+      { readonly __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
   )> }
 );
 
 export type GetStockDataQueryVariables = {
-  tickers: Array<Scalars['String']>;
-  dataKeys: Array<Scalars['String']>;
+  tickers: ReadonlyArray<Scalars['String']>;
+  dataKeys: ReadonlyArray<Scalars['String']>;
 };
 
 
 export type GetStockDataQuery = (
-  { __typename?: 'Query' }
+  { readonly __typename?: 'Query' }
   & Pick<Query, 'stockData'>
 );
 
@@ -628,9 +529,9 @@ export type GetUserQueryVariables = {};
 
 
 export type GetUserQuery = (
-  { __typename?: 'Query' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
+  { readonly __typename?: 'Query' }
+  & { readonly user?: Maybe<(
+    { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
 );
@@ -639,9 +540,9 @@ export type GetViewerQueryVariables = {};
 
 
 export type GetViewerQuery = (
-  { __typename?: 'Query' }
-  & { viewer?: Maybe<(
-    { __typename?: 'User' }
+  { readonly __typename?: 'Query' }
+  & { readonly viewer?: Maybe<(
+    { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
 );
@@ -914,6 +815,42 @@ export function useToggleModalMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type ToggleModalMutationHookResult = ReturnType<typeof useToggleModalMutation>;
 export type ToggleModalMutationResult = ApolloReactCommon.MutationResult<ToggleModalMutation>;
 export type ToggleModalMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleModalMutation, ToggleModalMutationVariables>;
+export const UpdateOneStockPortfolioDocument = gql`
+    mutation UpdateOneStockPortfolio($id: String!, $name: String, $tickers: [String!] = [], $headers: [StockPortfolioHeaderInput!]) {
+  updateOneStockPortfolio(data: {name: $name, tickers: $tickers, headers: $headers}, where: {id: $id}) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateOneStockPortfolioMutationFn = ApolloReactCommon.MutationFunction<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
+
+/**
+ * __useUpdateOneStockPortfolioMutation__
+ *
+ * To run a mutation, you first call `useUpdateOneStockPortfolioMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOneStockPortfolioMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOneStockPortfolioMutation, { data, loading, error }] = useUpdateOneStockPortfolioMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      tickers: // value for 'tickers'
+ *      headers: // value for 'headers'
+ *   },
+ * });
+ */
+export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>(UpdateOneStockPortfolioDocument, baseOptions);
+      }
+export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
+export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
+export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
 export const GetDataKeyOptionsDocument = gql`
     query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
@@ -1030,9 +967,9 @@ export const GetOneStockPortfolioDocument = gql`
     headers {
       name
       dataKey
-      width
       frozen
       resizable
+      width
     }
     tickers
     createdAt

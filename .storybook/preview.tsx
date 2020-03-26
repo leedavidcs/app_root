@@ -1,5 +1,6 @@
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+import "@blueprintjs/select/lib/css/blueprint-select.css";
 import { addDecorator, addParameters, configure } from "@storybook/react";
 import { themes } from "@storybook/theming";
 import { withRootProvider } from "../src/client/storybook";

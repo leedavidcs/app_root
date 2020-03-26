@@ -3,8 +3,7 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		position: "absolute",
-		top: 28,
+		position: "relative",
 		left: 0,
 		zIndex: getZIndex("data-grid-content")
 	},

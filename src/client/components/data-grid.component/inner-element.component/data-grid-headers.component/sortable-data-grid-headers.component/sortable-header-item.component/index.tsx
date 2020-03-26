@@ -1,97 +1,90 @@
-import { ClickOutside } from "@/client/components/click-outside.component";
-import { IHeaderConfig } from "@/client/components/data-grid.component";
-import { Popover } from "@/client/components/popover.component";
-import { useContextMenu, useKeyDown } from "@/client/hooks";
-import { Menu } from "@blueprintjs/core";
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from "react";
+import {
+	HeadersContext,
+	IHeaderConfig,
+	IHeaderOption,
+	ResizeContext
+} from "@/client/components/data-grid.component";
+import { ISelectItemType, Select } from "@/client/components/input.component";
+import React, { FC, memo, useCallback, useContext, useMemo } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
-import { HeaderSelect } from "./header-select.component";
 import { useStyles } from "./styles";
-import { useEditActions } from "./use-edit-actions.hook";
-import { useFreezeActions } from "./use-freeze-actions.hook";
-import { useSelectActions } from "./use-select-actions.hook";
+import { useHeaderMenu } from "./use-header-menu.hook";
 
-interface IProps extends IHeaderConfig {
+export interface IBaseHeaderItemProps extends IHeaderConfig {
 	headerIndex: number;
+	onOpenMenu: () => void;
+	onOpenOptions: () => void;
+	onEdit: (index: number) => void;
 }
 
-const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
-	const { headerIndex: index, ...headerProps } = props;
-	const { options, value, width } = headerProps;
+const TypedSelect = Select.ofType<IHeaderOption & ISelectItemType>();
+
+const useOptionItems = ({ options }: IBaseHeaderItemProps) => {
+	const selectOptions: readonly (IHeaderOption & ISelectItemType)[] = useMemo(
+		() =>
+			(options ?? [])?.map((option) => ({
+				...option,
+				key: option.label
+			})),
+		[options]
+	);
+
+	return selectOptions;
+};
+
+const useOnSelect = (index: number) => {
+	const { setHeaderOption } = useContext(HeadersContext);
+
+	return useCallback((option: IHeaderOption) => setHeaderOption(option, index), [
+		index,
+		setHeaderOption
+	]);
+};
+
+const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemProps) => {
+	const {
+		headerIndex: index,
+		onOpenMenu,
+		onOpenOptions,
+		onEdit: _onEdit,
+		...headerProps
+	} = props;
+	const { width } = headerProps;
 
 	const classes = useStyles();
 
-	const [editStates, editActions] = useEditActions(index);
-	const [freezeLabel, freezeActions] = useFreezeActions(index);
-	const [isSelected, selectActions] = useSelectActions(index);
+	const { isResizing } = useContext(ResizeContext);
 
-	const stopOperations = useCallback(() => {
-		selectActions.close();
-		editActions.stop();
-	}, [editActions, selectActions]);
+	const onSelect = useOnSelect(index);
 
-	const onInputChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => editActions.setValue(event.target.value),
-		[editActions]
-	);
-
-	const keyMap = useMemo(
-		() => ({
-			esc: editActions.stop,
-			enter: () => {
-				editActions.updateLabel();
-				editActions.stop();
-			}
-		}),
-		[editActions]
-	);
-
-	const onInputKeyDown = useKeyDown(keyMap);
-
-	const [onContextMenu] = useContextMenu(
-		<Menu className={classes.contextMenu}>
-			<Menu.Item icon="edit" text="Edit label" onClick={editActions.start} />
-			<Menu.Item text={freezeLabel} onClick={freezeActions.freeze} />
-		</Menu>,
-		{ onOpen: stopOperations }
-	);
+	const [onContextMenu, { isOpen }] = useHeaderMenu(props);
+	const items = useOptionItems(props);
 
 	return (
-		<ClickOutside onClick={stopOperations}>
-			<Popover
-				isOpen={isSelected}
+		<div
+			className={classes.root}
+			onContextMenu={onContextMenu}
+			style={{ width, minWidth: width }}
+		>
+			<TypedSelect
+				disabled={isResizing || isOpen}
+				items={items}
 				minimal={true}
-				position="bottom-left"
-				onClose={stopOperations}
-				content={
-					<HeaderSelect onSelect={selectActions.select} options={options} value={value} />
-				}
+				onItemSelect={onSelect}
+				onOpening={onOpenOptions}
 			>
-				<div onContextMenu={onContextMenu} style={{ height: "100%", width }}>
-					{editStates.isEditing ? (
-						<input
-							className={classes.editLabel}
-							value={editStates.value}
-							onChange={onInputChange}
-							onKeyDown={onInputKeyDown}
-							autoFocus={true}
-							spellCheck={false}
-						/>
-					) : (
-						<HeaderItem index={index} onClick={selectActions.open} {...headerProps} />
-					)}
-				</div>
-			</Popover>
-		</ClickOutside>
+				<HeaderItem index={index} {...headerProps} />
+			</TypedSelect>
+		</div>
 	);
 });
 
 BaseHeaderItem.displayName = "BaseHeaderItem";
 
-const SortableHeaderItemComponent = SortableElement<IProps>(BaseHeaderItem);
+const SortableHeaderItemComponent = SortableElement<IBaseHeaderItemProps>(BaseHeaderItem);
 
-export const SortableHeaderItem: FC<IProps & SortableElementProps> = memo((props) => {
+export const SortableHeaderItem: FC<IBaseHeaderItemProps & SortableElementProps> = memo((props) => {
 	const { disabled } = props;
 
 	const ComponentType = disabled ? BaseHeaderItem : SortableHeaderItemComponent;

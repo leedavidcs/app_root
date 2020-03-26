@@ -1,10 +1,13 @@
-import { FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
-
+import { ControlGroup, FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
+import classnames from "classnames";
+import Keycode from "keycode";
 import React, {
 	CSSProperties,
 	FC,
 	FormEventHandler,
+	KeyboardEvent,
 	KeyboardEventHandler,
+	ReactElement,
 	useCallback,
 	useMemo
 } from "react";
@@ -12,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
+	children?: ReactElement;
 	className?: string;
 	control?: ReturnType<typeof useForm>["control"];
 	defaultValue?: string;
@@ -32,8 +36,9 @@ interface IProps {
 
 export const TextInput: FC<IProps> = (props) => {
 	const {
+		children,
 		className,
-		control: useFormControl,
+		control: _control,
 		defaultValue,
 		disabled,
 		error,
@@ -43,7 +48,7 @@ export const TextInput: FC<IProps> = (props) => {
 		labelInfo,
 		name,
 		onChange,
-		onKeyDown,
+		onKeyDown: _onKeyDown,
 		placeholder,
 		style,
 		type,
@@ -53,6 +58,22 @@ export const TextInput: FC<IProps> = (props) => {
 	const classes = useStyles();
 
 	const intent: Intent = error ? "danger" : "none";
+
+	const onKeyDown = useCallback(
+		(event: KeyboardEvent<HTMLInputElement>) => {
+			const { keyCode } = event;
+
+			switch (keyCode) {
+				case Keycode.codes.enter:
+					event.preventDefault();
+					break;
+				default:
+			}
+
+			_onKeyDown?.(event);
+		},
+		[_onKeyDown]
+	);
 
 	const inputProps = useMemo(
 		() => ({
@@ -71,9 +92,11 @@ export const TextInput: FC<IProps> = (props) => {
 
 	const getAsController = useCallback(
 		(control: NonNullable<IProps["control"]>) => {
-			return (
-				<Controller as={InputGroup} control={control} {...inputProps} name={name || ""} />
-			);
+			if (!name) {
+				throw new Error("Input is used in a form without a name!");
+			}
+
+			return <Controller as={InputGroup} control={control} {...inputProps} name={name} />;
 		},
 		[name, inputProps]
 	);
@@ -84,7 +107,7 @@ export const TextInput: FC<IProps> = (props) => {
 
 	return (
 		<FormGroup
-			className={className}
+			className={classnames(classes.root, className)}
 			disabled={disabled}
 			helperText={error}
 			inline={inline}
@@ -93,7 +116,10 @@ export const TextInput: FC<IProps> = (props) => {
 			intent={intent}
 			style={style}
 		>
-			{useFormControl ? getAsController(useFormControl) : getAsInput()}
+			<ControlGroup>
+				{_control ? getAsController(_control) : getAsInput()}
+				{children}
+			</ControlGroup>
 		</FormGroup>
 	);
 };

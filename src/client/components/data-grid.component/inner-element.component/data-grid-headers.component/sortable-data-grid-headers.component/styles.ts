@@ -1,21 +1,22 @@
-import { CustomTheme, getZIndex } from "@/client/themes";
-import { transparentize } from "polished";
+import { colors, CustomTheme, getZIndex } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
 		display: "flex",
-		borderBottom: {
-			color: transparentize(1 - theme.mediumEmphasis, theme.onSurface),
-			style: "solid",
-			width: 1
-		},
+		borderBottom: `1px solid ${colors.gray1}`,
 		backgroundColor: theme.surface
 	},
 	frozenPanel: {
 		display: "flex",
 		transform: ({ xOffset }) => `translateX(${xOffset}px)`,
 		zIndex: getZIndex("data-grid-frozen-header")
+	},
+	labelInput: {
+		padding: "0px 4px",
+		border: `1px solid ${theme.primary}`,
+		backgroundColor: theme.code,
+		color: theme.onSurface
 	}
 });
 

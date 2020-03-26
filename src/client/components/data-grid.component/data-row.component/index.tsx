@@ -1,10 +1,9 @@
-import { DataValue } from "@/client/components/data-grid.component";
 import React, { FC, memo } from "react";
 import { ListChildComponentProps } from "react-window";
 import { SortableDataRow } from "./sortable-data-row.component";
 
 interface IProps extends ListChildComponentProps {
-	data: readonly { [key: string]: DataValue }[];
+	data: readonly Record<string, any>[];
 }
 
 /**

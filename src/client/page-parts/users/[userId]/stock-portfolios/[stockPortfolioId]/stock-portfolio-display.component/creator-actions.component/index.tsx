@@ -16,6 +16,7 @@ interface IProps {
 
 const useOnDelete = ({ stockPortfolio }: IProps) => {
 	const router: NextRouter = useRouter();
+
 	const onCompleted = useCallback(
 		(data: DeleteStockPortfolioMutation) => {
 			if (!data.deleteOneStockPortfolio || !stockPortfolio) {
@@ -59,11 +60,13 @@ export const CreatorActions: FC<IProps> = (props) => {
 	const { id, name, user } = stockPortfolio;
 
 	return (
-		<ButtonGroup className={className}>
-			<Link href={`/users/${user.id}/stock-portfolios/${id}/edit`} passHref={true}>
-				<AnchorButton icon="edit" text="Edit" />
-			</Link>
-			<Button icon="trash" onClick={onBtnDelete} text="Delete" />
+		<>
+			<ButtonGroup className={className}>
+				<Link href={`/users/${user.id}/stock-portfolios/${id}/edit`} passHref={true}>
+					<AnchorButton icon="edit" text="Edit" />
+				</Link>
+				<Button icon="trash" onClick={onBtnDelete} text="Delete" />
+			</ButtonGroup>
 			<Alert
 				cancelButtonText="Cancel"
 				confirmButtonText="Delete"
@@ -81,6 +84,6 @@ export const CreatorActions: FC<IProps> = (props) => {
 					<p>Do you wish to continue?</p>
 				</>
 			</Alert>
-		</ButtonGroup>
+		</>
 	);
 };

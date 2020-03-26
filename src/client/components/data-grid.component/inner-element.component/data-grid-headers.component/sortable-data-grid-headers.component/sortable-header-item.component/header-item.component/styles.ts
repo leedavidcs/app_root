@@ -1,20 +1,16 @@
-import { CustomTheme } from "@/client/themes";
-import { transparentize } from "polished";
+import { DATA_GRID_ROW_HEIGHT } from "@/client/components/data-grid.component";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
 		display: "flex",
 		position: "relative",
-		height: 28,
-		outline: {
-			width: 1,
-			style: "solid",
-			color: transparentize(1 - theme.mediumEmphasis, theme.onSurface)
-		},
+		height: DATA_GRID_ROW_HEIGHT,
+		outline: `1px solid ${colors.gray1}`,
 		backgroundColor: theme.surface,
-		color: transparentize(1 - theme.mediumEmphasis, theme.onSurface),
-		cursor: ({ frozen }) => (frozen ? "cursor" : "pointer"),
+		color: colors.gray5,
+		cursor: "pointer",
 		userSelect: "none"
 	},
 	content: {
@@ -24,7 +20,7 @@ const styles = (theme: CustomTheme) => ({
 		whiteSpace: "nowrap",
 		overflow: "hidden",
 		textOverflow: "ellipsis",
-		lineHeight: "28px"
+		lineHeight: `${DATA_GRID_ROW_HEIGHT}px`
 	}
 });
 

@@ -20,20 +20,20 @@ model User {
   updatedAt     DateTime @updatedAt
 }
 
-model StockPortfolioHeader {
-  id        String @id @default(uuid())
-  name      String
-  dataKey   String
-  width     Int @default(100)
-  frozen    Boolean @default(false)
-  resizable Boolean @default(true)
-}
+// model StockPortfolioHeader {
+//   id        String @id @default(uuid())
+//   name      String
+//   dataKey   String
+//   width     Int @default(100)
+//   frozen    Boolean @default(false)
+//   resizable Boolean @default(true)
+// }
 
 model StockPortfolio {
   id        String @id @default(uuid())
   user      User
   name      String
-  headers   StockPortfolioHeader[]
+  headers   String[]
   tickers   String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

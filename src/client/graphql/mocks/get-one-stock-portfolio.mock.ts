@@ -20,7 +20,7 @@ const mockHeaders = range(HEADERS_COUNT).map(() => ({
 
 const uniqueMockHeaders = uniqBy(mockHeaders, "name");
 
-const mockTickers = range(TICKERS_COUNT).map(() => Faker.name.findName());
+const mockTickers = range(TICKERS_COUNT).map(() => Faker.hacker.abbreviation());
 
 const mockData = mockTickers.map((ticker) => {
 	const headerKeys: readonly string[] = uniqueMockHeaders.map(({ dataKey }) => dataKey);
