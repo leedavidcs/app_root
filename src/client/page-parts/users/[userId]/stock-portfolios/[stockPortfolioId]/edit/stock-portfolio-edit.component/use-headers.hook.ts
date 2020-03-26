@@ -33,12 +33,12 @@ export const useHeaders = (
 		[]
 	);
 
-	const [headers, _setHeaders] = useState<readonly StockPortfolioHeader[]>(
-		stockPortfolio.headers
+	const [headers, _setHeaders] = useState<readonly StockPortfolioHeader[]>(() =>
+		stockPortfolio.headers.map(({ __typename, ...headerProps }) => headerProps)
 	);
 	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>(() => [
 		tickerHeader,
-		...headers.map(({ name, dataKey, ...commonProps }) => ({
+		...headers.map(({ name, dataKey, __typename, ...commonProps }) => ({
 			label: name,
 			value: dataKey,
 			options: null,
@@ -50,7 +50,7 @@ export const useHeaders = (
 		(newHeaders: readonly StockPortfolioHeader[]) => {
 			const newGridHeaders: readonly IHeaderConfig[] = [
 				tickerHeader,
-				...newHeaders.map(({ name, dataKey, ...commonProps }) => ({
+				...newHeaders.map(({ name, dataKey, __typename, ...commonProps }) => ({
 					label: name,
 					value: dataKey,
 					...commonProps,
