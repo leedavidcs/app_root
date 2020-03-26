@@ -6,7 +6,7 @@ import { SortableDataGridHeaders } from "./sortable-data-grid-headers.component"
 import { useStyles } from "./styles";
 
 export * from "./data-grid-headers-provider.component";
-export type { IBaseHeaderItemProps } from "./sortable-data-grid-headers.component";
+export * from "./sortable-data-grid-headers.component";
 
 // Required to prevent sorting, when the user intends to resize instead
 const RESIZE_HANDLE_CLASS = "RESIZE_HANDLE_CLASS";
