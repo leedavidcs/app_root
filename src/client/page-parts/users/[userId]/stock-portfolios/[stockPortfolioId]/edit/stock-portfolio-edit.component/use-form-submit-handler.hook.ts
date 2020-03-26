@@ -2,27 +2,41 @@ import {
 	UpdateOneStockPortfolioMutationVariables,
 	useUpdateOneStockPortfolioMutation
 } from "@/client/graphql";
-import { useCallback, useMemo, useState } from "react";
+import { useToast } from "@/client/hooks";
+import { useCallback } from "react";
 import { IFormData } from ".";
 
 export const useFormSubmitHandler = (
 	values: Pick<UpdateOneStockPortfolioMutationVariables, "headers" | "id" | "tickers">
 ) => {
 	const [updatePortfolio] = useUpdateOneStockPortfolioMutation();
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const toast = useToast();
 
 	const onFormSubmit = useCallback(
-		(data: IFormData) => {
+		async (data: IFormData) => {
 			const variables: UpdateOneStockPortfolioMutationVariables = { ...data, ...values };
 
-			updatePortfolio({ variables }).catch((err) => {
+			try {
+				await updatePortfolio({ variables });
+			} catch (err) {
 				if (err instanceof Error) {
-					setErrorMessage(err.message);
+					toast.show({
+						message: err.message,
+						intent: "danger"
+					});
 				}
+
+				return;
+			}
+
+			toast.show({
+				message: "Successfully updated",
+				intent: "success"
 			});
 		},
-		[updatePortfolio, values]
+		[toast, updatePortfolio, values]
 	);
 
-	return useMemo(() => ({ errorMessage, onFormSubmit }), [errorMessage, onFormSubmit]);
+	return onFormSubmit;
 };

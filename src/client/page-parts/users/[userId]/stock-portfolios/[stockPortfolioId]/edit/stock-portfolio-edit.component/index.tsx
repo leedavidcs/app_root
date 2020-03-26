@@ -48,7 +48,7 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 		[dataStates.tickers, headerStates.headers, stockPortfolio.id]
 	);
 
-	const { errorMessage, onFormSubmit } = useFormSubmitHandler(values);
+	const onFormSubmit = useFormSubmitHandler(values);
 
 	const onRowContextMenu = useOnRowContextMenu(dataActions);
 
@@ -91,7 +91,6 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 					<p className={classes.lastUpdated}>Last updated: {updatedAt}</p>
 				</div>
 			</form>
-			{errorMessage && <p>{errorMessage}</p>}
 		</div>
 	);
 });
