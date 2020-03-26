@@ -6,10 +6,14 @@ const styles = (theme: CustomTheme) => ({
 		display: "flex"
 	},
 	addInputContainers: {
+		display: "flex",
 		flexGrow: 1
 	},
 	addTicker: {
 		margin: 0
+	},
+	addColumn: {
+		marginLeft: 12
 	}
 });
 

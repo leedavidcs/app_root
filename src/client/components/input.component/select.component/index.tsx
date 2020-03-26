@@ -33,6 +33,7 @@ interface ISelectProps<T extends ISelectItemType> {
 	onQueryChange?: (query: string, event?: ChangeEvent<HTMLInputElement>) => void;
 	query?: string;
 	resetOnClose?: boolean;
+	resetOnSelect?: boolean;
 }
 
 interface IWithStaticExports {
@@ -77,7 +78,8 @@ const ofType = <T extends ISelectItemType>() => {
 			onItemSelect,
 			onQueryChange,
 			query,
-			resetOnClose
+			resetOnClose,
+			resetOnSelect
 		}) => {
 			const classes = useStyles();
 
@@ -104,6 +106,7 @@ const ofType = <T extends ISelectItemType>() => {
 					popoverProps={popoverProps}
 					query={query}
 					resetOnClose={resetOnClose}
+					resetOnSelect={resetOnSelect}
 				>
 					{children}
 				</TypedSelect>

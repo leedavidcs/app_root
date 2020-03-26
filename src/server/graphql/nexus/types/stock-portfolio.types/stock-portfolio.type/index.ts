@@ -19,9 +19,8 @@ export const StockPortfolio = objectType({
 		t.model.id();
 		t.model.user();
 		t.model.name();
-		t.field("headers", {
+		t.list.field("headers", {
 			type: "StockPortfolioHeader",
-			list: true,
 			nullable: false,
 			resolve: async ({ id }, args, { prisma }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: {id } });
@@ -34,7 +33,6 @@ export const StockPortfolio = objectType({
 		t.model.tickers();
 		t.list.field("data", {
 			type: "JSONObject",
-			list: true,
 			nullable: false,
 			description: "The data that gets resolved based on headers and tickers",
 			resolve: (parent, args, ctx) => getStockPortfolioData(parent, ctx)

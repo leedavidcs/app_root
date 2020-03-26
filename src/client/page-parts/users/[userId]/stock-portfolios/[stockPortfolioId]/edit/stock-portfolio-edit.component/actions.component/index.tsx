@@ -1,3 +1,4 @@
+import { IHeaderOption } from "@/client/components";
 import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
@@ -8,12 +9,15 @@ import { Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
+import { AddColumnSelect } from "./add-column-select.component";
 import { AddTickerInput } from "./add-ticker-input.component";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
+	columnOptions: readonly IHeaderOption[];
 	onAddTicker: (ticker: string) => void;
+	onAddColumn: (option: IHeaderOption) => void;
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
@@ -47,7 +51,7 @@ const useOnDelete = ({ stockPortfolio }: IProps) => {
 };
 
 export const Actions: FC<IProps> = (props) => {
-	const { className, onAddTicker, stockPortfolio } = props;
+	const { className, columnOptions, onAddTicker, onAddColumn, stockPortfolio } = props;
 
 	const classes = useStyles();
 
@@ -65,6 +69,11 @@ export const Actions: FC<IProps> = (props) => {
 			<div className={classes.root}>
 				<div className={classes.addInputContainers}>
 					<AddTickerInput className={classes.addTicker} onAddTicker={onAddTicker} />
+					<AddColumnSelect
+						className={classes.addColumn}
+						columnOptions={columnOptions}
+						onSelect={onAddColumn}
+					/>
 				</div>
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
 					<Button icon="saved" text="Save" type="submit" />

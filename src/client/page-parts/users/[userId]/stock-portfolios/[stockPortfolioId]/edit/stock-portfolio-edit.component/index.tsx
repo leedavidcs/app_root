@@ -1,46 +1,25 @@
-import { DataGrid, EditableText, IHeaderConfig, IHeaderOption, Paper } from "@/client/components";
-import {
-	GetOneStockPortfolioQuery,
-	UpdateOneStockPortfolioMutationVariables,
-	useGetDataKeyOptionsQuery,
-	useUpdateOneStockPortfolioMutation
-} from "@/client/graphql";
+import { DataGrid, EditableText, Paper } from "@/client/components";
+import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { getYupValidationResolver } from "@/client/utils";
-import { Classes, Menu, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FC, memo, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
 import { Actions } from "./actions.component";
 import { useStyles } from "./styles";
+import { IStockPortfolioEditData, useData } from "./use-data.hook.";
+import { useFormSubmitHandler } from "./use-form-submit-handler.hook";
+import { useHeaders } from "./use-headers.hook";
+import { useOnRowContextMenu } from "./use-on-row-context-menu.hook";
+import { useOptions } from "./use-options.hook";
 
-interface IProps {
+export interface IStockPortfolioEditProps {
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
-interface IFormData {
+export interface IFormData {
 	name: string;
-}
-
-type StockPortfolioHeaders = IProps["stockPortfolio"]["headers"];
-
-type UseHeadersResult = [
-	{ headers: StockPortfolioHeaders; gridHeaders: readonly IHeaderConfig[] },
-	{ setGridHeaders: (gridHeaders: readonly IHeaderConfig[]) => void }
-];
-
-type UseDataResult = [
-	{ data: readonly IStockPortfolioEditData[]; tickers: readonly string[] },
-	{
-		addTicker: (ticker: string) => void;
-		removeTicker: (ticker: string) => void;
-		setData: (data: readonly IStockPortfolioEditData[]) => void;
-	}
-];
-
-interface IStockPortfolioEditData {
-	ticker: string;
-	[key: string]: any;
 }
 
 const TypedDataGrid = DataGrid.ofType<IStockPortfolioEditData>();
@@ -48,172 +27,7 @@ const TypedDataGrid = DataGrid.ofType<IStockPortfolioEditData>();
 const validationSchema = () => ({ name: string().min(1) });
 const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
 
-const useOptions = (): { loaded: boolean; options: readonly IHeaderOption[] } => {
-	const { called, data, loading } = useGetDataKeyOptionsQuery();
-
-	const options: readonly IHeaderOption[] = useMemo(() => {
-		return (data?.dataKeyOptions || []).map(({ name, dataKey }) => ({
-			label: name,
-			value: dataKey
-		}));
-	}, [data]);
-
-	const loaded: boolean = called && !loading;
-
-	return useMemo(() => ({ loaded, options }), [loaded, options]);
-};
-
-const useHeaders = (
-	{ stockPortfolio }: IProps,
-	options: readonly IHeaderOption[]
-): UseHeadersResult => {
-	const [headers, setHeaders] = useState<StockPortfolioHeaders>(stockPortfolio.headers);
-	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>(() => [
-		{
-			label: "ticker",
-			value: "ticker",
-			frozen: true,
-			options: null,
-			resizable: true,
-			width: 100
-		},
-		...headers.map(({ name, dataKey, ...commonProps }) => ({
-			label: name,
-			value: dataKey,
-			...commonProps,
-			options
-		}))
-	]);
-
-	/** Always maintain an update-request compatible version of headers to simplify the request */
-	const setGridHeaders = useCallback((newGridHeaders: readonly IHeaderConfig[]) => {
-		const newHeaders: StockPortfolioHeaders = newGridHeaders
-			.filter(({ value }) => value !== "ticker")
-			.map(({ label, value, options: _options, ...commonProps }) => ({
-				name: label,
-				dataKey: value,
-				...commonProps
-			}));
-
-		setHeaders(newHeaders);
-		_setGridHeaders(newGridHeaders);
-	}, []);
-
-	/** Re-render, whenever gridHeader options are changed */
-	useEffect(() => {
-		gridHeaders.forEach((gridHeader) => {
-			if (gridHeader.value !== "ticker") {
-				gridHeader.options = options;
-			}
-		});
-
-		_setGridHeaders(gridHeaders);
-	}, [gridHeaders, options]);
-
-	const result: UseHeadersResult = useMemo(() => {
-		const states = { headers, gridHeaders };
-		const actions = { setGridHeaders };
-
-		return [states, actions];
-	}, [gridHeaders, headers, setGridHeaders]);
-
-	return result;
-};
-
-const useData = ({ stockPortfolio }: IProps): UseDataResult => {
-	const [tickers, setTickers] = useState<readonly string[]>(stockPortfolio.tickers);
-	const [data, _setData] = useState<readonly IStockPortfolioEditData[]>(
-		tickers.map((ticker) => ({ ticker }))
-	);
-
-	const addTicker = useCallback(
-		(newTicker: string) => {
-			const isDuplicate = Boolean(tickers.find((ticker) => ticker === newTicker));
-
-			if (!newTicker || isDuplicate) {
-				return;
-			}
-
-			const newTickers: readonly string[] = [newTicker, ...tickers];
-
-			setTickers(newTickers);
-			_setData(newTickers.map((ticker) => ({ ticker })));
-		},
-		[tickers]
-	);
-
-	const removeTicker = useCallback(
-		(toRemove: string) => {
-			const newTickers: readonly string[] = tickers.filter((ticker) => ticker !== toRemove);
-			const isUnchanged: boolean = newTickers.length === tickers.length;
-
-			if (isUnchanged) {
-				return;
-			}
-
-			setTickers(newTickers);
-			_setData(newTickers.map((ticker) => ({ ticker })));
-		},
-		[tickers]
-	);
-
-	const setData = useCallback((newData: readonly IStockPortfolioEditData[]) => {
-		const newTickers: readonly string[] = newData
-			.map(({ ticker }) => ticker)
-			.filter((ticker) => !ticker);
-
-		setTickers(newTickers);
-		_setData(newData);
-	}, []);
-
-	const result: UseDataResult = useMemo(() => {
-		const states = { tickers, data };
-		const actions = { addTicker, removeTicker, setData };
-
-		return [states, actions];
-	}, [addTicker, data, removeTicker, setData, tickers]);
-
-	return result;
-};
-
-const useOnRowContextMenu = ({ removeTicker }: UseDataResult[1]) => {
-	const onDelete = useCallback((ticker: string) => () => removeTicker(ticker), [removeTicker]);
-
-	const onRowContextMenu = useCallback(
-		({ ticker }: IStockPortfolioEditData) => (
-			<Menu>
-				<Menu.Item onClick={onDelete(ticker)} text="Delete" />
-			</Menu>
-		),
-		[onDelete]
-	);
-
-	return onRowContextMenu;
-};
-
-const useFormSubmitHandler = (
-	values: Pick<UpdateOneStockPortfolioMutationVariables, "headers" | "id" | "tickers">
-) => {
-	const [updatePortfolio] = useUpdateOneStockPortfolioMutation();
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	const onFormSubmit = useCallback(
-		(data: IFormData) => {
-			const variables: UpdateOneStockPortfolioMutationVariables = { ...data, ...values };
-
-			updatePortfolio({ variables }).catch((err) => {
-				if (err instanceof Error) {
-					setErrorMessage(err.message);
-				}
-			});
-		},
-		[updatePortfolio, values]
-	);
-
-	return useMemo(() => ({ errorMessage, onFormSubmit }), [errorMessage, onFormSubmit]);
-};
-
-export const StockPortfolioEdit: FC<IProps> = memo((props) => {
+export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => {
 	const { stockPortfolio } = props;
 
 	const classes = useStyles();
@@ -236,15 +50,20 @@ export const StockPortfolioEdit: FC<IProps> = memo((props) => {
 
 	const { errorMessage, onFormSubmit } = useFormSubmitHandler(values);
 
-	const { name, updatedAt, user } = stockPortfolio;
-
 	const onRowContextMenu = useOnRowContextMenu(dataActions);
+
+	const { name, updatedAt, user } = stockPortfolio;
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div>
-					<Actions onAddTicker={dataActions.addTicker} stockPortfolio={stockPortfolio} />
+					<Actions
+						columnOptions={optionsResult.options}
+						onAddTicker={dataActions.addTicker}
+						onAddColumn={headerActions.addGridHeader}
+						stockPortfolio={stockPortfolio}
+					/>
 				</div>
 				<h2 className={classes.portfolioName}>
 					<EditableText
