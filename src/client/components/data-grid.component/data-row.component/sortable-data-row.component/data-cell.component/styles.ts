@@ -7,7 +7,7 @@ const styles = (theme: CustomTheme) => ({
 		alignItems: "center",
 		boxSizing: "border-box",
 		height: "100%",
-		backgroundColor: "transparent",
+		paddingLeft: 4,
 		color: theme.onSurface,
 		whiteSpace: "nowrap",
 		overflow: "hidden",

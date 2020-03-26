@@ -2,6 +2,7 @@ import React, {
 	Children,
 	cloneElement,
 	FC,
+	memo,
 	MouseEvent,
 	MouseEventHandler,
 	ReactElement,
@@ -31,7 +32,7 @@ interface IProps {
 
 type DidClickInside = Record<keyof Omit<IProps, "children">, boolean>;
 
-export const ClickOutside: FC<IProps> = ({ children, onClick, onMouseDown, onMouseUp }) => {
+export const ClickOutside: FC<IProps> = memo(({ children, onClick, onMouseDown, onMouseUp }) => {
 	const didClickInside = useRef<DidClickInside>({
 		onClick: false,
 		onMouseDown: false,
@@ -110,4 +111,6 @@ export const ClickOutside: FC<IProps> = ({ children, onClick, onMouseDown, onMou
 		onMouseDownCapture,
 		onMouseUpCapture
 	});
-};
+});
+
+ClickOutside.displayName = "ClickOutside";

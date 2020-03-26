@@ -14,7 +14,7 @@ const styles = (theme: CustomTheme) => ({
 		},
 		backgroundColor: theme.surface,
 		color: transparentize(1 - theme.mediumEmphasis, theme.onSurface),
-		cursor: ({ frozen }) => (frozen ? "cursor" : "pointer"),
+		cursor: "pointer",
 		userSelect: "none"
 	},
 	content: {

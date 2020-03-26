@@ -3,7 +3,11 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		height: "100%"
+		height: "100%",
+
+		"& .bp3-popover-wrapper, .bp3-popover-target": {
+			width: "100%"
+		}
 	},
 	editLabel: {
 		boxSizing: "border-box",

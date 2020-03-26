@@ -6,7 +6,7 @@ interface IEditActionsStates {
 	value: string;
 }
 
-interface IEditActions {
+export interface IEditActions {
 	setValue: (value: string) => void;
 	start: () => void;
 	stop: () => void;

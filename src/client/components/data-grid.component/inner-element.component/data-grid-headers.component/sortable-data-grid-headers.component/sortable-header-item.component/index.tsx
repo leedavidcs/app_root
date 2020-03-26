@@ -1,41 +1,33 @@
 import { ClickOutside } from "@/client/components/click-outside.component";
-import { IHeaderConfig } from "@/client/components/data-grid.component";
-import { Popover } from "@/client/components/popover.component";
+import {
+	HeadersContext,
+	IHeaderConfig,
+	IHeaderOption,
+	ResizeContext
+} from "@/client/components/data-grid.component";
+import { ISelectItemType, Select } from "@/client/components/input.component";
 import { useContextMenu, useKeyDown } from "@/client/hooks";
 import { Menu } from "@blueprintjs/core";
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useCallback } from "react";
+import React, {
+	ChangeEvent,
+	FC,
+	KeyboardEvent,
+	memo,
+	useCallback,
+	useContext,
+	useMemo
+} from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
-import { HeaderSelect } from "./header-select.component";
 import { useStyles } from "./styles";
-import { useEditActions } from "./use-edit-actions.hook";
+import { IEditActions, useEditActions } from "./use-edit-actions.hook";
 import { useFreezeActions } from "./use-freeze-actions.hook";
-import { useSelectActions } from "./use-select-actions.hook";
 
 interface IProps extends IHeaderConfig {
 	headerIndex: number;
 }
 
-const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
-	const { headerIndex: index, ...headerProps } = props;
-	const { options, value, width } = headerProps;
-
-	const classes = useStyles();
-
-	const [editStates, editActions] = useEditActions(index);
-	const [freezeLabel, freezeActions] = useFreezeActions(index);
-	const [isSelected, selectActions] = useSelectActions(index);
-
-	const stopOperations = useCallback(() => {
-		selectActions.close();
-		editActions.stop();
-	}, [editActions, selectActions]);
-
-	const onInputChange = useCallback(
-		(event: ChangeEvent<HTMLInputElement>) => editActions.setValue(event.target.value),
-		[editActions]
-	);
-
+const useOnInputKeyDown = (editActions: IEditActions) => {
 	const onEscKey = useKeyDown("esc", editActions.stop);
 	const onEnterKey = useKeyDown(
 		"enter",
@@ -53,26 +45,80 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 		[onEnterKey, onEscKey]
 	);
 
-	const [onContextMenu] = useContextMenu(
+	return onInputKeyDown;
+};
+
+const TypedSelect = Select.ofType<IHeaderOption & ISelectItemType>();
+
+const useOptionItems = ({ options }: IProps) => {
+	const selectOptions: readonly (IHeaderOption & ISelectItemType)[] = useMemo(
+		() =>
+			(options ?? [])?.map((option) => ({
+				...option,
+				key: option.value
+			})),
+		[options]
+	);
+
+	return selectOptions;
+};
+
+const useOnSelect = (index: number) => {
+	const { setHeaderOption } = useContext(HeadersContext);
+
+	return useCallback((option: IHeaderOption) => setHeaderOption(option, index), [
+		index,
+		setHeaderOption
+	]);
+};
+
+const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
+	const { headerIndex: index, ...headerProps } = props;
+	const { width } = headerProps;
+
+	const classes = useStyles();
+
+	const { isResizing } = useContext(ResizeContext);
+
+	const [editStates, editActions] = useEditActions(index);
+	const [freezeLabel, freezeActions] = useFreezeActions(index);
+	const onSelect = useOnSelect(index);
+
+	const stopOperations = useCallback(() => {
+		editActions.stop();
+	}, [editActions]);
+
+	const onInputChange = useCallback(
+		(event: ChangeEvent<HTMLInputElement>) => editActions.setValue(event.target.value),
+		[editActions]
+	);
+
+	const onInputKeyDown = useOnInputKeyDown(editActions);
+
+	const [onContextMenu, { isOpen: isContextMenuOpen }] = useContextMenu(
 		<Menu className={classes.contextMenu}>
 			<Menu.Item icon="edit" text="Edit label" onClick={editActions.start} />
 			<Menu.Item text={freezeLabel} onClick={freezeActions.freeze} />
+			<Menu.Item icon="trash" text="Delete column" />
 		</Menu>,
 		{ onOpen: stopOperations }
 	);
 
+	const items = useOptionItems(props);
+
 	return (
 		<ClickOutside onClick={stopOperations}>
-			<Popover
-				isOpen={isSelected}
-				minimal={true}
-				position="bottom-left"
-				onClose={stopOperations}
-				content={
-					<HeaderSelect onSelect={selectActions.select} options={options} value={value} />
-				}
+			<div
+				className={classes.root}
+				onContextMenu={onContextMenu}
+				style={{ width, minWidth: width }}
 			>
-				<div onContextMenu={onContextMenu} style={{ height: "100%", width }}>
+				<TypedSelect
+					disabled={isResizing || isContextMenuOpen}
+					items={items}
+					minimal={true}
+					onItemSelect={onSelect}
+				>
 					{editStates.isEditing ? (
 						<input
 							className={classes.editLabel}
@@ -83,10 +129,10 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 							spellCheck={false}
 						/>
 					) : (
-						<HeaderItem index={index} onClick={selectActions.open} {...headerProps} />
+						<HeaderItem index={index} {...headerProps} />
 					)}
-				</div>
-			</Popover>
+				</TypedSelect>
+			</div>
 		</ClickOutside>
 	);
 });
