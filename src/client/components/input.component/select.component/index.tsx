@@ -30,6 +30,8 @@ interface ISelectProps<T extends ISelectItemType> {
 	minimal?: boolean;
 	noResults?: ReactNode;
 	onItemSelect: (item: T, event?: SyntheticEvent<HTMLElement>) => void;
+	onOpened?: (node: HTMLElement) => void;
+	onOpening?: (node: HTMLElement) => void;
 	onQueryChange?: (query: string, event?: ChangeEvent<HTMLInputElement>) => void;
 	query?: string;
 	resetOnClose?: boolean;
@@ -76,6 +78,8 @@ const ofType = <T extends ISelectItemType>() => {
 			minimal,
 			noResults = <Menu.Item disabled={true} text="No results." />,
 			onItemSelect,
+			onOpened,
+			onOpening,
 			onQueryChange,
 			query,
 			resetOnClose,
@@ -86,9 +90,11 @@ const ofType = <T extends ISelectItemType>() => {
 			const popoverProps: Partial<IPopoverProps> = useMemo(
 				() => ({
 					minimal,
+					onOpened,
+					onOpening,
 					usePortal: true
 				}),
-				[minimal]
+				[minimal, onOpened, onOpening]
 			);
 
 			return (

@@ -11,6 +11,12 @@ const styles = (theme: CustomTheme) => ({
 		display: "flex",
 		transform: ({ xOffset }) => `translateX(${xOffset}px)`,
 		zIndex: getZIndex("data-grid-frozen-header")
+	},
+	labelInput: {
+		padding: "0px 4px",
+		border: `1px solid ${theme.primary}`,
+		backgroundColor: theme.code,
+		color: theme.onSurface
 	}
 });
 
