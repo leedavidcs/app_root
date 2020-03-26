@@ -1,6 +1,13 @@
 import { Classes, ContextMenu } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { MouseEvent, MouseEventHandler, ReactElement, useCallback, useState } from "react";
+import React, {
+	MouseEvent,
+	MouseEventHandler,
+	ReactElement,
+	useCallback,
+	useEffect,
+	useState
+} from "react";
 import { useStyles } from "./styles";
 
 interface IOptions {
@@ -47,6 +54,8 @@ export const useContextMenu = <T extends Element>(
 	);
 
 	const close = ContextMenu.hide;
+
+	useEffect(() => () => close(), [close]);
 
 	return [onContextMenu, { close, isOpen }];
 };
