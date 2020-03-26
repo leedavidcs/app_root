@@ -81,12 +81,12 @@ const ofType = <T extends ISelectItemType>() => {
 			resetOnClose,
 			resetOnSelect
 		}) => {
-			const classes = useStyles();
+			useStyles();
 
 			const popoverProps: Partial<IPopoverProps> = useMemo(
 				() => ({
 					minimal,
-					usePortal: false
+					usePortal: true
 				}),
 				[minimal]
 			);
@@ -94,7 +94,7 @@ const ofType = <T extends ISelectItemType>() => {
 			return (
 				<TypedSelect
 					activeItem={activeItem}
-					className={classnames(Classes.DARK, classes.root, className)}
+					className={classnames(Classes.DARK, className)}
 					disabled={disabled}
 					filterable={filterable}
 					itemPredicate={itemPredicate}
