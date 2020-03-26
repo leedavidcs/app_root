@@ -12,7 +12,7 @@ const TypedSelect = Select.ofType<IHeaderOption & { key: string }>();
 
 export const AddColumnSelect: FC<IProps> = ({ className, columnOptions, onSelect }) => {
 	const asSelectItems = useMemo(() => {
-		return columnOptions.map((option) => ({ ...option, key: option.value }));
+		return columnOptions.map((option) => ({ ...option, key: option.label }));
 	}, [columnOptions]);
 
 	return (

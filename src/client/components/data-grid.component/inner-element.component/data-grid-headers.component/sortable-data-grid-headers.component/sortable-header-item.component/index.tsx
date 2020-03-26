@@ -25,7 +25,7 @@ const useOptionItems = ({ options }: IBaseHeaderItemProps) => {
 		() =>
 			(options ?? [])?.map((option) => ({
 				...option,
-				key: option.value
+				key: option.label
 			})),
 		[options]
 	);

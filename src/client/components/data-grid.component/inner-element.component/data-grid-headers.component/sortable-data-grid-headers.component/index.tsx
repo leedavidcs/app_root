@@ -28,14 +28,14 @@ export const SortableDataGridHeaders = SortableContainer<IProps>(
 		const createHeaderItems = useCallback(
 			(configs: readonly IHeaderConfig[], offset = 0) => {
 				return configs.map((header, i) => {
-					const { frozen, value } = header;
+					const { frozen, label } = header;
 					const adjIndex: number = i + offset; /* Adjusted index, for unfrozen headers */
 
 					const isEditingLabel: boolean = adjIndex === editStates.header;
 
 					return isEditingLabel ? (
 						<input
-							key={value}
+							key={label}
 							className={classes.labelInput}
 							value={editStates.label}
 							autoFocus={true}
@@ -46,7 +46,7 @@ export const SortableDataGridHeaders = SortableContainer<IProps>(
 						/>
 					) : (
 						<SortableHeaderItem
-							key={value}
+							key={label}
 							{...header}
 							headerIndex={adjIndex}
 							index={adjIndex}

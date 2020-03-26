@@ -1,4 +1,5 @@
 import { IHeaderConfig, IHeaderOption } from "@/client/components";
+import { useToast } from "@/client/hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IStockPortfolioEditProps } from ".";
 
@@ -8,6 +9,7 @@ type UseHeadersResult = [
 	{ headers: readonly StockPortfolioHeader[]; gridHeaders: readonly IHeaderConfig[] },
 	{
 		addGridHeader: (option: IHeaderOption) => void;
+		onHeadersError: (message: string) => void;
 		setGridHeaders: (gridHeaders: readonly IHeaderConfig[]) => void;
 	}
 ];
@@ -22,6 +24,8 @@ export const useHeaders = (
 	{ stockPortfolio }: IStockPortfolioEditProps,
 	options: readonly IHeaderOption[]
 ): UseHeadersResult => {
+	const toast = useToast();
+
 	const tickerHeader = useMemo(
 		() => ({
 			...defaultHeaderValues,
@@ -78,8 +82,28 @@ export const useHeaders = (
 		_setGridHeaders(newGridHeaders);
 	}, []);
 
+	const onHeadersError = useCallback(
+		(message: string) => {
+			toast.show({ message, intent: "warning" });
+		},
+		[toast]
+	);
+
 	const addGridHeader = useCallback(
 		(newOption: IHeaderOption) => {
+			const isDuplicateOption = Boolean(
+				gridHeaders.find(({ label }) => newOption.value === label)
+			);
+
+			if (isDuplicateOption) {
+				toast.show({
+					message: "Cannot add column with non-unique name",
+					intent: "warning"
+				});
+
+				return;
+			}
+
 			const newHeader: StockPortfolioHeader = {
 				name: newOption.label,
 				dataKey: newOption.value,
@@ -90,7 +114,7 @@ export const useHeaders = (
 
 			setHeaders(newHeaders);
 		},
-		[headers, setHeaders]
+		[gridHeaders, headers, setHeaders, toast]
 	);
 
 	/** Re-render, whenever gridHeader options are changed */
@@ -104,12 +128,16 @@ export const useHeaders = (
 		_setGridHeaders(gridHeaders);
 	}, [gridHeaders, options]);
 
-	const result: UseHeadersResult = useMemo(() => {
-		const states = { headers, gridHeaders };
-		const actions = { addGridHeader, setGridHeaders };
+	const states = useMemo(() => ({ headers, gridHeaders }), [gridHeaders, headers]);
+	const actions = useMemo(() => ({ addGridHeader, onHeadersError, setGridHeaders }), [
+		addGridHeader,
+		onHeadersError,
+		setGridHeaders
+	]);
 
+	const result: UseHeadersResult = useMemo(() => {
 		return [states, actions];
-	}, [addGridHeader, gridHeaders, headers, setGridHeaders]);
+	}, [actions, states]);
 
 	return result;
 };

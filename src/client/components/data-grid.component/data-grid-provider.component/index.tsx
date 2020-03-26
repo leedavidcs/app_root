@@ -18,6 +18,11 @@ interface IProps {
 	onDataChange?: (data: readonly Record<string, any>[]) => void;
 	onRowContextMenu?: FC<Record<string, any>>;
 	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
+	onHeadersError?: (
+		message: string,
+		lastHeaders: readonly IHeaderConfig[],
+		badHeaders: readonly IHeaderConfig[]
+	) => void;
 }
 
 /**
@@ -26,14 +31,26 @@ interface IProps {
  *     directly
  */
 export const DataGridProvider: FC<IProps> = memo(
-	({ children, data, onDataChange, headers, onHeadersChange, onRowContextMenu }) => {
+	({
+		children,
+		data,
+		onDataChange,
+		headers,
+		onHeadersChange,
+		onHeadersError,
+		onRowContextMenu
+	}) => {
 		return (
 			<DataProvider
 				data={data}
 				onDataChange={onDataChange}
 				onRowContextMenu={onRowContextMenu}
 			>
-				<HeadersProvider headers={headers} onHeadersChange={onHeadersChange}>
+				<HeadersProvider
+					headers={headers}
+					onHeadersChange={onHeadersChange}
+					onHeadersError={onHeadersError}
+				>
 					<ScrollProvider>
 						<AutoSizerProvider>{children}</AutoSizerProvider>
 					</ScrollProvider>

@@ -82,6 +82,7 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 							headers={headerStates.gridHeaders}
 							onDataChange={dataActions.setData}
 							onHeadersChange={headerActions.setGridHeaders}
+							onHeadersError={headerActions.onHeadersError}
 							onRowContextMenu={onRowContextMenu}
 						/>
 					)}

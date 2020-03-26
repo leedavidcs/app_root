@@ -35,24 +35,21 @@ export interface IDataGridProps<T extends Record<string, any>> {
 	headers: readonly IHeaderConfig[];
 	/** The number of rows (data) in this data-grid */
 	itemCount?: number;
-	/**
-	 * Function to derive the key prop for each row of the data-grid. Defaults to index.
-	 *
-	 * @default (index: number) => index.toString()
-	 */
+	/** Function to derive the key prop for each row of the data-grid. Defaults to index. */
 	itemKey?: (index: number, data: readonly T[]) => string;
-	/**
-	 * `data` is a controlled property, to be set externally through `onDataChange`
-	 *
-	 * @default () => undefined
-	 */
+	/** `data` is a controlled property, to be set externally through `onDataChange` */
 	onDataChange?: (data: readonly T[]) => void;
-	/**
-	 * `headers` is a controlled property, to be set externally through `onHeadersChange`
-	 *
-	 * @default () => undefined
-	 */
+	/** `headers` is a controlled property, to be set externally through `onHeadersChange` */
 	onHeadersChange?: (headers: readonly IHeaderConfig[]) => void;
+	/**
+	 * Invoked when a user's action would result in an invalid headers state. The action does not
+	 * invoke `onHeadersChange`, and the last headers, and the would-be-bad headers are returned.
+	 */
+	onHeadersError?: (
+		message: string,
+		lastHeaders: readonly IHeaderConfig[],
+		badHeaders: readonly IHeaderConfig[]
+	) => void;
 	/** See `onItemsRendered` (https://react-window.now.sh/#/api/FixedSizeList) */
 	onItemsRendered?: (props: ListOnItemsRenderedProps) => void;
 	/** Render a context menu when a row is right-clicked, using the data from the row */
@@ -72,6 +69,7 @@ const ofType = <T extends Record<string, any>>() => {
 			itemKey = (index: number) => index.toString(),
 			onDataChange,
 			onHeadersChange,
+			onHeadersError,
 			onItemsRendered,
 			onRowContextMenu
 		}) => {
@@ -83,6 +81,7 @@ const ofType = <T extends Record<string, any>>() => {
 					onDataChange={onDataChange as (data: readonly Record<string, any>[]) => void}
 					headers={headers}
 					onHeadersChange={onHeadersChange}
+					onHeadersError={onHeadersError}
 					onRowContextMenu={onRowContextMenu as FC<Record<string, any>>}
 				>
 					{({ height, width }) => (
