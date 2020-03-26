@@ -5,15 +5,13 @@ import {
 	ResizeContext
 } from "@/client/components/data-grid.component";
 import { ISelectItemType, Select } from "@/client/components/input.component";
-import { useContextMenu } from "@/client/hooks";
-import { Menu } from "@blueprintjs/core";
 import React, { FC, memo, useCallback, useContext, useMemo } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
 import { useStyles } from "./styles";
-import { useFreezeActions } from "./use-freeze-actions.hook";
+import { useHeaderMenu } from "./use-header-menu.hook";
 
-interface IProps extends IHeaderConfig {
+export interface IBaseHeaderItemProps extends IHeaderConfig {
 	headerIndex: number;
 	onOpenMenu: () => void;
 	onOpenOptions: () => void;
@@ -22,7 +20,7 @@ interface IProps extends IHeaderConfig {
 
 const TypedSelect = Select.ofType<IHeaderOption & ISelectItemType>();
 
-const useOptionItems = ({ options }: IProps) => {
+const useOptionItems = ({ options }: IBaseHeaderItemProps) => {
 	const selectOptions: readonly (IHeaderOption & ISelectItemType)[] = useMemo(
 		() =>
 			(options ?? [])?.map((option) => ({
@@ -44,7 +42,7 @@ const useOnSelect = (index: number) => {
 	]);
 };
 
-const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
+const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemProps) => {
 	const {
 		headerIndex: index,
 		onOpenMenu,
@@ -58,20 +56,9 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 
 	const { isResizing } = useContext(ResizeContext);
 
-	const [freezeLabel, freezeActions] = useFreezeActions(index);
 	const onSelect = useOnSelect(index);
 
-	const onEdit = useCallback(() => _onEdit(index), [_onEdit, index]);
-
-	const [onContextMenu, { isOpen: isContextMenuOpen }] = useContextMenu(
-		<Menu className={classes.contextMenu}>
-			<Menu.Item icon="edit" text="Edit label" onClick={onEdit} />
-			<Menu.Item text={freezeLabel} onClick={freezeActions.freeze} />
-			<Menu.Item icon="trash" text="Delete column" />
-		</Menu>,
-		{ onOpen: onOpenMenu }
-	);
-
+	const [onContextMenu, { isOpen }] = useHeaderMenu(props);
 	const items = useOptionItems(props);
 
 	return (
@@ -81,7 +68,7 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 			style={{ width, minWidth: width }}
 		>
 			<TypedSelect
-				disabled={isResizing || isContextMenuOpen}
+				disabled={isResizing || isOpen}
 				items={items}
 				minimal={true}
 				onItemSelect={onSelect}
@@ -95,9 +82,9 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 
 BaseHeaderItem.displayName = "BaseHeaderItem";
 
-const SortableHeaderItemComponent = SortableElement<IProps>(BaseHeaderItem);
+const SortableHeaderItemComponent = SortableElement<IBaseHeaderItemProps>(BaseHeaderItem);
 
-export const SortableHeaderItem: FC<IProps & SortableElementProps> = memo((props) => {
+export const SortableHeaderItem: FC<IBaseHeaderItemProps & SortableElementProps> = memo((props) => {
 	const { disabled } = props;
 
 	const ComponentType = disabled ? BaseHeaderItem : SortableHeaderItemComponent;

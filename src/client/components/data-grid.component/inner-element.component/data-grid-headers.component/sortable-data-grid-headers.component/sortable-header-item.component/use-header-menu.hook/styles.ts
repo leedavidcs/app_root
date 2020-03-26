@@ -3,9 +3,10 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		"& .bp3-popover-wrapper, .bp3-popover-target": {
-			width: "100%"
-		}
+		borderRadius: "unset",
+		backgroundColor: theme.surface,
+		color: theme.onSurface,
+		overflow: "hidden"
 	}
 });
 

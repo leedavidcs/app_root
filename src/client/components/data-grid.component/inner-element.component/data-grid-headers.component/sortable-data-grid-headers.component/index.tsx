@@ -8,10 +8,13 @@ import { SortableHeaderItem } from "./sortable-header-item.component";
 import { useStyles } from "./styles";
 import { useOnEditHeader } from "./use-on-edit-header.hook";
 
+export type { IBaseHeaderItemProps } from "./sortable-header-item.component";
+
 interface IProps {
 	className?: string;
 	headers: readonly IHeaderConfig[];
 }
+
 export const SortableDataGridHeaders = SortableContainer<IProps>(
 	memo((props: IProps) => {
 		const { className = "", headers } = props;
