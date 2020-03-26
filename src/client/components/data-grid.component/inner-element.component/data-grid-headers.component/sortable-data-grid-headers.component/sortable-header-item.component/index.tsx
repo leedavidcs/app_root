@@ -84,10 +84,6 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 	const [freezeLabel, freezeActions] = useFreezeActions(index);
 	const onSelect = useOnSelect(index);
 
-	const stopOperations = useCallback(() => {
-		editActions.stop();
-	}, [editActions]);
-
 	const onInputChange = useCallback(
 		(event: ChangeEvent<HTMLInputElement>) => editActions.setValue(event.target.value),
 		[editActions]
@@ -101,20 +97,20 @@ const BaseHeaderItem: FC<IProps> = memo((props: IProps) => {
 			<Menu.Item text={freezeLabel} onClick={freezeActions.freeze} />
 			<Menu.Item icon="trash" text="Delete column" />
 		</Menu>,
-		{ onOpen: stopOperations }
+		{ onOpen: editActions.stop }
 	);
 
 	const items = useOptionItems(props);
 
 	return (
-		<ClickOutside onClick={stopOperations}>
+		<ClickOutside onClick={editActions.stop}>
 			<div
 				className={classes.root}
 				onContextMenu={onContextMenu}
 				style={{ width, minWidth: width }}
 			>
 				<TypedSelect
-					disabled={isResizing || isContextMenuOpen}
+					disabled={isResizing || isContextMenuOpen || editStates.isEditing}
 					items={items}
 					minimal={true}
 					onItemSelect={onSelect}

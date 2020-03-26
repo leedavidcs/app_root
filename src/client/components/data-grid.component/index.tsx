@@ -5,7 +5,7 @@ import { DataRow } from "./data-row.component";
 import { InnerElement } from "./inner-element.component";
 import { OuterElement } from "./outer-element.component";
 
-const DEFAULT_ROW_HEIGHT = 28;
+export const DATA_GRID_ROW_HEIGHT = 28;
 
 export * from "./data-grid-provider.component";
 export * from "./inner-element.component";
@@ -92,7 +92,7 @@ const ofType = <T extends Record<string, any>>() => {
 							itemCount={itemCount}
 							itemData={data}
 							itemKey={itemKey}
-							itemSize={DEFAULT_ROW_HEIGHT}
+							itemSize={DATA_GRID_ROW_HEIGHT}
 							innerElementType={InnerElement}
 							onItemsRendered={onItemsRendered}
 							outerElementType={OuterElement}
