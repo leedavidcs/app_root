@@ -28,6 +28,17 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 		[headers, onHeadersChange]
 	);
 
+	const removeHeaderItem = useCallback(
+		(index: number) => {
+			const newHeaders: IHeaderConfig[] = headers.slice();
+
+			newHeaders.splice(index, 1);
+
+			onHeadersChange?.(newHeaders);
+		},
+		[headers, onHeadersChange]
+	);
+
 	const setHeaderFreeze = useCallback(
 		(freeze: boolean, index: number) => {
 			const oldHeader: IHeaderConfig = headers[index];
@@ -105,6 +116,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 			headers,
 			moveHeaderItem,
 			onHeadersChange,
+			removeHeaderItem,
 			setHeaderFreeze,
 			setHeaderLabel,
 			setHeaderOption,
@@ -114,6 +126,7 @@ export const HeadersProvider: FC<IProps> = memo(({ children, headers, onHeadersC
 			headers,
 			moveHeaderItem,
 			onHeadersChange,
+			removeHeaderItem,
 			setHeaderFreeze,
 			setHeaderLabel,
 			setHeaderOption,
