@@ -12,10 +12,6 @@ export const DataKeyOption = objectType({
 			nullable: false,
 			description: "A unique data key for fetching stock portfolio data"
 		});
-		t.string("description", {
-			nullable: false,
-			description: "A description of the data that is fetched with this data key"
-		});
 		t.field("provider", {
 			type: "DataKey_Provider",
 			nullable: false,

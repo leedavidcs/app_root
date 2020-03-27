@@ -140,7 +140,6 @@ export interface NexusGenEnums {
 export interface NexusGenRootTypes {
   DataKeyOption: { // root type
     dataKey: string; // String!
-    description: string; // String!
     name: string; // String!
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
@@ -217,7 +216,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   DataKeyOption: { // field return type
     dataKey: string; // String!
-    description: string; // String!
     name: string; // String!
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }

@@ -8,11 +8,5 @@ export const stockData = queryField("stockData", {
 		tickers: stringArg({ list: true, nullable: false }),
 		dataKeys: stringArg({ list: true, nullable: false })
 	},
-	resolve: (parent, { tickers, dataKeys }, context) => {
-		const result = Promise.all(
-			tickers.map((ticker) => getStockData({ ticker, dataKeys }, context))
-		);
-
-		return result;
-	}
+	resolve: (parent, args, context) => getStockData(args, context)
 });

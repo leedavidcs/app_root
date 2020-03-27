@@ -20,9 +20,6 @@ type DataKeyOption {
   """A unique data key for fetching stock portfolio data"""
   dataKey: String!
 
-  """A description of the data that is fetched with this data key"""
-  description: String!
-
   """A more normal name. This can be shown to users."""
   name: String!
 
