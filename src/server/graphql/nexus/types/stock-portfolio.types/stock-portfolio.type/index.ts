@@ -1,5 +1,5 @@
+import { getStockData } from "@/server/graphql/nexus/queries/stock-data.queries/get-stock-data";
 import { objectType } from "nexus";
-import { getStockPortfolioData } from "./get-stock-portfolio-data";
 
 export const StockPortfolioHeader = objectType({
 	name: "StockPortfolioHeader",
@@ -23,7 +23,7 @@ export const StockPortfolio = objectType({
 			type: "StockPortfolioHeader",
 			nullable: false,
 			resolve: async ({ id }, args, { prisma }) => {
-				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: {id } });
+				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
 				const parsedHeaders = (stockPortfolio?.headers || []).map((header) => JSON.parse(header));
 
@@ -35,7 +35,16 @@ export const StockPortfolio = objectType({
 			type: "JSONObject",
 			nullable: false,
 			description: "The data that gets resolved based on headers and tickers",
-			resolve: (parent, args, ctx) => getStockPortfolioData(parent, ctx)
+			resolve: async ({ id, tickers }, args, context) => {
+				const { prisma } = context;
+
+				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
+
+				const parsedHeaders = (stockPortfolio?.headers || []).map((header) => JSON.parse(header));
+				const dataKeys: readonly string[] = parsedHeaders.map(({ dataKey }) => dataKey);
+
+				return getStockData({ dataKeys, tickers }, context);
+			}
 		});
 		t.model.createdAt();
 		t.model.updatedAt();
