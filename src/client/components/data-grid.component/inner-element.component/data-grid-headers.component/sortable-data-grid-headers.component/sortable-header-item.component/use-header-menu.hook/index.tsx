@@ -7,6 +7,7 @@ import { useFreezeActions } from "./use-freeze-actions.hook";
 import { useOnDelete } from "./use-on-delete.hook";
 
 export const useHeaderMenu = ({
+	editable = true,
 	headerIndex: index,
 	onEdit: _onEdit,
 	onOpenMenu
@@ -24,6 +25,6 @@ export const useHeaderMenu = ({
 			<Menu.Item icon="blank" text={freezeLabel} onClick={freezeActions.freeze} />
 			<Menu.Item icon="trash" text="Delete column" onClick={onDelete} />
 		</Menu>,
-		{ onOpen: onOpenMenu }
+		{ disabled: !editable, onOpen: onOpenMenu }
 	);
 };

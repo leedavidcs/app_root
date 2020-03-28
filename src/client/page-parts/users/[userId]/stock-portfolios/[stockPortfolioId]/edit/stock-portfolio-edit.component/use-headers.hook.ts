@@ -14,7 +14,7 @@ type UseHeadersResult = [
 	}
 ];
 
-const defaultHeaderValues: Omit<StockPortfolioHeader, "name" | "dataKey"> = {
+const defaultHeaderConfig: Omit<IHeaderConfig, "label" | "value" | "options"> = {
 	frozen: false,
 	resizable: true,
 	width: 100
@@ -28,7 +28,8 @@ export const useHeaders = (
 
 	const tickerHeader = useMemo(
 		() => ({
-			...defaultHeaderValues,
+			...defaultHeaderConfig,
+			editable: false,
 			label: "ticker",
 			value: "ticker",
 			frozen: true,
@@ -42,11 +43,13 @@ export const useHeaders = (
 	);
 	const [gridHeaders, _setGridHeaders] = useState<readonly IHeaderConfig[]>(() => [
 		tickerHeader,
-		...headers.map(({ name, dataKey, __typename, ...commonProps }) => ({
+		...headers.map(({ name, dataKey, frozen, resizable, width }) => ({
 			label: name,
 			value: dataKey,
 			options: null,
-			...commonProps
+			frozen,
+			resizable,
+			width
 		}))
 	]);
 
@@ -54,11 +57,13 @@ export const useHeaders = (
 		(newHeaders: readonly StockPortfolioHeader[]) => {
 			const newGridHeaders: readonly IHeaderConfig[] = [
 				tickerHeader,
-				...newHeaders.map(({ name, dataKey, __typename, ...commonProps }) => ({
+				...newHeaders.map(({ name, dataKey, frozen, resizable, width }) => ({
 					label: name,
 					value: dataKey,
-					...commonProps,
-					options
+					options,
+					frozen,
+					resizable,
+					width
 				}))
 			];
 
@@ -72,10 +77,12 @@ export const useHeaders = (
 	const setGridHeaders = useCallback((newGridHeaders: readonly IHeaderConfig[]) => {
 		const newHeaders: readonly StockPortfolioHeader[] = newGridHeaders
 			.filter(({ value }) => value !== "ticker")
-			.map(({ label, value, options: _options, ...commonProps }) => ({
+			.map(({ label, value, frozen, resizable, width }) => ({
 				name: label,
 				dataKey: value,
-				...commonProps
+				frozen,
+				resizable,
+				width
 			}));
 
 		_setHeaders(newHeaders);
@@ -107,7 +114,7 @@ export const useHeaders = (
 			const newHeader: StockPortfolioHeader = {
 				name: newOption.label,
 				dataKey: newOption.value,
-				...defaultHeaderValues
+				...defaultHeaderConfig
 			};
 
 			const newHeaders: readonly StockPortfolioHeader[] = [newHeader, ...headers];

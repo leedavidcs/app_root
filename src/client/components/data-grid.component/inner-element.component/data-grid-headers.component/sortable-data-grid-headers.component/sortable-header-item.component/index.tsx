@@ -50,7 +50,7 @@ const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemPro
 		onEdit: _onEdit,
 		...headerProps
 	} = props;
-	const { width } = headerProps;
+	const { editable = true, width } = headerProps;
 
 	const classes = useStyles();
 
@@ -68,7 +68,7 @@ const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemPro
 			style={{ width, minWidth: width }}
 		>
 			<TypedSelect
-				disabled={isResizing || isOpen}
+				disabled={!editable || isResizing || isOpen}
 				items={items}
 				minimal={true}
 				onItemSelect={onSelect}

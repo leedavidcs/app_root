@@ -26,27 +26,29 @@ type UseDataResult = [
 	}
 ];
 
-const baseHeaders: readonly IHeaderConfig[] = [
-	{
-		label: "ticker",
-		value: "ticker",
-		options: null,
-		frozen: true,
-		resizable: true,
-		width: 100
-	}
-];
+const tickerHeader: IHeaderConfig = {
+	label: "ticker",
+	value: "ticker",
+	options: null,
+	editable: false,
+	frozen: true,
+	resizable: true,
+	width: 100
+};
 
 const useStockPortfolioHeaders = ({
 	stockPortfolio
 }: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
 	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>(() => [
-		...baseHeaders,
-		...stockPortfolio.headers.map(({ name, dataKey, ...headerProps }) => ({
+		tickerHeader,
+		...stockPortfolio.headers.map(({ name, dataKey, frozen, resizable, width }) => ({
 			label: name,
 			value: dataKey,
-			...headerProps,
-			options: null
+			options: null,
+			editable: false,
+			frozen,
+			resizable,
+			width
 		}))
 	]);
 
