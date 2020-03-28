@@ -18,6 +18,7 @@ export interface IHeaderOption {
 }
 
 export interface IHeaderConfig extends IHeaderOption {
+	editable?: boolean;
 	/** Whether this column can be dragged (for re-sorting) */
 	frozen: boolean;
 	/** If supplied, headers are selected by a dropdown, else this is just a plain-text input */
