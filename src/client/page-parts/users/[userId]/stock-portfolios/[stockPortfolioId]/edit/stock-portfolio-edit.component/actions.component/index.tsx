@@ -5,8 +5,10 @@ import {
 	GetOneStockPortfolioQuery,
 	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
-import { Button, ButtonGroup, Classes } from "@blueprintjs/core";
+import { useSetUser } from "@/client/hooks";
+import { AnchorButton, Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
+import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 import { AddColumnSelect } from "./add-column-select.component";
@@ -57,12 +59,14 @@ export const Actions: FC<IProps> = (props) => {
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
+	const [, { user }] = useSetUser();
+
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);
 
 	const onDelete = useOnDelete(props);
 
-	const { name } = stockPortfolio;
+	const { id, name } = stockPortfolio;
 
 	return (
 		<>
@@ -76,6 +80,12 @@ export const Actions: FC<IProps> = (props) => {
 					/>
 				</div>
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
+					<Link
+						href={user ? `/users/${user.id}/stock-portfolios/${id}` : "/sign-up"}
+						passHref={true}
+					>
+						<AnchorButton text="View" />
+					</Link>
 					<Button icon="saved" text="Save" type="submit" />
 					<Button icon="trash" onClick={onBtnDelete} text="Delete" />
 				</ButtonGroup>

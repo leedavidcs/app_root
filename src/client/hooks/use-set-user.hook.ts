@@ -8,10 +8,13 @@ import {
 } from "@/client/graphql";
 import { useCallback, useState } from "react";
 
-type SetUserResultsTuple = [
-	() => void,
-	{ user: GetUserQuery["user"] | null; called: boolean; loading: boolean }
-];
+export interface ISetUserStates {
+	called: boolean;
+	loading: boolean;
+	user: GetUserQuery["user"] | null;
+}
+
+export type SetUserResultsTuple = [() => void, ISetUserStates];
 
 interface IUseSetUserOptions {
 	onCompleted?: (user: GetUserQuery["user"] | null) => any;
