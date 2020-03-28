@@ -7,6 +7,7 @@ import React, { FC, useCallback, useState } from "react";
 const MAX_DATA_SIZE = 100;
 const MAX_COLUMN_WIDTH = 80;
 const MIN_COLUMN_WIDTH = 30;
+const NUMBER_EDITABLE_COLUMNS = 2;
 const NUMBER_FROZEN_COLUMNS = 5;
 
 Faker.seed(1);
@@ -28,6 +29,7 @@ const MOCK_DATA: readonly Record<string, number>[] = range(reducedSize).map((i) 
 const MOCK_HEADERS: readonly IHeaderConfig[] = MOCK_HEADER_NAMES.map((label, i) => ({
 	label,
 	value: label,
+	editable: i > NUMBER_EDITABLE_COLUMNS,
 	frozen: i < NUMBER_FROZEN_COLUMNS,
 	options: [{ label, value: label }],
 	resizable: true,

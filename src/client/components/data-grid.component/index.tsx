@@ -18,6 +18,17 @@ export interface IHeaderOption {
 }
 
 export interface IHeaderConfig extends IHeaderOption {
+	/**
+	 * Whether this header can be edited. If this is set, the header cannot be set, and the
+	 * header (context) menu and options select cannot be opened. This will not prevent being able
+	 * to move, resize or freeze the column.
+	 *
+	 *
+	 * This should not ever be settable by a user, as it would prevent ever being able to update
+	 * the column.
+	 *
+	 * @default true
+	 */
 	editable?: boolean;
 	/** Whether this column can be dragged (for re-sorting) */
 	frozen: boolean;

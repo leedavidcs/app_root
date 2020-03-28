@@ -28,12 +28,12 @@ export const SortableDataGridHeaders = SortableContainer<IProps>(
 		const createHeaderItems = useCallback(
 			(configs: readonly IHeaderConfig[], offset = 0) => {
 				return configs.map((header, i) => {
-					const { frozen, label } = header;
+					const { editable = true, frozen, label } = header;
 					const adjIndex: number = i + offset; /* Adjusted index, for unfrozen headers */
 
 					const isEditingLabel: boolean = adjIndex === editStates.header;
 
-					return isEditingLabel ? (
+					return isEditingLabel && editable ? (
 						<input
 							key={label}
 							className={classes.labelInput}

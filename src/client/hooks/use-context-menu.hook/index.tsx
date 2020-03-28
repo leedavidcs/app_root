@@ -11,6 +11,7 @@ import React, {
 import { useStyles } from "./styles";
 
 interface IOptions {
+	disabled?: boolean;
 	onOpen?: () => void;
 	onClose?: () => void;
 }
@@ -24,7 +25,7 @@ export const useContextMenu = <T extends Element>(
 	content: Maybe<ReactElement>,
 	options?: IOptions
 ): UseContextMenuResult<T> => {
-	const { onOpen, onClose } = options || {};
+	const { disabled, onOpen, onClose } = options || {};
 
 	const classes = useStyles();
 
@@ -34,7 +35,7 @@ export const useContextMenu = <T extends Element>(
 		(event: MouseEvent<T>) => {
 			event.preventDefault();
 
-			if (!content) {
+			if (!content || disabled) {
 				return;
 			}
 
@@ -50,7 +51,7 @@ export const useContextMenu = <T extends Element>(
 			onOpen?.();
 			setIsOpen(true);
 		},
-		[classes.root, content, onClose, onOpen]
+		[classes.root, content, disabled, onClose, onOpen]
 	);
 
 	const close = ContextMenu.hide;
