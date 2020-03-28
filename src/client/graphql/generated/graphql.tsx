@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 23rd 2020 5:42:53 pm
+// This file was generated on: Mar 27th 2020 5:26:08 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -32,7 +32,6 @@ export type DataKeyOption = {
   readonly __typename?: 'DataKeyOption';
   readonly name: Scalars['String'];
   readonly dataKey: Scalars['String'];
-  readonly description: Scalars['String'];
   readonly provider: DataKey_Provider;
 };
 
@@ -464,7 +463,7 @@ export type GetDataKeyOptionsQuery = (
   { readonly __typename?: 'Query' }
   & { readonly dataKeyOptions: ReadonlyArray<(
     { readonly __typename?: 'DataKeyOption' }
-    & Pick<DataKeyOption, 'name' | 'dataKey' | 'description' | 'provider'>
+    & Pick<DataKeyOption, 'name' | 'dataKey' | 'provider'>
   )> }
 );
 
@@ -856,7 +855,6 @@ export const GetDataKeyOptionsDocument = gql`
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
     name
     dataKey
-    description
     provider
   }
 }
