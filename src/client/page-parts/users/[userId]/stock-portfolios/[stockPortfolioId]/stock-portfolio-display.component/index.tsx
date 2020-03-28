@@ -5,10 +5,11 @@ import {
 	useGetStockDataLazyQuery
 } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
-import { Button, ButtonGroup, Classes, NonIdealState } from "@blueprintjs/core";
+import { Classes, NonIdealState } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CreatorActions } from "./creator-actions.component";
+import { PublicActions } from "./public-actions.component";
 import { useStyles } from "./styles";
 
 interface IProps {
@@ -18,8 +19,11 @@ interface IProps {
 }
 
 type UseDataResult = [
-	{ getData: () => void; setData: (data: readonly Record<string, any>[]) => void },
-	{ data: readonly Record<string, any>[]; requested: boolean }
+	{ data: readonly Record<string, any>[]; requested: boolean },
+	{
+		refresh: (variables: GetStockDataQueryVariables) => void;
+		setData: (data: readonly Record<string, any>[]) => void;
+	}
 ];
 
 const baseHeaders: readonly IHeaderConfig[] = [
@@ -49,18 +53,24 @@ const useStockPortfolioHeaders = ({
 	return [headers, setHeaders];
 };
 
-const useData = (tickers: readonly string[], headers: readonly IHeaderConfig[]): UseDataResult => {
+const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
+	const [, { user }] = useSetUser();
+
+	const isCreator = user?.id === stockPortfolio.user.id;
+
+	return isCreator;
+};
+
+const useData = (): UseDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
-	const [getStockData, result] = useGetStockDataLazyQuery();
+	const [getStockData, result] = useGetStockDataLazyQuery({ fetchPolicy: "no-cache" });
 
-	const dataKeys = useMemo(() => headers.map(({ value }) => value), [headers]);
-
-	const variables: GetStockDataQueryVariables = useMemo(() => ({ tickers, dataKeys }), [
-		dataKeys,
-		tickers
-	]);
-
-	const getData = useCallback(() => getStockData({ variables }), [getStockData, variables]);
+	const refresh = useCallback(
+		(variables: GetStockDataQueryVariables) => {
+			getStockData({ variables });
+		},
+		[getStockData]
+	);
 
 	useEffect(() => {
 		const stockData = result.data?.stockData;
@@ -72,21 +82,10 @@ const useData = (tickers: readonly string[], headers: readonly IHeaderConfig[]):
 
 	const requested: boolean = result.called && !result.loading;
 
-	return useMemo(
-		() => [
-			{ getData, setData },
-			{ data, requested }
-		],
-		[data, getData, requested]
-	);
-};
+	const states = useMemo(() => ({ data, requested }), [data, requested]);
+	const actions = useMemo(() => ({ refresh, setData }), [refresh]);
 
-const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
-	const [, { user }] = useSetUser();
-
-	const isCreator = user?.id === stockPortfolio.user.id;
-
-	return isCreator;
+	return useMemo((): UseDataResult => [states, actions], [actions, states]);
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
@@ -97,11 +96,11 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	const { name, tickers, updatedAt, user } = stockPortfolio;
 
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
-	const [dataActions, dataResult] = useData(tickers, headers);
+	const [dataStates, dataActions] = useData();
 
 	const isCreator: boolean = useIsCreator(props);
 
-	const data = dataResult.data;
+	const data = dataStates.data;
 	const createdBy: string = user.username;
 
 	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
@@ -109,14 +108,16 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
 			<div className={classes.btnContainer}>
-				<ButtonGroup className={classes.refreshAction}>
-					<Button icon="refresh" onClick={dataActions.getData} text="Refresh" />
-				</ButtonGroup>
+				<PublicActions
+					className={classes.publicActions}
+					onRefresh={dataActions.refresh}
+					stockPortfolio={stockPortfolio}
+				/>
 				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
 			</div>
 			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
-				{!dataResult.requested ? (
+				{!dataStates.requested ? (
 					<NonIdealState
 						icon="search"
 						title="Data not yet requested"

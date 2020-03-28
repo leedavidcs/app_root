@@ -119,7 +119,7 @@ export class IexCloudAPI extends DataSource {
 	private get client() {
 		return new IEXCloudClient(fetch, {
 			sandbox: isDevelopment,
-			publishable,
+			publishable: isDevelopment ? sandboxPublishable : publishable,
 			version
 		});
 	}

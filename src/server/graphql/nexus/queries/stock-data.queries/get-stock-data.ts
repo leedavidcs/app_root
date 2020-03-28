@@ -14,9 +14,7 @@ export const getStockData = async (
 	const { IexCloudAPI } = dataSources;
 
 	const types: Record<string, true> = dataKeys
-		.map((dataKey) => {
-			return camelCase(dataKey.split(".")[0]);
-		})
+		.map((dataKey) => camelCase(dataKey.split(".")[0]))
 		.reduce((acc, key) => ({ ...acc, [key]: true }), {});
 
 	let results: Record<string, Record<string, any>>;
@@ -29,11 +27,17 @@ export const getStockData = async (
 		throw new BadInputError(message);
 	}
 
-	const stockDataResult = Object.keys(results).reduce<Record<string, any>[]>((acc, ticker) => {
-		const limitedToDataKeys = dataKeys.map((dataKey) => get(results[ticker], dataKey));
+	const stockDataResult = Object.keys(results).map((ticker) => {
+		const limitedToDataKeys = dataKeys.reduce<Record<string, any>>(
+			(acc, dataKey) => ({
+				...acc,
+				[dataKey]: get(results[ticker], dataKey)
+			}),
+			{}
+		);
 
-		return [...acc, { ticker, ...limitedToDataKeys }];
-	}, []);
+		return { ticker, ...limitedToDataKeys };
+	});
 
 	return stockDataResult;
 };
