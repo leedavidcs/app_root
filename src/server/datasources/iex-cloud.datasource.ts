@@ -1,4 +1,3 @@
-import { DataSource } from "apollo-datasource";
 import fetch from "isomorphic-unfetch";
 import { chunk, intersection } from "lodash";
 import { IEXCloudClient } from "node-iex-cloud";
@@ -37,7 +36,7 @@ const DEFAULT_SYMBOLS_OPTIONS: ISymbolsOptions = {
 	range: "1m"
 };
 
-export class IexCloudAPI extends DataSource {
+export class IexCloudAPI {
 	public async symbols(
 		symbols: readonly string[],
 		types: Partial<Record<IexType, boolean>>,
