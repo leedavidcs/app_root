@@ -5,7 +5,7 @@ import {
 	useGetStockDataLazyQuery
 } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks";
-import { Classes, NonIdealState } from "@blueprintjs/core";
+import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CreatorActions } from "./creator-actions.component";
@@ -19,7 +19,7 @@ interface IProps {
 }
 
 type UseDataResult = [
-	{ data: readonly Record<string, any>[]; requested: boolean },
+	{ called: boolean; data: readonly Record<string, any>[]; loading: boolean },
 	{
 		refresh: (variables: GetStockDataQueryVariables) => void;
 		setData: (data: readonly Record<string, any>[]) => void;
@@ -80,9 +80,9 @@ const useData = (): UseDataResult => {
 		}
 	}, [result.data]);
 
-	const requested: boolean = result.called && !result.loading;
+	const { called, loading } = result;
 
-	const states = useMemo(() => ({ data, requested }), [data, requested]);
+	const states = useMemo(() => ({ called, data, loading }), [called, data, loading]);
 	const actions = useMemo(() => ({ refresh, setData }), [refresh]);
 
 	return useMemo((): UseDataResult => [states, actions], [actions, states]);
@@ -117,7 +117,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 			</div>
 			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
-				{!dataStates.requested ? (
+				{!dataStates.called ? (
 					<NonIdealState
 						icon="search"
 						title="Data not yet requested"
@@ -126,6 +126,12 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 								To load new data, press the <strong>Refresh</strong> button above.
 							</p>
 						}
+					/>
+				) : dataStates.loading ? (
+					<NonIdealState
+						icon={<Spinner />}
+						title="Loading..."
+						description={<p>Your data should be loaded shortly.</p>}
 					/>
 				) : noDataAvailable ? (
 					<NonIdealState
