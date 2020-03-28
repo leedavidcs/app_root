@@ -3,15 +3,23 @@ import { ITreeNode, Tree } from "@blueprintjs/core";
 import React, { FC, useCallback, useState } from "react";
 import { useStockPortfoliosNode } from "./use-stock-portfolio-node";
 
-const useContents = (): [ITreeNode[], (nodes: ITreeNode[]) => void] => {
-	const state = useState<ITreeNode[]>([]);
+export interface ICustomTreeNode extends Omit<ITreeNode, "childNodes"> {
+	childNodes?: ICustomTreeNode[];
+	onClick?: () => void;
+}
+
+const useContents = (): [ICustomTreeNode[], (nodes: ICustomTreeNode[]) => void] => {
+	const state = useState<ICustomTreeNode[]>([]);
 
 	useStockPortfoliosNode({ id: 0 }, state);
 
 	return state;
 };
 
-const forEachNode = (nodes: ITreeNode[] | undefined, callback: (node: ITreeNode) => void): void => {
+const forEachNode = (
+	nodes: ICustomTreeNode[] | undefined,
+	callback: (node: ICustomTreeNode) => void
+): void => {
 	if (!nodes) {
 		return;
 	}
@@ -27,12 +35,12 @@ export const DrawerContent: FC = () => {
 	const [contents, setContents] = useContents();
 
 	const onNodeClick = useCallback(
-		(data: ITreeNode) => {
+		(data: ICustomTreeNode) => {
 			forEachNode(contents, (node) => (node.isSelected = false));
 
 			data.isSelected = !data.isSelected;
 			data.isExpanded = !data.isExpanded;
-			(data as any).onClick?.();
+			data.onClick?.();
 
 			setContents(contents.slice());
 		},
@@ -40,7 +48,7 @@ export const DrawerContent: FC = () => {
 	);
 
 	const onNodeCollapse = useCallback(
-		(data: ITreeNode) => {
+		(data: ICustomTreeNode) => {
 			data.isExpanded = false;
 
 			setContents(contents.slice());
@@ -49,7 +57,7 @@ export const DrawerContent: FC = () => {
 	);
 
 	const onNodeExpand = useCallback(
-		(data: ITreeNode) => {
+		(data: ICustomTreeNode) => {
 			data.isExpanded = true;
 
 			setContents(contents.slice());
