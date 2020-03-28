@@ -54,15 +54,26 @@ export class IexCloudAPI extends DataSource {
 
 		/** Resolve all data for  given symbols and types */
 		const resolveTypes = (symbolBatch: readonly string[], typeBatch: readonly IexType[]) => {
+			/**
+			 * !HACK
+			 *
+			 * @description Create a new IEXCloudClient here for now, because requests seem to fail
+			 *     when invoked enough times from the same client.
+			 * @author David Lee
+			 * @date March 27, 2020
+			 */
 			const client: IEXCloudClient = _options.mock ? this.mockClient : this.client;
 			const batch: Batch = client.batchSymbols(...symbolBatch).batch();
 
 			const withAllTypes: Batch = typeBatch.reduce<Batch>((currentBatch, iexType) => {
-				const withAddedTypes: Batch = currentBatch[iexType]();
+				const typeFunction: () => Batch = currentBatch[iexType];
+
+				const withAddedTypes: Batch = typeFunction();
 
 				return withAddedTypes;
 			}, batch);
 
+			/** Add to the delayed-queue to ensure not exceeding iex-cloud request limits */
 			const evaled = queue.add(() => withAllTypes.range(_options.range, _options.last));
 
 			return evaled;
