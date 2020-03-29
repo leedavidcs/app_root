@@ -50,6 +50,10 @@ export class IexCloudAPI {
 		version
 	});
 
+	public search(text: string) {
+		return queue.add(() => this._client.search(text));
+	}
+
 	public async symbols(
 		symbols: readonly string[],
 		types: Partial<Record<IexType, boolean>>,

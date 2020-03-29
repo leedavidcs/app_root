@@ -2,146 +2,6 @@
 	export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
 	[
   {
-    "name": "balanceSheet.symbol",
-    "dataKey": "balance-sheet.symbol",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.reportDate",
-    "dataKey": "balance-sheet.balancesheet[0].reportDate",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.fiscalDate",
-    "dataKey": "balance-sheet.balancesheet[0].fiscalDate",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.currency",
-    "dataKey": "balance-sheet.balancesheet[0].currency",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.currentCash",
-    "dataKey": "balance-sheet.balancesheet[0].currentCash",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.shortTermInvestments",
-    "dataKey": "balance-sheet.balancesheet[0].shortTermInvestments",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.receivables",
-    "dataKey": "balance-sheet.balancesheet[0].receivables",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.inventory",
-    "dataKey": "balance-sheet.balancesheet[0].inventory",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.otherCurrentAssets",
-    "dataKey": "balance-sheet.balancesheet[0].otherCurrentAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.currentAssets",
-    "dataKey": "balance-sheet.balancesheet[0].currentAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.longTermInvestments",
-    "dataKey": "balance-sheet.balancesheet[0].longTermInvestments",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.propertyPlantEquipment",
-    "dataKey": "balance-sheet.balancesheet[0].propertyPlantEquipment",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.goodwill",
-    "dataKey": "balance-sheet.balancesheet[0].goodwill",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.intangibleAssets",
-    "dataKey": "balance-sheet.balancesheet[0].intangibleAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.otherAssets",
-    "dataKey": "balance-sheet.balancesheet[0].otherAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.totalAssets",
-    "dataKey": "balance-sheet.balancesheet[0].totalAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.accountsPayable",
-    "dataKey": "balance-sheet.balancesheet[0].accountsPayable",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.otherCurrentLiabilities",
-    "dataKey": "balance-sheet.balancesheet[0].otherCurrentLiabilities",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.totalCurrentLiabilities",
-    "dataKey": "balance-sheet.balancesheet[0].totalCurrentLiabilities",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.longTermDebt",
-    "dataKey": "balance-sheet.balancesheet[0].longTermDebt",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.otherLiabilities",
-    "dataKey": "balance-sheet.balancesheet[0].otherLiabilities",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.minorityInterest",
-    "dataKey": "balance-sheet.balancesheet[0].minorityInterest",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.totalLiabilities",
-    "dataKey": "balance-sheet.balancesheet[0].totalLiabilities",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.commonStock",
-    "dataKey": "balance-sheet.balancesheet[0].commonStock",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.retainedEarnings",
-    "dataKey": "balance-sheet.balancesheet[0].retainedEarnings",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.capitalSurplus",
-    "dataKey": "balance-sheet.balancesheet[0].capitalSurplus",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.shareholderEquity",
-    "dataKey": "balance-sheet.balancesheet[0].shareholderEquity",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "balanceSheet.netTangibleAssets",
-    "dataKey": "balance-sheet.balancesheet[0].netTangibleAssets",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "ceoCompensation.symbol",
     "dataKey": "ceo-compensation.symbol",
     "provider": "IEX_CLOUD"
@@ -294,6 +154,146 @@
   {
     "name": "company.phone",
     "dataKey": "company.phone",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.symbol",
+    "dataKey": "balance-sheet.symbol",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.reportDate",
+    "dataKey": "balance-sheet.balancesheet[0].reportDate",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.fiscalDate",
+    "dataKey": "balance-sheet.balancesheet[0].fiscalDate",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.currency",
+    "dataKey": "balance-sheet.balancesheet[0].currency",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.currentCash",
+    "dataKey": "balance-sheet.balancesheet[0].currentCash",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.shortTermInvestments",
+    "dataKey": "balance-sheet.balancesheet[0].shortTermInvestments",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.receivables",
+    "dataKey": "balance-sheet.balancesheet[0].receivables",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.inventory",
+    "dataKey": "balance-sheet.balancesheet[0].inventory",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.otherCurrentAssets",
+    "dataKey": "balance-sheet.balancesheet[0].otherCurrentAssets",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.currentAssets",
+    "dataKey": "balance-sheet.balancesheet[0].currentAssets",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.longTermInvestments",
+    "dataKey": "balance-sheet.balancesheet[0].longTermInvestments",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.propertyPlantEquipment",
+    "dataKey": "balance-sheet.balancesheet[0].propertyPlantEquipment",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.goodwill",
+    "dataKey": "balance-sheet.balancesheet[0].goodwill",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.intangibleAssets",
+    "dataKey": "balance-sheet.balancesheet[0].intangibleAssets",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.otherAssets",
+    "dataKey": "balance-sheet.balancesheet[0].otherAssets",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.totalAssets",
+    "dataKey": "balance-sheet.balancesheet[0].totalAssets",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.accountsPayable",
+    "dataKey": "balance-sheet.balancesheet[0].accountsPayable",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.otherCurrentLiabilities",
+    "dataKey": "balance-sheet.balancesheet[0].otherCurrentLiabilities",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.totalCurrentLiabilities",
+    "dataKey": "balance-sheet.balancesheet[0].totalCurrentLiabilities",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.longTermDebt",
+    "dataKey": "balance-sheet.balancesheet[0].longTermDebt",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.otherLiabilities",
+    "dataKey": "balance-sheet.balancesheet[0].otherLiabilities",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.minorityInterest",
+    "dataKey": "balance-sheet.balancesheet[0].minorityInterest",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.totalLiabilities",
+    "dataKey": "balance-sheet.balancesheet[0].totalLiabilities",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.commonStock",
+    "dataKey": "balance-sheet.balancesheet[0].commonStock",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.retainedEarnings",
+    "dataKey": "balance-sheet.balancesheet[0].retainedEarnings",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.capitalSurplus",
+    "dataKey": "balance-sheet.balancesheet[0].capitalSurplus",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.shareholderEquity",
+    "dataKey": "balance-sheet.balancesheet[0].shareholderEquity",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "balanceSheet.netTangibleAssets",
+    "dataKey": "balance-sheet.balancesheet[0].netTangibleAssets",
     "provider": "IEX_CLOUD"
   },
   {

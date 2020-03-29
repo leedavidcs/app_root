@@ -10,3 +10,16 @@ export const stockData = queryField("stockData", {
 	},
 	resolve: (parent, args, context) => getStockData(args, context)
 });
+
+export const stockSymbols = queryField("stockSymbols", {
+	type: "StockDataSearch",
+	list: true,
+	args: {
+		text: stringArg({ nullable: false })
+	},
+	resolve: (parent, { text }, { dataSources }) => {
+		const { IexCloudAPI } = dataSources;
+
+		return IexCloudAPI.search(text);
+	}
+});
