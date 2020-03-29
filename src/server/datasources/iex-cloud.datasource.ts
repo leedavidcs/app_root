@@ -68,14 +68,6 @@ export class IexCloudAPI {
 
 		/** Resolve all data for  given symbols and types */
 		const resolveTypes = (symbolBatch: readonly string[], typeBatch: readonly IexType[]) => {
-			/**
-			 * !HACK
-			 *
-			 * @description Create a new IEXCloudClient here for now, because requests seem to fail
-			 *     when invoked enough times from the same client.
-			 * @author David Lee
-			 * @date March 27, 2020
-			 */
 			const client: IEXCloudClient = _options.mock ? this._mockClient : this._client;
 			const batch: Batch = client.batchSymbols(...symbolBatch).batch();
 
