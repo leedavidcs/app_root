@@ -1,0 +1,6 @@
+query SearchStockSymbols($text: String!) {
+	stockSymbols(text: $text) {
+		symbol
+		securityName
+	}
+}

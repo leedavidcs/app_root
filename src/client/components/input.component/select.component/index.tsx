@@ -1,4 +1,4 @@
-import { Classes, IPopoverProps, Menu } from "@blueprintjs/core";
+import { Classes, IInputGroupProps, IPopoverProps, Menu } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select as BpSelect } from "@blueprintjs/select";
 import classnames from "classnames";
 import React, {
@@ -34,8 +34,11 @@ interface ISelectProps<T extends ISelectItemType> {
 	onOpening?: (node: HTMLElement) => void;
 	onQueryChange?: (query: string, event?: ChangeEvent<HTMLInputElement>) => void;
 	query?: string;
+	queryPlaceholder?: string;
 	resetOnClose?: boolean;
+	resetOnQuery?: boolean;
 	resetOnSelect?: boolean;
+	usePortal?: boolean;
 }
 
 interface IWithStaticExports {
@@ -82,19 +85,29 @@ const ofType = <T extends ISelectItemType>() => {
 			onOpening,
 			onQueryChange,
 			query,
+			queryPlaceholder,
 			resetOnClose,
-			resetOnSelect
+			resetOnQuery,
+			resetOnSelect,
+			usePortal = true
 		}) => {
 			useStyles();
+
+			const inputProps: Partial<IInputGroupProps> = useMemo(
+				() => ({
+					placeholder: queryPlaceholder
+				}),
+				[queryPlaceholder]
+			);
 
 			const popoverProps: Partial<IPopoverProps> = useMemo(
 				() => ({
 					minimal,
 					onOpened,
 					onOpening,
-					usePortal: true
+					usePortal
 				}),
-				[minimal, onOpened, onOpening]
+				[minimal, onOpened, onOpening, usePortal]
 			);
 
 			return (
@@ -103,6 +116,7 @@ const ofType = <T extends ISelectItemType>() => {
 					className={classnames(Classes.DARK, className)}
 					disabled={disabled}
 					filterable={filterable}
+					inputProps={inputProps}
 					itemPredicate={itemPredicate}
 					itemRenderer={itemRenderer}
 					items={items as T[]}
@@ -112,6 +126,7 @@ const ofType = <T extends ISelectItemType>() => {
 					popoverProps={popoverProps}
 					query={query}
 					resetOnClose={resetOnClose}
+					resetOnQuery={resetOnQuery}
 					resetOnSelect={resetOnSelect}
 				>
 					{children}

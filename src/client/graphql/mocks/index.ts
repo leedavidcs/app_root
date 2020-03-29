@@ -5,6 +5,7 @@ import { GetDataKeyOptionsMock } from "./get-data-key-options.mock";
 import { GetManyStockPortfoliosMock } from "./get-many-stock-portfolios.mock";
 import { GetOneStockPortfolioMocks } from "./get-one-stock-portfolio.mock";
 import { GetUserMock } from "./get-user.mock";
+import { SearchStockSymbolsMock } from "./search-stock-symbols.mock";
 
 export const mocks: readonly MockedResponse[] = [
 	CreateStockPortfolioMock,
@@ -12,5 +13,6 @@ export const mocks: readonly MockedResponse[] = [
 	GetDataKeyOptionsMock,
 	GetManyStockPortfoliosMock,
 	...GetOneStockPortfolioMocks,
-	GetUserMock
+	GetUserMock,
+	SearchStockSymbolsMock
 ];
