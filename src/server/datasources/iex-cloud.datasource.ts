@@ -1,3 +1,4 @@
+import { mapSeries } from "blend-promise-utils";
 import fetch from "isomorphic-unfetch";
 import { chunk, intersection } from "lodash";
 import { IEXCloudClient } from "node-iex-cloud";
@@ -37,6 +38,18 @@ const DEFAULT_SYMBOLS_OPTIONS: ISymbolsOptions = {
 };
 
 export class IexCloudAPI {
+	private _client = new IEXCloudClient(fetch, {
+		sandbox: isDevelopment,
+		publishable: isDevelopment ? sandboxPublishable : publishable,
+		version
+	});
+
+	private _mockClient = new IEXCloudClient(fetch, {
+		sandbox: true,
+		publishable: sandboxPublishable,
+		version
+	});
+
 	public async symbols(
 		symbols: readonly string[],
 		types: Partial<Record<IexType, boolean>>,
@@ -48,7 +61,9 @@ export class IexCloudAPI {
 		const symbolBatches: readonly (readonly string[])[] = chunk(symbols, MAX_SYMBOL_BATCH_SIZE);
 
 		/** Split types up into batches, defined by request limits of iex-cloud */
-		const iexTypes = Object.keys(types).filter((key) => types[key]) as readonly IexType[];
+		const iexTypes = Object.keys(types)
+			.filter((key) => types[key])
+			.sort() as readonly IexType[];
 		const typeBatches: readonly (readonly IexType[])[] = chunk(iexTypes, MAX_TYPE_BATCH_SIZE);
 
 		/** Resolve all data for  given symbols and types */
@@ -61,7 +76,7 @@ export class IexCloudAPI {
 			 * @author David Lee
 			 * @date March 27, 2020
 			 */
-			const client: IEXCloudClient = _options.mock ? this.mockClient : this.client;
+			const client: IEXCloudClient = _options.mock ? this._mockClient : this._client;
 			const batch: Batch = client.batchSymbols(...symbolBatch).batch();
 
 			const withAllTypes: Batch = typeBatch.reduce<Batch>((currentBatch, iexType) => {
@@ -78,15 +93,11 @@ export class IexCloudAPI {
 			return evaled;
 		};
 
-		const mergedResults = Promise.all(
-			symbolBatches.map((symbolBatch) => {
-				const batchResults = Promise.all(
-					typeBatches.map((typeBatch) => resolveTypes(symbolBatch, typeBatch))
-				).then(this.mergeResults);
-
-				return batchResults;
-			})
-		).then(this.mergeResults);
+		const mergedResults = mapSeries(symbolBatches, async (symbolBatch) => {
+			return mapSeries(typeBatches, (typeBatch) => resolveTypes(symbolBatch, typeBatch)).then(
+				this.mergeResults
+			);
+		}).then(this.mergeResults);
 
 		return mergedResults;
 	}
@@ -114,20 +125,4 @@ export class IexCloudAPI {
 
 		return final;
 	};
-
-	private get client() {
-		return new IEXCloudClient(fetch, {
-			sandbox: isDevelopment,
-			publishable: isDevelopment ? sandboxPublishable : publishable,
-			version
-		});
-	}
-
-	private get mockClient() {
-		return new IEXCloudClient(fetch, {
-			sandbox: true,
-			publishable: sandboxPublishable,
-			version
-		});
-	}
 }
