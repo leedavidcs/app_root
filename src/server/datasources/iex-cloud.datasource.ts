@@ -51,6 +51,16 @@ export class IexCloudAPI extends DataSource {
 		version
 	});
 
+	public async areSymbolsValid(symbols: readonly string[]) {
+		try {
+			const result = await this.symbols(symbols, { company: true }, { mock: true });
+
+			return Boolean(result);
+		} catch (err) {
+			return false;
+		}
+	}
+
 	public search(text: string) {
 		return queue.add(() => this._client.search(text));
 	}
