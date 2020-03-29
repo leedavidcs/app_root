@@ -74,6 +74,7 @@
     "classnames": "^2.2.6",
     "cookie": "^0.4.0",
     "core-js": "^3.6.4",
+    "date-fns": "^2.11.1",
     "graphql": "^14.6.0",
     "graphql-depth-limit": "^1.1.0",
     "graphql-middleware": "^4.0.2",
