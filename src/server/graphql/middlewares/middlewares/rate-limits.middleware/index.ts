@@ -26,7 +26,9 @@ export const rateLimits: IMiddlewareGenerator<any, IServerContext, any> = speedL
 	},
 	{
 		Query: {
-			stockPortfolios: { window: "1m", max: 30 }
+			stockPortfolios: { window: "1m", max: 30 },
+			stockData: { window: "1m", max: 30 },
+			stockSymbols: { window: "1s", max: 5 }
 		},
 		Mutation: {
 			loginLocalUser: { window: "1m", max: 30 },

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 27th 2020 5:26:08 pm
+// This file was generated on: Mar 28th 2020 8:48:52 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -122,6 +122,7 @@ export type Query = RequestRoot & {
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
+  readonly stockSymbols?: Maybe<ReadonlyArray<StockDataSearch>>;
   readonly user?: Maybe<User>;
   readonly viewer?: Maybe<User>;
 };
@@ -162,6 +163,11 @@ export type QueryStockPortfoliosArgs = {
   query?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryStockSymbolsArgs = {
+  text: Scalars['String'];
+};
+
 export type RefreshAccessTokenInput = {
   readonly refreshToken: Scalars['String'];
 };
@@ -186,6 +192,15 @@ export type RequestRoot = {
 export type ResendVerifyEmailPayload = {
   readonly __typename?: 'ResendVerifyEmailPayload';
   readonly success: Scalars['Boolean'];
+};
+
+export type StockDataSearch = {
+  readonly __typename?: 'StockDataSearch';
+  readonly symbol: Scalars['String'];
+  readonly securityName: Scalars['String'];
+  readonly securityType: Scalars['String'];
+  readonly region: Scalars['String'];
+  readonly exchange: Scalars['String'];
 };
 
 export type StockPortfolio = {
@@ -544,6 +559,19 @@ export type GetViewerQuery = (
     { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
+);
+
+export type SearchStockSymbolsQueryVariables = {
+  text: Scalars['String'];
+};
+
+
+export type SearchStockSymbolsQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly stockSymbols?: Maybe<ReadonlyArray<(
+    { readonly __typename?: 'StockDataSearch' }
+    & Pick<StockDataSearch, 'symbol' | 'securityName'>
+  )>> }
 );
 
 
@@ -1107,3 +1135,37 @@ export function useGetViewerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetViewerQueryHookResult = ReturnType<typeof useGetViewerQuery>;
 export type GetViewerLazyQueryHookResult = ReturnType<typeof useGetViewerLazyQuery>;
 export type GetViewerQueryResult = ApolloReactCommon.QueryResult<GetViewerQuery, GetViewerQueryVariables>;
+export const SearchStockSymbolsDocument = gql`
+    query SearchStockSymbols($text: String!) {
+  stockSymbols(text: $text) {
+    symbol
+    securityName
+  }
+}
+    `;
+
+/**
+ * __useSearchStockSymbolsQuery__
+ *
+ * To run a query within a React component, call `useSearchStockSymbolsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchStockSymbolsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchStockSymbolsQuery({
+ *   variables: {
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useSearchStockSymbolsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchStockSymbolsQuery, SearchStockSymbolsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchStockSymbolsQuery, SearchStockSymbolsQueryVariables>(SearchStockSymbolsDocument, baseOptions);
+      }
+export function useSearchStockSymbolsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchStockSymbolsQuery, SearchStockSymbolsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchStockSymbolsQuery, SearchStockSymbolsQueryVariables>(SearchStockSymbolsDocument, baseOptions);
+        }
+export type SearchStockSymbolsQueryHookResult = ReturnType<typeof useSearchStockSymbolsQuery>;
+export type SearchStockSymbolsLazyQueryHookResult = ReturnType<typeof useSearchStockSymbolsLazyQuery>;
+export type SearchStockSymbolsQueryResult = ApolloReactCommon.QueryResult<SearchStockSymbolsQuery, SearchStockSymbolsQueryVariables>;

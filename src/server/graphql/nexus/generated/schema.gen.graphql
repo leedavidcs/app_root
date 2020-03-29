@@ -105,6 +105,7 @@ type Query implements RequestRoot {
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
+  stockSymbols(text: String!): [StockDataSearch!]
 
   """The viewer of this request"""
   viewer: User
@@ -148,6 +149,14 @@ interface RequestRoot {
 type ResendVerifyEmailPayload {
   """Status, on whether the email was successfully resent"""
   success: Boolean!
+}
+
+type StockDataSearch {
+  exchange: String!
+  region: String!
+  securityName: String!
+  securityType: String!
+  symbol: String!
 }
 
 """StockPortfolio entity. This is what gets shown on the data grid"""

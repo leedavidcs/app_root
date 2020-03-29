@@ -1,3 +1,4 @@
+import { DataSource } from "apollo-datasource";
 import { mapSeries } from "blend-promise-utils";
 import fetch from "isomorphic-unfetch";
 import { chunk, intersection } from "lodash";
@@ -12,9 +13,9 @@ const MAX_TYPE_BATCH_SIZE = 8;
 const IEX_REQUEST_RATE_LIMIT = 20;
 
 const isDevelopment: boolean = process.env.NODE_ENV !== "production";
-const publishable: string = process.env.IEXCLOUD_SECRET_KEY ?? "";
+const publishable: string = process.env.IEXCLOUD_SECRET_KEY || "";
 const version = "stable";
-const sandboxPublishable: string = process.env.IEXCLOUD_SANDBOX_PUBLIC_KEY ?? "";
+const sandboxPublishable: string = process.env.IEXCLOUD_SANDBOX_PUBLIC_KEY || "";
 
 interface ISymbolsOptions {
 	last: Last;
@@ -37,7 +38,7 @@ const DEFAULT_SYMBOLS_OPTIONS: ISymbolsOptions = {
 	range: "1m"
 };
 
-export class IexCloudAPI {
+export class IexCloudAPI extends DataSource {
 	private _client = new IEXCloudClient(fetch, {
 		sandbox: isDevelopment,
 		publishable: isDevelopment ? sandboxPublishable : publishable,
@@ -49,6 +50,10 @@ export class IexCloudAPI {
 		publishable: sandboxPublishable,
 		version
 	});
+
+	public search(text: string) {
+		return queue.add(() => this._client.search(text));
+	}
 
 	public async symbols(
 		symbols: readonly string[],
