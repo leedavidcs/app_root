@@ -1,6 +1,7 @@
 import { Anchor, Tooltip } from "@/client/components";
 import { useGetManyStockPortfoliosQuery } from "@/client/graphql";
 import { ISetUserStates, useSetUser } from "@/client/hooks";
+import { format } from "date-fns";
 import memoizeOne from "memoize-one";
 import { NextRouter, useRouter } from "next/router";
 import React, { useCallback, useEffect, useMemo } from "react";
@@ -54,7 +55,10 @@ export const useStockPortfoliosNode = (
 						id: portfolio.id,
 						label: (
 							<Tooltip
-								content={`Updated at: ${portfolio.updatedAt}`}
+								content={`Updated at: ${format(
+									new Date(portfolio.updatedAt),
+									"PPPppp"
+								)}`}
 								position="right"
 							>
 								{portfolio.name}

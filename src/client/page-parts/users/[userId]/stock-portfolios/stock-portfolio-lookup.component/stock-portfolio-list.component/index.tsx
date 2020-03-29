@@ -2,6 +2,7 @@ import { IKebabMenuOption, KebabMenu, List, ListItem, ListItemText } from "@/cli
 import { GetManyStockPortfoliosQuery } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
+import { format } from "date-fns";
 import { range } from "lodash";
 import React, { FC, memo, useCallback } from "react";
 import { useStyles } from "./styles";
@@ -62,7 +63,10 @@ export const StockPortfolioList: FC<IProps> = memo((props) => {
 		<List className={className} divider="full">
 			{stockPortfolios.map(({ id, name, updatedAt }, i) => (
 				<ListItem key={id} onClick={onClickOpen(id)} ripple={false} selected={false}>
-					<ListItemText primary={name} secondary={`Updated at: ${updatedAt}`} />
+					<ListItemText
+						primary={name}
+						secondary={`Updated at: ${format(new Date(updatedAt), "PPPppp")}`}
+					/>
 					<KebabMenu options={kebabOptions(id)} />
 				</ListItem>
 			))}

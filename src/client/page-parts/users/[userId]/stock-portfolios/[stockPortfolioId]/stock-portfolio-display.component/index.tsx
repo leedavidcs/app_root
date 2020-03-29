@@ -7,6 +7,7 @@ import {
 import { useSetUser } from "@/client/hooks";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
+import { format } from "date-fns";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CreatorActions } from "./creator-actions.component";
 import { PublicActions } from "./public-actions.component";
@@ -157,7 +158,9 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 			</Paper>
 			<div className={classes.portfolioFooter}>
 				<p className={classes.createdBy}>Created By: {createdBy}</p>
-				<p className={classes.lastUpdated}>Last updated: {updatedAt}</p>
+				<p className={classes.lastUpdated}>
+					Last updated: {format(new Date(updatedAt), "PPPppp")}
+				</p>
 			</div>
 		</div>
 	);

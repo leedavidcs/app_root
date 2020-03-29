@@ -3,6 +3,7 @@ import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { getYupValidationResolver } from "@/client/utils";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
+import { format } from "date-fns";
 import React, { FC, memo, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
@@ -89,7 +90,9 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 				</Paper>
 				<div className={classes.portfolioFooter}>
 					<p className={classes.createdBy}>Created by: {user.username}</p>
-					<p className={classes.lastUpdated}>Last updated: {updatedAt}</p>
+					<p className={classes.lastUpdated}>
+						Last updated: {format(new Date(updatedAt), "PPPppp")}
+					</p>
 				</div>
 			</form>
 		</div>

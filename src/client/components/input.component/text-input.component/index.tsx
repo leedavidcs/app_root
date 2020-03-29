@@ -20,7 +20,7 @@ interface IProps {
 	control?: ReturnType<typeof useForm>["control"];
 	defaultValue?: string;
 	disabled?: boolean;
-	error?: Maybe<string>;
+	error?: Maybe<string | ReactElement>;
 	icon?: IconName;
 	inline?: boolean;
 	label?: string;

@@ -1,5 +1,5 @@
 import { EditableText as BpEditableText, FormGroup, Intent } from "@blueprintjs/core";
-import React, { CSSProperties, FC, useCallback, useMemo } from "react";
+import React, { CSSProperties, FC, ReactElement, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
@@ -8,7 +8,7 @@ interface IProps {
 	control?: ReturnType<typeof useForm>["control"];
 	defaultValue?: string;
 	disabled?: boolean;
-	error?: Maybe<string>;
+	error?: Maybe<string | ReactElement>;
 	maxLength?: number;
 	name?: string;
 	onCancel?: (value: string) => void;
