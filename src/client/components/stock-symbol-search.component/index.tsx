@@ -2,6 +2,7 @@ import { Select } from "@/client/components/input.component";
 import { useSearchStockSymbolsLazyQuery } from "@/client/graphql";
 import { Menu } from "@blueprintjs/core";
 import { ItemRenderer } from "@blueprintjs/select";
+import classnames from "classnames";
 import { debounce } from "lodash";
 import React, { FC, memo, ReactElement, useCallback, useMemo } from "react";
 import { useStyles } from "./styles";
@@ -10,18 +11,19 @@ const DEBOUNCE_ON_SEARCH = 1000;
 
 interface IProps {
 	children: ReactElement;
-	onSelect: (symbol: ISelectItem) => void;
+	className?: string;
+	onSelect: (symbol: IStockSymbolSearchItem) => void;
 }
 
-interface ISelectItem {
+export interface IStockSymbolSearchItem {
 	key: string;
 	symbol: string;
 	securityName: string;
 }
 
-const TypedSelect = Select.ofType<ISelectItem>();
+const TypedSelect = Select.ofType<IStockSymbolSearchItem>();
 
-const itemRenderer: ItemRenderer<ISelectItem> = (item, itemProps) => {
+const itemRenderer: ItemRenderer<IStockSymbolSearchItem> = (item, itemProps) => {
 	const { key, symbol, securityName } = item;
 	const { handleClick, modifiers } = itemProps;
 
@@ -38,17 +40,19 @@ const itemRenderer: ItemRenderer<ISelectItem> = (item, itemProps) => {
 	);
 };
 
-export const StockSymbolSearch: FC<IProps> = memo(({ children, onSelect }) => {
+export const StockSymbolSearch: FC<IProps> = memo(({ children, className, onSelect }) => {
 	const classes = useStyles();
 
-	const [searchSymbols, { data, loading }] = useSearchStockSymbolsLazyQuery();
+	const [searchSymbols, { data, loading }] = useSearchStockSymbolsLazyQuery({
+		fetchPolicy: "no-cache"
+	});
 
 	const onQuery = useCallback(
 		debounce((text: string) => searchSymbols({ variables: { text } }), DEBOUNCE_ON_SEARCH),
 		[searchSymbols]
 	);
 
-	const items: readonly ISelectItem[] = useMemo(() => {
+	const items: readonly IStockSymbolSearchItem[] = useMemo(() => {
 		const stockSymbols = data?.stockSymbols ?? [];
 
 		return stockSymbols.map(({ symbol, securityName }) => ({
@@ -60,7 +64,7 @@ export const StockSymbolSearch: FC<IProps> = memo(({ children, onSelect }) => {
 
 	return (
 		<TypedSelect
-			className={classes.root}
+			className={classnames(classes.root, className)}
 			itemRenderer={itemRenderer}
 			items={items}
 			minimal={true}
