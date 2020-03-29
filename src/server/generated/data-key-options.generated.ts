@@ -2,161 +2,6 @@
 	export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
 	[
   {
-    "name": "ceoCompensation.symbol",
-    "dataKey": "ceo-compensation.symbol",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.name",
-    "dataKey": "ceo-compensation.name",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.companyName",
-    "dataKey": "ceo-compensation.companyName",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.location",
-    "dataKey": "ceo-compensation.location",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.salary",
-    "dataKey": "ceo-compensation.salary",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.bonus",
-    "dataKey": "ceo-compensation.bonus",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.stockAwards",
-    "dataKey": "ceo-compensation.stockAwards",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.optionAwards",
-    "dataKey": "ceo-compensation.optionAwards",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.nonEquityIncentives",
-    "dataKey": "ceo-compensation.nonEquityIncentives",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.pensionAndDeferred",
-    "dataKey": "ceo-compensation.pensionAndDeferred",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.otherComp",
-    "dataKey": "ceo-compensation.otherComp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.total",
-    "dataKey": "ceo-compensation.total",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ceoCompensation.year",
-    "dataKey": "ceo-compensation.year",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.symbol",
-    "dataKey": "company.symbol",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.companyName",
-    "dataKey": "company.companyName",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.exchange",
-    "dataKey": "company.exchange",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.industry",
-    "dataKey": "company.industry",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.website",
-    "dataKey": "company.website",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.description",
-    "dataKey": "company.description",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.ceo",
-    "dataKey": "company.CEO",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.securityName",
-    "dataKey": "company.securityName",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.issueType",
-    "dataKey": "company.issueType",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.sector",
-    "dataKey": "company.sector",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.primarySicCode",
-    "dataKey": "company.primarySicCode",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.employees",
-    "dataKey": "company.employees",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.address",
-    "dataKey": "company.address",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.state",
-    "dataKey": "company.state",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.city",
-    "dataKey": "company.city",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.zip",
-    "dataKey": "company.zip",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.country",
-    "dataKey": "company.country",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "company.phone",
-    "dataKey": "company.phone",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "balanceSheet.symbol",
     "dataKey": "balance-sheet.symbol",
     "provider": "IEX_CLOUD"
@@ -374,6 +219,161 @@
   {
     "name": "cashFlow.exchangeRateEffect",
     "dataKey": "cash-flow.cashflow[0].exchangeRateEffect",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.symbol",
+    "dataKey": "ceo-compensation.symbol",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.name",
+    "dataKey": "ceo-compensation.name",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.companyName",
+    "dataKey": "ceo-compensation.companyName",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.location",
+    "dataKey": "ceo-compensation.location",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.salary",
+    "dataKey": "ceo-compensation.salary",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.bonus",
+    "dataKey": "ceo-compensation.bonus",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.stockAwards",
+    "dataKey": "ceo-compensation.stockAwards",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.optionAwards",
+    "dataKey": "ceo-compensation.optionAwards",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.nonEquityIncentives",
+    "dataKey": "ceo-compensation.nonEquityIncentives",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.pensionAndDeferred",
+    "dataKey": "ceo-compensation.pensionAndDeferred",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.otherComp",
+    "dataKey": "ceo-compensation.otherComp",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.total",
+    "dataKey": "ceo-compensation.total",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ceoCompensation.year",
+    "dataKey": "ceo-compensation.year",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.symbol",
+    "dataKey": "company.symbol",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.companyName",
+    "dataKey": "company.companyName",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.exchange",
+    "dataKey": "company.exchange",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.industry",
+    "dataKey": "company.industry",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.website",
+    "dataKey": "company.website",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.description",
+    "dataKey": "company.description",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.ceo",
+    "dataKey": "company.CEO",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.securityName",
+    "dataKey": "company.securityName",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.issueType",
+    "dataKey": "company.issueType",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.sector",
+    "dataKey": "company.sector",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.primarySicCode",
+    "dataKey": "company.primarySicCode",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.employees",
+    "dataKey": "company.employees",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.address",
+    "dataKey": "company.address",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.state",
+    "dataKey": "company.state",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.city",
+    "dataKey": "company.city",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.zip",
+    "dataKey": "company.zip",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.country",
+    "dataKey": "company.country",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "company.phone",
+    "dataKey": "company.phone",
     "provider": "IEX_CLOUD"
   },
   {
@@ -1109,6 +1109,26 @@
   {
     "name": "priceTarget.currency",
     "dataKey": "price-target.currency",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "sentiment",
+    "dataKey": "sentiment.sentiment",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "sentiment.totalScores",
+    "dataKey": "sentiment.totalScores",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "sentiment.positive",
+    "dataKey": "sentiment.positive",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "sentiment.negative",
+    "dataKey": "sentiment.negative",
     "provider": "IEX_CLOUD"
   },
   {
