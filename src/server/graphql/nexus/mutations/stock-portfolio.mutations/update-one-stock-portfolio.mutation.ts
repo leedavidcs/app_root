@@ -1,3 +1,4 @@
+import { BadInputError } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "nexus";
 
 export const StockPortfolioUpdateInput = inputObjectType({
@@ -29,7 +30,21 @@ export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", 
 
 		return isOwnedByUser;
 	},
-	resolve: async (parent, { data: { name, headers, tickers }, where }, { prisma }) => {
+	resolve: async (
+		parent,
+		{ data: { name, headers, tickers }, where },
+		{ dataSources, prisma }
+	) => {
+		const { IexCloudAPI } = dataSources;
+
+		if (tickers) {
+			const areTickersValid: boolean = await IexCloudAPI.areSymbolsValid(tickers);
+
+			if (!areTickersValid) {
+				throw new BadInputError("Tickers are invalid.");
+			}
+		}
+
 		const stockPortfolio = await prisma.stockPortfolio.update({
 			data: {
 				name,
