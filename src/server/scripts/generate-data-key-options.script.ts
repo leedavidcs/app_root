@@ -5,7 +5,7 @@ import { camelCase, isArray, isPlainObject, toLower, trim, uniqBy } from "lodash
 import path from "path";
 
 const writePath: string = path.join(
-	process.env.PROJECT_DIRNAME || "",
+	process.env.PROJECT_DIRNAME ?? "",
 	"./src/server/generated/data-key-options.generated.ts"
 );
 
