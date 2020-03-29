@@ -142,86 +142,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "cashFlow.symbol",
-    "dataKey": "cash-flow.symbol",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.reportDate",
-    "dataKey": "cash-flow.cashflow[0].reportDate",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.fiscalDate",
-    "dataKey": "cash-flow.cashflow[0].fiscalDate",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.currency",
-    "dataKey": "cash-flow.cashflow[0].currency",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.netIncome",
-    "dataKey": "cash-flow.cashflow[0].netIncome",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.depreciation",
-    "dataKey": "cash-flow.cashflow[0].depreciation",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.changesInReceivables",
-    "dataKey": "cash-flow.cashflow[0].changesInReceivables",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.cashChange",
-    "dataKey": "cash-flow.cashflow[0].cashChange",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow",
-    "dataKey": "cash-flow.cashflow[0].cashFlow",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.capitalExpenditures",
-    "dataKey": "cash-flow.cashflow[0].capitalExpenditures",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.investments",
-    "dataKey": "cash-flow.cashflow[0].investments",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.totalInvestingCashFlows",
-    "dataKey": "cash-flow.cashflow[0].totalInvestingCashFlows",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.netBorrowings",
-    "dataKey": "cash-flow.cashflow[0].netBorrowings",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.otherFinancingCashFlows",
-    "dataKey": "cash-flow.cashflow[0].otherFinancingCashFlows",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.cashFlowFinancing",
-    "dataKey": "cash-flow.cashflow[0].cashFlowFinancing",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "cashFlow.exchangeRateEffect",
-    "dataKey": "cash-flow.cashflow[0].exchangeRateEffect",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "ceoCompensation.symbol",
     "dataKey": "ceo-compensation.symbol",
     "provider": "IEX_CLOUD"
@@ -374,6 +294,86 @@
   {
     "name": "company.phone",
     "dataKey": "company.phone",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.symbol",
+    "dataKey": "cash-flow.symbol",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.reportDate",
+    "dataKey": "cash-flow.cashflow[0].reportDate",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.fiscalDate",
+    "dataKey": "cash-flow.cashflow[0].fiscalDate",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.currency",
+    "dataKey": "cash-flow.cashflow[0].currency",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.netIncome",
+    "dataKey": "cash-flow.cashflow[0].netIncome",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.depreciation",
+    "dataKey": "cash-flow.cashflow[0].depreciation",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.changesInReceivables",
+    "dataKey": "cash-flow.cashflow[0].changesInReceivables",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.cashChange",
+    "dataKey": "cash-flow.cashflow[0].cashChange",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow",
+    "dataKey": "cash-flow.cashflow[0].cashFlow",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.capitalExpenditures",
+    "dataKey": "cash-flow.cashflow[0].capitalExpenditures",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.investments",
+    "dataKey": "cash-flow.cashflow[0].investments",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.totalInvestingCashFlows",
+    "dataKey": "cash-flow.cashflow[0].totalInvestingCashFlows",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.netBorrowings",
+    "dataKey": "cash-flow.cashflow[0].netBorrowings",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.otherFinancingCashFlows",
+    "dataKey": "cash-flow.cashflow[0].otherFinancingCashFlows",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.cashFlowFinancing",
+    "dataKey": "cash-flow.cashflow[0].cashFlowFinancing",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "cashFlow.exchangeRateEffect",
+    "dataKey": "cash-flow.cashflow[0].exchangeRateEffect",
     "provider": "IEX_CLOUD"
   },
   {
@@ -702,21 +702,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "book.quote.iexRealtimePrice",
-    "dataKey": "book.quote.iexRealtimePrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexRealtimeSize",
-    "dataKey": "book.quote.iexRealtimeSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexLastUpdated",
-    "dataKey": "book.quote.iexLastUpdated",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "book.quote.delayedPrice",
     "dataKey": "book.quote.delayedPrice",
     "provider": "IEX_CLOUD"
@@ -782,38 +767,8 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "book.quote.iexMarketPercent",
-    "dataKey": "book.quote.iexMarketPercent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexVolume",
-    "dataKey": "book.quote.iexVolume",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "book.quote.avgTotalVolume",
     "dataKey": "book.quote.avgTotalVolume",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexBidPrice",
-    "dataKey": "book.quote.iexBidPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexBidSize",
-    "dataKey": "book.quote.iexBidSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexAskPrice",
-    "dataKey": "book.quote.iexAskPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexAskSize",
-    "dataKey": "book.quote.iexAskSize",
     "provider": "IEX_CLOUD"
   },
   {
@@ -859,61 +814,6 @@
   {
     "name": "book.quote.isUsMarketOpen",
     "dataKey": "book.quote.isUSMarketOpen",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.price",
-    "dataKey": "book.trades[0].price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.size",
-    "dataKey": "book.trades[0].size",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.tradeId",
-    "dataKey": "book.trades[0].tradeId",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isIso",
-    "dataKey": "book.trades[0].isISO",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOddLot",
-    "dataKey": "book.trades[0].isOddLot",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOutsideRegularHours",
-    "dataKey": "book.trades[0].isOutsideRegularHours",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isSinglePriceCross",
-    "dataKey": "book.trades[0].isSinglePriceCross",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isTradeThroughExempt",
-    "dataKey": "book.trades[0].isTradeThroughExempt",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.timestamp",
-    "dataKey": "book.trades[0].timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.systemEvent",
-    "dataKey": "book.systemEvent.systemEvent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.systemEvent.timestamp",
-    "dataKey": "book.systemEvent.timestamp",
     "provider": "IEX_CLOUD"
   },
   {
@@ -1059,6 +959,46 @@
   {
     "name": "news.hasPaywall",
     "dataKey": "news[0].hasPaywall",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.open.price",
+    "dataKey": "ohlc.open.price",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.open.time",
+    "dataKey": "ohlc.open.time",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.close.price",
+    "dataKey": "ohlc.close.price",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.close.time",
+    "dataKey": "ohlc.close.time",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.high",
+    "dataKey": "ohlc.high",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.low",
+    "dataKey": "ohlc.low",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.volume",
+    "dataKey": "ohlc.volume",
+    "provider": "IEX_CLOUD"
+  },
+  {
+    "name": "ohlc.symbol",
+    "dataKey": "ohlc.symbol",
     "provider": "IEX_CLOUD"
   },
   {
@@ -1302,46 +1242,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "ohlc.open.price",
-    "dataKey": "ohlc.open.price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.open.time",
-    "dataKey": "ohlc.open.time",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.close.price",
-    "dataKey": "ohlc.close.price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.close.time",
-    "dataKey": "ohlc.close.time",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.high",
-    "dataKey": "ohlc.high",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.low",
-    "dataKey": "ohlc.low",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.volume",
-    "dataKey": "ohlc.volume",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "ohlc.symbol",
-    "dataKey": "ohlc.symbol",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "quote.symbol",
     "dataKey": "quote.symbol",
     "provider": "IEX_CLOUD"
@@ -1447,21 +1347,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "quote.iexRealtimePrice",
-    "dataKey": "quote.iexRealtimePrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexRealtimeSize",
-    "dataKey": "quote.iexRealtimeSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexLastUpdated",
-    "dataKey": "quote.iexLastUpdated",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "quote.delayedPrice",
     "dataKey": "quote.delayedPrice",
     "provider": "IEX_CLOUD"
@@ -1527,38 +1412,8 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "quote.iexMarketPercent",
-    "dataKey": "quote.iexMarketPercent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexVolume",
-    "dataKey": "quote.iexVolume",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "quote.avgTotalVolume",
     "dataKey": "quote.avgTotalVolume",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexBidPrice",
-    "dataKey": "quote.iexBidPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexBidSize",
-    "dataKey": "quote.iexBidSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexAskPrice",
-    "dataKey": "quote.iexAskPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexAskSize",
-    "dataKey": "quote.iexAskSize",
     "provider": "IEX_CLOUD"
   },
   {
