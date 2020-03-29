@@ -128,10 +128,11 @@ const getDataKeyOptions = async () => {
 
 const main = async () => {
 	const dataKeyOptions = await getDataKeyOptions();
+	const sorted = dataKeyOptions.sort((a, b) => a.dataKey.localeCompare(b.dataKey));
 
 	const contents = `
 	export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
-	${JSON.stringify(dataKeyOptions, null, 2)}
+	${JSON.stringify(sorted, null, 2)}
 	`;
 
 	fs.ensureFileSync(writePath);
