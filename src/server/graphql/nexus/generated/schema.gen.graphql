@@ -101,11 +101,11 @@ type Query implements RequestRoot {
     """Filter by provider (partial works)"""
     provider: String
   ): [DataKeyOption!]!
-  stockData(dataKeys: [String!]!, tickers: [String!]!): [JSONObject!]
+  stockData(dataKeys: [String!]!, tickers: [String!]!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
-  stockSymbols(text: String!): [StockDataSearch!]
+  stockSymbols(text: String!): [StockDataSearch!]!
 
   """The viewer of this request"""
   viewer: User
@@ -151,6 +151,12 @@ type ResendVerifyEmailPayload {
   success: Boolean!
 }
 
+type StockData {
+  data: [JSONObject!]
+  dataKeys: [String!]!
+  tickers: [String!]!
+}
+
 type StockDataSearch {
   exchange: String!
   region: String!
@@ -162,12 +168,12 @@ type StockDataSearch {
 """StockPortfolio entity. This is what gets shown on the data grid"""
 type StockPortfolio {
   createdAt: DateTime!
-
-  """The data that gets resolved based on headers and tickers"""
-  data: [JSONObject!]!
   headers: [StockPortfolioHeader!]!
   id: String!
   name: String!
+
+  """The data that gets resolved based on headers and tickers"""
+  stockData: StockData
   tickers: [String!]!
   updatedAt: DateTime!
   user: User!

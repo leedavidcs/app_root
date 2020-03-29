@@ -76,7 +76,7 @@ const useData = (): UseDataResult => {
 	);
 
 	useEffect(() => {
-		const stockData = result.data?.stockData;
+		const stockData = result.data?.stockData?.data;
 
 		if (stockData) {
 			setData(stockData);

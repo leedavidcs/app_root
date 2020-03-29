@@ -1,3 +1,5 @@
 query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
-	stockData(tickers: $tickers, dataKeys: $dataKeys)
+	stockData(tickers: $tickers, dataKeys: $dataKeys) {
+		data
+	}
 }

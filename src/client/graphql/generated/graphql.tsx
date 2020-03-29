@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 28th 2020 8:48:52 pm
+// This file was generated on: Mar 29th 2020 3:02:51 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -118,11 +118,11 @@ export type Query = RequestRoot & {
   readonly __typename?: 'Query';
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
   readonly modal: Scalars['Boolean'];
-  readonly stockData?: Maybe<ReadonlyArray<Scalars['JSONObject']>>;
+  readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
-  readonly stockSymbols?: Maybe<ReadonlyArray<StockDataSearch>>;
+  readonly stockSymbols: ReadonlyArray<StockDataSearch>;
   readonly user?: Maybe<User>;
   readonly viewer?: Maybe<User>;
 };
@@ -194,6 +194,13 @@ export type ResendVerifyEmailPayload = {
   readonly success: Scalars['Boolean'];
 };
 
+export type StockData = {
+  readonly __typename?: 'StockData';
+  readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly dataKeys: ReadonlyArray<Scalars['String']>;
+  readonly data?: Maybe<ReadonlyArray<Scalars['JSONObject']>>;
+};
+
 export type StockDataSearch = {
   readonly __typename?: 'StockDataSearch';
   readonly symbol: Scalars['String'];
@@ -210,7 +217,7 @@ export type StockPortfolio = {
   readonly name: Scalars['String'];
   readonly headers: ReadonlyArray<StockPortfolioHeader>;
   readonly tickers: ReadonlyArray<Scalars['String']>;
-  readonly data: ReadonlyArray<Scalars['JSONObject']>;
+  readonly stockData?: Maybe<StockData>;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
 };
@@ -536,7 +543,10 @@ export type GetStockDataQueryVariables = {
 
 export type GetStockDataQuery = (
   { readonly __typename?: 'Query' }
-  & Pick<Query, 'stockData'>
+  & { readonly stockData?: Maybe<(
+    { readonly __typename?: 'StockData' }
+    & Pick<StockData, 'data'>
+  )> }
 );
 
 export type GetUserQueryVariables = {};
@@ -568,10 +578,10 @@ export type SearchStockSymbolsQueryVariables = {
 
 export type SearchStockSymbolsQuery = (
   { readonly __typename?: 'Query' }
-  & { readonly stockSymbols?: Maybe<ReadonlyArray<(
+  & { readonly stockSymbols: ReadonlyArray<(
     { readonly __typename?: 'StockDataSearch' }
     & Pick<StockDataSearch, 'symbol' | 'securityName'>
-  )>> }
+  )> }
 );
 
 
@@ -1035,7 +1045,9 @@ export type GetOneStockPortfolioLazyQueryHookResult = ReturnType<typeof useGetOn
 export type GetOneStockPortfolioQueryResult = ApolloReactCommon.QueryResult<GetOneStockPortfolioQuery, GetOneStockPortfolioQueryVariables>;
 export const GetStockDataDocument = gql`
     query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
-  stockData(tickers: $tickers, dataKeys: $dataKeys)
+  stockData(tickers: $tickers, dataKeys: $dataKeys) {
+    data
+  }
 }
     `;
 

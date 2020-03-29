@@ -153,6 +153,10 @@ export interface NexusGenRootTypes {
   ResendVerifyEmailPayload: { // root type
     success: boolean; // Boolean!
   }
+  StockData: { // root type
+    dataKeys: string[]; // [String!]!
+    tickers: string[]; // [String!]!
+  }
   StockDataSearch: { // root type
     exchange: string; // String!
     region: string; // String!
@@ -238,11 +242,11 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
-    stockData: any[] | null; // [JSONObject!]
+    stockData: NexusGenRootTypes['StockData'] | null; // StockData
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     stockPortfolioCount: number | null; // Int
     stockPortfolios: NexusGenRootTypes['StockPortfolio'][]; // [StockPortfolio!]!
-    stockSymbols: NexusGenRootTypes['StockDataSearch'][] | null; // [StockDataSearch!]
+    stockSymbols: NexusGenRootTypes['StockDataSearch'][]; // [StockDataSearch!]!
     viewer: NexusGenRootTypes['User'] | null; // User
   }
   RegisterLocalUserPayload: { // field return type
@@ -253,6 +257,11 @@ export interface NexusGenFieldTypes {
   ResendVerifyEmailPayload: { // field return type
     success: boolean; // Boolean!
   }
+  StockData: { // field return type
+    data: any[] | null; // [JSONObject!]
+    dataKeys: string[]; // [String!]!
+    tickers: string[]; // [String!]!
+  }
   StockDataSearch: { // field return type
     exchange: string; // String!
     region: string; // String!
@@ -262,10 +271,10 @@ export interface NexusGenFieldTypes {
   }
   StockPortfolio: { // field return type
     createdAt: any; // DateTime!
-    data: any[]; // [JSONObject!]!
     headers: NexusGenRootTypes['StockPortfolioHeader'][]; // [StockPortfolioHeader!]!
     id: string; // String!
     name: string; // String!
+    stockData: NexusGenRootTypes['StockData'] | null; // StockData
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
     user: NexusGenRootTypes['User']; // User!
@@ -355,7 +364,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
+export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
 export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput" | "UserWhereInput";
 
