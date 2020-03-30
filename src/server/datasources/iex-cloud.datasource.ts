@@ -23,7 +23,7 @@ interface ISymbolsOptions {
 	range: Range;
 }
 
-type IexType = Exclude<keyof Batch, "req" | "batching" | "range">;
+export type IexType = Exclude<keyof Batch, "req" | "batching" | "range">;
 type IexStockResult = Partial<Record<IexType, any>>;
 
 const queue = new PQueue({

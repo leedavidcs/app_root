@@ -17,11 +17,11 @@ export const stockSymbols = queryField("stockSymbols", {
 		text: stringArg({ nullable: false })
 	},
 	resolve: (parent, { text }, { dataSources }) => {
+		const { IexCloudAPI } = dataSources;
+
 		if (!text) {
 			return [];
 		}
-
-		const { IexCloudAPI } = dataSources;
 
 		return IexCloudAPI.search(text);
 	}
