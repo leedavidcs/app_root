@@ -250,17 +250,27 @@ type GetNexusPrisma<
 interface ModelTypes {
   User: prisma.User
   StockPortfolio: prisma.StockPortfolio
+  Balance: prisma.Balance
+  Transaction: prisma.Transaction
 }
   
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'balances' | 'transactions' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
   filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
+}
+    balances: {
+  filtering: 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'credits'
+}
+    transactions: {
+  filtering: 'id' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
 }
 
   },
@@ -269,8 +279,22 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
 }
+    balances: {
+  filtering: 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'credits'
+}
+    transactions: {
+  filtering: 'id' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+}
 
   },  StockPortfolio: {
+
+
+  },  Balance: {
+
+
+  },  Transaction: {
 
 
   }
@@ -282,6 +306,10 @@ interface NexusPrismaTypes {
     users: 'User'
     stockPortfolio: 'StockPortfolio'
     stockPortfolios: 'StockPortfolio'
+    balance: 'Balance'
+    balances: 'Balance'
+    transaction: 'Transaction'
+    transactions: 'Transaction'
 
   },
   Mutation: {
@@ -297,6 +325,18 @@ interface NexusPrismaTypes {
     deleteOneStockPortfolio: 'StockPortfolio'
     deleteManyStockPortfolio: 'BatchPayload'
     upsertOneStockPortfolio: 'StockPortfolio'
+    createOneBalance: 'Balance'
+    updateOneBalance: 'Balance'
+    updateManyBalance: 'BatchPayload'
+    deleteOneBalance: 'Balance'
+    deleteManyBalance: 'BatchPayload'
+    upsertOneBalance: 'Balance'
+    createOneTransaction: 'Transaction'
+    updateOneTransaction: 'Transaction'
+    updateManyTransaction: 'BatchPayload'
+    deleteOneTransaction: 'Transaction'
+    deleteManyTransaction: 'BatchPayload'
+    upsertOneTransaction: 'Transaction'
 
   },
   User: {
@@ -308,6 +348,8 @@ interface NexusPrismaTypes {
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     stockPortfolios: 'StockPortfolio'
+    balances: 'Balance'
+    transactions: 'Transaction'
 
 },  StockPortfolio: {
     id: 'String'
@@ -318,12 +360,25 @@ interface NexusPrismaTypes {
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
 
+},  Balance: {
+    user: 'User'
+    credits: 'Int'
+
+},  Transaction: {
+    id: 'String'
+    user: 'User'
+    creditsBefore: 'Int'
+    creditsTransacted: 'Int'
+    createdAt: 'DateTime'
+
 }
 }
 
 interface NexusPrismaMethods {
   User: NexusPrismaFields<'User'>
   StockPortfolio: NexusPrismaFields<'StockPortfolio'>
+  Balance: NexusPrismaFields<'Balance'>
+  Transaction: NexusPrismaFields<'Transaction'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }

@@ -123,7 +123,7 @@ export const StockDataFeatures: Record<IexType, IFeatureConfig> = {
 		cost: 1
 	},
 	sentiment: {
-		enabled: true,
+		enabled: false,
 		cost: 1
 	},
 	shortInterest: {
