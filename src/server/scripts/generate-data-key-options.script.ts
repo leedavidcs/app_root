@@ -1,5 +1,5 @@
 import { StockDataFeatures } from "@/server/configs";
-import { IexCloudAPI } from "@/server/datasources";
+import { IexCloudAPI, IexType } from "@/server/datasources";
 import { Logger } from "@/server/utils";
 import fs from "fs-extra";
 import { camelCase, isArray, isPlainObject, toLower, trim, uniqBy } from "lodash";
@@ -70,12 +70,12 @@ const sanitizeLabel = (dataKey: string): string => {
 const getDataKeyOptions = async () => {
 	const ticker = "GOOGL";
 
-	const types = Object.keys(StockDataFeatures).reduce<Record<string, boolean>>(
+	const types = (Object.keys(StockDataFeatures) as readonly IexType[]).reduce(
 		(acc, key) => ({
 			...acc,
 			[key]: StockDataFeatures[key].enabled
 		}),
-		{}
+		{} as Record<IexType, boolean>
 	);
 
 	const results = await iexCloudApi.symbols([ticker], types, { mock: true });

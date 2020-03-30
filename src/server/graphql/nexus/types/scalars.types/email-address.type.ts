@@ -1,5 +1,5 @@
-import { scalarType } from "nexus";
 import { EmailAddressResolver } from "graphql-scalars";
+import { scalarType } from "nexus";
 
 export const EmailAddress = scalarType({
 	name: "EmailAddress",

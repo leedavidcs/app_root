@@ -9,7 +9,7 @@ export const StockPortfolioHeader = objectType({
 		t.boolean("resizable", { nullable: false });
 		t.int("width", { nullable: false });
 	}
-})
+});
 
 export const StockPortfolio = objectType({
 	name: "StockPortfolio",
@@ -24,7 +24,9 @@ export const StockPortfolio = objectType({
 			resolve: async ({ id }, args, { prisma }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
-				const parsedHeaders = (stockPortfolio?.headers || []).map((header) => JSON.parse(header));
+				const parsedHeaders = (stockPortfolio?.headers || []).map((header) =>
+					JSON.parse(header)
+				);
 
 				return parsedHeaders;
 			}
@@ -38,7 +40,9 @@ export const StockPortfolio = objectType({
 
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
-				const parsedHeaders = (stockPortfolio?.headers || []).map((header) => JSON.parse(header));
+				const parsedHeaders = (stockPortfolio?.headers || []).map((header) =>
+					JSON.parse(header)
+				);
 				const dataKeys: string[] = parsedHeaders.map(({ dataKey }) => dataKey);
 
 				return { dataKeys, tickers };
