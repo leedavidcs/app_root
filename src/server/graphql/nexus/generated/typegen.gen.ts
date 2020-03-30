@@ -20,6 +20,18 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  BalanceFilter: { // input type
+    every?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
+    none?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
+    some?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
+  }
+  BalanceWhereInput: { // input type
+    AND?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
+    credits?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    NOT?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
+    OR?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+  }
   BooleanFilter: { // input type
     equals?: boolean | null; // Boolean
     not?: boolean | null; // Boolean
@@ -33,6 +45,16 @@ export interface NexusGenInputs {
     lte?: any | null; // DateTime
     not?: any | null; // DateTime
     notIn?: any[] | null; // [DateTime!]
+  }
+  IntFilter: { // input type
+    equals?: number | null; // Int
+    gt?: number | null; // Int
+    gte?: number | null; // Int
+    in?: number[] | null; // [Int!]
+    lt?: number | null; // Int
+    lte?: number | null; // Int
+    not?: number | null; // Int
+    notIn?: number[] | null; // [Int!]
   }
   LoginLocalUserInput: { // input type
     password: string; // String!
@@ -76,7 +98,7 @@ export interface NexusGenInputs {
   StockPortfolioWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    id?: NexusGenInputs['UUIDFilter'] | null; // UUIDFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
@@ -100,18 +122,20 @@ export interface NexusGenInputs {
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
   }
-  UUIDFilter: { // input type
-    contains?: any | null; // UUID
-    endsWith?: any | null; // UUID
-    equals?: any | null; // UUID
-    gt?: any | null; // UUID
-    gte?: any | null; // UUID
-    in?: any[] | null; // [UUID!]
-    lt?: any | null; // UUID
-    lte?: any | null; // UUID
-    not?: any | null; // UUID
-    notIn?: any[] | null; // [UUID!]
-    startsWith?: any | null; // UUID
+  TransactionFilter: { // input type
+    every?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
+    none?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
+    some?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
+  }
+  TransactionWhereInput: { // input type
+    AND?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
+    OR?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
   }
   UserNameCompoundUniqueInput: { // input type
     name: string; // String!
@@ -119,14 +143,16 @@ export interface NexusGenInputs {
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    balances?: NexusGenInputs['BalanceFilter'] | null; // BalanceFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     emailVerified?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
-    id?: NexusGenInputs['UUIDFilter'] | null; // UUIDFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
     stockPortfolios?: NexusGenInputs['StockPortfolioFilter'] | null; // StockPortfolioFilter
+    transactions?: NexusGenInputs['TransactionFilter'] | null; // TransactionFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -199,13 +225,15 @@ export interface NexusGenRootTypes {
   DateTime: any;
   EmailAddress: any;
   JSONObject: any;
-  UUID: any;
   UserPassword: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  BalanceFilter: NexusGenInputs['BalanceFilter'];
+  BalanceWhereInput: NexusGenInputs['BalanceWhereInput'];
   BooleanFilter: NexusGenInputs['BooleanFilter'];
   DateTimeFilter: NexusGenInputs['DateTimeFilter'];
+  IntFilter: NexusGenInputs['IntFilter'];
   LoginLocalUserInput: NexusGenInputs['LoginLocalUserInput'];
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
   RegisterLocalUserInput: NexusGenInputs['RegisterLocalUserInput'];
@@ -217,7 +245,8 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioWhereInput: NexusGenInputs['StockPortfolioWhereInput'];
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
   StringFilter: NexusGenInputs['StringFilter'];
-  UUIDFilter: NexusGenInputs['UUIDFilter'];
+  TransactionFilter: NexusGenInputs['TransactionFilter'];
+  TransactionWhereInput: NexusGenInputs['TransactionWhereInput'];
   UserNameCompoundUniqueInput: NexusGenInputs['UserNameCompoundUniqueInput'];
   UserWhereInput: NexusGenInputs['UserWhereInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
@@ -366,13 +395,13 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
-export type NexusGenInputNames = "BooleanFilter" | "DateTimeFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "UUIDFilter" | "UserNameCompoundUniqueInput" | "UserWhereInput";
+export type NexusGenInputNames = "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "TransactionFilter" | "TransactionWhereInput" | "UserNameCompoundUniqueInput" | "UserWhereInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg";
 
 export type NexusGenInterfaceNames = "RequestRoot";
 
-export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "String" | "UUID" | "UserPassword";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "String" | "UserPassword";
 
 export type NexusGenUnionNames = never;
 

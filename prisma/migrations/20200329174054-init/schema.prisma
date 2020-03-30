@@ -11,17 +11,17 @@ generator client {
 }
 
 model User {
-  id            String @id @default(uuid())
-  email         String @unique
-  emailVerified Boolean @default(false)
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   password      String
-  username      String @unique
+  username      String   @unique
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
 // model StockPortfolioHeader {
-//   id        String @id @default(uuid())
+//   id        String @id @default(cuid())
 //   name      String
 //   dataKey   String
 //   width     Int @default(100)
@@ -30,7 +30,7 @@ model User {
 // }
 
 model StockPortfolio {
-  id        String @id @default(uuid())
+  id        String   @id @default(cuid())
   user      User
   name      String
   headers   String[]
@@ -39,4 +39,17 @@ model StockPortfolio {
   updatedAt DateTime @updatedAt
 
   @@unique([user, name])
+}
+
+model Balance {
+  user         User @id
+  credits      Int  @default(0)
+}
+
+model Transaction {
+  id                String   @id @default(cuid())
+  user              User
+  creditsBefore     Int
+  creditsTransacted Int
+  createdAt         DateTime @default(now())
 }
