@@ -1,5 +1,8 @@
+import { StockDataFeatures } from "@/server/configs";
 import { IexType } from "@/server/datasources";
-import { BadInputError, Logger } from "@/server/utils";
+import { IServerContextWithUser } from "@/server/graphql/context";
+import { AuthorizationError, BadInputError, Logger, UnexpectedError } from "@/server/utils";
+import { ForbiddenError } from "apollo-server-micro";
 import { camelCase, get } from "lodash";
 import { objectType } from "nexus";
 
@@ -18,6 +21,45 @@ const limitResultToDataKeys = (
 	return dataKeys.reduce((acc, dataKey) => ({ ...acc, [dataKey]: get(result, dataKey) }), {});
 };
 
+const computeCosts = (tickers: readonly string[], dataKeys: readonly string[]): number => {
+	const multiplier: number = tickers.length;
+
+	const types: readonly IexType[] = Object.keys(getTypesFromDataKeys(dataKeys)) as IexType[];
+
+	const cost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
+
+	return multiplier * cost;
+};
+
+const makeTransaction = async (cost: number, { prisma, user }: IServerContextWithUser) => {
+	if (!user) {
+		throw new AuthorizationError("You must be logged in to request this data.");
+	}
+
+	const balance = await prisma.balance.findOne({ where: { user: user?.id } });
+
+	if (!balance) {
+		throw new UnexpectedError();
+	}
+
+	if (balance.credits < cost) {
+		throw new ForbiddenError("You have insufficient funds for this request.");
+	}
+
+	await prisma.balance.update({
+		data: { credits: balance.credits - cost },
+		where: { user: user.id }
+	});
+
+	await prisma.transaction.create({
+		data: {
+			creditsBefore: balance.credits,
+			creditsTransacted: -cost,
+			user: { connect: { id: user.id } }
+		}
+	});
+};
+
 export const StockData = objectType({
 	name: "StockData",
 	definition: (t) => {
@@ -25,13 +67,19 @@ export const StockData = objectType({
 		t.list.string("dataKeys", { nullable: false });
 		t.list.field("data", {
 			type: "JSONObject",
-			resolve: async ({ tickers, dataKeys }, arg, { dataSources }) => {
+			resolve: async ({ tickers, dataKeys }, arg, context) => {
+				const { dataSources } = context;
 				const { IexCloudAPI } = dataSources;
 
 				const types = getTypesFromDataKeys(dataKeys);
 
-				let results: Record<string, Record<string, any>>;
+				const cost: number = computeCosts(tickers, dataKeys);
 
+				if (cost > 0) {
+					await makeTransaction(cost, context);
+				}
+
+				let results: Record<string, Record<string, any>>;
 				try {
 					results = await IexCloudAPI.symbols(tickers, types);
 				} catch (err) {
