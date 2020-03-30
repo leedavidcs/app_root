@@ -1337,26 +1337,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "sentiment.negative",
-    "dataKey": "sentiment.negative",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "sentiment.positive",
-    "dataKey": "sentiment.positive",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "sentiment",
-    "dataKey": "sentiment.sentiment",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "sentiment.totalScores",
-    "dataKey": "sentiment.totalScores",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "stats.avg10Volume",
     "dataKey": "stats.avg10Volume",
     "provider": "IEX_CLOUD"
