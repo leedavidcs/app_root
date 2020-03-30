@@ -1,3 +1,4 @@
+import { StockDataFeatures } from "@/server/configs";
 import { IexCloudAPI } from "@/server/datasources";
 import { Logger } from "@/server/utils";
 import fs from "fs-extra";
@@ -69,45 +70,15 @@ const sanitizeLabel = (dataKey: string): string => {
 const getDataKeyOptions = async () => {
 	const ticker = "GOOGL";
 
-	const results = await iexCloudApi.symbols(
-		[ticker],
-		{
-			balanceSheet: true,
-			book: true,
-			cashFlow: true,
-			ceoCompensation: true,
-			chart: false,
-			company: true,
-			delayedQuote: false,
-			dividends: false,
-			earnings: true,
-			estimates: true,
-			financials: true,
-			fundOwnership: false,
-			income: true,
-			insiderRoster: false,
-			insiderSummary: false,
-			insiderTransactions: false,
-			institutionalOwnership: false,
-			intradayPrices: true,
-			largestTrades: true,
-			logo: true,
-			news: true,
-			options: true,
-			peers: true,
-			previous: true,
-			price: true,
-			priceTarget: true,
-			ohlc: true,
-			quote: true,
-			recommendationTrends: true,
-			sentiment: true,
-			shortInterest: false,
-			stats: true,
-			volumeByVenue: true
-		},
-		{ mock: true }
+	const types = Object.keys(StockDataFeatures).reduce<Record<string, boolean>>(
+		(acc, key) => ({
+			...acc,
+			[key]: StockDataFeatures[key].enabled
+		}),
+		{}
 	);
+
+	const results = await iexCloudApi.symbols([ticker], types, { mock: true });
 
 	if (!results[ticker]) {
 		return [];
