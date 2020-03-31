@@ -111,9 +111,9 @@ export const TextInput: FC<IProps> = (props) => {
 			disabled={disabled}
 			helperText={error}
 			inline={inline}
+			intent={intent}
 			label={label}
 			labelInfo={labelInfo}
-			intent={intent}
 			style={style}
 		>
 			<ControlGroup>

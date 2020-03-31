@@ -5,4 +5,5 @@ export * from "./number-input.component";
 export * from "./password-strength.component";
 export * from "./search-input.component";
 export * from "./select.component";
+export * from "./slider.component";
 export * from "./text-input.component";
