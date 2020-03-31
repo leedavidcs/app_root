@@ -1,6 +1,8 @@
 import { FormGroup, Intent, NumericInput, Slider as BpSlider } from "@blueprintjs/core";
+import { countDecimalPlaces } from "@blueprintjs/core/lib/esm/common/utils";
 import classnames from "classnames";
-import React, { CSSProperties, FC, KeyboardEvent, ReactElement } from "react";
+import { round } from "lodash";
+import React, { CSSProperties, FC, KeyboardEvent, ReactElement, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
@@ -13,6 +15,8 @@ interface IProps {
 	labelInfo?: string;
 	labelPrecision?: number;
 	labelStepSize?: number;
+	majorStepSize?: number;
+	minorStepSize?: number;
 	max?: number;
 	min?: number;
 	name?: string;
@@ -25,22 +29,23 @@ interface IProps {
 	withInput?: boolean;
 }
 
-export const BaseSlider: FC<IProps> = (props) => {
+const BaseSlider: FC<IProps> = (props) => {
 	const {
 		className,
-		control,
 		disabled,
 		error,
 		label,
 		labelInfo,
 		labelPrecision,
 		labelStepSize,
+		majorStepSize,
+		minorStepSize,
 		max,
 		min,
-		onChange,
+		onChange: _onChange,
 		onKeyDown,
 		placeholder,
-		stepSize,
+		stepSize = 1,
 		style,
 		value,
 		withInput
@@ -50,11 +55,15 @@ export const BaseSlider: FC<IProps> = (props) => {
 
 	const intent: Intent = error ? "danger" : "none";
 
-	const isControlled: boolean = Boolean(onChange) || Boolean(control);
+	const getRoundedValue = useCallback(
+		(input: number) => round(input, countDecimalPlaces(labelPrecision || stepSize)),
+		[labelPrecision, stepSize]
+	);
 
-	if (!isControlled) {
-		throw new Error("Slider must define onChange or control.");
-	}
+	const onChange = useCallback((input: number) => _onChange?.(getRoundedValue(input)), [
+		_onChange,
+		getRoundedValue
+	]);
 
 	return (
 		<FormGroup
@@ -73,13 +82,15 @@ export const BaseSlider: FC<IProps> = (props) => {
 					disabled={disabled}
 					fill={true}
 					intent={intent}
+					majorStepSize={majorStepSize ?? stepSize}
+					minorStepSize={minorStepSize ?? stepSize}
 					max={max}
 					min={min}
 					onKeyDown={onKeyDown}
 					onValueChange={onChange}
 					placeholder={placeholder}
 					stepSize={stepSize}
-					value={value}
+					value={value && getRoundedValue(value)}
 				/>
 			)}
 			<BpSlider
@@ -91,7 +102,7 @@ export const BaseSlider: FC<IProps> = (props) => {
 				min={min}
 				stepSize={stepSize}
 				onChange={onChange}
-				value={value}
+				value={value && getRoundedValue(value)}
 			/>
 		</FormGroup>
 	);
@@ -111,8 +122,12 @@ export const Slider: FC<IProps> = (props) => {
 				control={control}
 				name={name}
 				{...restProps}
-				defaultValue={0}
-				onChange={([input]) => input}
+				defaultValue={restProps.min || 0}
+				onChange={([input]) => {
+					onChange?.(input);
+
+					return input;
+				}}
 			/>
 		);
 	}

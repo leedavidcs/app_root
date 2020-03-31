@@ -8,13 +8,13 @@ import React, {
 	KeyboardEvent,
 	KeyboardEventHandler,
 	ReactElement,
-	useCallback,
-	useMemo
+	useCallback
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
+	autoComplete?: string;
 	children?: ReactElement;
 	className?: string;
 	control?: ReturnType<typeof useForm>["control"];
@@ -34,11 +34,11 @@ interface IProps {
 	value?: string;
 }
 
-export const TextInput: FC<IProps> = (props) => {
+const BaseTextInput: FC<IProps> = (props) => {
 	const {
+		autoComplete,
 		children,
 		className,
-		control: _control,
 		defaultValue,
 		disabled,
 		error,
@@ -46,7 +46,6 @@ export const TextInput: FC<IProps> = (props) => {
 		inline,
 		label,
 		labelInfo,
-		name,
 		onChange,
 		onKeyDown: _onKeyDown,
 		placeholder,
@@ -75,36 +74,6 @@ export const TextInput: FC<IProps> = (props) => {
 		[_onKeyDown]
 	);
 
-	const inputProps = useMemo(
-		() => ({
-			className: classes.input,
-			defaultValue,
-			disabled,
-			intent,
-			leftIcon: icon as IconName,
-			name,
-			onKeyDown,
-			placeholder,
-			type
-		}),
-		[classes, defaultValue, disabled, icon, intent, name, onKeyDown, placeholder, type]
-	);
-
-	const getAsController = useCallback(
-		(control: NonNullable<IProps["control"]>) => {
-			if (!name) {
-				throw new Error("Input is used in a form without a name!");
-			}
-
-			return <Controller as={InputGroup} control={control} {...inputProps} name={name} />;
-		},
-		[name, inputProps]
-	);
-
-	const getAsInput = useCallback(() => {
-		return <InputGroup onChange={onChange} value={value} {...inputProps} />;
-	}, [inputProps, onChange, value]);
-
 	return (
 		<FormGroup
 			className={classnames(classes.root, className)}
@@ -117,9 +86,35 @@ export const TextInput: FC<IProps> = (props) => {
 			style={style}
 		>
 			<ControlGroup>
-				{_control ? getAsController(_control) : getAsInput()}
+				<InputGroup
+					className={classes.input}
+					autoComplete={autoComplete}
+					defaultValue={defaultValue}
+					disabled={disabled}
+					intent={intent}
+					leftIcon={icon}
+					onChange={onChange}
+					onKeyDown={onKeyDown}
+					placeholder={placeholder}
+					type={type}
+					value={value}
+				/>
 				{children}
 			</ControlGroup>
 		</FormGroup>
 	);
+};
+
+export const TextInput: FC<IProps> = (props) => {
+	const { control, name, value, onChange, ...restProps } = props;
+
+	if (control) {
+		if (!name) {
+			throw new Error("Text input is used in a form without a name!");
+		}
+
+		return <Controller as={BaseTextInput} control={control} name={name} {...restProps} />;
+	}
+
+	return <BaseTextInput {...props} />;
 };
