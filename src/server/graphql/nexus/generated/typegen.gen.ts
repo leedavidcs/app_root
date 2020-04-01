@@ -31,6 +31,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
     OR?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   BooleanFilter: { // input type
     equals?: boolean | null; // Boolean
@@ -89,6 +90,7 @@ export interface NexusGenInputs {
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     user?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    userId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   StockPortfolioUpdateInput: { // input type
     headers?: NexusGenInputs['StockPortfolioHeaderInput'][] | null; // [StockPortfolioHeaderInput!]
@@ -104,10 +106,11 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   StockPortfolioWhereUniqueInput: { // input type
     id?: string | null; // String
-    user_name?: NexusGenInputs['UserNameCompoundUniqueInput'] | null; // UserNameCompoundUniqueInput
+    userId_name?: NexusGenInputs['UserIdNameCompoundUniqueInput'] | null; // UserIdNameCompoundUniqueInput
   }
   StringFilter: { // input type
     contains?: string | null; // String
@@ -136,10 +139,11 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
     OR?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
-  UserNameCompoundUniqueInput: { // input type
+  UserIdNameCompoundUniqueInput: { // input type
     name: string; // String!
-    user: string; // String!
+    userId: string; // String!
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
@@ -247,7 +251,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StringFilter: NexusGenInputs['StringFilter'];
   TransactionFilter: NexusGenInputs['TransactionFilter'];
   TransactionWhereInput: NexusGenInputs['TransactionWhereInput'];
-  UserNameCompoundUniqueInput: NexusGenInputs['UserNameCompoundUniqueInput'];
+  UserIdNameCompoundUniqueInput: NexusGenInputs['UserIdNameCompoundUniqueInput'];
   UserWhereInput: NexusGenInputs['UserWhereInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
   OrderByArg: NexusGenEnums['OrderByArg'];
@@ -395,7 +399,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
-export type NexusGenInputNames = "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "TransactionFilter" | "TransactionWhereInput" | "UserNameCompoundUniqueInput" | "UserWhereInput";
+export type NexusGenInputNames = "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "TransactionFilter" | "TransactionWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg";
 

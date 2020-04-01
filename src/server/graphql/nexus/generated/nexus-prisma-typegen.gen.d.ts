@@ -261,31 +261,31 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balances: {
-  filtering: 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'credits'
+  filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'userId' | 'credits'
 }
     transactions: {
-  filtering: 'id' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
 }
 
   },
     User: {
     stockPortfolios: {
-  filtering: 'id' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'name' | 'createdAt' | 'updatedAt'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balances: {
-  filtering: 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'credits'
+  filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'userId' | 'credits'
 }
     transactions: {
-  filtering: 'id' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
 }
 
   },  StockPortfolio: {
@@ -354,6 +354,7 @@ interface NexusPrismaTypes {
 },  StockPortfolio: {
     id: 'String'
     user: 'User'
+    userId: 'String'
     name: 'String'
     headers: 'String'
     tickers: 'String'
@@ -362,11 +363,13 @@ interface NexusPrismaTypes {
 
 },  Balance: {
     user: 'User'
+    userId: 'String'
     credits: 'Int'
 
 },  Transaction: {
     id: 'String'
     user: 'User'
+    userId: 'String'
     creditsBefore: 'Int'
     creditsTransacted: 'Int'
     createdAt: 'DateTime'
