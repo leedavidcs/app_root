@@ -1,4 +1,5 @@
 export * from "./anchor.component";
+export * from "./credit-card-input.component";
 export * from "./date-range-input.component";
 export * from "./editable-text.component";
 export * from "./number-input.component";
