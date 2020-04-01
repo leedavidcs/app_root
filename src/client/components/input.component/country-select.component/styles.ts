@@ -3,21 +3,18 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		"& .bp3-input-group": {
-			flexGrow: 1
-		}
-	},
-	input: {
-		backgroundColor: theme.code,
-
-		"& input.bp3-input": {
-			backgroundColor: theme.code,
-			color: theme.onSurface
-		}
-	},
-	inline: {
 		"& .bp3-form-content": {
 			flex: "1 0"
+		}
+	},
+	countryDropdown: {
+		width: "100%",
+		height: 30,
+		backgroundColor: theme.code,
+		color: theme.onSurface,
+
+		"& > option": {
+			backgroundColor: theme.surface
 		}
 	}
 });

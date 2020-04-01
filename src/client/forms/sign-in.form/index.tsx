@@ -136,28 +136,26 @@ export const SignInForm: FC = () => {
 
 	return (
 		<div>
-			<form onSubmit={onSubmit}>
-				<div className={classes.formWrapper}>
-					<TextInput
-						className={classes.textInput}
-						label="Username or Email"
-						name="userIdentifier"
-						error={errors.userIdentifier?.message}
-						control={control}
-					/>
-					<TextInput
-						className={classes.textInput}
-						label="Password"
-						name="password"
-						type="password"
-						error={passwordError}
-						control={control}
-					/>
-					<div className={classes.btnContainer}>
-						<Button intent="primary" type="submit">
-							SIGN IN
-						</Button>
-					</div>
+			<form className={classes.form} onSubmit={onSubmit}>
+				<TextInput
+					className={classes.textInput}
+					label="Username or Email"
+					name="userIdentifier"
+					error={errors.userIdentifier?.message}
+					control={control}
+				/>
+				<TextInput
+					className={classes.textInput}
+					label="Password"
+					name="password"
+					type="password"
+					error={passwordError}
+					control={control}
+				/>
+				<div className={classes.btnContainer}>
+					<Button intent="primary" type="submit">
+						SIGN IN
+					</Button>
 				</div>
 			</form>
 			{didSubmit && didSucceed ? (

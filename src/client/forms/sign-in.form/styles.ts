@@ -3,11 +3,11 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {},
+	form: {
+		maxWidth: 320
+	},
 	btnContainer: {
 		paddingTop: 8
-	},
-	formWrapper: {
-		maxWidth: 320
 	},
 	textInput: {
 		marginBottom: 16

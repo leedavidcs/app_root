@@ -1,24 +1,23 @@
 import { CustomTheme } from "@/client/themes";
+import { Colors } from "@blueprintjs/core";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		"& .bp3-input-group": {
-			flexGrow: 1
-		}
-	},
-	input: {
-		backgroundColor: theme.code,
-
-		"& input.bp3-input": {
-			backgroundColor: theme.code,
-			color: theme.onSurface
-		}
-	},
-	inline: {
 		"& .bp3-form-content": {
 			flex: "1 0"
 		}
+	},
+	cardElement: {
+		width: "100%",
+		padding: "7px",
+		borderRadius: 3,
+		overflow: "hidden",
+		backgroundColor: theme.code,
+		color: theme.onSurface
+	},
+	cardElementFocused: {
+		boxShadow: `0 0 0 1px ${Colors.BLUE3}`
 	}
 });
 

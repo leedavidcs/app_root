@@ -3,16 +3,17 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		"& .bp3-input-group": {
-			flexGrow: 1
-		}
-	},
-	input: {
-		backgroundColor: theme.code,
-
-		"& input.bp3-input": {
+		"& .bp3-control-group.bp3-numeric-input": {
+			marginBottom: 12,
 			backgroundColor: theme.code,
-			color: theme.onSurface
+
+			"& > :first-child": {
+				borderRadius: 0
+			}
+		},
+
+		"& .bp3-slider-track": {
+			backgroundColor: theme.code
 		}
 	},
 	inline: {

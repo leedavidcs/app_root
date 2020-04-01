@@ -2,12 +2,17 @@ import { ClickOutsideProvider, StylesProvider } from "@/client/components";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { NextComponentType } from "next";
 import { AppInitialProps, AppProps } from "next/app";
 import { AppContext } from "next/dist/pages/_app";
 import Head from "next/head";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect } from "react";
+
+const stripePublishable: string = process.env.REACT_APP_STRIPE_PUBLISHABLE || "";
+const stripePromise = loadStripe(stripePublishable);
 
 const App: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
 	Component,
@@ -44,11 +49,13 @@ const App: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
 				<meta property="og:url" content={`${process.env.WEBSITE_URL}${router.asPath}`} />
 				<link rel="shortcut icon" href="/favicon.ico" />
 			</Head>
-			<StylesProvider>
-				<ClickOutsideProvider>
-					<Component {...pageProps} />
-				</ClickOutsideProvider>
-			</StylesProvider>
+			<Elements stripe={stripePromise}>
+				<StylesProvider>
+					<ClickOutsideProvider>
+						<Component {...pageProps} />
+					</ClickOutsideProvider>
+				</StylesProvider>
+			</Elements>
 		</>
 	);
 };
