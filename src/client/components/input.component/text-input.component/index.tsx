@@ -76,7 +76,7 @@ const BaseTextInput: FC<IProps> = (props) => {
 
 	return (
 		<FormGroup
-			className={classnames(classes.root, className)}
+			className={classnames(classes.root, { [classes.inline]: inline }, className)}
 			disabled={disabled}
 			helperText={error}
 			inline={inline}

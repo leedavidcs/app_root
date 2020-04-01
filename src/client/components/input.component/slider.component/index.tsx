@@ -11,6 +11,7 @@ interface IProps {
 	control?: ReturnType<typeof useForm>["control"];
 	disabled?: boolean;
 	error?: Maybe<string> | ReactElement;
+	inline?: boolean;
 	label?: string;
 	labelInfo?: string;
 	labelPrecision?: number;
@@ -34,6 +35,7 @@ const BaseSlider: FC<IProps> = (props) => {
 		className,
 		disabled,
 		error,
+		inline,
 		label,
 		labelInfo,
 		labelPrecision,
@@ -67,9 +69,10 @@ const BaseSlider: FC<IProps> = (props) => {
 
 	return (
 		<FormGroup
-			className={classnames(classes.root, className)}
+			className={classnames(classes.root, { [classes.inline]: inline }, className)}
 			disabled={disabled}
 			helperText={error}
+			inline={inline}
 			intent={intent}
 			label={label}
 			labelInfo={labelInfo}

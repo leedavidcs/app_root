@@ -14,7 +14,7 @@ import Highlighter from "react-highlight-words";
 import { useStyles } from "./styles";
 
 export interface ISelectItemType {
-	key: string;
+	key: string | number;
 	[key: string]: any;
 }
 

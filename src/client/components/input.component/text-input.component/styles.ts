@@ -14,6 +14,11 @@ const styles = (theme: CustomTheme) => ({
 			backgroundColor: theme.code,
 			color: theme.onSurface
 		}
+	},
+	inline: {
+		"& .bp3-form-content": {
+			flex: "1 0"
+		}
 	}
 });
 
