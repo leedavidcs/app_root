@@ -31,24 +31,27 @@ model User {
 
 model StockPortfolio {
   id        String   @id @default(cuid())
-  user      User
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
   name      String
   headers   String[]
   tickers   String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([user, name])
+  @@unique([userId, name])
 }
 
 model Balance {
-  user         User @id
-  credits      Int  @default(0)
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @id
+  credits Int    @default(0)
 }
 
 model Transaction {
   id                String   @id @default(cuid())
-  user              User
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
   creditsBefore     Int
   creditsTransacted Int
   createdAt         DateTime @default(now())

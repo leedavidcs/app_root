@@ -59,7 +59,7 @@ const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
 				autoEscape={true}
 				highlightTag={({ children }) => <strong>{children}</strong>}
 				searchWords={[query]}
-				textToHighlight={item.key}
+				textToHighlight={item.key.toString()}
 			/>
 		}
 	/>
