@@ -1,31 +1,31 @@
 import { FormGroup, Intent } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { ChangeEvent, FC, memo, ReactElement } from "react";
-import { CountryDropdown } from "react-country-region-selector";
+import { RegionDropdown } from "react-country-region-selector";
 import { Controller, useForm } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
 	control?: ReturnType<typeof useForm>["control"];
+	country: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
 	label?: string;
 	name?: string;
 	onChange?: (value: string, event?: ChangeEvent<Element>) => void;
-	placeholder?: string;
 	value?: string;
 }
 
-const BaseCountrySelect: FC<IProps> = ({
+const BaseRegionSelect: FC<IProps> = ({
 	className,
 	disabled,
 	error,
-	onChange = () => undefined,
 	inline,
 	label,
-	placeholder,
+	onChange = () => undefined,
+	country,
 	value = ""
 }) => {
 	const classes = useStyles();
@@ -41,9 +41,9 @@ const BaseCountrySelect: FC<IProps> = ({
 			intent={intent}
 			label={label}
 		>
-			<CountryDropdown
-				classes={classes.countryDropdown}
-				defaultOptionLabel={placeholder}
+			<RegionDropdown
+				classes={classes.regionDropdown}
+				country={country}
 				disabled={disabled}
 				onChange={onChange}
 				value={value}
@@ -52,18 +52,18 @@ const BaseCountrySelect: FC<IProps> = ({
 	);
 };
 
-export const CountrySelect: FC<IProps> = memo((props) => {
+export const RegionSelect: FC<IProps> = memo((props) => {
 	const { control, name, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
-			throw new Error("Country select is used in a form without a name!");
+			throw new Error("Region select is used in a form without a name!");
 		}
 
 		return (
 			<Controller
 				control={control}
-				as={BaseCountrySelect}
+				as={BaseRegionSelect}
 				name={name}
 				{...restProps}
 				defaultValue={undefined}
@@ -72,7 +72,7 @@ export const CountrySelect: FC<IProps> = memo((props) => {
 		);
 	}
 
-	return <BaseCountrySelect {...props} />;
+	return <BaseRegionSelect {...props} />;
 });
 
-CountrySelect.displayName = "CountrySelect";
+RegionSelect.displayName = "RegionSelect";

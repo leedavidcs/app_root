@@ -5,6 +5,7 @@ export * from "./date-range-input.component";
 export * from "./editable-text.component";
 export * from "./number-input.component";
 export * from "./password-strength.component";
+export * from "./region-select.component";
 export * from "./search-input.component";
 export * from "./select.component";
 export * from "./slider.component";

@@ -1,17 +1,15 @@
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
-import { CountrySelect } from ".";
+import { RegionSelect } from ".";
 import { StandardStory } from "./stories";
 
-<Meta title="general/inputs/country-select" component={CountrySelect} />
+<Meta title="general/inputs/region-select" component={RegionSelect} />
 
-# CountrySelect
+# RegionSelect
 
 ## Description
 A styled wrapper around
-[CountryDropdown](https://www.npmjs.com/package/react-country-region-selector).
+[RegionDropdown](https://www.npmjs.com/package/react-country-region-selector).
 
-## Props
-<Props  of={CountrySelect} />
 
 ## StandardStory
 <Preview>
@@ -22,7 +20,7 @@ A styled wrapper around
 
 ### Source
 ```tsx
-import { CountrySelect } from "@/client/components/input.component/country-select.component";
+import { RegionSelect } from "@/client/components/input.component/region-select.component";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
@@ -31,11 +29,11 @@ import { useForm } from "react-hook-form";
 import { string } from "yup";
 
 interface IFormData {
-	country: string;
+	state: string;
 }
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	country: string().required()
+const validationResolver = getYupValidationResolver(() => ({
+	state: string().required()
 }));
 
 export const StandardStory: FC = () => {
@@ -48,13 +46,12 @@ export const StandardStory: FC = () => {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<CountrySelect
+			<RegionSelect
 				control={control}
-				error={errors.country?.message}
-				inline={true}
-				label="Country"
-				name="country"
-				placeholder="Country"
+				country="United States"
+				error={errors.state?.message}
+				label="State"
+				name="state"
 			/>
 			<Button text="Submit" type="submit" />
 		</form>
