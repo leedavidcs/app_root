@@ -26,7 +26,7 @@ export const StandardStory: FC = () => {
 		<form onSubmit={onSubmit}>
 			<RegionSelect
 				control={control}
-				country="United States"
+				country="US"
 				error={errors.state?.message}
 				label="State"
 				name="state"

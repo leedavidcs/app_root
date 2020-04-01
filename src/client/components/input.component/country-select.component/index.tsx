@@ -47,13 +47,14 @@ const BaseCountrySelect: FC<IProps> = ({
 				disabled={disabled}
 				onChange={onChange}
 				value={value}
+				valueType="short"
 			/>
 		</FormGroup>
 	);
 };
 
 export const CountrySelect: FC<IProps> = memo((props) => {
-	const { control, name, ...restProps } = props;
+	const { control, name, onChange, value, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -67,7 +68,13 @@ export const CountrySelect: FC<IProps> = memo((props) => {
 				name={name}
 				{...restProps}
 				defaultValue={undefined}
-				onChange={([input]) => input || undefined}
+				onChange={([input]) => {
+					const result = input || undefined;
+
+					onChange?.(result);
+
+					return result;
+				}}
 			/>
 		);
 	}

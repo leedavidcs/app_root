@@ -15,6 +15,7 @@ interface IProps {
 	label?: string;
 	name?: string;
 	onChange?: (value: string, event?: ChangeEvent<Element>) => void;
+	placeholder?: string;
 	value?: string;
 }
 
@@ -25,6 +26,7 @@ const BaseRegionSelect: FC<IProps> = ({
 	inline,
 	label,
 	onChange = () => undefined,
+	placeholder,
 	country,
 	value = ""
 }) => {
@@ -44,6 +46,8 @@ const BaseRegionSelect: FC<IProps> = ({
 			<RegionDropdown
 				classes={classes.regionDropdown}
 				country={country}
+				countryValueType="short"
+				defaultOptionLabel={placeholder}
 				disabled={disabled}
 				onChange={onChange}
 				value={value}
@@ -53,7 +57,7 @@ const BaseRegionSelect: FC<IProps> = ({
 };
 
 export const RegionSelect: FC<IProps> = memo((props) => {
-	const { control, name, ...restProps } = props;
+	const { control, name, onChange, value, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -66,8 +70,14 @@ export const RegionSelect: FC<IProps> = memo((props) => {
 				as={BaseRegionSelect}
 				name={name}
 				{...restProps}
-				defaultValue={undefined}
-				onChange={([input]) => input || undefined}
+				defaultValue={value}
+				onChange={([input]) => {
+					const result = input || undefined;
+
+					onChange?.(result);
+
+					return result;
+				}}
 			/>
 		);
 	}
