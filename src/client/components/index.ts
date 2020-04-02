@@ -12,6 +12,7 @@ export * from "./pagination.component";
 export * from "./paper.component";
 export * from "./popover.component";
 export * from "./ripple.component";
+export * from "./stepper.component";
 export * from "./stock-symbol-search.component";
 export * from "./styles-provider.component";
 export * from "./tooltip.component";
