@@ -1,5 +1,5 @@
 import { ITokenResponse, loginLocal } from "@/server/authentication";
-import { arg, inputObjectType, mutationField } from "nexus";
+import { arg, inputObjectType, mutationField } from "@nexus/schema";
 
 export const LoginLocalUserInput = inputObjectType({
 	name: "LoginLocalUserInput",

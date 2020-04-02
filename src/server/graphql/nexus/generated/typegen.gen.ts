@@ -4,8 +4,8 @@
  */
 
 import * as ctx from "../../context"
-import { QueryComplexity } from "nexus/dist/plugins/queryComplexityPlugin"
-import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
+import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
+import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
 
 
 declare global {

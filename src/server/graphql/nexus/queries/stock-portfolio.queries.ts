@@ -1,5 +1,5 @@
 import { applyGenerators, stringFilter } from "@/server/prisma";
-import { arg, extendType, intArg, stringArg } from "nexus";
+import { arg, extendType, intArg, stringArg } from "@nexus/schema";
 
 export const stockPortfolioQueries = extendType({
 	type: "Query",

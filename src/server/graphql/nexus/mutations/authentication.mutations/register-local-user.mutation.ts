@@ -1,7 +1,7 @@
 import { createEmailHtml, ISendEmailResponse, sendEmail, VerifyEmail } from "@/server/emails";
 import { getBaseUrl } from "@/server/utils";
+import { arg, inputObjectType, mutationField, objectType } from "@nexus/schema";
 import { User } from "@prisma/client";
-import { arg, inputObjectType, mutationField, objectType } from "nexus";
 
 export const RegisterLocalUserInput = inputObjectType({
 	name: "RegisterLocalUserInput",

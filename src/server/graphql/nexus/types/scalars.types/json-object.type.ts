@@ -1,5 +1,5 @@
+import { scalarType } from "@nexus/schema";
 import { JSONObjectResolver } from "graphql-scalars";
-import { scalarType } from "nexus";
 
 export const JSONObject = scalarType({
 	name: "JSONObject",

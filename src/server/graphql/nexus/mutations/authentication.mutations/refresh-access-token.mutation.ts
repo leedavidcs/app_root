@@ -1,5 +1,5 @@
 import { refreshAccessToken as _refreshAccessToken } from "@/server/authentication";
-import { arg, inputObjectType, mutationField } from "nexus";
+import { arg, inputObjectType, mutationField } from "@nexus/schema";
 
 export const RefreshAccessTokenInput = inputObjectType({
 	name: "RefreshAccessTokenInput",

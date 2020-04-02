@@ -1,6 +1,6 @@
+import { scalarType } from "@nexus/schema";
 import { genSaltSync, hashSync } from "bcryptjs";
 import { GraphQLError, Kind, ValueNode } from "graphql";
-import { scalarType } from "nexus";
 
 const BCRYPT_SALT_ROUNDS = 10;
 

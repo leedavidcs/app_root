@@ -1,6 +1,6 @@
 import { createEmailHtml, ISendEmailResponse, sendEmail, VerifyEmail } from "@/server/emails";
 import { getBaseUrl } from "@/server/utils";
-import { mutationField, objectType } from "nexus";
+import { mutationField, objectType } from "@nexus/schema";
 
 export const ResendVerifyEmailPayload = objectType({
 	name: "ResendVerifyEmailPayload",

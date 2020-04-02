@@ -1,6 +1,6 @@
 import { dataKeyOptions as generated } from "@/server/generated";
+import { queryField, stringArg } from "@nexus/schema";
 import { toLower } from "lodash";
-import { queryField, stringArg } from "nexus";
 
 const isNoCaseSubStr = (str: string, subStr: string): boolean => {
 	return toLower(str).includes(toLower(subStr));
