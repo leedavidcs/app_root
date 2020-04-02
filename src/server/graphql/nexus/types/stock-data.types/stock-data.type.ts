@@ -2,9 +2,9 @@ import { StockDataFeatures } from "@/server/configs";
 import { IexType } from "@/server/datasources";
 import { IServerContextWithUser } from "@/server/graphql/context";
 import { AuthorizationError, BadInputError, Logger, UnexpectedError } from "@/server/utils";
+import { objectType } from "@nexus/schema";
 import { ForbiddenError } from "apollo-server-micro";
 import { camelCase, get } from "lodash";
-import { objectType } from "nexus";
 
 const getTypesFromDataKeys = (dataKeys: readonly string[]): Record<IexType, boolean> => {
 	const types: Record<IexType, boolean> = dataKeys
@@ -36,7 +36,7 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 		throw new AuthorizationError("You must be logged in to request this data.");
 	}
 
-	const balance = await prisma.balance.findOne({ where: { user: user?.id } });
+	const balance = await prisma.balance.findOne({ where: { userId: user?.id } });
 
 	if (!balance) {
 		throw new UnexpectedError();
@@ -48,7 +48,7 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 
 	await prisma.balance.update({
 		data: { credits: balance.credits - cost },
-		where: { user: user.id }
+		where: { userId: user.id }
 	});
 
 	await prisma.transaction.create({

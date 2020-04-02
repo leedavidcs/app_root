@@ -1,4 +1,4 @@
-import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "nexus";
+import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "@nexus/schema";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import path from "path";
 import * as mutations from "./mutations";

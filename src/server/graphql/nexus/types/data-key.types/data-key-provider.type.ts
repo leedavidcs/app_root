@@ -1,4 +1,4 @@
-import { enumType } from "nexus";
+import { enumType } from "@nexus/schema";
 
 export const DataKey_Provider = enumType({
 	name: "DataKey_Provider",

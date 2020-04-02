@@ -1,5 +1,5 @@
+import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import { StockPortfolio } from "@prisma/client";
-import { arg, inputObjectType, mutationField } from "nexus";
 import { getUniqueName } from "./get-unique-name";
 
 export const StockPortfolioCreateInput = inputObjectType({

@@ -1,4 +1,4 @@
-import { queryField, stringArg } from "nexus";
+import { queryField, stringArg } from "@nexus/schema";
 
 export const stockData = queryField("stockData", {
 	type: "StockData",
