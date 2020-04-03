@@ -9,7 +9,7 @@ import {
 } from "@/client/graphql";
 import { useSetUser } from "@/client/hooks/use-set-user.hook";
 import { logout, writeCookie } from "@/server/authentication/cookie-utils";
-import { ApolloError, ExecutionResult } from "apollo-boost";
+import { ApolloError } from "apollo-boost";
 import { NextRouter, useRouter } from "next/router";
 import { useCallback } from "react";
 import { MutationFunctionOptions } from "react-apollo";
@@ -44,7 +44,7 @@ const useLogin = ({ onLoginCompleted, onLoginError }: IUseAuthOptions = {}) => {
 
 	return useCallback(
 		async (options: Parameters<typeof loginUser>[0]): Promise<Maybe<TokenPayload>> => {
-			let result: ExecutionResult<LoginLocalUserMutation>;
+			let result;
 
 			try {
 				result = await loginUser(options);

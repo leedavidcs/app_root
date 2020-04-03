@@ -6,6 +6,7 @@ import {
 	Slider,
 	TextInput
 } from "@/client/components";
+import { useGetPriceBundlesQuery } from "@/client/graphql";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button, Radio, RadioGroup } from "@blueprintjs/core";
 import { useStripe } from "@stripe/react-stripe-js";
@@ -47,6 +48,8 @@ const validationResolver = getYupValidationResolver(() => ({
 
 export const CheckoutForm: FC = () => {
 	const classes = useStyles();
+
+	const { data, called, loading } = useGetPriceBundlesQuery();
 
 	const [amountCredits, setAmountCredits] = useState<number>(MIN_CREDIT_AMOUNT);
 	const [selectedCountry, setSelectedCountry] = useState<string>("US");

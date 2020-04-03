@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Mar 29th 2020 3:02:51 pm
+// This file was generated on: Apr 2nd 2020 4:53:11 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -14,10 +14,24 @@ export type Scalars = {
   EmailAddress: any;
   DateTime: any;
   JSONObject: any;
-  UUID: any;
   UserPassword: any;
 };
 
+
+export type BalanceFilter = {
+  readonly every?: Maybe<BalanceWhereInput>;
+  readonly some?: Maybe<BalanceWhereInput>;
+  readonly none?: Maybe<BalanceWhereInput>;
+};
+
+export type BalanceWhereInput = {
+  readonly userId?: Maybe<StringFilter>;
+  readonly credits?: Maybe<IntFilter>;
+  readonly AND?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
 
 export type BooleanFilter = {
   readonly equals?: Maybe<Scalars['Boolean']>;
@@ -47,6 +61,17 @@ export type DateTimeFilter = {
   readonly gte?: Maybe<Scalars['DateTime']>;
 };
 
+
+export type IntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
 
 
 export type LoginLocalUserInput = {
@@ -114,10 +139,18 @@ export enum OrderByArg {
   Desc = 'desc'
 }
 
+export type PriceBundle = {
+  readonly __typename?: 'PriceBundle';
+  readonly id: Scalars['Int'];
+  readonly price: Scalars['Float'];
+  readonly credits: Scalars['Int'];
+};
+
 export type Query = RequestRoot & {
   readonly __typename?: 'Query';
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
   readonly modal: Scalars['Boolean'];
+  readonly priceBundles: ReadonlyArray<PriceBundle>;
   readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
@@ -252,6 +285,7 @@ export type StockPortfolioHeaderInput = {
 export type StockPortfolioOrderByInput = {
   readonly id?: Maybe<OrderByArg>;
   readonly user?: Maybe<OrderByArg>;
+  readonly userId?: Maybe<OrderByArg>;
   readonly name?: Maybe<OrderByArg>;
   readonly createdAt?: Maybe<OrderByArg>;
   readonly updatedAt?: Maybe<OrderByArg>;
@@ -264,7 +298,8 @@ export type StockPortfolioUpdateInput = {
 };
 
 export type StockPortfolioWhereInput = {
-  readonly id?: Maybe<UuidFilter>;
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
   readonly name?: Maybe<StringFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
@@ -276,7 +311,7 @@ export type StockPortfolioWhereInput = {
 
 export type StockPortfolioWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
-  readonly user_name?: Maybe<UserNameCompoundUniqueInput>;
+  readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
 };
 
 export type StringFilter = {
@@ -299,6 +334,24 @@ export type TokenPayload = {
   readonly refreshToken: Scalars['String'];
 };
 
+export type TransactionFilter = {
+  readonly every?: Maybe<TransactionWhereInput>;
+  readonly some?: Maybe<TransactionWhereInput>;
+  readonly none?: Maybe<TransactionWhereInput>;
+};
+
+export type TransactionWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
+
 export type User = {
   readonly __typename?: 'User';
   readonly id: Scalars['String'];
@@ -307,6 +360,11 @@ export type User = {
   readonly username: Scalars['String'];
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
+};
+
+export type UserIdNameCompoundUniqueInput = {
+  readonly userId: Scalars['String'];
+  readonly name: Scalars['String'];
 };
 
 export type UserInput = {
@@ -320,14 +378,9 @@ export type UserInput = {
   readonly username: Scalars['String'];
 };
 
-export type UserNameCompoundUniqueInput = {
-  readonly user: Scalars['String'];
-  readonly name: Scalars['String'];
-};
-
 
 export type UserWhereInput = {
-  readonly id?: Maybe<UuidFilter>;
+  readonly id?: Maybe<StringFilter>;
   readonly email?: Maybe<StringFilter>;
   readonly emailVerified?: Maybe<BooleanFilter>;
   readonly password?: Maybe<StringFilter>;
@@ -335,24 +388,11 @@ export type UserWhereInput = {
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
   readonly stockPortfolios?: Maybe<StockPortfolioFilter>;
+  readonly balances?: Maybe<BalanceFilter>;
+  readonly transactions?: Maybe<TransactionFilter>;
   readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
-};
-
-
-export type UuidFilter = {
-  readonly equals?: Maybe<Scalars['UUID']>;
-  readonly not?: Maybe<Scalars['UUID']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['UUID']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['UUID']>>;
-  readonly lt?: Maybe<Scalars['UUID']>;
-  readonly lte?: Maybe<Scalars['UUID']>;
-  readonly gt?: Maybe<Scalars['UUID']>;
-  readonly gte?: Maybe<Scalars['UUID']>;
-  readonly contains?: Maybe<Scalars['UUID']>;
-  readonly startsWith?: Maybe<Scalars['UUID']>;
-  readonly endsWith?: Maybe<Scalars['UUID']>;
 };
 
 export type CreateStockPortfolioMutationVariables = {
@@ -532,6 +572,17 @@ export type GetOneStockPortfolioQuery = (
       { readonly __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
+  )> }
+);
+
+export type GetPriceBundlesQueryVariables = {};
+
+
+export type GetPriceBundlesQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly priceBundles: ReadonlyArray<(
+    { readonly __typename?: 'PriceBundle' }
+    & Pick<PriceBundle, 'id' | 'price' | 'credits'>
   )> }
 );
 
@@ -1043,6 +1094,40 @@ export function useGetOneStockPortfolioLazyQuery(baseOptions?: ApolloReactHooks.
 export type GetOneStockPortfolioQueryHookResult = ReturnType<typeof useGetOneStockPortfolioQuery>;
 export type GetOneStockPortfolioLazyQueryHookResult = ReturnType<typeof useGetOneStockPortfolioLazyQuery>;
 export type GetOneStockPortfolioQueryResult = ApolloReactCommon.QueryResult<GetOneStockPortfolioQuery, GetOneStockPortfolioQueryVariables>;
+export const GetPriceBundlesDocument = gql`
+    query GetPriceBundles {
+  priceBundles {
+    id
+    price
+    credits
+  }
+}
+    `;
+
+/**
+ * __useGetPriceBundlesQuery__
+ *
+ * To run a query within a React component, call `useGetPriceBundlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPriceBundlesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPriceBundlesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPriceBundlesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>(GetPriceBundlesDocument, baseOptions);
+      }
+export function useGetPriceBundlesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>(GetPriceBundlesDocument, baseOptions);
+        }
+export type GetPriceBundlesQueryHookResult = ReturnType<typeof useGetPriceBundlesQuery>;
+export type GetPriceBundlesLazyQueryHookResult = ReturnType<typeof useGetPriceBundlesLazyQuery>;
+export type GetPriceBundlesQueryResult = ApolloReactCommon.QueryResult<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>;
 export const GetStockDataDocument = gql`
     query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
   stockData(tickers: $tickers, dataKeys: $dataKeys) {

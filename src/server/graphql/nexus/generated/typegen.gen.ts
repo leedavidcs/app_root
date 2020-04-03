@@ -174,6 +174,11 @@ export interface NexusGenRootTypes {
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
   Mutation: {};
+  PriceBundle: { // root type
+    credits: number; // Int!
+    id: number; // Int!
+    price: number; // Float!
+  }
   Query: {};
   RegisterLocalUserPayload: { // root type
     error?: string | null; // String
@@ -220,7 +225,7 @@ export interface NexusGenRootTypes {
     updatedAt: any; // DateTime!
     username: string; // String!
   }
-  RequestRoot: NexusGenRootTypes['Query'] | NexusGenRootTypes['Mutation'];
+  RequestRoot: NexusGenRootTypes['Mutation'] | NexusGenRootTypes['Query'];
   String: string;
   Int: number;
   Float: number;
@@ -273,8 +278,14 @@ export interface NexusGenFieldTypes {
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     viewer: NexusGenRootTypes['User'] | null; // User
   }
+  PriceBundle: { // field return type
+    credits: number; // Int!
+    id: number; // Int!
+    price: number; // Float!
+  }
   Query: { // field return type
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
+    priceBundles: NexusGenRootTypes['PriceBundle'][]; // [PriceBundle!]!
     stockData: NexusGenRootTypes['StockData'] | null; // StockData
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     stockPortfolioCount: number | null; // Int
@@ -392,12 +403,12 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  RequestRoot: "Query" | "Mutation"
+  RequestRoot: "Mutation" | "Query"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
+export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "TokenPayload" | "User";
 
 export type NexusGenInputNames = "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "TransactionFilter" | "TransactionWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput";
 
