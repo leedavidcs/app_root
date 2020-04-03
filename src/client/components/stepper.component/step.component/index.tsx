@@ -26,7 +26,13 @@ export const Step: FC<IStepProps> = ({ active, completed, error, index = 0, labe
 				[classes.textInactive]: !isActive
 			})}
 		>
-			{!isFirst && <div className={classes.connector} />}
+			{!isFirst && (
+				<div
+					className={classnames(classes.connector, {
+						[classes.connectorActive]: active || completed
+					})}
+				/>
+			)}
 			<div className={classes.step}>
 				<div className={classes.iconWrapper}>
 					<Icon
