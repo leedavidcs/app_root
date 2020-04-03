@@ -1,3 +1,4 @@
+export * from "./carousel.component";
 export * from "./click-outside.component";
 export * from "./data-grid.component";
 export * from "./divider.component";

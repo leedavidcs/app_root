@@ -1,11 +1,11 @@
 import classnames from "classnames";
-import React, { Children, FC, ReactElement, ReactNode, useMemo } from "react";
+import React, { FC, memo, ReactElement, ReactNodeArray, useMemo } from "react";
 import { IStepProps, Step } from "./step.component";
 import { useStyles } from "./styles";
 
 interface IProps {
 	activeStep: number;
-	children: ReactNode;
+	children: ReactNodeArray;
 	className?: string;
 }
 
@@ -17,11 +17,11 @@ const isStepElement = (value: any): value is ReactElement<IStepProps> => {
 	return React.isValidElement(value) && value.type === Step;
 };
 
-const BaseStepper: FC<IProps> = ({ activeStep, children, className }) => {
+const BaseStepper: FC<IProps> = memo(({ activeStep, children, className }) => {
 	const classes = useStyles();
 
 	const steps = useMemo(() => {
-		return Children.toArray(children).map((step, index) => {
+		return React.Children.toArray(children).map((step, index) => {
 			if (!isStepElement(step)) {
 				throw new Error("Stepper contains a non Step element as a child.");
 			}
@@ -39,7 +39,9 @@ const BaseStepper: FC<IProps> = ({ activeStep, children, className }) => {
 	}, [activeStep, children]);
 
 	return <div className={classnames(classes.root, className)}>{steps}</div>;
-};
+});
+
+BaseStepper.displayName = "Stepper";
 
 (BaseStepper as FC<IProps> & IWithStaticProps).Step = Step;
 
