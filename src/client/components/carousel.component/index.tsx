@@ -50,7 +50,7 @@ const BaseCarousel: FC<IProps> = memo(
 
 				return React.cloneElement(slide, {
 					key: index,
-					style: { ...slide.props.style, width: `${baseTranslate}%` }
+					style: { ...slide.props.style, flexBasis: `${baseTranslate}%` }
 				});
 			});
 		}, [baseTranslate, childrenArray]);

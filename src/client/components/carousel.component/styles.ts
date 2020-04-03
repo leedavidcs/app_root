@@ -14,6 +14,7 @@ const styles = (theme: CustomTheme) => ({
 		overflow: "hidden"
 	},
 	contentSlide: {
+		display: "flex",
 		height: "100%",
 		transition: "transform 300ms ease"
 	},
