@@ -56,8 +56,7 @@ input DateTimeFilter {
 }
 
 """
-A field whose value conforms to the standard internet email address format as
-specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
 scalar EmailAddress
 
@@ -112,6 +111,12 @@ enum OrderByArg {
   desc
 }
 
+type PriceBundle {
+  credits: Int!
+  id: Int!
+  price: Float!
+}
+
 """Root query type"""
 type Query implements RequestRoot {
   """
@@ -127,6 +132,7 @@ type Query implements RequestRoot {
     """Filter by provider (partial works)"""
     provider: String
   ): [DataKeyOption!]!
+  priceBundles: [PriceBundle!]!
   stockData(dataKeys: [String!]!, tickers: [String!]!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
