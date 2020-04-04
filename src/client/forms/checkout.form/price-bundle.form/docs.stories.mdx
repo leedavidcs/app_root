@@ -1,0 +1,25 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { PriceBundleForm } from ".";
+
+<Meta title="forms/price-bundle-form" component={PriceBundleForm} />
+
+# PriceBundleForm
+
+## Description
+A price bundle selector, that is the first step in the checkout flow.
+
+## Props
+<Props of={PriceBundleForm} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<div style={{ width: 800 }}>
+			<PriceBundleForm onSubmit={action("onSubmit")} />
+		</div>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

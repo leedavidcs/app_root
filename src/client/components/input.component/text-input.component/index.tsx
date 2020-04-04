@@ -113,7 +113,16 @@ export const TextInput: FC<IProps> = (props) => {
 			throw new Error("Text input is used in a form without a name!");
 		}
 
-		return <Controller as={BaseTextInput} control={control} name={name} {...restProps} />;
+		return (
+			<Controller
+				as={BaseTextInput}
+				control={control}
+				name={name}
+				{...restProps}
+				defaultValue=""
+				onChange={([event]) => event.target.value || ""}
+			/>
+		);
 	}
 
 	return <BaseTextInput {...props} />;

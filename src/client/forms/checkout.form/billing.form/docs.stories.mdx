@@ -1,0 +1,25 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { BillingForm } from ".";
+
+<Meta title="forms/billing-form" component={BillingForm} />
+
+# BillingForm
+
+## Description
+A billing-details step of the checkout flow.
+
+## Props
+<Props of={BillingForm} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<div style={{ width: 800 }}>
+			<BillingForm onBack={action("onBack")} onSubmit={action("onSubmit")} />
+		</div>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
