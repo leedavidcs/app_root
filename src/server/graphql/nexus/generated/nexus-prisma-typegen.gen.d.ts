@@ -252,12 +252,13 @@ interface ModelTypes {
   StockPortfolio: prisma.StockPortfolio
   Balance: prisma.Balance
   Transaction: prisma.Transaction
+  StripeDetails: prisma.StripeDetails
 }
   
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'balances' | 'transactions' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'balances' | 'transactions' | 'stripeDetailses' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
@@ -271,6 +272,10 @@ interface NexusPrismaInputs {
     transactions: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+}
+    stripeDetails: {
+  filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'userId' | 'customerId'
 }
 
   },
@@ -287,6 +292,10 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
 }
+    stripeDetailses: {
+  filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'user' | 'userId' | 'customerId'
+}
 
   },  StockPortfolio: {
 
@@ -295,6 +304,9 @@ interface NexusPrismaInputs {
 
 
   },  Transaction: {
+
+
+  },  StripeDetails: {
 
 
   }
@@ -310,6 +322,8 @@ interface NexusPrismaTypes {
     balances: 'Balance'
     transaction: 'Transaction'
     transactions: 'Transaction'
+    stripeDetails: 'StripeDetails'
+    stripeDetails: 'StripeDetails'
 
   },
   Mutation: {
@@ -337,6 +351,12 @@ interface NexusPrismaTypes {
     deleteOneTransaction: 'Transaction'
     deleteManyTransaction: 'BatchPayload'
     upsertOneTransaction: 'Transaction'
+    createOneStripeDetails: 'StripeDetails'
+    updateOneStripeDetails: 'StripeDetails'
+    updateManyStripeDetails: 'BatchPayload'
+    deleteOneStripeDetails: 'StripeDetails'
+    deleteManyStripeDetails: 'BatchPayload'
+    upsertOneStripeDetails: 'StripeDetails'
 
   },
   User: {
@@ -350,6 +370,7 @@ interface NexusPrismaTypes {
     stockPortfolios: 'StockPortfolio'
     balances: 'Balance'
     transactions: 'Transaction'
+    stripeDetailses: 'StripeDetails'
 
 },  StockPortfolio: {
     id: 'String'
@@ -374,6 +395,11 @@ interface NexusPrismaTypes {
     creditsTransacted: 'Int'
     createdAt: 'DateTime'
 
+},  StripeDetails: {
+    user: 'User'
+    userId: 'String'
+    customerId: 'String'
+
 }
 }
 
@@ -382,6 +408,7 @@ interface NexusPrismaMethods {
   StockPortfolio: NexusPrismaFields<'StockPortfolio'>
   Balance: NexusPrismaFields<'Balance'>
   Transaction: NexusPrismaFields<'Transaction'>
+  StripeDetails: NexusPrismaFields<'StripeDetails'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }
