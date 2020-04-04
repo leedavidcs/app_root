@@ -1,0 +1,38 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import Faker from "faker";
+import { ReviewOrderForm } from ".";
+//
+Faker.seed(1);
+
+<Meta title="forms/review-order-form" component={ReviewOrderForm} />
+
+# ReviewOrderForm
+
+## Description
+A review-order step of the checkout flow.
+
+## Props
+<Props of={ReviewOrderForm} />
+
+## StandardStory
+export const checkoutData = {
+	orderDetails: [],
+	address: Faker.address.streetAddress(),
+	cardholder: Faker.name.findName(),
+	city: Faker.address.city(),
+	country: Faker.address.country(),
+	state: Faker.address.state(),
+	zipcode: Faker.address.zipCode()
+};
+
+<Preview>
+	<Story name="standard">
+		<div style={{ width: 800 }}>
+			<ReviewOrderForm onBack={action("onBack")} checkoutData={checkoutData} />
+		</div>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

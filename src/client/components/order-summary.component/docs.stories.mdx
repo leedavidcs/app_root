@@ -1,0 +1,33 @@
+import { Button } from "@blueprintjs/core";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { OrderSummary } from ".";
+
+<Meta title="general/order-summary" component={OrderSummary} />
+
+# OrderSummary
+
+## Description
+Displays the totals of items to purchase for the checkout page, and the order review page.
+
+## Props
+<Props of={OrderSummary} />
+
+## StandardStory
+export const orderDetails = [{
+	item: {
+		value: 0,
+		name: "6000 Credits"
+	},
+	price: 50,
+	quantity: 1
+}]
+
+<Preview>
+	<Story name="standard">
+		<div style={{ width: 250 }}>
+			<OrderSummary orderDetails={orderDetails}>
+				<Button text="Submit" />
+			</OrderSummary>
+		</div>
+	</Story>
+</Preview>

@@ -5,14 +5,14 @@ import {
 	RegionSelect,
 	TextInput
 } from "@/client/components";
+import { OrderSummary } from "@/client/components/order-summary.component";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import { StripeCardElement, StripeCardElementChangeEvent } from "@stripe/stripe-js";
 import classnames from "classnames";
-import React, { FC, useCallback, useMemo, useRef, useState } from "react";
+import React, { FC, useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
-import { OrderDetail } from "./order-detail.component";
 import { useStyles } from "./styles";
 
 export interface IBillingFormData {
@@ -25,7 +25,10 @@ export interface IBillingFormData {
 }
 
 export interface IOrderDetail {
-	item: string;
+	item: {
+		value: any;
+		name: string;
+	};
 	quantity: number;
 	price: number;
 }
@@ -78,18 +81,6 @@ export const BillingForm: FC<IProps> = ({
 			_onSubmit(billingData);
 		},
 		[_onSubmit, cardError]
-	);
-
-	const orderSummary = useMemo(
-		() =>
-			orderDetails.reduce(
-				(acc, { price, quantity }) => ({
-					items: acc.items + quantity,
-					price: acc.price + price
-				}),
-				{ items: 0, price: 0 } as { items: number; price: number }
-			),
-		[orderDetails]
 	);
 
 	return (
@@ -168,28 +159,16 @@ export const BillingForm: FC<IProps> = ({
 						</div>
 					</Paper>
 				</div>
-				<Paper className={classes.orderDetails}>
-					<h3>Order Summary</h3>
-					<div className={classes.sectionContent}>
-						{orderDetails.map(({ item, quantity, price }) => (
-							<OrderDetail key={item} item={item} quantity={quantity} price={price} />
-						))}
+				<OrderSummary className={classes.orderSummary} orderDetails={orderDetails}>
+					<div className={classes.reviewOrderBtnContainer}>
+						<Button
+							className={classes.reviewOrderBtn}
+							intent="primary"
+							text="Review Order"
+							type="submit"
+						/>
 					</div>
-					<div className={classes.totalAndSubmit}>
-						<div className={classes.totalPriceContainer}>
-							Order total:
-							<div className={classes.totalPrice}>${orderSummary.price}</div>
-						</div>
-						<div className={classes.reviewOrderBtnContainer}>
-							<Button
-								className={classes.reviewOrderBtn}
-								intent="primary"
-								text="Review Order"
-								type="submit"
-							/>
-						</div>
-					</div>
-				</Paper>
+				</OrderSummary>
 			</div>
 			<Button className={classes.backBtn} intent="primary" onClick={onBack} text="Back" />
 		</form>

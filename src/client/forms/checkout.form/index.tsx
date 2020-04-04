@@ -1,8 +1,12 @@
 import { Carousel, Stepper } from "@/client/components";
-import React, { FC, useCallback, useMemo, useState } from "react";
-import { BillingForm, IBillingFormData, IOrderDetail } from "./billing.form";
+import React, { FC, useCallback, useState } from "react";
+import { BillingForm, IBillingFormData } from "./billing.form";
 import { IPriceBundleFormData, PriceBundleForm } from "./price-bundle.form";
 import { useStyles } from "./styles";
+
+export * from "./billing.form";
+export * from "./price-bundle.form";
+export * from "./review-order.form";
 
 const NUM_OF_STEPS = 3;
 
@@ -39,18 +43,6 @@ export const CheckoutForm: FC = () => {
 		[formData, onNext]
 	);
 
-	const orderDetails: readonly IOrderDetail[] = useMemo(() => {
-		if (!formData.priceBundle) {
-			return [];
-		}
-
-		return [formData.priceBundle].map(({ credits, price }) => ({
-			item: `${credits} Credits`,
-			price,
-			quantity: 1
-		}));
-	}, [formData.priceBundle]);
-
 	return (
 		<div className={classes.root}>
 			<Stepper activeStep={activeSlide} onClickStep={setActiveSlide}>
@@ -71,7 +63,7 @@ export const CheckoutForm: FC = () => {
 							className={classes.billingForm}
 							onBack={onBack}
 							onSubmit={onSubmitBillingForm}
-							orderDetails={orderDetails}
+							orderDetails={formData.orderDetails}
 						/>
 					</Carousel.Slide>
 					<Carousel.Slide>
