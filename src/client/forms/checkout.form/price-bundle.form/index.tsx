@@ -1,4 +1,5 @@
 import { Paper } from "@/client/components";
+import { IOrderDetail } from "@/client/forms/checkout.form";
 import { GetPriceBundlesQuery, PriceBundle, useGetPriceBundlesQuery } from "@/client/graphql";
 import { Button, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -6,7 +7,7 @@ import React, { FC, useCallback } from "react";
 import { useStyles } from "./styles";
 
 export interface IPriceBundleFormData {
-	priceBundle: PriceBundle;
+	orderDetails: readonly IOrderDetail[];
 }
 
 interface IProps {
@@ -21,9 +22,21 @@ export const PriceBundleForm: FC<IProps> = ({ className, onSubmit: _onSubmit }) 
 
 	const priceBundles = data?.priceBundles;
 
-	const onSubmit = useCallback((priceBundle: PriceBundle) => () => _onSubmit({ priceBundle }), [
-		_onSubmit
-	]);
+	const onSubmit = useCallback(
+		({ id, credits, price }: PriceBundle) => () => {
+			const orderDetail: IOrderDetail = {
+				item: {
+					value: id,
+					name: `${credits} Credits`
+				},
+				price,
+				quantity: 1
+			};
+
+			_onSubmit({ orderDetails: [orderDetail] });
+		},
+		[_onSubmit]
+	);
 
 	const getPriceBundleElements = useCallback(
 		(bundles: NonNullable<GetPriceBundlesQuery["priceBundles"]>) => {

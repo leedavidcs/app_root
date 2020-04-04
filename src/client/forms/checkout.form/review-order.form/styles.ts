@@ -23,13 +23,28 @@ const styles = (theme: CustomTheme) => ({
 	section: {
 		padding: 0,
 
+		"& .bp3-form-group": {
+			alignItems: "center",
+			margin: 0
+		},
+
 		"& .bp3-label": {
 			width: 130,
 			textAlign: "right"
+		},
+
+		"& .bp3-form-content": {
+			fontWeight: "bold"
 		}
 	},
 	sectionContent: {
 		padding: 10
+	},
+	creditCardDetails: {
+		display: "flex"
+	},
+	creditCard: {
+		marginLeft: 8
 	},
 	orderSummary: {
 		composes: "$section",
@@ -42,21 +57,13 @@ const styles = (theme: CustomTheme) => ({
 			marginLeft: 16
 		}
 	},
-	totalAndSubmit: {
-		marginTop: 10,
-		padding: 10,
-		borderTop: `1px solid ${theme.onSurface}`
-	},
-	reviewOrderBtnContainer: {
+	payBtnContainer: {
 		marginTop: 24,
 		display: "flex",
 		justifyContent: "center"
 	},
-	reviewOrderBtn: {
+	payBtn: {
 		width: 120
-	},
-	backBtn: {
-		width: 80
 	}
 });
 
