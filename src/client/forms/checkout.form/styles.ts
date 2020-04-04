@@ -1,39 +1,24 @@
 import { CustomTheme } from "@/client/themes";
-import { Colors } from "@blueprintjs/core";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	form: {
-		width: 600,
-		padding: "0 20px",
-
-		"& h3": {
-			padding: 10,
-			margin: 0,
-			borderBottom: `1px solid ${Colors.GRAY1}`
-		}
+	root: {
+		width: "100%",
+		maxWidth: 800
 	},
-	section: {
-		padding: 0,
-
-		"&:not(:first-child) .bp3-label": {
-			width: 130,
-			textAlign: "right"
-		}
+	carouselContainer: {
+		display: "flex",
+		width: "100%"
 	},
-	sectionContent: {
-		padding: 10,
-
-		"& .bp3-radio": {
-			fontSize: 14,
-			fontWeight: 500
-		}
+	carousel: {
+		flexBasis: 800,
+		height: "unset"
 	},
-	cardDetailsContainer: {
-		padding: "16px 0"
+	priceBundleForm: {
+		marginTop: 72
 	},
-	payBtn: {
-		padding: "0 30px"
+	billingForm: {
+		marginTop: 48
 	}
 });
 

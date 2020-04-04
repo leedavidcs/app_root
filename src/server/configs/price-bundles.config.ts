@@ -4,20 +4,20 @@ interface IPriceBundle {
 }
 
 export const PriceBundles: Record<number, IPriceBundle> = {
-	1: {
+	0: {
 		credits: 500,
 		price: 4.99
 	},
-	2: {
+	1: {
 		credits: 2200,
 		price: 19.99
 	},
-	3: {
+	2: {
 		credits: 6000,
 		price: 49.99
 	},
-	4: {
-		credits: 11500,
+	3: {
+		credits: 13000,
 		price: 99.99
 	}
 };

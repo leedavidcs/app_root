@@ -3,9 +3,8 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		height: "100%",
-		width: "100%",
-		float: "left"
+		flexGrow: 1,
+		height: "100%"
 	}
 });
 

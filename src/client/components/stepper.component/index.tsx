@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { FC, memo, ReactElement, ReactNodeArray, useMemo } from "react";
+import React, { FC, memo, ReactElement, ReactNodeArray, useCallback, useMemo } from "react";
 import { IStepProps, Step } from "./step.component";
 import { useStyles } from "./styles";
 
@@ -7,6 +7,7 @@ interface IProps {
 	activeStep: number;
 	children: ReactNodeArray;
 	className?: string;
+	onClickStep?: (step: number) => void;
 }
 
 interface IWithStaticProps {
@@ -17,8 +18,10 @@ const isStepElement = (value: any): value is ReactElement<IStepProps> => {
 	return React.isValidElement(value) && value.type === Step;
 };
 
-const BaseStepper: FC<IProps> = memo(({ activeStep, children, className }) => {
+const BaseStepper: FC<IProps> = memo(({ activeStep, children, className, onClickStep }) => {
 	const classes = useStyles();
+
+	const onClick = useCallback((step: number) => () => onClickStep?.(step), [onClickStep]);
 
 	const steps = useMemo(() => {
 		return React.Children.toArray(children).map((step, index) => {
@@ -31,12 +34,14 @@ const BaseStepper: FC<IProps> = memo(({ activeStep, children, className }) => {
 
 			return React.cloneElement(step, {
 				active: isStepActive,
+				className: classnames({ [classes.clickable]: Boolean(onClickStep) }),
 				completed: isStepCompleted,
+				onClick: onClick(index),
 				key: index,
 				index
 			});
 		});
-	}, [activeStep, children]);
+	}, [activeStep, children, classes.clickable, onClick, onClickStep]);
 
 	return <div className={classnames(classes.root, className)}>{steps}</div>;
 });

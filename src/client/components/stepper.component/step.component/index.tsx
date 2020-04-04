@@ -1,17 +1,27 @@
 import { Icon, Intent } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, ReactElement } from "react";
+import React, { FC, MouseEvent, ReactElement, useCallback } from "react";
 import { useStyles } from "./styles";
 
 export interface IStepProps {
 	active?: boolean;
+	className?: string;
 	completed?: boolean;
 	error?: Maybe<string | ReactElement>;
 	index?: number;
 	label?: string;
+	onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export const Step: FC<IStepProps> = ({ active, completed, error, index = 0, label }) => {
+export const Step: FC<IStepProps> = ({
+	active,
+	className,
+	completed,
+	error,
+	index = 0,
+	label,
+	onClick: _onClick
+}) => {
 	const classes = useStyles();
 
 	const intent: Intent = error ? "danger" : completed || active ? "primary" : "none";
@@ -19,12 +29,26 @@ export const Step: FC<IStepProps> = ({ active, completed, error, index = 0, labe
 	const isFirst: boolean = index === 0;
 	const isActive = Boolean(active || completed);
 
+	const onClick = useCallback(
+		(event: MouseEvent<HTMLDivElement>) => {
+			if (active || completed) {
+				_onClick?.(event);
+			}
+		},
+		[_onClick, active, completed]
+	);
+
 	return (
 		<div
-			className={classnames(classes.root, {
-				[classes.withConnector]: !isFirst,
-				[classes.textInactive]: !isActive
-			})}
+			className={classnames(
+				classes.root,
+				{
+					[classes.withConnector]: !isFirst,
+					[classes.textInactive]: !isActive
+				},
+				className
+			)}
+			onClick={onClick}
 		>
 			{!isFirst && (
 				<div

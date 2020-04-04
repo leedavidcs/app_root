@@ -36,9 +36,10 @@ const BaseCarousel: FC<IProps> = memo(
 	({ activeSlide, children, className, onChangeSlide, showDots = true, style }) => {
 		const classes = useStyles();
 
-		const childrenArray: ReactNodeArray = useMemo(() => React.Children.toArray(children), [
-			children
-		]);
+		const childrenArray: ReactNodeArray = useMemo(
+			() => React.Children.toArray(children).slice(),
+			[children]
+		);
 
 		const baseTranslate: number = BASE_WIDTH_PERCENT / childrenArray.length;
 
@@ -50,7 +51,7 @@ const BaseCarousel: FC<IProps> = memo(
 
 				return React.cloneElement(slide, {
 					key: index,
-					style: { ...slide.props.style, width: `${baseTranslate}%` }
+					style: { ...slide.props.style, flexBasis: `${baseTranslate}%` }
 				});
 			});
 		}, [baseTranslate, childrenArray]);

@@ -4,6 +4,7 @@ import "@blueprintjs/select/lib/css/blueprint-select.css";
 import { addDecorator, addParameters, configure } from "@storybook/react";
 import { themes } from "@storybook/theming";
 import { withRootProvider } from "../src/client/storybook";
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 const alphabeticSort = (a, b) => {
 	const isSameKind: boolean = a[1].kind === b[1].kind;
@@ -22,6 +23,11 @@ addParameters({
 		showRoots: true,
 		storySort: alphabeticSort,
 		theme: themes.dark
+	},
+	viewport: {
+		viewports: {
+			...INITIAL_VIEWPORTS
+		}
 	}
 });
 
