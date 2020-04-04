@@ -2,6 +2,14 @@
 ### Do not make changes to this file directly
 
 
+input AddressInput {
+  city: String
+  country: String
+  line1: String!
+  state: String
+  zipcode: String
+}
+
 input BalanceFilter {
   every: BalanceWhereInput
   none: BalanceWhereInput
@@ -56,7 +64,8 @@ input DateTimeFilter {
 }
 
 """
-A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+A field whose value conforms to the standard internet email address format as
+specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
 scalar EmailAddress
 
@@ -87,6 +96,11 @@ input LoginLocalUserInput {
 """Root mutation type"""
 type Mutation implements RequestRoot {
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+
+  """
+  Creates a new Stripe customer. If one exists already, that customer is returned instead
+  """
+  createOneStripeCustomer(address: AddressInput, name: String!): String
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """Logins in the user, and returns an expiring access token"""
@@ -104,6 +118,20 @@ type Mutation implements RequestRoot {
 
   """The viewer of this request"""
   viewer: User
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 enum OrderByArg {
@@ -283,6 +311,21 @@ input StringFilter {
   startsWith: String
 }
 
+input StripeDetailsFilter {
+  every: StripeDetailsWhereInput
+  none: StripeDetailsWhereInput
+  some: StripeDetailsWhereInput
+}
+
+input StripeDetailsWhereInput {
+  AND: [StripeDetailsWhereInput!]
+  customerId: NullableStringFilter
+  NOT: [StripeDetailsWhereInput!]
+  OR: [StripeDetailsWhereInput!]
+  user: UserWhereInput
+  userId: StringFilter
+}
+
 """The response from a successful login or token refresh request"""
 type TokenPayload {
   """JSON web token to refresh the token"""
@@ -341,6 +384,7 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   password: StringFilter
   stockPortfolios: StockPortfolioFilter
+  stripeDetailses: StripeDetailsFilter
   transactions: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter

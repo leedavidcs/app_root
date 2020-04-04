@@ -1,3 +1,4 @@
+export * from "./address.types";
 export * from "./authentication.types";
 export * from "./data-key.types";
 export * from "./price-bundle.types";
