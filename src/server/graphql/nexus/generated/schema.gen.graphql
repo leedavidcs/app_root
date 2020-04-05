@@ -113,11 +113,6 @@ type Mutation implements RequestRoot {
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
-  """
-  Creates a new Stripe customer. If one exists already, that customer is returned instead
-  """
-  upsertOneStripeCustomer(address: AddressInput, name: String!): String
-
   """The viewer of this request"""
   viewer: User
 }
@@ -299,6 +294,14 @@ input StringFilter {
   startsWith: String
 }
 
+type StripeCard {
+  brand: String!
+  exp_month: Int!
+  exp_year: Int!
+  fingerprint: String
+  last4: String!
+}
+
 input StripeDetailsFilter {
   every: StripeDetailsWhereInput
   none: StripeDetailsWhereInput
@@ -314,10 +317,17 @@ input StripeDetailsWhereInput {
   userId: StringFilter
 }
 
+type StripePaymentMethod {
+  card: StripeCard
+  created: Int!
+  id: String!
+}
+
 type StripeSetupIntent {
   client_secret: String
   created: Int!
   id: String!
+  payment_method: StripePaymentMethod
 }
 
 input StripeSetupIntentCancelInput {
