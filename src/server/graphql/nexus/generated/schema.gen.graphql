@@ -317,6 +317,14 @@ input StripeDetailsWhereInput {
   userId: StringFilter
 }
 
+type StripePaymentIntent {
+  amount: Int
+  client_secret: String
+  created: Int!
+  currency: String
+  id: String!
+}
+
 type StripePaymentMethod {
   card: StripeCard
   created: Int!
