@@ -1,0 +1,27 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "StripeDetails",
+      "field": "customerId",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "StripeDetails",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[userId, customerId]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

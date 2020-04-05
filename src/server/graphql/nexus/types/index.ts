@@ -6,4 +6,5 @@ export * from "./root.types";
 export * from "./scalars.types";
 export * from "./stock-data.types";
 export * from "./stock-portfolio.types";
+export * from "./stripe.types";
 export * from "./user.types";

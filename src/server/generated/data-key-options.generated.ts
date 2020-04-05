@@ -227,26 +227,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "book.quote.iexAskPrice",
-    "dataKey": "book.quote.iexAskPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexAskSize",
-    "dataKey": "book.quote.iexAskSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexBidPrice",
-    "dataKey": "book.quote.iexBidPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexBidSize",
-    "dataKey": "book.quote.iexBidSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "book.quote.iexClose",
     "dataKey": "book.quote.iexClose",
     "provider": "IEX_CLOUD"
@@ -254,31 +234,6 @@
   {
     "name": "book.quote.iexCloseTime",
     "dataKey": "book.quote.iexCloseTime",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexLastUpdated",
-    "dataKey": "book.quote.iexLastUpdated",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexMarketPercent",
-    "dataKey": "book.quote.iexMarketPercent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexRealtimePrice",
-    "dataKey": "book.quote.iexRealtimePrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexRealtimeSize",
-    "dataKey": "book.quote.iexRealtimeSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.quote.iexVolume",
-    "dataKey": "book.quote.iexVolume",
     "provider": "IEX_CLOUD"
   },
   {
@@ -404,61 +359,6 @@
   {
     "name": "book.quote.ytdChange",
     "dataKey": "book.quote.ytdChange",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.systemEvent",
-    "dataKey": "book.systemEvent.systemEvent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.systemEvent.timestamp",
-    "dataKey": "book.systemEvent.timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isIso",
-    "dataKey": "book.trades[0].isISO",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOddLot",
-    "dataKey": "book.trades[0].isOddLot",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOutsideRegularHours",
-    "dataKey": "book.trades[0].isOutsideRegularHours",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isSinglePriceCross",
-    "dataKey": "book.trades[0].isSinglePriceCross",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isTradeThroughExempt",
-    "dataKey": "book.trades[0].isTradeThroughExempt",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.price",
-    "dataKey": "book.trades[0].price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.size",
-    "dataKey": "book.trades[0].size",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.timestamp",
-    "dataKey": "book.trades[0].timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.tradeId",
-    "dataKey": "book.trades[0].tradeId",
     "provider": "IEX_CLOUD"
   },
   {
@@ -1302,26 +1202,6 @@
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "quote.iexAskPrice",
-    "dataKey": "quote.iexAskPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexAskSize",
-    "dataKey": "quote.iexAskSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexBidPrice",
-    "dataKey": "quote.iexBidPrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexBidSize",
-    "dataKey": "quote.iexBidSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "quote.iexClose",
     "dataKey": "quote.iexClose",
     "provider": "IEX_CLOUD"
@@ -1329,31 +1209,6 @@
   {
     "name": "quote.iexCloseTime",
     "dataKey": "quote.iexCloseTime",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexLastUpdated",
-    "dataKey": "quote.iexLastUpdated",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexMarketPercent",
-    "dataKey": "quote.iexMarketPercent",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexRealtimePrice",
-    "dataKey": "quote.iexRealtimePrice",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexRealtimeSize",
-    "dataKey": "quote.iexRealtimeSize",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexVolume",
-    "dataKey": "quote.iexVolume",
     "provider": "IEX_CLOUD"
   },
   {

@@ -95,12 +95,9 @@ input LoginLocalUserInput {
 
 """Root mutation type"""
 type Mutation implements RequestRoot {
+  cancelStripeSetupIntent(where: StripeSetupIntentCancelInput!): StripeSetupIntent
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
-
-  """
-  Creates a new Stripe customer. If one exists already, that customer is returned instead
-  """
-  createOneStripeCustomer(address: AddressInput, name: String!): String
+  createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """Logins in the user, and returns an expiring access token"""
@@ -116,22 +113,13 @@ type Mutation implements RequestRoot {
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
+  """
+  Creates a new Stripe customer. If one exists already, that customer is returned instead
+  """
+  upsertOneStripeCustomer(address: AddressInput, name: String!): String
+
   """The viewer of this request"""
   viewer: User
-}
-
-input NullableStringFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: String
-  notIn: [String!]
-  startsWith: String
 }
 
 enum OrderByArg {
@@ -319,11 +307,21 @@ input StripeDetailsFilter {
 
 input StripeDetailsWhereInput {
   AND: [StripeDetailsWhereInput!]
-  customerId: NullableStringFilter
+  customerId: StringFilter
   NOT: [StripeDetailsWhereInput!]
   OR: [StripeDetailsWhereInput!]
   user: UserWhereInput
   userId: StringFilter
+}
+
+type StripeSetupIntent {
+  client_secret: String
+  created: Int!
+  id: String!
+}
+
+input StripeSetupIntentCancelInput {
+  id: String!
 }
 
 """The response from a successful login or token refresh request"""
