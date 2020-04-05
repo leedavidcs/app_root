@@ -4,7 +4,7 @@ export const StripeSetupIntent = objectType({
 	name: "StripeSetupIntent",
 	definition: (t) => {
 		t.string("id", { nullable: false });
-		t.string("client_secret", { nullable: true });
+		t.string("client_secret");
 		/**
 		 * @authorize User is logged-in, and is associated with the setup-intent
 		 */
