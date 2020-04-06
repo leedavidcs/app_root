@@ -171,6 +171,7 @@ type Query implements RequestRoot {
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
   stockSymbols(text: String!): [StockDataSearch!]!
+  transactions(after: TransactionWhereUniqueInput, before: TransactionWhereUniqueInput, first: Int, last: Int, orderBy: TransactionOrderByInput, skip: Int, where: TransactionWhereInput): [Transaction!]!
 
   """The viewer of this request"""
   viewer: User
@@ -384,6 +385,17 @@ input TransactionFilter {
   some: TransactionWhereInput
 }
 
+input TransactionOrderByInput {
+  createdAt: OrderByArg
+  creditsBefore: OrderByArg
+  creditsTransacted: OrderByArg
+  id: OrderByArg
+  paymentIntentId: OrderByArg
+  status: OrderByArg
+  user: OrderByArg
+  userId: OrderByArg
+}
+
 enum TransactionStatus {
   FAILED
   PENDING
@@ -402,6 +414,11 @@ input TransactionWhereInput {
   status: TransactionStatus
   user: UserWhereInput
   userId: StringFilter
+}
+
+input TransactionWhereUniqueInput {
+  id: String
+  paymentIntentId: String
 }
 
 """Basic user of the application"""
