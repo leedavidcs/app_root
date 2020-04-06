@@ -353,7 +353,6 @@ export interface NexusGenFieldTypes {
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
-    createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
@@ -479,10 +478,6 @@ export interface NexusGenArgTypes {
     }
     createOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioCreateInput']; // StockPortfolioCreateInput!
-    }
-    createStripePaymentIntent: { // args
-      amount: number; // Int!
-      paymentMethod: string; // String!
     }
     deleteOneStockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!

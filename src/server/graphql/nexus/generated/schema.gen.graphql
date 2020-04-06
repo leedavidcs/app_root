@@ -104,7 +104,6 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
-  createStripePaymentIntent(amount: Int!, paymentMethod: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
