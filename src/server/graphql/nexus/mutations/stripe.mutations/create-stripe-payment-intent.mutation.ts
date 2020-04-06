@@ -13,7 +13,7 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 		amount: intArg({ nullable: false }),
 		paymentMethod: stringArg({ nullable: false })
 	},
-	authorize: async (parent, { amount }, { prisma, stripe, user }) => {
+	authorize: async (parent, { amount }, { prisma, user }) => {
 		if (!user) {
 			return false;
 		}

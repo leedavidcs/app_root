@@ -76,9 +76,10 @@ export class IexCloudAPI extends DataSource {
 		const symbolBatches: readonly (readonly string[])[] = chunk(symbols, MAX_SYMBOL_BATCH_SIZE);
 
 		/** Split types up into batches, defined by request limits of iex-cloud */
-		const iexTypes = Object.keys(types)
-			.filter((key) => types[key])
-			.sort() as readonly IexType[];
+		const iexTypes =
+			Object.keys(types)
+				.filter((key) => types[key])
+				.sort() as readonly IexType[];
 		const typeBatches: readonly (readonly IexType[])[] = chunk(iexTypes, MAX_TYPE_BATCH_SIZE);
 
 		/** Resolve all data for  given symbols and types */

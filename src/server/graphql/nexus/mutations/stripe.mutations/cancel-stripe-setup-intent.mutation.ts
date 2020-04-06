@@ -1,11 +1,4 @@
-import { arg, inputObjectType, mutationField } from "@nexus/schema";
-
-export const StripeSetupIntentCancelInput = inputObjectType({
-	name: "StripeSetupIntentCancelInput",
-	definition: (t) => {
-		t.string("id", { nullable: false });
-	}
-});
+import { mutationField, stringArg } from "@nexus/schema";
 
 /**
  * @authorize User is logged-in, and is associated with the setup-intent to be cancelled
@@ -13,17 +6,12 @@ export const StripeSetupIntentCancelInput = inputObjectType({
 export const cancelStripeSetupIntent = mutationField("cancelStripeSetupIntent", {
 	type: "StripeSetupIntent",
 	args: {
-		where: arg({
-			type: "StripeSetupIntentCancelInput",
-			nullable: false
-		})
+		id: stringArg({ nullable: false })
 	},
-	authorize: async (parent, { where }, { prisma, stripe, user }) => {
+	authorize: async (parent, { id }, { prisma, stripe, user }) => {
 		if (!user) {
 			return false;
 		}
-
-		const { id } = where;
 
 		const setupIntent = await stripe.setupIntents.retrieve(id);
 		const stripeDetails = await prisma.stripeDetails.findOne({ where: { userId: user.id } });
@@ -36,9 +24,7 @@ export const cancelStripeSetupIntent = mutationField("cancelStripeSetupIntent", 
 
 		return setupIntent.customer === customerId;
 	},
-	resolve: async (parent, { where }, { stripe, user }) => {
-		const { id } = where;
-
+	resolve: async (parent, { id }, { stripe, user }) => {
 		const setupIntent = await stripe.setupIntents.cancel(id);
 
 		return setupIntent;

@@ -10,6 +10,11 @@ input AddressInput {
   zipcode: String
 }
 
+type Balance {
+  credits: Int!
+  user: User!
+}
+
 input BalanceFilter {
   every: BalanceWhereInput
   none: BalanceWhereInput
@@ -95,13 +100,17 @@ input LoginLocalUserInput {
 
 """Root mutation type"""
 type Mutation implements RequestRoot {
-  cancelStripeSetupIntent(where: StripeSetupIntentCancelInput!): StripeSetupIntent
+  applySucceededTransaction(paymentIntentId: String!): Balance
+  cancelStripeSetupIntent(id: String!): StripeSetupIntent
+  cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createStripePaymentIntent(amount: Int!, paymentMethod: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """Logins in the user, and returns an expiring access token"""
   loginLocalUser(input: LoginLocalUserInput!): TokenPayload
+  purchasePriceBundle(paymentMethodId: String!, priceBundleId: Int!): StripePaymentIntent
 
   """Refreshes the currently logged-in user's access token"""
   refreshAccessToken(input: RefreshAccessTokenInput!): TokenPayload
@@ -115,6 +124,20 @@ type Mutation implements RequestRoot {
 
   """The viewer of this request"""
   viewer: User
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 enum OrderByArg {
@@ -338,10 +361,6 @@ type StripeSetupIntent {
   payment_method: StripePaymentMethod
 }
 
-input StripeSetupIntentCancelInput {
-  id: String!
-}
-
 """The response from a successful login or token refresh request"""
 type TokenPayload {
   """JSON web token to refresh the token"""
@@ -357,6 +376,12 @@ input TransactionFilter {
   some: TransactionWhereInput
 }
 
+enum TransactionStatus {
+  FAILED
+  PENDING
+  SUCCEEDED
+}
+
 input TransactionWhereInput {
   AND: [TransactionWhereInput!]
   createdAt: DateTimeFilter
@@ -365,6 +390,8 @@ input TransactionWhereInput {
   id: StringFilter
   NOT: [TransactionWhereInput!]
   OR: [TransactionWhereInput!]
+  paymentIntentId: NullableStringFilter
+  status: TransactionStatus
   user: UserWhereInput
   userId: StringFilter
 }
