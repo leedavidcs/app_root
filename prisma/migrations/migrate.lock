@@ -6,3 +6,6 @@
 20200331224203-init
 20200404004556-with-stripe-details
 20200404034940-stripe-details-with-required-customerid
+20200405054628-transaction-with-payment-intent-id
+20200405060017-transaction-with-optional-payment-intent-id
+20200405070331-transaction-with-status
