@@ -104,7 +104,6 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
-  createStripePaymentIntent(amount: Int!, paymentMethod: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
@@ -172,6 +171,7 @@ type Query implements RequestRoot {
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
   stockSymbols(text: String!): [StockDataSearch!]!
+  transactions(after: TransactionWhereUniqueInput, before: TransactionWhereUniqueInput, first: Int, last: Int, orderBy: TransactionOrderByInput, skip: Int, where: TransactionWhereInput): [Transaction!]!
 
   """The viewer of this request"""
   viewer: User
@@ -370,10 +370,30 @@ type TokenPayload {
   token: String!
 }
 
+type Transaction {
+  creditsBefore: Int!
+  creditsTransacted: Int!
+  id: String!
+  paymentIntent: StripePaymentIntent
+  paymentIntentId: String
+  user: User!
+}
+
 input TransactionFilter {
   every: TransactionWhereInput
   none: TransactionWhereInput
   some: TransactionWhereInput
+}
+
+input TransactionOrderByInput {
+  createdAt: OrderByArg
+  creditsBefore: OrderByArg
+  creditsTransacted: OrderByArg
+  id: OrderByArg
+  paymentIntentId: OrderByArg
+  status: OrderByArg
+  user: OrderByArg
+  userId: OrderByArg
 }
 
 enum TransactionStatus {
@@ -394,6 +414,11 @@ input TransactionWhereInput {
   status: TransactionStatus
   user: UserWhereInput
   userId: StringFilter
+}
+
+input TransactionWhereUniqueInput {
+  id: String
+  paymentIntentId: String
 }
 
 """Basic user of the application"""

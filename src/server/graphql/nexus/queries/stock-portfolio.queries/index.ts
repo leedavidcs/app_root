@@ -29,7 +29,6 @@ export const stockPortfolioQueries = extendType({
 				});
 			}
 		});
-
 		t.int("stockPortfolioCount", {
 			args: {
 				where: arg({ type: "StockPortfolioWhereInput" }),
