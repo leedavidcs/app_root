@@ -282,6 +282,12 @@ export interface NexusGenRootTypes {
     refreshToken: string; // String!
     token: string; // String!
   }
+  Transaction: { // root type
+    creditsBefore: number; // Int!
+    creditsTransacted: number; // Int!
+    id: string; // String!
+    paymentIntentId?: string | null; // String
+  }
   User: { // root type
     createdAt: any; // DateTime!
     email: any; // EmailAddress!
@@ -439,6 +445,14 @@ export interface NexusGenFieldTypes {
     refreshToken: string; // String!
     token: string; // String!
   }
+  Transaction: { // field return type
+    creditsBefore: number; // Int!
+    creditsTransacted: number; // Int!
+    id: string; // String!
+    paymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
+    paymentIntentId: string | null; // String
+    user: NexusGenRootTypes['User']; // User!
+  }
   User: { // field return type
     createdAt: any; // DateTime!
     email: any; // EmailAddress!
@@ -530,7 +544,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "User";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User";
 
 export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput";
 

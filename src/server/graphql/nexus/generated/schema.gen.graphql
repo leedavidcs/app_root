@@ -370,6 +370,15 @@ type TokenPayload {
   token: String!
 }
 
+type Transaction {
+  creditsBefore: Int!
+  creditsTransacted: Int!
+  id: String!
+  paymentIntent: StripePaymentIntent
+  paymentIntentId: String
+  user: User!
+}
+
 input TransactionFilter {
   every: TransactionWhereInput
   none: TransactionWhereInput
