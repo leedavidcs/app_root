@@ -30,6 +30,12 @@ export class OperationUnavailableError extends ApolloError {
 	}
 }
 
+export class PaymentError extends ApolloError {
+	constructor(message = "This operation requires payment.") {
+		super(message, "PAYMENT_REQUIRED");
+	}
+}
+
 export class UnexpectedError extends ApolloError {
 	constructor(message = "Unexpected Error. Should not reach here.") {
 		super(message, "UNEXPECTED");

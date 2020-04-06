@@ -69,6 +69,19 @@ export interface NexusGenInputs {
     password: string; // String!
     userIdentifier: string; // String!
   }
+  NullableStringFilter: { // input type
+    contains?: string | null; // String
+    endsWith?: string | null; // String
+    equals?: string | null; // String
+    gt?: string | null; // String
+    gte?: string | null; // String
+    in?: string[] | null; // [String!]
+    lt?: string | null; // String
+    lte?: string | null; // String
+    not?: string | null; // String
+    notIn?: string[] | null; // [String!]
+    startsWith?: string | null; // String
+  }
   RefreshAccessTokenInput: { // input type
     refreshToken: string; // String!
   }
@@ -146,9 +159,6 @@ export interface NexusGenInputs {
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
-  StripeSetupIntentCancelInput: { // input type
-    id: string; // String!
-  }
   TransactionFilter: { // input type
     every?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
     none?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
@@ -162,6 +172,8 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
     OR?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
+    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
+    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -190,9 +202,13 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   DataKey_Provider: "IEX_CLOUD"
   OrderByArg: "asc" | "desc"
+  TransactionStatus: "FAILED" | "PENDING" | "SUCCEEDED"
 }
 
 export interface NexusGenRootTypes {
+  Balance: { // root type
+    credits: number; // Int!
+  }
   DataKeyOption: { // root type
     dataKey: string; // String!
     name: string; // String!
@@ -294,6 +310,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   DateTimeFilter: NexusGenInputs['DateTimeFilter'];
   IntFilter: NexusGenInputs['IntFilter'];
   LoginLocalUserInput: NexusGenInputs['LoginLocalUserInput'];
+  NullableStringFilter: NexusGenInputs['NullableStringFilter'];
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
   RegisterLocalUserInput: NexusGenInputs['RegisterLocalUserInput'];
   StockPortfolioCreateInput: NexusGenInputs['StockPortfolioCreateInput'];
@@ -306,27 +323,35 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StringFilter: NexusGenInputs['StringFilter'];
   StripeDetailsFilter: NexusGenInputs['StripeDetailsFilter'];
   StripeDetailsWhereInput: NexusGenInputs['StripeDetailsWhereInput'];
-  StripeSetupIntentCancelInput: NexusGenInputs['StripeSetupIntentCancelInput'];
   TransactionFilter: NexusGenInputs['TransactionFilter'];
   TransactionWhereInput: NexusGenInputs['TransactionWhereInput'];
   UserIdNameCompoundUniqueInput: NexusGenInputs['UserIdNameCompoundUniqueInput'];
   UserWhereInput: NexusGenInputs['UserWhereInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
   OrderByArg: NexusGenEnums['OrderByArg'];
+  TransactionStatus: NexusGenEnums['TransactionStatus'];
 }
 
 export interface NexusGenFieldTypes {
+  Balance: { // field return type
+    credits: number; // Int!
+    user: NexusGenRootTypes['User']; // User!
+  }
   DataKeyOption: { // field return type
     dataKey: string; // String!
     name: string; // String!
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
   Mutation: { // field return type
+    applySucceededTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
+    cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
+    purchasePriceBundle: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
@@ -429,17 +454,31 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    applySucceededTransaction: { // args
+      paymentIntentId: string; // String!
+    }
     cancelStripeSetupIntent: { // args
-      where: NexusGenInputs['StripeSetupIntentCancelInput']; // StripeSetupIntentCancelInput!
+      id: string; // String!
+    }
+    cancelTransaction: { // args
+      paymentIntentId: string; // String!
     }
     createOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioCreateInput']; // StockPortfolioCreateInput!
+    }
+    createStripePaymentIntent: { // args
+      amount: number; // Int!
+      paymentMethod: string; // String!
     }
     deleteOneStockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
     }
     loginLocalUser: { // args
       input: NexusGenInputs['LoginLocalUserInput']; // LoginLocalUserInput!
+    }
+    purchasePriceBundle: { // args
+      paymentMethodId: string; // String!
+      priceBundleId: number; // Int!
     }
     refreshAccessToken: { // args
       input: NexusGenInputs['RefreshAccessTokenInput']; // RefreshAccessTokenInput!
@@ -491,11 +530,11 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "User";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "User";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "StripeSetupIntentCancelInput" | "TransactionFilter" | "TransactionWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "StockPortfolioCreateInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioOrderByInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput";
 
-export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg";
+export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg" | "TransactionStatus";
 
 export type NexusGenInterfaceNames = "RequestRoot";
 

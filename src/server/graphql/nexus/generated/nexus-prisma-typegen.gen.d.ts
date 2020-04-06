@@ -270,8 +270,8 @@ interface NexusPrismaInputs {
   ordering: 'user' | 'userId' | 'credits'
 }
     transactions: {
-  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
     stripeDetails: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -289,8 +289,8 @@ interface NexusPrismaInputs {
   ordering: 'user' | 'userId' | 'credits'
 }
     transactions: {
-  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt'
+  filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
     stripeDetailses: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -394,6 +394,8 @@ interface NexusPrismaTypes {
     creditsBefore: 'Int'
     creditsTransacted: 'Int'
     createdAt: 'DateTime'
+    paymentIntentId: 'String'
+    status: 'TransactionStatus'
 
 },  StripeDetails: {
     user: 'User'
