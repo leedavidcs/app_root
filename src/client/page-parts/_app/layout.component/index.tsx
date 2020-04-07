@@ -4,8 +4,6 @@ import React, { FC, ReactElement, useCallback, useEffect, useState } from "react
 import { AppBar } from "./app-bar.component";
 import { AppDrawer } from "./app-drawer.component";
 
-const APP_TITLE = "TheBrand Inc.";
-
 interface IProps {
 	children: ReactElement;
 }
@@ -27,8 +25,8 @@ export const Layout: FC<IProps> = ({ children }) => {
 
 	return (
 		<main>
-			<AppBar icon={<Button icon="menu" onClick={onClickMenu} />} title={APP_TITLE} />
-			<AppDrawer isOpen={isOpen} onClose={onClose} title={APP_TITLE} />
+			<AppBar icon={<Button icon="menu" onClick={onClickMenu} />} />
+			<AppDrawer isOpen={isOpen} onClose={onClose} />
 			{children}
 		</main>
 	);

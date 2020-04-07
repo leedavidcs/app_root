@@ -1,12 +1,14 @@
-import { breakpoints, CustomTheme, getZIndex } from "@/client/themes";
+import { CustomTheme, getZIndex } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		backgroundColor: theme.surface,
-		color: theme.onSurface,
-		height: 56,
-		zIndex: getZIndex("app-bar")
+		"&.bp3-navbar": {
+			backgroundColor: theme.surface,
+			color: theme.onSurface,
+			height: 56,
+			zIndex: getZIndex("app-bar")
+		}
 	},
 	group: {
 		width: "100%",
@@ -26,17 +28,6 @@ const styles = (theme: CustomTheme) => ({
 	search: {
 		flexGrow: 1,
 		margin: 0
-	},
-	authBtn: {
-		marginLeft: 20,
-
-		[breakpoints.up("md")]: {
-			minWidth: 120,
-
-			"&:last-child": {
-				marginLeft: 12
-			}
-		}
 	},
 	profileIcon: {
 		marginLeft: 12,

@@ -1,22 +1,16 @@
-import { Popover, TextInput } from "@/client/components";
-import { useAuth, useModal, useSetUser } from "@/client/hooks";
+import { Brand, Popover, SearchInput } from "@/client/components";
+import { useAuth, useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
-import { Alignment, Button, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
+import { Alignment, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
-import dynamic from "next/dynamic";
-import { NextRouter, useRouter } from "next/router";
-import React, { FC, FormEventHandler, Fragment, ReactElement, useCallback, useState } from "react";
+import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
+import { AuthButtons } from "./auth-buttons.component";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
-
-const SignInModal = dynamic(() => import("@/client/modals/sign-in.modal"));
-const SignUpModal = dynamic(() => import("@/client/modals/sign-up.modal"));
 
 interface IProps {
 	icon?: ReactElement;
 	onSearch?: (text: string) => void;
-	title: string;
-	withMock?: boolean;
 }
 
 const useOnSearch = ({ onSearch }: IProps): [string, FormEventHandler<HTMLInputElement>] => {
@@ -32,24 +26,6 @@ const useOnSearch = ({ onSearch }: IProps): [string, FormEventHandler<HTMLInputE
 			[onSearch, setSearchText]
 		)
 	];
-};
-
-const useOnClickSignIn = () => {
-	const { setContent, toggle } = useModal();
-
-	return useCallback(() => {
-		setContent({ title: "Sign in", body: <SignInModal /> });
-		toggle(true);
-	}, [setContent, toggle]);
-};
-
-const useOnClickSignUp = () => {
-	const { setContent, toggle } = useModal();
-
-	return useCallback(() => {
-		setContent({ title: "Sign up", body: <SignUpModal /> });
-		toggle(true);
-	}, [setContent, toggle]);
 };
 
 const useOnClickSignOut = (onCompleted?: () => void) => {
@@ -70,16 +46,8 @@ const useOnClickProfileIcon = (): [boolean, { onOpen: () => void; onClose: () =>
 	return [isOpen, { onOpen, onClose }];
 };
 
-const useOnClickBrand = () => {
-	const router: NextRouter = useRouter();
-
-	return useCallback(() => {
-		router.push("/");
-	}, [router]);
-};
-
 export const AppBar: FC<IProps> = (props) => {
-	const { icon, title, withMock } = props;
+	const { icon } = props;
 
 	const classes = useStyles();
 
@@ -88,10 +56,7 @@ export const AppBar: FC<IProps> = (props) => {
 	const [searchText, onSearchChange] = useOnSearch(props);
 	const [isOpen, { onOpen, onClose }] = useOnClickProfileIcon();
 
-	const onClickSignIn = useOnClickSignIn();
-	const onClickSignUp = useOnClickSignUp();
 	const onClickSignOut = useOnClickSignOut(onClose);
-	const onClickBrand = useOnClickBrand();
 
 	return (
 		<Navbar className={classes.root} fixedToTop={true}>
@@ -104,20 +69,13 @@ export const AppBar: FC<IProps> = (props) => {
 						className: classnames(classes.icon, icon.props.className),
 						outlined: true
 					})}
-				<Navbar.Heading className={classes.title} onClick={onClickBrand}>
-					{title}
+				<Navbar.Heading className={classes.title}>
+					<Brand />
 				</Navbar.Heading>
 				<ControlGroup className={classes.searchWrapper}>
-					<TextInput
-						className={classes.search}
-						icon="search"
-						placeholder="Search"
-						onChange={onSearchChange}
-						value={searchText}
-					/>
-					<Button icon="arrow-right" />
+					<SearchInput onChange={onSearchChange} value={searchText} />
 				</ControlGroup>
-				{user || withMock ? (
+				{user ? (
 					<Popover
 						isOpen={isOpen}
 						position="left-top"
@@ -132,20 +90,7 @@ export const AppBar: FC<IProps> = (props) => {
 						/>
 					</Popover>
 				) : (
-					<Fragment>
-						<Button
-							className={classes.authBtn}
-							text="SIGN IN"
-							outlined={true}
-							onClick={onClickSignIn}
-						/>
-						<Button
-							className={classes.authBtn}
-							text="SIGN UP"
-							intent="primary"
-							onClick={onClickSignUp}
-						/>
-					</Fragment>
+					<AuthButtons />
 				)}
 			</Navbar.Group>
 		</Navbar>

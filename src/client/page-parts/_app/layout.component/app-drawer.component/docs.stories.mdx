@@ -22,7 +22,7 @@ Side-drawer to be opened from the navbar, to be used for additional navigation.
 			const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
 			return (
 				<>
-					<AppDrawer isOpen={isOpen} onClose={onClose} title="Title here" />
+					<AppDrawer isOpen={isOpen} onClose={onClose} />
 					<Button intent="primary" onClick={onClick} text="Toggle app drawer" />
 				</>
 			);
