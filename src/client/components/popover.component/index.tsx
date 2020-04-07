@@ -16,6 +16,7 @@ interface IProps {
 	popoverClassName?: string;
 	position?: PopoverPosition;
 	preventOverflow?: boolean;
+	usePortal?: boolean;
 }
 
 export const Popover: FC<IProps> = memo(
@@ -31,7 +32,8 @@ export const Popover: FC<IProps> = memo(
 		onClose,
 		popoverClassName,
 		position,
-		preventOverflow = true
+		preventOverflow = true,
+		usePortal
 	}) => {
 		const classes = useStyles();
 
@@ -53,6 +55,7 @@ export const Popover: FC<IProps> = memo(
 				onClose={onClose}
 				popoverClassName={classnames(classes.popover, popoverClassName)}
 				position={position}
+				usePortal={usePortal}
 			>
 				{children}
 			</BpPopover>

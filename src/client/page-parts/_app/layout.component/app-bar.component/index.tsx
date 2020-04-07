@@ -1,7 +1,7 @@
-import { Brand, Popover, SearchInput } from "@/client/components";
-import { useAuth, useSetUser } from "@/client/hooks";
+import { Brand, SearchInput } from "@/client/components";
+import { useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
-import { Alignment, Classes, Icon, Navbar } from "@blueprintjs/core";
+import { Alignment, Classes, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
 import { AuthButtons } from "./auth-buttons.component";
@@ -28,24 +28,6 @@ const useOnSearch = ({ onSearch }: IProps): [string, FormEventHandler<HTMLInputE
 	];
 };
 
-const useOnClickSignOut = (onCompleted?: () => void) => {
-	const { logout } = useAuth();
-
-	return useCallback(() => {
-		logout();
-		onCompleted?.();
-	}, [logout, onCompleted]);
-};
-
-const useOnClickProfileIcon = (): [boolean, { onOpen: () => void; onClose: () => void }] => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-
-	const onOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
-	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
-
-	return [isOpen, { onOpen, onClose }];
-};
-
 export const AppBar: FC<IProps> = (props) => {
 	const { icon } = props;
 
@@ -54,9 +36,6 @@ export const AppBar: FC<IProps> = (props) => {
 	const [, { user }] = useSetUser();
 
 	const [searchText, onSearchChange] = useOnSearch(props);
-	const [isOpen, { onOpen, onClose }] = useOnClickProfileIcon();
-
-	const onClickSignOut = useOnClickSignOut(onClose);
 
 	return (
 		<Navbar className={classes.root} fixedToTop={true}>
@@ -69,23 +48,7 @@ export const AppBar: FC<IProps> = (props) => {
 					<Brand />
 				</Navbar.Heading>
 				<SearchInput onChange={onSearchChange} value={searchText} />
-				{user ? (
-					<Popover
-						isOpen={isOpen}
-						position="left-top"
-						onClose={onClose}
-						content={<ProfileMenu onClickSignOut={onClickSignOut} />}
-					>
-						<Icon
-							className={classes.profileIcon}
-							icon="user"
-							onClick={onOpen}
-							iconSize={24}
-						/>
-					</Popover>
-				) : (
-					<AuthButtons />
-				)}
+				{user ? <ProfileMenu /> : <AuthButtons />}
 			</Navbar.Group>
 		</Navbar>
 	);

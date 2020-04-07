@@ -16,10 +16,6 @@ const styles = (theme: CustomTheme) => ({
 	},
 	title: {
 		marginLeft: 4
-	},
-	profileIcon: {
-		marginLeft: 12,
-		cursor: "pointer"
 	}
 });
 
