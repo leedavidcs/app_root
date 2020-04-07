@@ -1,6 +1,7 @@
 import { Popover } from "@/client/components";
 import { useAuth } from "@/client/hooks";
 import { Icon, Menu } from "@blueprintjs/core";
+import Link from "next/link";
 import React, { FC, useCallback, useState } from "react";
 import { useStyles } from "./styles";
 
@@ -33,6 +34,9 @@ export const ProfileMenu: FC<IProps> = () => {
 			content={
 				<Menu>
 					<Menu.Item icon="user" text="Your profile" />
+					<Link href="/pricing" passHref={true}>
+						<Menu.Item icon="cube" text="Credits" />
+					</Link>
 					<Menu.Item icon="log-out" onClick={onClickSignOut} text="Sign out" />
 				</Menu>
 			}
