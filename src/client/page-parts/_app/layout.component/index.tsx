@@ -25,7 +25,7 @@ export const Layout: FC<IProps> = ({ children }) => {
 
 	return (
 		<main>
-			<AppBar icon={<Button icon="menu" onClick={onClickMenu} />} />
+			<AppBar icon={<Button icon="menu" minimal={true} onClick={onClickMenu} />} />
 			<AppDrawer isOpen={isOpen} onClose={onClose} />
 			{children}
 		</main>

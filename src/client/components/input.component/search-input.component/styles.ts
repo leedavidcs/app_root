@@ -3,7 +3,7 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		width: "100%",
+		flexGrow: 1,
 		margin: 0
 	},
 	input: {

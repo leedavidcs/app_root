@@ -14,20 +14,8 @@ const styles = (theme: CustomTheme) => ({
 		width: "100%",
 		height: 56
 	},
-	icon: {
-		marginRight: 12
-	},
 	title: {
-		fontFamily: theme.fontPrimary,
-		fontSize: "1.2rem",
-		cursor: "pointer"
-	},
-	searchWrapper: {
-		flexGrow: 1
-	},
-	search: {
-		flexGrow: 1,
-		margin: 0
+		marginLeft: 4
 	},
 	profileIcon: {
 		marginLeft: 12,
@@ -35,6 +23,4 @@ const styles = (theme: CustomTheme) => ({
 	}
 });
 
-export const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles, {
-	link: true
-});
+export const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);

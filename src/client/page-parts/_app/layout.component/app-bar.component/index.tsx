@@ -1,7 +1,7 @@
 import { Brand, Popover, SearchInput } from "@/client/components";
 import { useAuth, useSetUser } from "@/client/hooks";
 import { onInputValueChanged } from "@/client/utils";
-import { Alignment, Classes, ControlGroup, Icon, Navbar } from "@blueprintjs/core";
+import { Alignment, Classes, Icon, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
 import { AuthButtons } from "./auth-buttons.component";
@@ -64,17 +64,11 @@ export const AppBar: FC<IProps> = (props) => {
 				className={classnames(classes.group, Classes.DARK)}
 				align={Alignment.LEFT}
 			>
-				{icon &&
-					React.cloneElement(icon, {
-						className: classnames(classes.icon, icon.props.className),
-						outlined: true
-					})}
+				{icon}
 				<Navbar.Heading className={classes.title}>
 					<Brand />
 				</Navbar.Heading>
-				<ControlGroup className={classes.searchWrapper}>
-					<SearchInput onChange={onSearchChange} value={searchText} />
-				</ControlGroup>
+				<SearchInput onChange={onSearchChange} value={searchText} />
 				{user ? (
 					<Popover
 						isOpen={isOpen}
