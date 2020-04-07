@@ -109,7 +109,11 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 
 	const onFormSubmit = useCallback(
 		async (data: IFormData): Promise<void> => {
-			const variables: RegisterLocalUserMutationVariables = { input: data };
+			const { email, password, username } = data;
+
+			const variables: RegisterLocalUserMutationVariables = {
+				input: { email, password, username }
+			};
 			const result = await register({ variables });
 
 			return result

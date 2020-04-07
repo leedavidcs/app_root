@@ -33,6 +33,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return;
 	}
 
-	res.writeHead(HttpStatus.OK, { Location: "https://google.com" });
+	res.writeHead(HttpStatus.OK, { Location: "/" });
 	res.end();
 };
