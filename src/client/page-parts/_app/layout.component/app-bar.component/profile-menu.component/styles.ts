@@ -3,17 +3,16 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		"& .bp3-drawer": {
-			backgroundColor: theme.dialogBackground,
-			color: theme.onSurface
-		},
+		marginLeft: 12,
+		borderRadius: 12,
+		overflow: "hidden",
 
-		"& .bp3-drawer-header": {
-			paddingLeft: 4
+		"& .bp3-menu": {
+			backgroundColor: theme.surface
 		}
 	},
-	backdrop: {
-		backgroundColor: theme.backdrop
+	icon: {
+		cursor: "pointer"
 	}
 });
 

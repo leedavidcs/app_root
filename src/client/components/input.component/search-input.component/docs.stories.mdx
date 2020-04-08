@@ -20,20 +20,13 @@ export const STANDARD_MAX_INPUT_LENGTH = 5;
 	<Story name="standard">
 		{() => {
 			const [value, setValue] = useState("");
-			const [error, setError] = useState(null);
-			const onChange = useCallback(({ currentTarget }) => {
-				const isValid = currentTarget.value.length < STANDARD_MAX_INPUT_LENGTH;
-				setError(isValid ? null : "Text is too long");
-				setValue(currentTarget.value);
-			}, [setError]);
+			const onChange = useCallback(({ currentTarget }) => setValue(currentTarget.value), []);
 			return (
 				<Paper>
 					<SearchInput
-						error={error}
 						label="SearchInput"
 						labelInfo="(required)"
 						onChange={onChange}
-						placeholder="search"
 						value={value}
 					/>
 				</Paper>

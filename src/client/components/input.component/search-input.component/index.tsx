@@ -1,12 +1,4 @@
-import {
-	Button,
-	Classes,
-	ControlGroup,
-	FormGroup,
-	IconName,
-	InputGroup,
-	Intent
-} from "@blueprintjs/core";
+import { Button, Classes, ControlGroup, FormGroup, IconName, InputGroup } from "@blueprintjs/core";
 
 import classnames from "classnames";
 import KeyCode from "keycode";
@@ -22,7 +14,6 @@ import { useStyles } from "./styles";
 interface IProps {
 	className?: string;
 	disabled?: boolean;
-	error?: Maybe<string>;
 	icon?: IconName;
 	label?: string;
 	labelInfo?: string;
@@ -37,20 +28,17 @@ interface IProps {
 export const SearchInput: FC<IProps> = ({
 	className,
 	disabled,
-	error,
 	icon = "search",
 	label,
 	labelInfo,
 	onChange,
 	onKeyDown: propsOnKeyDown,
 	onSubmit: propsOnSubmit,
-	placeholder = "search",
+	placeholder = "Search...",
 	style,
 	value
 }) => {
 	const classes = useStyles();
-
-	const intent: Intent = error ? "danger" : "none";
 
 	const onKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
 		(event) => {
@@ -71,10 +59,8 @@ export const SearchInput: FC<IProps> = ({
 
 	return (
 		<FormGroup
-			className={classnames(Classes.DARK, className)}
+			className={classnames(classes.root, Classes.DARK, className)}
 			disabled={disabled}
-			helperText={error}
-			intent={intent}
 			label={label}
 			labelInfo={labelInfo}
 			style={style}
@@ -84,13 +70,12 @@ export const SearchInput: FC<IProps> = ({
 					className={classes.input}
 					disabled={disabled}
 					leftIcon={icon as IconName}
-					intent={intent}
 					onChange={onChange}
 					onKeyDown={onKeyDown}
 					placeholder={placeholder}
 					value={value}
 				/>
-				<Button icon="arrow-right" intent="primary" onClick={onSubmit} />
+				<Button icon="arrow-right" onClick={onSubmit} />
 			</ControlGroup>
 		</FormGroup>
 	);

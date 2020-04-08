@@ -20,7 +20,7 @@ export const resendVerifyEmail = mutationField("resendVerifyEmail", {
 		const { email, id, username } = user;
 
 		const emailTemplate: string = createEmailHtml(VerifyEmail, {
-			confirmationLink: `${getBaseUrl()}/verifyEmail/${id}`,
+			confirmationLink: `${getBaseUrl()}/api/verifyEmail/${id}`,
 			username
 		});
 		const emailResponse: ISendEmailResponse = await sendEmail({
