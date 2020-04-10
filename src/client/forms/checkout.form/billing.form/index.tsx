@@ -1,61 +1,151 @@
 import {
 	CountrySelect,
 	CreditCardInput,
+	OrderSummary,
 	Paper,
 	RegionSelect,
 	TextInput
 } from "@/client/components";
-import { OrderSummary } from "@/client/components/order-summary.component";
+import { Context } from "@/client/forms/checkout.form/provider.component";
+import {
+	useCancelStripeSetupIntentMutation,
+	useCreateStripePaymentIntentMutation,
+	useCreateStripeSetupIntentMutation
+} from "@/client/graphql";
+import { useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
+import { Button, Spinner } from "@blueprintjs/core";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement, StripeCardElementChangeEvent } from "@stripe/stripe-js";
 import classnames from "classnames";
-import React, { FC, useCallback, useRef, useState } from "react";
+import React, { FC, useCallback, useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { string } from "yup";
 import { useStyles } from "./styles";
 
 export interface IBillingFormData {
-	address: string;
+	line1: string;
 	cardholder: string;
 	city: string;
 	country: string;
 	state: string;
-	zipcode: string;
-}
-
-export interface IOrderDetail {
-	item: {
-		value: any;
-		name: string;
-	};
-	quantity: number;
-	price: number;
+	postal_code: string;
 }
 
 interface IProps {
 	className?: string;
 	onBack: () => void;
-	onSubmit: (formData: IBillingFormData) => void;
-	orderDetails?: readonly IOrderDetail[];
+	onSubmit: () => void;
 }
 
 const validationResolver = getYupValidationResolver(() => ({
-	address: string().required(),
+	line1: string().required(),
 	cardholder: string().required(),
 	city: string().required(),
 	country: string().required(),
 	state: string().required(),
-	zipcode: string().required()
+	postal_code: string().required()
 }));
 
-export const BillingForm: FC<IProps> = ({
-	className,
-	onBack,
-	onSubmit: _onSubmit,
-	orderDetails = []
-}) => {
+const useOnSubmit = ({ onSubmit: _onSubmit }: IProps) => {
+	const { orderDetails, setBillingDetails, setCard, setClientSecret } = useContext(Context);
+
+	const [processing, setProcessing] = useState<boolean>(false);
+
+	const billingDataRef = useRef<IBillingFormData>();
+
+	const elements = useElements()!;
+	const stripe = useStripe()!;
+
+	const toaster = useToast();
+
+	const [cancelSetupIntent] = useCancelStripeSetupIntentMutation({
+		onCompleted: () => setProcessing(false)
+	});
+
+	const [createPaymentIntent] = useCreateStripePaymentIntentMutation({
+		onCompleted: (paymentIntentResult) => {
+			const { cardholder: name, ...address } = billingDataRef.current!;
+
+			const createdPaymentIntent = paymentIntentResult.createStripePaymentIntent;
+
+			if (
+				!createdPaymentIntent?.payment_method?.card ||
+				!createdPaymentIntent?.client_secret
+			) {
+				toaster.show({ message: "Failed to create transaction. Please try again later." });
+
+				return;
+			}
+
+			const selectedCard = createdPaymentIntent.payment_method.card;
+
+			setBillingDetails?.({ address, name });
+			setCard?.(selectedCard);
+			setClientSecret?.(createdPaymentIntent.client_secret);
+			setProcessing(false);
+
+			_onSubmit();
+		}
+	});
+
+	const [createSetupIntent] = useCreateStripeSetupIntentMutation({
+		onCompleted: async (setupIntentResult) => {
+			const { cardholder: name, ...address } = billingDataRef.current!;
+
+			const createdSetupIntent = setupIntentResult.createStripeSetupIntent;
+
+			/** Unexpected failure. Should not reach here. */
+			if (!createdSetupIntent?.client_secret) {
+				toaster.show({ message: "Failed to save payment data. Please try again later." });
+
+				return;
+			}
+
+			const cardElement: StripeCardElement = elements.getElement(CardElement)!;
+
+			const setupResult = await stripe.confirmCardSetup(createdSetupIntent.client_secret, {
+				payment_method: {
+					card: cardElement,
+					billing_details: { address, name }
+				}
+			});
+
+			/** Stripe failure. User must take action, depending on what stripe says. */
+			if (setupResult.error) {
+				toaster.show({ message: setupResult.error.message });
+
+				await cancelSetupIntent({ variables: { id: createdSetupIntent.id } });
+
+				return;
+			}
+
+			const paymentMethodId: string = setupResult.setupIntent!.payment_method!;
+
+			createPaymentIntent({ variables: { orderDetails, paymentMethodId } });
+		}
+	});
+
+	const onSubmit = useCallback(
+		(billingData: IBillingFormData) => {
+			billingDataRef.current = billingData;
+
+			setProcessing(true);
+
+			createSetupIntent();
+		},
+		[createSetupIntent]
+	);
+
+	return { onSubmit, processing };
+};
+
+export const BillingForm: FC<IProps> = (props) => {
+	const { className, onBack } = props;
+
 	const classes = useStyles();
+
+	const { orderDetails } = useContext(Context);
 
 	const [selectedCountry, setSelectedCountry] = useState<string>("US");
 	const [cardError, setCardError] = useState<Maybe<string>>(null);
@@ -71,6 +161,8 @@ export const BillingForm: FC<IProps> = ({
 	);
 
 	const cardElementRef = useRef<Maybe<StripeCardElement>>();
+
+	const { onSubmit: _onSubmit, processing } = useOnSubmit(props);
 
 	const onSubmit = useCallback(
 		(billingData: IBillingFormData) => {
@@ -102,10 +194,10 @@ export const BillingForm: FC<IProps> = ({
 							<TextInput
 								autoComplete="billing street-address"
 								control={control}
-								error={errors.address?.message}
+								error={errors.line1?.message}
 								inline={true}
 								label="Address"
-								name="address"
+								name="line1"
 								placeholder="Address"
 							/>
 							<TextInput
@@ -129,10 +221,10 @@ export const BillingForm: FC<IProps> = ({
 							<TextInput
 								autoComplete="billing postal-code"
 								control={control}
-								error={errors.zipcode?.message}
+								error={errors.postal_code?.message}
 								inline={true}
 								label="Zip/Postal Code"
-								name="zipcode"
+								name="postal_code"
 								placeholder="Zip/Postal Code"
 							/>
 						</div>
@@ -163,8 +255,9 @@ export const BillingForm: FC<IProps> = ({
 					<div className={classes.reviewOrderBtnContainer}>
 						<Button
 							className={classes.reviewOrderBtn}
+							disabled={processing}
 							intent="primary"
-							text="Review Order"
+							text={processing ? <Spinner /> : "Review Order"}
 							type="submit"
 						/>
 					</div>

@@ -1,3 +1,4 @@
+import { Context } from "@/client/forms/checkout.form/provider.component";
 import { action } from "@storybook/addon-actions";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import Faker from "faker";
@@ -16,21 +17,25 @@ A review-order step of the checkout flow.
 <Props of={ReviewOrderForm} />
 
 ## StandardStory
-export const checkoutData = {
-	orderDetails: [],
-	address: Faker.address.streetAddress(),
-	cardholder: Faker.name.findName(),
-	city: Faker.address.city(),
-	country: Faker.address.country(),
-	state: Faker.address.state(),
-	zipcode: Faker.address.zipCode()
+export const orderDetails = [];
+export const billingDetails = {
+	name: Faker.name.findName(),
+	address: {
+		city: Faker.address.city(),
+		country: Faker.address.country(),
+		line1: Faker.address.streetAddress(),
+		postal_code: Faker.address.zipCode(),
+		state: Faker.address.state()
+	}
 };
 
 <Preview>
 	<Story name="standard">
-		<div style={{ width: 800 }}>
-			<ReviewOrderForm onBack={action("onBack")} checkoutData={checkoutData} />
-		</div>
+		<Context value={{ orderDetails, billingDetails }}>
+			<div style={{ width: 800 }}>
+				<ReviewOrderForm onBack={action("onBack")} />
+			</div>
+		</Context>
 	</Story>
 </Preview>
 

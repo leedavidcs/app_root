@@ -7,6 +7,7 @@ export * from "./mock-apollo";
 export * from "./mocks";
 export * from "./resolvers";
 export * from "./schemas";
+export * from "./state";
 
 export interface IClientContext {
 	cache: InMemoryCache;

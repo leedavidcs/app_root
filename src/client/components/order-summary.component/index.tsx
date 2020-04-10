@@ -1,4 +1,5 @@
 import { Paper } from "@/client/components/paper.component";
+import { OrderDetailType } from "@/client/graphql";
 import classnames from "classnames";
 import React, { FC, ReactElement, useMemo } from "react";
 import { IOrderDetail, OrderDetail } from "./order-detail.component";
@@ -31,8 +32,15 @@ export const OrderSummary: FC<IProps> = ({ orderDetails = [], children, classNam
 		<Paper className={classnames(classes.root, className)}>
 			<h3>Order Summary</h3>
 			<div className={classes.content}>
-				{orderDetails.map(({ item, quantity, price }) => (
-					<OrderDetail key={item.value} item={item} quantity={quantity} price={price} />
+				{orderDetails.map(({ id, name, quantity, price }) => (
+					<OrderDetail
+						key={id}
+						id={id}
+						name={name}
+						quantity={quantity}
+						price={price}
+						type={OrderDetailType.PriceBundle}
+					/>
 				))}
 			</div>
 			<div className={classes.summary}>

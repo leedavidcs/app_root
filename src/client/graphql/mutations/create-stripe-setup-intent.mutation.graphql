@@ -1,0 +1,6 @@
+mutation CreateStripeSetupIntent {
+	createStripeSetupIntent {
+		id
+		client_secret
+	}
+}

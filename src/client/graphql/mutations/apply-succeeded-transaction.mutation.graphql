@@ -1,0 +1,5 @@
+mutation ApplySucceededTransaction($paymentIntentId: String!) {
+	applySucceededTransaction(paymentIntentId: $paymentIntentId) {
+		credits
+	}
+}

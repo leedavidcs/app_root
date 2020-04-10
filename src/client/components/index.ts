@@ -10,6 +10,7 @@ export * from "./kebab-menu.component";
 export * from "./list.component";
 export * from "./modal.component";
 export * from "./overlay.component";
+export * from "./order-summary.component";
 export * from "./pagination.component";
 export * from "./paper.component";
 export * from "./popover.component";
