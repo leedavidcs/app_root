@@ -2,7 +2,6 @@ import { GetViewerDocument, GetViewerQuery } from "@/client/graphql";
 import HttpStatus from "http-status-codes";
 import { NextPage, NextPageContext } from "next";
 import React from "react";
-import { withApollo } from "./with-apollo.hoc";
 
 const addUserToContext = (
 	user: GetViewerQuery["viewer"],
@@ -12,6 +11,14 @@ const addUserToContext = (
 	user
 });
 
+/**
+ * !Important - This requires the wrapped page to have `withApollo` with `options.ssr = true`
+ *
+ * @description Requires that a user is authenticated. If not, the user is redirected to
+ *     `/login`.
+ * @author David Lee
+ * @date April 10, 2020
+ */
 export const withAuth = <P extends Record<string, any>>() => (PageComponent: NextPage<P>) => {
 	const AuthedPage: NextPage<P, any> = (props) => <PageComponent {...props} />;
 
@@ -37,5 +44,5 @@ export const withAuth = <P extends Record<string, any>>() => (PageComponent: Nex
 		return { ...pageProps };
 	};
 
-	return withApollo<P>({ ssr: true })(AuthedPage);
+	return AuthedPage;
 };

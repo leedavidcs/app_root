@@ -5,11 +5,12 @@ import {
 	GetOneStockPortfolioQueryVariables,
 	useGetOneStockPortfolioQuery
 } from "@/client/graphql";
-import { withAuth } from "@/client/hocs";
+import { withApollo, withAuth } from "@/client/hocs";
 import { StockPortfolioEdit } from "@/client/page-parts/users/[userId]/stock-portfolios/[stockPortfolioId]/edit";
 import { CustomTheme } from "@/client/themes";
 import { StockPortfolioWhereUniqueInput } from "@prisma/client";
 import HttpStatus from "http-status-codes";
+import { flow } from "lodash";
 import { NextPage } from "next";
 import Error from "next/error";
 import { NextRouter, useRouter } from "next/router";
@@ -102,4 +103,6 @@ Page.getInitialProps = async ({ apolloClient, query, user }) => {
 	return {};
 };
 
-export default withAuth()(Page);
+const enhance = flow(withApollo({ ssr: true }), withAuth());
+
+export default enhance(Page);
