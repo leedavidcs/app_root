@@ -1,5 +1,5 @@
 import { PriceBundles } from "@/server/configs";
-import { UnexpectedError } from "@/server/utils";
+import { StripeUtil, UnexpectedError } from "@/server/utils";
 import { arg, enumType, inputObjectType, mutationField, stringArg } from "@nexus/schema";
 
 export const OrderDetailType = enumType({
@@ -69,9 +69,12 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 			{ price: 0, credits: 0 }
 		);
 
+		const currency = "usd";
+		const amount: number = StripeUtil.formatAmount(price, currency);
+
 		const paymentIntent = await stripe.paymentIntents.create({
-			amount: price,
-			currency: "usd",
+			amount,
+			currency,
 			customer: stripeDetails?.customerId,
 			payment_method: paymentMethodId
 		});

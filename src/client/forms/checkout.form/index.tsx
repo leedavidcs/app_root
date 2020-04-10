@@ -62,7 +62,7 @@ export const CheckoutForm: FC<IProps> = ({ className }) => {
 							/>
 						</Carousel.Slide>
 						<Carousel.Slide>
-							<ReviewOrderForm onBack={onBack} />
+							<ReviewOrderForm className={classes.reviewForm} onBack={onBack} />
 						</Carousel.Slide>
 					</Carousel>
 				</div>

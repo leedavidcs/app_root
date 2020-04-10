@@ -282,7 +282,7 @@ export interface NexusGenRootTypes {
     last4: string; // String!
   }
   StripePaymentIntent: { // root type
-    amount?: number | null; // Int
+    amount?: number | null; // Float
     client_secret?: string | null; // String
     created: number; // Int!
     currency?: string | null; // String
@@ -448,7 +448,7 @@ export interface NexusGenFieldTypes {
     last4: string; // String!
   }
   StripePaymentIntent: { // field return type
-    amount: number | null; // Int
+    amount: number | null; // Float
     client_secret: string | null; // String
     created: number; // Int!
     currency: string | null; // String

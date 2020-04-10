@@ -350,7 +350,7 @@ input StripeDetailsWhereInput {
 }
 
 type StripePaymentIntent {
-  amount: Int
+  amount: Float
   client_secret: String
   created: Int!
   currency: String

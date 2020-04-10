@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 10th 2020 12:41:45 am
+// This file was generated on: Apr 10th 2020 5:11:19 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -145,7 +145,7 @@ export type Mutation = RequestRoot & {
   readonly registerLocalUser?: Maybe<RegisterLocalUserPayload>;
   /** Resends the account verification email to the logged-in user */
   readonly resendVerifyEmail?: Maybe<ResendVerifyEmailPayload>;
-  readonly setToast: ReadonlyArray<Toast>;
+  readonly setToasts: ReadonlyArray<Toast>;
   readonly setUser?: Maybe<User>;
   readonly toggleModal: Scalars['Boolean'];
   readonly updateOneStockPortfolio?: Maybe<StockPortfolio>;
@@ -210,7 +210,7 @@ export type MutationRegisterLocalUserArgs = {
 
 
 /** Root mutation type */
-export type MutationSetToastArgs = {
+export type MutationSetToastsArgs = {
   toasts: ReadonlyArray<ToastInput>;
 };
 
@@ -245,7 +245,7 @@ export type Query = RequestRoot & {
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
   readonly stockSymbols: ReadonlyArray<StockDataSearch>;
-  readonly toast: ReadonlyArray<Toast>;
+  readonly toasts: ReadonlyArray<Toast>;
   readonly transactions: ReadonlyArray<Transaction>;
   readonly user?: Maybe<User>;
   /** The viewer of this request */
@@ -379,7 +379,7 @@ export type StripeCard = {
 export type StripePaymentIntent = {
   readonly __typename?: 'StripePaymentIntent';
   readonly id: Scalars['String'];
-  readonly amount?: Maybe<Scalars['Int']>;
+  readonly amount?: Maybe<Scalars['Float']>;
   readonly client_secret?: Maybe<Scalars['String']>;
   readonly currency?: Maybe<Scalars['String']>;
   readonly created: Scalars['Int'];
@@ -774,6 +774,19 @@ export type ResendVerifyEmailMutation = (
   )> }
 );
 
+export type SetToastsMutationVariables = {
+  toasts: ReadonlyArray<ToastInput>;
+};
+
+
+export type SetToastsMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly setToasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'message'>
+  )> }
+);
+
 export type SetUserMutationVariables = {
   user?: Maybe<UserInput>;
 };
@@ -825,6 +838,20 @@ export type GetDataKeyOptionsQuery = (
   & { readonly dataKeyOptions: ReadonlyArray<(
     { readonly __typename?: 'DataKeyOption' }
     & Pick<DataKeyOption, 'name' | 'dataKey' | 'provider'>
+  )> }
+);
+
+export type GetInitialAppLoadQueryVariables = {};
+
+
+export type GetInitialAppLoadQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly toasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'message'>
+  )>, readonly user?: Maybe<(
+    { readonly __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
   )> }
 );
 
@@ -1284,6 +1311,38 @@ export function useResendVerifyEmailMutation(baseOptions?: ApolloReactHooks.Muta
 export type ResendVerifyEmailMutationHookResult = ReturnType<typeof useResendVerifyEmailMutation>;
 export type ResendVerifyEmailMutationResult = ApolloReactCommon.MutationResult<ResendVerifyEmailMutation>;
 export type ResendVerifyEmailMutationOptions = ApolloReactCommon.BaseMutationOptions<ResendVerifyEmailMutation, ResendVerifyEmailMutationVariables>;
+export const SetToastsDocument = gql`
+    mutation SetToasts($toasts: [ToastInput!]!) {
+  setToasts(toasts: $toasts) @client {
+    message
+  }
+}
+    `;
+export type SetToastsMutationFn = ApolloReactCommon.MutationFunction<SetToastsMutation, SetToastsMutationVariables>;
+
+/**
+ * __useSetToastsMutation__
+ *
+ * To run a mutation, you first call `useSetToastsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetToastsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setToastsMutation, { data, loading, error }] = useSetToastsMutation({
+ *   variables: {
+ *      toasts: // value for 'toasts'
+ *   },
+ * });
+ */
+export function useSetToastsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetToastsMutation, SetToastsMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetToastsMutation, SetToastsMutationVariables>(SetToastsDocument, baseOptions);
+      }
+export type SetToastsMutationHookResult = ReturnType<typeof useSetToastsMutation>;
+export type SetToastsMutationResult = ApolloReactCommon.MutationResult<SetToastsMutation>;
+export type SetToastsMutationOptions = ApolloReactCommon.BaseMutationOptions<SetToastsMutation, SetToastsMutationVariables>;
 export const SetUserDocument = gql`
     mutation SetUser($user: UserInput) {
   setUser(user: $user) @client {
@@ -1422,6 +1481,44 @@ export function useGetDataKeyOptionsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetDataKeyOptionsQueryHookResult = ReturnType<typeof useGetDataKeyOptionsQuery>;
 export type GetDataKeyOptionsLazyQueryHookResult = ReturnType<typeof useGetDataKeyOptionsLazyQuery>;
 export type GetDataKeyOptionsQueryResult = ApolloReactCommon.QueryResult<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>;
+export const GetInitialAppLoadDocument = gql`
+    query GetInitialAppLoad {
+  toasts @client {
+    message
+  }
+  user @client {
+    id
+    email
+    emailVerified
+    username
+  }
+}
+    `;
+
+/**
+ * __useGetInitialAppLoadQuery__
+ *
+ * To run a query within a React component, call `useGetInitialAppLoadQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInitialAppLoadQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInitialAppLoadQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetInitialAppLoadQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>(GetInitialAppLoadDocument, baseOptions);
+      }
+export function useGetInitialAppLoadLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>(GetInitialAppLoadDocument, baseOptions);
+        }
+export type GetInitialAppLoadQueryHookResult = ReturnType<typeof useGetInitialAppLoadQuery>;
+export type GetInitialAppLoadLazyQueryHookResult = ReturnType<typeof useGetInitialAppLoadLazyQuery>;
+export type GetInitialAppLoadQueryResult = ApolloReactCommon.QueryResult<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>;
 export const GetManyStockPortfoliosDocument = gql`
     query GetManyStockPortfolios($first: Int, $after: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
   stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {

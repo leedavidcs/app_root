@@ -122,7 +122,16 @@ const useOnSubmit = ({ onSubmit: _onSubmit }: IProps) => {
 
 			const paymentMethodId: string = setupResult.setupIntent!.payment_method!;
 
-			createPaymentIntent({ variables: { orderDetails, paymentMethodId } });
+			createPaymentIntent({
+				variables: {
+					orderDetails: orderDetails.map(({ id, quantity, type }) => ({
+						id,
+						quantity,
+						type
+					})),
+					paymentMethodId
+				}
+			});
 		}
 	});
 
@@ -257,7 +266,9 @@ export const BillingForm: FC<IProps> = (props) => {
 							className={classes.reviewOrderBtn}
 							disabled={processing}
 							intent="primary"
-							text={processing ? <Spinner /> : "Review Order"}
+							text={
+								processing ? <Spinner size={Spinner.SIZE_SMALL} /> : "Review Order"
+							}
 							type="submit"
 						/>
 					</div>

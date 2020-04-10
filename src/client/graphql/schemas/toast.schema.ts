@@ -10,10 +10,10 @@ export default gql`
 	}
 
 	extend type Mutation {
-		setToast(toasts: [ToastInput!]!): [Toast!]!
+		setToasts(toasts: [ToastInput!]!): [Toast!]!
 	}
 
 	extend type Query {
-		toast: [Toast!]!
+		toasts: [Toast!]!
 	}
 `;

@@ -33,9 +33,9 @@ const useOnQuery = ({
 	return [query, onQuery];
 };
 
-const toDate = (value: Maybe<string | Date>): Date | undefined => {
+const toDate = (value: Maybe<string | Date>): Date | null => {
 	if (isNil(value)) {
-		return undefined;
+		return null;
 	}
 
 	if (typeof value === "string") {

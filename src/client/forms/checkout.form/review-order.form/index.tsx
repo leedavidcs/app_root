@@ -1,15 +1,17 @@
 import { Paper } from "@/client/components";
 import { OrderSummary } from "@/client/components/order-summary.component";
 import { Context } from "@/client/forms/checkout.form/provider.component";
-import { useApplySucceededTransactionMutation } from "@/client/graphql";
+import { useApplySucceededTransactionMutation, useSetToastsMutation } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
 import { Button, FormGroup, Icon, Spinner } from "@blueprintjs/core";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
+	className?: string;
 	onBack: () => void;
 }
 
@@ -25,13 +27,14 @@ const useOnSubmit = () => {
 
 	const router: NextRouter = useRouter();
 
+	const [setToasts] = useSetToastsMutation({ onCompleted: () => router.push("/") });
+
 	const [applyTransaction] = useApplySucceededTransactionMutation({
 		onCompleted: (transactionResult) => {
 			const balance = transactionResult.applySucceededTransaction!;
+			const message = `Success! Your balance is now: ${balance.credits}`;
 
-			const successMessage = `Success! Your balance is now: ${balance.credits}`;
-
-			router.push("/");
+			setToasts({ variables: { toasts: [{ message }] } });
 		}
 	});
 
@@ -62,18 +65,22 @@ const useOnSubmit = () => {
 	return { onSubmit, processing };
 };
 
-export const ReviewOrderForm: FC<IProps> = ({ onBack }) => {
+export const ReviewOrderForm: FC<IProps> = ({ className, onBack }) => {
 	const classes = useStyles();
 
-	const { orderDetails, billingDetails } = useContext(Context);
-
-	const { name } = billingDetails!;
-	const { city, country, line1, postal_code, state } = billingDetails!.address!;
+	const { billingDetails, card, orderDetails } = useContext(Context);
 
 	const { onSubmit, processing } = useOnSubmit();
 
+	if (!billingDetails?.address || !card) {
+		return null;
+	}
+
+	const { address, name } = billingDetails;
+	const { city, country, line1, postal_code, state } = address!;
+
 	return (
-		<div className={classes.root}>
+		<div className={classnames(className, classes.root)}>
 			<div className={classes.container}>
 				<div className={classes.inputsContainer}>
 					<Paper className={classes.section}>
@@ -105,7 +112,9 @@ export const ReviewOrderForm: FC<IProps> = ({ onBack }) => {
 							<FormGroup inline={true} label="Card details">
 								<div className={classes.creditCardDetails}>
 									<Icon icon="credit-card" />
-									<div className={classes.creditCard}>(Not shown in review)</div>
+									<div className={classes.creditCard}>
+										Card ending in {card.last4}
+									</div>
 								</div>
 							</FormGroup>
 						</div>
@@ -118,12 +127,14 @@ export const ReviewOrderForm: FC<IProps> = ({ onBack }) => {
 							disabled={processing}
 							intent="primary"
 							onClick={onSubmit}
-							text={processing ? <Spinner /> : "Place Order"}
+							text={
+								processing ? <Spinner size={Spinner.SIZE_SMALL} /> : "Place Order"
+							}
 						/>
 					</div>
 				</OrderSummary>
 			</div>
-			<Button intent="primary" onClick={onBack} text="Back" />
+			<Button className={classes.backBtn} intent="primary" onClick={onBack} text="Back" />
 		</div>
 	);
 };

@@ -4,7 +4,7 @@ export const StripePaymentIntent = objectType({
 	name: "StripePaymentIntent",
 	definition: (t) => {
 		t.string("id", { nullable: false });
-		t.int("amount");
+		t.float("amount");
 		t.string("client_secret");
 		t.string("currency");
 		t.int("created", { nullable: false });
@@ -25,14 +25,14 @@ export const StripePaymentIntent = objectType({
 					return false;
 				}
 
-				const setupIntent = await stripe.setupIntents.retrieve(id);
+				const paymentIntent = await stripe.paymentIntents.retrieve(id);
 
-				return setupIntent.customer === customerId;
+				return paymentIntent.customer === customerId;
 			},
 			resolve: async ({ id }, args, { stripe }) => {
-				const setupIntent = await stripe.setupIntents.retrieve(id);
+				const paymentIntent = await stripe.paymentIntents.retrieve(id);
 
-				const paymentMethod = setupIntent.payment_method;
+				const paymentMethod = paymentIntent.payment_method;
 
 				if (typeof paymentMethod !== "string") {
 					return paymentMethod;
