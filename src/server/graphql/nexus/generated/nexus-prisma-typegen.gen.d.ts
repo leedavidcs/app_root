@@ -258,7 +258,7 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolios' | 'balances' | 'transactions' | 'stripeDetailses' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
@@ -280,19 +280,19 @@ interface NexusPrismaInputs {
 
   },
     User: {
-    stockPortfolios: {
+    stockPortfolio: {
   filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
-    balances: {
+    balance: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'user' | 'userId' | 'credits'
 }
-    transactions: {
+    transaction: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
-    stripeDetailses: {
+    stripeDetails: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'user' | 'userId' | 'customerId'
 }
@@ -367,10 +367,10 @@ interface NexusPrismaTypes {
     username: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    stockPortfolios: 'StockPortfolio'
-    balances: 'Balance'
-    transactions: 'Transaction'
-    stripeDetailses: 'StripeDetails'
+    stockPortfolio: 'StockPortfolio'
+    balance: 'Balance'
+    transaction: 'Transaction'
+    stripeDetails: 'StripeDetails'
 
 },  StockPortfolio: {
     id: 'String'
