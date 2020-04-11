@@ -1,9 +1,28 @@
+import { CheckoutForm } from "@/client/forms/checkout.form";
 import { withAuth } from "@/client/hocs";
+import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import React from "react";
+import { createUseStyles } from "react-jss";
+
+const styles = (theme: CustomTheme) => ({
+	root: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center"
+	}
+});
+
+const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
 const Page: NextPage = () => {
-	return <main>Pricing page works~!</main>;
+	const classes = useStyles();
+
+	return (
+		<main className={classes.root}>
+			<CheckoutForm />
+		</main>
+	);
 };
 
 export default withAuth()(Page);
