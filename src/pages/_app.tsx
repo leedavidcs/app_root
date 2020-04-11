@@ -11,7 +11,7 @@ import Head from "next/head";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-const stripePublishable: string = process.env.REACT_APP_STRIPE_PUBLISHABLE || "";
+const stripePublishable: string = process.env.STRIPE_PUBLISHABLE || "";
 const stripePromise = loadStripe(stripePublishable);
 
 const App: NextComponentType<AppContext, AppInitialProps, AppProps> = ({
