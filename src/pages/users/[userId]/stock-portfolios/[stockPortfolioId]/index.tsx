@@ -3,13 +3,12 @@ import {
 	StockPortfolioWhereUniqueInput,
 	useGetOneStockPortfolioQuery
 } from "@/client/graphql";
-import { withApollo, withAuth } from "@/client/hocs";
+import { withAuth } from "@/client/hocs";
 import { StockPortfolioDisplay } from "@/client/page-parts/users/[userId]/stock-portfolios/[stockPortfolioId]";
 import { CustomTheme } from "@/client/themes";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import HttpStatus from "http-status-codes";
-import { flow } from "lodash";
 import { NextPage } from "next";
 import Error from "next/error";
 import { NextRouter, useRouter } from "next/router";
@@ -63,6 +62,4 @@ export const Page: NextPage = () => {
 	);
 };
 
-const enhance = flow(withApollo({ ssr: true }), withAuth());
-
-export default enhance(Page);
+export default withAuth()(Page);

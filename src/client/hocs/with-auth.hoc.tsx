@@ -2,6 +2,7 @@ import { GetViewerDocument, GetViewerQuery } from "@/client/graphql";
 import HttpStatus from "http-status-codes";
 import { NextPage, NextPageContext } from "next";
 import React from "react";
+import { withApollo } from "./with-apollo.hoc";
 
 const addUserToContext = (
 	user: GetViewerQuery["viewer"],
@@ -44,5 +45,5 @@ export const withAuth = <P extends Record<string, any>>() => (PageComponent: Nex
 		return { ...pageProps };
 	};
 
-	return AuthedPage;
+	return withApollo({ ssr: true })(AuthedPage);
 };
