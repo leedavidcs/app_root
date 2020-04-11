@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 2nd 2020 4:53:11 pm
+// This file was generated on: Apr 11th 2020 3:37:04 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -11,143 +11,232 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
   EmailAddress: any;
-  DateTime: any;
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
+  /** The plain-text password of a user to be hashed */
   UserPassword: any;
-};
-
-
-export type BalanceFilter = {
-  readonly every?: Maybe<BalanceWhereInput>;
-  readonly some?: Maybe<BalanceWhereInput>;
-  readonly none?: Maybe<BalanceWhereInput>;
-};
-
-export type BalanceWhereInput = {
-  readonly userId?: Maybe<StringFilter>;
-  readonly credits?: Maybe<IntFilter>;
-  readonly AND?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-};
-
-export type BooleanFilter = {
-  readonly equals?: Maybe<Scalars['Boolean']>;
-  readonly not?: Maybe<Scalars['Boolean']>;
-};
-
-export enum DataKey_Provider {
-  IexCloud = 'IEX_CLOUD'
-}
-
-export type DataKeyOption = {
-  readonly __typename?: 'DataKeyOption';
-  readonly name: Scalars['String'];
-  readonly dataKey: Scalars['String'];
-  readonly provider: DataKey_Provider;
-};
-
-
-export type DateTimeFilter = {
-  readonly equals?: Maybe<Scalars['DateTime']>;
-  readonly not?: Maybe<Scalars['DateTime']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
-  readonly lt?: Maybe<Scalars['DateTime']>;
-  readonly lte?: Maybe<Scalars['DateTime']>;
-  readonly gt?: Maybe<Scalars['DateTime']>;
-  readonly gte?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type IntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
+  DateTime: any;
 };
 
 
 export type LoginLocalUserInput = {
+  /** The email or username (either) of the user */
   readonly userIdentifier: Scalars['String'];
+  /** The user's decrypted password */
   readonly password: Scalars['String'];
 };
 
+export type RefreshAccessTokenInput = {
+  /** The refresh token, that is used to refresh the access token */
+  readonly refreshToken: Scalars['String'];
+};
+
+export type RegisterLocalUserInput = {
+  /** (Unique) The user's email */
+  readonly email: Scalars['EmailAddress'];
+  /** The user's decrypted password */
+  readonly password: Scalars['UserPassword'];
+  /** (Unique) The user's username */
+  readonly username: Scalars['String'];
+};
+
+/** The response object from a local register user request */
+export type RegisterLocalUserPayload = {
+  readonly __typename?: 'RegisterLocalUserPayload';
+  /** Whether the registration successfully created a user or not */
+  readonly success: Scalars['Boolean'];
+  /** An error will be described if success is false */
+  readonly error?: Maybe<Scalars['String']>;
+  /** The user object */
+  readonly user?: Maybe<User>;
+};
+
+/** The response object from a resend verify email request */
+export type ResendVerifyEmailPayload = {
+  readonly __typename?: 'ResendVerifyEmailPayload';
+  /** Status, on whether the email was successfully resent */
+  readonly success: Scalars['Boolean'];
+};
+
+export type StockPortfolioCreateInput = {
+  readonly name: Scalars['String'];
+};
+
+export type StockPortfolioUpdateInput = {
+  readonly name?: Maybe<Scalars['String']>;
+  readonly headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
+  readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
+export enum OrderDetailType {
+  PriceBundle = 'PriceBundle'
+}
+
+export type OrderDetailInput = {
+  readonly type: OrderDetailType;
+  readonly id: Scalars['String'];
+  readonly quantity?: Maybe<Scalars['Int']>;
+};
+
+export type AddressInput = {
+  readonly line1: Scalars['String'];
+  readonly city?: Maybe<Scalars['String']>;
+  readonly country?: Maybe<Scalars['String']>;
+  readonly zipcode?: Maybe<Scalars['String']>;
+  readonly state?: Maybe<Scalars['String']>;
+};
+
+/** The response from a successful login or token refresh request */
+export type TokenPayload = {
+  readonly __typename?: 'TokenPayload';
+  /** JSON web token to authenticate API requests */
+  readonly token: Scalars['String'];
+  /** JSON web token to refresh the token */
+  readonly refreshToken: Scalars['String'];
+};
+
+export type Balance = {
+  readonly __typename?: 'Balance';
+  readonly credits: Scalars['Int'];
+  readonly user: User;
+};
+
+/** A single data key option that can be selected for a stock portfolio header */
+export type DataKeyOption = {
+  readonly __typename?: 'DataKeyOption';
+  /** A more normal name. This can be shown to users. */
+  readonly name: Scalars['String'];
+  /** A unique data key for fetching stock portfolio data */
+  readonly dataKey: Scalars['String'];
+  /** The name of the provider */
+  readonly provider: DataKey_Provider;
+};
+
+/** The provider for the data provided by the data key */
+export enum DataKey_Provider {
+  /** IEX Cloud (see `https://iexcloud.io/`) */
+  IexCloud = 'IEX_CLOUD'
+}
+
+export type PriceBundle = {
+  readonly __typename?: 'PriceBundle';
+  readonly id: Scalars['String'];
+  readonly price: Scalars['Float'];
+  readonly credits: Scalars['Int'];
+};
+
+/** Root mutation type */
 export type Mutation = RequestRoot & {
   readonly __typename?: 'Mutation';
+  readonly applySucceededTransaction?: Maybe<Balance>;
+  readonly cancelStripeSetupIntent?: Maybe<StripeSetupIntent>;
+  readonly cancelTransaction?: Maybe<Balance>;
   readonly createOneStockPortfolio: StockPortfolio;
+  readonly createStripePaymentIntent?: Maybe<StripePaymentIntent>;
+  readonly createStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
+  /** Logins in the user, and returns an expiring access token */
   readonly loginLocalUser?: Maybe<TokenPayload>;
+  /** Refreshes the currently logged-in user's access token */
   readonly refreshAccessToken?: Maybe<TokenPayload>;
+  /** Performs local auth registration (custom username + password) */
   readonly registerLocalUser?: Maybe<RegisterLocalUserPayload>;
+  /** Resends the account verification email to the logged-in user */
   readonly resendVerifyEmail?: Maybe<ResendVerifyEmailPayload>;
+  readonly setToasts: ReadonlyArray<Toast>;
   readonly setUser?: Maybe<User>;
   readonly toggleModal: Scalars['Boolean'];
   readonly updateOneStockPortfolio?: Maybe<StockPortfolio>;
+  /** The viewer of this request */
   readonly viewer?: Maybe<User>;
 };
 
 
+/** Root mutation type */
+export type MutationApplySucceededTransactionArgs = {
+  paymentIntentId: Scalars['String'];
+};
+
+
+/** Root mutation type */
+export type MutationCancelStripeSetupIntentArgs = {
+  id: Scalars['String'];
+};
+
+
+/** Root mutation type */
+export type MutationCancelTransactionArgs = {
+  paymentIntentId: Scalars['String'];
+};
+
+
+/** Root mutation type */
 export type MutationCreateOneStockPortfolioArgs = {
   data: StockPortfolioCreateInput;
 };
 
 
+/** Root mutation type */
+export type MutationCreateStripePaymentIntentArgs = {
+  orderDetails: ReadonlyArray<OrderDetailInput>;
+  paymentMethodId: Scalars['String'];
+};
+
+
+/** Root mutation type */
 export type MutationDeleteOneStockPortfolioArgs = {
   where: StockPortfolioWhereUniqueInput;
 };
 
 
+/** Root mutation type */
 export type MutationLoginLocalUserArgs = {
   input: LoginLocalUserInput;
 };
 
 
+/** Root mutation type */
 export type MutationRefreshAccessTokenArgs = {
   input: RefreshAccessTokenInput;
 };
 
 
+/** Root mutation type */
 export type MutationRegisterLocalUserArgs = {
   input: RegisterLocalUserInput;
 };
 
 
+/** Root mutation type */
+export type MutationSetToastsArgs = {
+  toasts: ReadonlyArray<ToastInput>;
+};
+
+
+/** Root mutation type */
 export type MutationSetUserArgs = {
   user?: Maybe<UserInput>;
 };
 
 
+/** Root mutation type */
 export type MutationToggleModalArgs = {
   force?: Maybe<Scalars['Boolean']>;
 };
 
 
+/** Root mutation type */
 export type MutationUpdateOneStockPortfolioArgs = {
   data: StockPortfolioUpdateInput;
   where: StockPortfolioWhereUniqueInput;
 };
 
-export enum OrderByArg {
-  Asc = 'asc',
-  Desc = 'desc'
-}
-
-export type PriceBundle = {
-  readonly __typename?: 'PriceBundle';
-  readonly id: Scalars['Int'];
-  readonly price: Scalars['Float'];
-  readonly credits: Scalars['Int'];
-};
-
+/** Root query type */
 export type Query = RequestRoot & {
   readonly __typename?: 'Query';
+  /** Retrieves the list of data key options for a stock portfolio header. All filters are 		OR'ed. */
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
   readonly modal: Scalars['Boolean'];
   readonly priceBundles: ReadonlyArray<PriceBundle>;
@@ -156,11 +245,15 @@ export type Query = RequestRoot & {
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
   readonly stockSymbols: ReadonlyArray<StockDataSearch>;
+  readonly toasts: ReadonlyArray<Toast>;
+  readonly transactions: ReadonlyArray<Transaction>;
   readonly user?: Maybe<User>;
+  /** The viewer of this request */
   readonly viewer?: Maybe<User>;
 };
 
 
+/** Root query type */
 export type QueryDataKeyOptionsArgs = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
@@ -168,23 +261,27 @@ export type QueryDataKeyOptionsArgs = {
 };
 
 
+/** Root query type */
 export type QueryStockDataArgs = {
   tickers: ReadonlyArray<Scalars['String']>;
   dataKeys: ReadonlyArray<Scalars['String']>;
 };
 
 
+/** Root query type */
 export type QueryStockPortfolioArgs = {
   where: StockPortfolioWhereUniqueInput;
 };
 
 
+/** Root query type */
 export type QueryStockPortfolioCountArgs = {
   where?: Maybe<StockPortfolioWhereInput>;
   query?: Maybe<Scalars['String']>;
 };
 
 
+/** Root query type */
 export type QueryStockPortfoliosArgs = {
   after?: Maybe<StockPortfolioWhereUniqueInput>;
   before?: Maybe<StockPortfolioWhereUniqueInput>;
@@ -197,35 +294,31 @@ export type QueryStockPortfoliosArgs = {
 };
 
 
+/** Root query type */
 export type QueryStockSymbolsArgs = {
   text: Scalars['String'];
 };
 
-export type RefreshAccessTokenInput = {
-  readonly refreshToken: Scalars['String'];
+
+/** Root query type */
+export type QueryTransactionsArgs = {
+  where?: Maybe<TransactionWhereInput>;
+  orderBy?: Maybe<TransactionOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<TransactionWhereUniqueInput>;
+  before?: Maybe<TransactionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
-export type RegisterLocalUserInput = {
-  readonly email: Scalars['EmailAddress'];
-  readonly password: Scalars['UserPassword'];
-  readonly username: Scalars['String'];
-};
-
-export type RegisterLocalUserPayload = {
-  readonly __typename?: 'RegisterLocalUserPayload';
-  readonly success: Scalars['Boolean'];
-  readonly error?: Maybe<Scalars['String']>;
-  readonly user?: Maybe<User>;
-};
-
+/** Common properties for Query, Mutation and Subscription types */
 export type RequestRoot = {
+  /** The viewer of this request */
   readonly viewer?: Maybe<User>;
 };
 
-export type ResendVerifyEmailPayload = {
-  readonly __typename?: 'ResendVerifyEmailPayload';
-  readonly success: Scalars['Boolean'];
-};
+
+
 
 export type StockData = {
   readonly __typename?: 'StockData';
@@ -243,26 +336,12 @@ export type StockDataSearch = {
   readonly exchange: Scalars['String'];
 };
 
-export type StockPortfolio = {
-  readonly __typename?: 'StockPortfolio';
-  readonly id: Scalars['String'];
-  readonly user: User;
+export type StockPortfolioHeaderInput = {
   readonly name: Scalars['String'];
-  readonly headers: ReadonlyArray<StockPortfolioHeader>;
-  readonly tickers: ReadonlyArray<Scalars['String']>;
-  readonly stockData?: Maybe<StockData>;
-  readonly createdAt: Scalars['DateTime'];
-  readonly updatedAt: Scalars['DateTime'];
-};
-
-export type StockPortfolioCreateInput = {
-  readonly name: Scalars['String'];
-};
-
-export type StockPortfolioFilter = {
-  readonly every?: Maybe<StockPortfolioWhereInput>;
-  readonly some?: Maybe<StockPortfolioWhereInput>;
-  readonly none?: Maybe<StockPortfolioWhereInput>;
+  readonly dataKey: Scalars['String'];
+  readonly width: Scalars['Int'];
+  readonly frozen: Scalars['Boolean'];
+  readonly resizable: Scalars['Boolean'];
 };
 
 export type StockPortfolioHeader = {
@@ -274,27 +353,79 @@ export type StockPortfolioHeader = {
   readonly width: Scalars['Int'];
 };
 
-export type StockPortfolioHeaderInput = {
+/** StockPortfolio entity. This is what gets shown on the data grid */
+export type StockPortfolio = {
+  readonly __typename?: 'StockPortfolio';
+  readonly id: Scalars['String'];
+  readonly user: User;
   readonly name: Scalars['String'];
-  readonly dataKey: Scalars['String'];
-  readonly width: Scalars['Int'];
-  readonly frozen: Scalars['Boolean'];
-  readonly resizable: Scalars['Boolean'];
+  readonly headers: ReadonlyArray<StockPortfolioHeader>;
+  readonly tickers: ReadonlyArray<Scalars['String']>;
+  /** The data that gets resolved based on headers and tickers */
+  readonly stockData?: Maybe<StockData>;
+  readonly createdAt: Scalars['DateTime'];
+  readonly updatedAt: Scalars['DateTime'];
 };
 
-export type StockPortfolioOrderByInput = {
-  readonly id?: Maybe<OrderByArg>;
-  readonly user?: Maybe<OrderByArg>;
-  readonly userId?: Maybe<OrderByArg>;
-  readonly name?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-  readonly updatedAt?: Maybe<OrderByArg>;
+export type StripeCard = {
+  readonly __typename?: 'StripeCard';
+  readonly brand: Scalars['String'];
+  readonly fingerprint?: Maybe<Scalars['String']>;
+  readonly last4: Scalars['String'];
+  readonly exp_month: Scalars['Int'];
+  readonly exp_year: Scalars['Int'];
 };
 
-export type StockPortfolioUpdateInput = {
-  readonly name?: Maybe<Scalars['String']>;
-  readonly headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
-  readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
+export type StripePaymentIntent = {
+  readonly __typename?: 'StripePaymentIntent';
+  readonly id: Scalars['String'];
+  readonly amount?: Maybe<Scalars['Float']>;
+  readonly client_secret?: Maybe<Scalars['String']>;
+  readonly currency?: Maybe<Scalars['String']>;
+  readonly created: Scalars['Int'];
+  readonly payment_method?: Maybe<StripePaymentMethod>;
+};
+
+export type StripePaymentMethod = {
+  readonly __typename?: 'StripePaymentMethod';
+  readonly id: Scalars['String'];
+  readonly card?: Maybe<StripeCard>;
+  readonly created: Scalars['Int'];
+};
+
+export type StripeSetupIntent = {
+  readonly __typename?: 'StripeSetupIntent';
+  readonly id: Scalars['String'];
+  readonly client_secret?: Maybe<Scalars['String']>;
+  readonly payment_method?: Maybe<StripePaymentMethod>;
+  readonly created: Scalars['Int'];
+};
+
+export type Transaction = {
+  readonly __typename?: 'Transaction';
+  readonly id: Scalars['String'];
+  readonly creditsBefore: Scalars['Int'];
+  readonly creditsTransacted: Scalars['Int'];
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
+  readonly paymentIntent?: Maybe<StripePaymentIntent>;
+  readonly user: User;
+};
+
+/** Basic user of the application */
+export type User = {
+  readonly __typename?: 'User';
+  readonly id: Scalars['String'];
+  /** The user's email */
+  readonly email: Scalars['EmailAddress'];
+  readonly emailVerified: Scalars['Boolean'];
+  readonly username: Scalars['String'];
+  readonly createdAt: Scalars['DateTime'];
+  readonly updatedAt: Scalars['DateTime'];
+};
+
+export type StockPortfolioWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+  readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
 };
 
 export type StockPortfolioWhereInput = {
@@ -309,9 +440,49 @@ export type StockPortfolioWhereInput = {
   readonly user?: Maybe<UserWhereInput>;
 };
 
-export type StockPortfolioWhereUniqueInput = {
+export type StockPortfolioOrderByInput = {
+  readonly id?: Maybe<OrderByArg>;
+  readonly user?: Maybe<OrderByArg>;
+  readonly userId?: Maybe<OrderByArg>;
+  readonly name?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+  readonly updatedAt?: Maybe<OrderByArg>;
+};
+
+export type TransactionWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<TransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
+
+export type TransactionOrderByInput = {
+  readonly id?: Maybe<OrderByArg>;
+  readonly user?: Maybe<OrderByArg>;
+  readonly userId?: Maybe<OrderByArg>;
+  readonly creditsBefore?: Maybe<OrderByArg>;
+  readonly creditsTransacted?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+  readonly paymentIntentId?: Maybe<OrderByArg>;
+  readonly status?: Maybe<OrderByArg>;
+};
+
+export type TransactionWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
-  readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
+};
+
+
+export type UserIdNameCompoundUniqueInput = {
+  readonly userId: Scalars['String'];
+  readonly name: Scalars['String'];
 };
 
 export type StringFilter = {
@@ -328,10 +499,85 @@ export type StringFilter = {
   readonly endsWith?: Maybe<Scalars['String']>;
 };
 
-export type TokenPayload = {
-  readonly __typename?: 'TokenPayload';
-  readonly token: Scalars['String'];
-  readonly refreshToken: Scalars['String'];
+export type DateTimeFilter = {
+  readonly equals?: Maybe<Scalars['DateTime']>;
+  readonly not?: Maybe<Scalars['DateTime']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly lt?: Maybe<Scalars['DateTime']>;
+  readonly lte?: Maybe<Scalars['DateTime']>;
+  readonly gt?: Maybe<Scalars['DateTime']>;
+  readonly gte?: Maybe<Scalars['DateTime']>;
+};
+
+export type UserWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly email?: Maybe<StringFilter>;
+  readonly emailVerified?: Maybe<BooleanFilter>;
+  readonly password?: Maybe<StringFilter>;
+  readonly username?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly stockPortfolio?: Maybe<StockPortfolioFilter>;
+  readonly balance?: Maybe<BalanceFilter>;
+  readonly transaction?: Maybe<TransactionFilter>;
+  readonly stripeDetails?: Maybe<StripeDetailsFilter>;
+  readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
+};
+
+export enum OrderByArg {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type IntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
+
+export type NullableStringFilter = {
+  readonly equals?: Maybe<Scalars['String']>;
+  readonly not?: Maybe<Scalars['String']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly lt?: Maybe<Scalars['String']>;
+  readonly lte?: Maybe<Scalars['String']>;
+  readonly gt?: Maybe<Scalars['String']>;
+  readonly gte?: Maybe<Scalars['String']>;
+  readonly contains?: Maybe<Scalars['String']>;
+  readonly startsWith?: Maybe<Scalars['String']>;
+  readonly endsWith?: Maybe<Scalars['String']>;
+};
+
+export enum TransactionStatus {
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Succeeded = 'SUCCEEDED'
+}
+
+export type BooleanFilter = {
+  readonly equals?: Maybe<Scalars['Boolean']>;
+  readonly not?: Maybe<Scalars['Boolean']>;
+};
+
+export type StockPortfolioFilter = {
+  readonly every?: Maybe<StockPortfolioWhereInput>;
+  readonly some?: Maybe<StockPortfolioWhereInput>;
+  readonly none?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type BalanceFilter = {
+  readonly every?: Maybe<BalanceWhereInput>;
+  readonly some?: Maybe<BalanceWhereInput>;
+  readonly none?: Maybe<BalanceWhereInput>;
 };
 
 export type TransactionFilter = {
@@ -340,31 +586,39 @@ export type TransactionFilter = {
   readonly none?: Maybe<TransactionWhereInput>;
 };
 
-export type TransactionWhereInput = {
-  readonly id?: Maybe<StringFilter>;
+export type StripeDetailsFilter = {
+  readonly every?: Maybe<StripeDetailsWhereInput>;
+  readonly some?: Maybe<StripeDetailsWhereInput>;
+  readonly none?: Maybe<StripeDetailsWhereInput>;
+};
+
+export type BalanceWhereInput = {
   readonly userId?: Maybe<StringFilter>;
-  readonly creditsBefore?: Maybe<IntFilter>;
-  readonly creditsTransacted?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly credits?: Maybe<IntFilter>;
+  readonly AND?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<BalanceWhereInput>>;
   readonly user?: Maybe<UserWhereInput>;
 };
 
-export type User = {
-  readonly __typename?: 'User';
-  readonly id: Scalars['String'];
-  readonly email: Scalars['EmailAddress'];
-  readonly emailVerified: Scalars['Boolean'];
-  readonly username: Scalars['String'];
-  readonly createdAt: Scalars['DateTime'];
-  readonly updatedAt: Scalars['DateTime'];
+export type StripeDetailsWhereInput = {
+  readonly userId?: Maybe<StringFilter>;
+  readonly customerId?: Maybe<StringFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
 };
 
-export type UserIdNameCompoundUniqueInput = {
-  readonly userId: Scalars['String'];
-  readonly name: Scalars['String'];
+export type Toast = {
+  readonly __typename?: 'Toast';
+  readonly intent?: Maybe<Scalars['String']>;
+  readonly message: Scalars['String'];
+};
+
+export type ToastInput = {
+  readonly intent?: Maybe<Scalars['String']>;
+  readonly message: Scalars['String'];
 };
 
 export type UserInput = {
@@ -378,22 +632,37 @@ export type UserInput = {
   readonly username: Scalars['String'];
 };
 
-
-export type UserWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly email?: Maybe<StringFilter>;
-  readonly emailVerified?: Maybe<BooleanFilter>;
-  readonly password?: Maybe<StringFilter>;
-  readonly username?: Maybe<StringFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly stockPortfolios?: Maybe<StockPortfolioFilter>;
-  readonly balances?: Maybe<BalanceFilter>;
-  readonly transactions?: Maybe<TransactionFilter>;
-  readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
+export type ApplySucceededTransactionMutationVariables = {
+  paymentIntentId: Scalars['String'];
 };
+
+
+export type ApplySucceededTransactionMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly applySucceededTransaction?: Maybe<(
+    { readonly __typename?: 'Balance' }
+    & Pick<Balance, 'credits'>
+  )> }
+);
+
+export type CancelStripeSetupIntentMutationVariables = {
+  id: Scalars['String'];
+};
+
+
+export type CancelStripeSetupIntentMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly cancelStripeSetupIntent?: Maybe<(
+    { readonly __typename?: 'StripeSetupIntent' }
+    & { readonly payment_method?: Maybe<(
+      { readonly __typename?: 'StripePaymentMethod' }
+      & { readonly card?: Maybe<(
+        { readonly __typename?: 'StripeCard' }
+        & Pick<StripeCard, 'brand' | 'fingerprint' | 'last4' | 'exp_month' | 'exp_year'>
+      )> }
+    )> }
+  )> }
+);
 
 export type CreateStockPortfolioMutationVariables = {
   name: Scalars['String'];
@@ -406,6 +675,38 @@ export type CreateStockPortfolioMutation = (
     { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name'>
   ) }
+);
+
+export type CreateStripePaymentIntentMutationVariables = {
+  orderDetails: ReadonlyArray<OrderDetailInput>;
+  paymentMethodId: Scalars['String'];
+};
+
+
+export type CreateStripePaymentIntentMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly createStripePaymentIntent?: Maybe<(
+    { readonly __typename?: 'StripePaymentIntent' }
+    & Pick<StripePaymentIntent, 'amount' | 'client_secret'>
+    & { readonly payment_method?: Maybe<(
+      { readonly __typename?: 'StripePaymentMethod' }
+      & { readonly card?: Maybe<(
+        { readonly __typename?: 'StripeCard' }
+        & Pick<StripeCard, 'brand' | 'fingerprint' | 'last4' | 'exp_month' | 'exp_year'>
+      )> }
+    )> }
+  )> }
+);
+
+export type CreateStripeSetupIntentMutationVariables = {};
+
+
+export type CreateStripeSetupIntentMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly createStripeSetupIntent?: Maybe<(
+    { readonly __typename?: 'StripeSetupIntent' }
+    & Pick<StripeSetupIntent, 'id' | 'client_secret'>
+  )> }
 );
 
 export type DeleteStockPortfolioMutationVariables = {
@@ -475,6 +776,19 @@ export type ResendVerifyEmailMutation = (
   )> }
 );
 
+export type SetToastsMutationVariables = {
+  toasts: ReadonlyArray<ToastInput>;
+};
+
+
+export type SetToastsMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly setToasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'message'>
+  )> }
+);
+
 export type SetUserMutationVariables = {
   user?: Maybe<UserInput>;
 };
@@ -526,6 +840,17 @@ export type GetDataKeyOptionsQuery = (
   & { readonly dataKeyOptions: ReadonlyArray<(
     { readonly __typename?: 'DataKeyOption' }
     & Pick<DataKeyOption, 'name' | 'dataKey' | 'provider'>
+  )> }
+);
+
+export type GetInitialAppLoadQueryVariables = {};
+
+
+export type GetInitialAppLoadQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly toasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'intent' | 'message'>
   )> }
 );
 
@@ -636,6 +961,78 @@ export type SearchStockSymbolsQuery = (
 );
 
 
+export const ApplySucceededTransactionDocument = gql`
+    mutation ApplySucceededTransaction($paymentIntentId: String!) {
+  applySucceededTransaction(paymentIntentId: $paymentIntentId) {
+    credits
+  }
+}
+    `;
+export type ApplySucceededTransactionMutationFn = ApolloReactCommon.MutationFunction<ApplySucceededTransactionMutation, ApplySucceededTransactionMutationVariables>;
+
+/**
+ * __useApplySucceededTransactionMutation__
+ *
+ * To run a mutation, you first call `useApplySucceededTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useApplySucceededTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [applySucceededTransactionMutation, { data, loading, error }] = useApplySucceededTransactionMutation({
+ *   variables: {
+ *      paymentIntentId: // value for 'paymentIntentId'
+ *   },
+ * });
+ */
+export function useApplySucceededTransactionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ApplySucceededTransactionMutation, ApplySucceededTransactionMutationVariables>) {
+        return ApolloReactHooks.useMutation<ApplySucceededTransactionMutation, ApplySucceededTransactionMutationVariables>(ApplySucceededTransactionDocument, baseOptions);
+      }
+export type ApplySucceededTransactionMutationHookResult = ReturnType<typeof useApplySucceededTransactionMutation>;
+export type ApplySucceededTransactionMutationResult = ApolloReactCommon.MutationResult<ApplySucceededTransactionMutation>;
+export type ApplySucceededTransactionMutationOptions = ApolloReactCommon.BaseMutationOptions<ApplySucceededTransactionMutation, ApplySucceededTransactionMutationVariables>;
+export const CancelStripeSetupIntentDocument = gql`
+    mutation CancelStripeSetupIntent($id: String!) {
+  cancelStripeSetupIntent(id: $id) {
+    payment_method {
+      card {
+        brand
+        fingerprint
+        last4
+        exp_month
+        exp_year
+      }
+    }
+  }
+}
+    `;
+export type CancelStripeSetupIntentMutationFn = ApolloReactCommon.MutationFunction<CancelStripeSetupIntentMutation, CancelStripeSetupIntentMutationVariables>;
+
+/**
+ * __useCancelStripeSetupIntentMutation__
+ *
+ * To run a mutation, you first call `useCancelStripeSetupIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelStripeSetupIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelStripeSetupIntentMutation, { data, loading, error }] = useCancelStripeSetupIntentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelStripeSetupIntentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CancelStripeSetupIntentMutation, CancelStripeSetupIntentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CancelStripeSetupIntentMutation, CancelStripeSetupIntentMutationVariables>(CancelStripeSetupIntentDocument, baseOptions);
+      }
+export type CancelStripeSetupIntentMutationHookResult = ReturnType<typeof useCancelStripeSetupIntentMutation>;
+export type CancelStripeSetupIntentMutationResult = ApolloReactCommon.MutationResult<CancelStripeSetupIntentMutation>;
+export type CancelStripeSetupIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<CancelStripeSetupIntentMutation, CancelStripeSetupIntentMutationVariables>;
 export const CreateStockPortfolioDocument = gql`
     mutation CreateStockPortfolio($name: String!) {
   createOneStockPortfolio(data: {name: $name}) {
@@ -669,6 +1066,81 @@ export function useCreateStockPortfolioMutation(baseOptions?: ApolloReactHooks.M
 export type CreateStockPortfolioMutationHookResult = ReturnType<typeof useCreateStockPortfolioMutation>;
 export type CreateStockPortfolioMutationResult = ApolloReactCommon.MutationResult<CreateStockPortfolioMutation>;
 export type CreateStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStockPortfolioMutation, CreateStockPortfolioMutationVariables>;
+export const CreateStripePaymentIntentDocument = gql`
+    mutation CreateStripePaymentIntent($orderDetails: [OrderDetailInput!]!, $paymentMethodId: String!) {
+  createStripePaymentIntent(orderDetails: $orderDetails, paymentMethodId: $paymentMethodId) {
+    amount
+    client_secret
+    payment_method {
+      card {
+        brand
+        fingerprint
+        last4
+        exp_month
+        exp_year
+      }
+    }
+  }
+}
+    `;
+export type CreateStripePaymentIntentMutationFn = ApolloReactCommon.MutationFunction<CreateStripePaymentIntentMutation, CreateStripePaymentIntentMutationVariables>;
+
+/**
+ * __useCreateStripePaymentIntentMutation__
+ *
+ * To run a mutation, you first call `useCreateStripePaymentIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStripePaymentIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStripePaymentIntentMutation, { data, loading, error }] = useCreateStripePaymentIntentMutation({
+ *   variables: {
+ *      orderDetails: // value for 'orderDetails'
+ *      paymentMethodId: // value for 'paymentMethodId'
+ *   },
+ * });
+ */
+export function useCreateStripePaymentIntentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateStripePaymentIntentMutation, CreateStripePaymentIntentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateStripePaymentIntentMutation, CreateStripePaymentIntentMutationVariables>(CreateStripePaymentIntentDocument, baseOptions);
+      }
+export type CreateStripePaymentIntentMutationHookResult = ReturnType<typeof useCreateStripePaymentIntentMutation>;
+export type CreateStripePaymentIntentMutationResult = ApolloReactCommon.MutationResult<CreateStripePaymentIntentMutation>;
+export type CreateStripePaymentIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStripePaymentIntentMutation, CreateStripePaymentIntentMutationVariables>;
+export const CreateStripeSetupIntentDocument = gql`
+    mutation CreateStripeSetupIntent {
+  createStripeSetupIntent {
+    id
+    client_secret
+  }
+}
+    `;
+export type CreateStripeSetupIntentMutationFn = ApolloReactCommon.MutationFunction<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>;
+
+/**
+ * __useCreateStripeSetupIntentMutation__
+ *
+ * To run a mutation, you first call `useCreateStripeSetupIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStripeSetupIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStripeSetupIntentMutation, { data, loading, error }] = useCreateStripeSetupIntentMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreateStripeSetupIntentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>(CreateStripeSetupIntentDocument, baseOptions);
+      }
+export type CreateStripeSetupIntentMutationHookResult = ReturnType<typeof useCreateStripeSetupIntentMutation>;
+export type CreateStripeSetupIntentMutationResult = ApolloReactCommon.MutationResult<CreateStripeSetupIntentMutation>;
+export type CreateStripeSetupIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>;
 export const DeleteStockPortfolioDocument = gql`
     mutation DeleteStockPortfolio($id: String!) {
   deleteOneStockPortfolio(where: {id: $id}) {
@@ -838,6 +1310,38 @@ export function useResendVerifyEmailMutation(baseOptions?: ApolloReactHooks.Muta
 export type ResendVerifyEmailMutationHookResult = ReturnType<typeof useResendVerifyEmailMutation>;
 export type ResendVerifyEmailMutationResult = ApolloReactCommon.MutationResult<ResendVerifyEmailMutation>;
 export type ResendVerifyEmailMutationOptions = ApolloReactCommon.BaseMutationOptions<ResendVerifyEmailMutation, ResendVerifyEmailMutationVariables>;
+export const SetToastsDocument = gql`
+    mutation SetToasts($toasts: [ToastInput!]!) {
+  setToasts(toasts: $toasts) @client {
+    message
+  }
+}
+    `;
+export type SetToastsMutationFn = ApolloReactCommon.MutationFunction<SetToastsMutation, SetToastsMutationVariables>;
+
+/**
+ * __useSetToastsMutation__
+ *
+ * To run a mutation, you first call `useSetToastsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetToastsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setToastsMutation, { data, loading, error }] = useSetToastsMutation({
+ *   variables: {
+ *      toasts: // value for 'toasts'
+ *   },
+ * });
+ */
+export function useSetToastsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetToastsMutation, SetToastsMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetToastsMutation, SetToastsMutationVariables>(SetToastsDocument, baseOptions);
+      }
+export type SetToastsMutationHookResult = ReturnType<typeof useSetToastsMutation>;
+export type SetToastsMutationResult = ApolloReactCommon.MutationResult<SetToastsMutation>;
+export type SetToastsMutationOptions = ApolloReactCommon.BaseMutationOptions<SetToastsMutation, SetToastsMutationVariables>;
 export const SetUserDocument = gql`
     mutation SetUser($user: UserInput) {
   setUser(user: $user) @client {
@@ -953,7 +1457,7 @@ export const GetDataKeyOptionsDocument = gql`
  * __useGetDataKeyOptionsQuery__
  *
  * To run a query within a React component, call `useGetDataKeyOptionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetDataKeyOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetDataKeyOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -976,6 +1480,39 @@ export function useGetDataKeyOptionsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetDataKeyOptionsQueryHookResult = ReturnType<typeof useGetDataKeyOptionsQuery>;
 export type GetDataKeyOptionsLazyQueryHookResult = ReturnType<typeof useGetDataKeyOptionsLazyQuery>;
 export type GetDataKeyOptionsQueryResult = ApolloReactCommon.QueryResult<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>;
+export const GetInitialAppLoadDocument = gql`
+    query GetInitialAppLoad {
+  toasts @client {
+    intent
+    message
+  }
+}
+    `;
+
+/**
+ * __useGetInitialAppLoadQuery__
+ *
+ * To run a query within a React component, call `useGetInitialAppLoadQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInitialAppLoadQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInitialAppLoadQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetInitialAppLoadQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>(GetInitialAppLoadDocument, baseOptions);
+      }
+export function useGetInitialAppLoadLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>(GetInitialAppLoadDocument, baseOptions);
+        }
+export type GetInitialAppLoadQueryHookResult = ReturnType<typeof useGetInitialAppLoadQuery>;
+export type GetInitialAppLoadLazyQueryHookResult = ReturnType<typeof useGetInitialAppLoadLazyQuery>;
+export type GetInitialAppLoadQueryResult = ApolloReactCommon.QueryResult<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>;
 export const GetManyStockPortfoliosDocument = gql`
     query GetManyStockPortfolios($first: Int, $after: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
   stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {
@@ -991,7 +1528,7 @@ export const GetManyStockPortfoliosDocument = gql`
  * __useGetManyStockPortfoliosQuery__
  *
  * To run a query within a React component, call `useGetManyStockPortfoliosQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetManyStockPortfoliosQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetManyStockPortfoliosQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1026,7 +1563,7 @@ export const GetModalDocument = gql`
  * __useGetModalQuery__
  *
  * To run a query within a React component, call `useGetModalQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetModalQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetModalQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1073,7 +1610,7 @@ export const GetOneStockPortfolioDocument = gql`
  * __useGetOneStockPortfolioQuery__
  *
  * To run a query within a React component, call `useGetOneStockPortfolioQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetOneStockPortfolioQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetOneStockPortfolioQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1108,7 +1645,7 @@ export const GetPriceBundlesDocument = gql`
  * __useGetPriceBundlesQuery__
  *
  * To run a query within a React component, call `useGetPriceBundlesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPriceBundlesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetPriceBundlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1140,7 +1677,7 @@ export const GetStockDataDocument = gql`
  * __useGetStockDataQuery__
  *
  * To run a query within a React component, call `useGetStockDataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetStockDataQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetStockDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1177,7 +1714,7 @@ export const GetUserDocument = gql`
  * __useGetUserQuery__
  *
  * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1212,7 +1749,7 @@ export const GetViewerDocument = gql`
  * __useGetViewerQuery__
  *
  * To run a query within a React component, call `useGetViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetViewerQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useGetViewerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -1245,7 +1782,7 @@ export const SearchStockSymbolsDocument = gql`
  * __useSearchStockSymbolsQuery__
  *
  * To run a query within a React component, call `useSearchStockSymbolsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchStockSymbolsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * When your component renders, `useSearchStockSymbolsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;

@@ -1,4 +1,5 @@
 import { resolvers } from "@/client/graphql/resolvers";
+import { defaultState, IClientState } from "@/client/graphql/state";
 import {
 	ApolloClient,
 	defaultDataIdFromObject,
@@ -25,12 +26,7 @@ export const createCache = (options?: ICreateCacheOptions): InMemoryCache => {
 	}).restore(initialState || {});
 
 	if (!initialState?.data) {
-		cache.writeData({
-			data: {
-				modal: false,
-				user: null
-			}
-		});
+		cache.writeData<IClientState>({ data: defaultState });
 	}
 
 	return cache;

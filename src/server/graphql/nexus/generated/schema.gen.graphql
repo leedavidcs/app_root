@@ -69,8 +69,7 @@ input DateTimeFilter {
 }
 
 """
-A field whose value conforms to the standard internet email address format as
-specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
 scalar EmailAddress
 
@@ -104,12 +103,12 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
 
   """Logins in the user, and returns an expiring access token"""
   loginLocalUser(input: LoginLocalUserInput!): TokenPayload
-  purchasePriceBundle(paymentMethodId: String!, priceBundleId: Int!): StripePaymentIntent
 
   """Refreshes the currently logged-in user's access token"""
   refreshAccessToken(input: RefreshAccessTokenInput!): TokenPayload
@@ -144,9 +143,19 @@ enum OrderByArg {
   desc
 }
 
+input OrderDetailInput {
+  id: String!
+  quantity: Int = 1
+  type: OrderDetailType!
+}
+
+enum OrderDetailType {
+  PriceBundle
+}
+
 type PriceBundle {
   credits: Int!
-  id: Int!
+  id: String!
   price: Float!
 }
 
@@ -341,11 +350,12 @@ input StripeDetailsWhereInput {
 }
 
 type StripePaymentIntent {
-  amount: Int
+  amount: Float
   client_secret: String
   created: Int!
   currency: String
   id: String!
+  payment_method: StripePaymentMethod
 }
 
 type StripePaymentMethod {
@@ -443,7 +453,7 @@ scalar UserPassword
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  balances: BalanceFilter
+  balance: BalanceFilter
   createdAt: DateTimeFilter
   email: StringFilter
   emailVerified: BooleanFilter
@@ -451,9 +461,9 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
-  stockPortfolios: StockPortfolioFilter
-  stripeDetailses: StripeDetailsFilter
-  transactions: TransactionFilter
+  stockPortfolio: StockPortfolioFilter
+  stripeDetails: StripeDetailsFilter
+  transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }

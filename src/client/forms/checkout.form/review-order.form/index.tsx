@@ -1,22 +1,86 @@
 import { Paper } from "@/client/components";
 import { OrderSummary } from "@/client/components/order-summary.component";
-import { IBillingFormData, IPriceBundleFormData } from "@/client/forms/checkout.form";
-import { Button, FormGroup, Icon } from "@blueprintjs/core";
-import React, { FC } from "react";
+import { Context } from "@/client/forms/checkout.form/provider.component";
+import { useApplySucceededTransactionMutation, useSetToastsMutation } from "@/client/graphql";
+import { useToast } from "@/client/hooks";
+import { Button, FormGroup, Icon, Spinner } from "@blueprintjs/core";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import classnames from "classnames";
+import { NextRouter, useRouter } from "next/router";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
-	checkoutData: Partial<IPriceBundleFormData & IBillingFormData>;
+	className?: string;
 	onBack: () => void;
 }
 
-export const ReviewOrderForm: FC<IProps> = ({ checkoutData, onBack }) => {
+const useOnSubmit = () => {
+	const { billingDetails, clientSecret } = useContext(Context);
+
+	const [processing, setProcessing] = useState<boolean>(false);
+
+	const elements = useElements()!;
+	const stripe = useStripe()!;
+
+	const toaster = useToast();
+
+	const router: NextRouter = useRouter();
+
+	const [setToasts] = useSetToastsMutation({ onCompleted: () => router.push("/") });
+
+	const [applyTransaction] = useApplySucceededTransactionMutation({
+		onCompleted: (transactionResult) => {
+			const balance = transactionResult.applySucceededTransaction!;
+			const message = `Success! Your balance is now: ${balance.credits}`;
+
+			setToasts({ variables: { toasts: [{ intent: "success", message }] } });
+		}
+	});
+
+	const onSubmit = useCallback(async () => {
+		setProcessing(true);
+
+		const cardElement = elements.getElement(CardElement)!;
+
+		const paymentResult = await stripe.confirmCardPayment(clientSecret!, {
+			payment_method: {
+				card: cardElement,
+				billing_details: billingDetails!
+			}
+		});
+
+		/** Stripe failure. User must take action, depending on what stripe says. */
+		if (paymentResult.error) {
+			toaster.show({ message: paymentResult.error.message });
+
+			return;
+		}
+
+		const paymentIntentId: string = paymentResult.paymentIntent!.id;
+
+		applyTransaction({ variables: { paymentIntentId } });
+	}, [applyTransaction, billingDetails, clientSecret, elements, stripe, toaster]);
+
+	return { onSubmit, processing };
+};
+
+export const ReviewOrderForm: FC<IProps> = ({ className, onBack }) => {
 	const classes = useStyles();
 
-	const { orderDetails, address, cardholder, city, country, state, zipcode } = checkoutData;
+	const { billingDetails, card, orderDetails } = useContext(Context);
+
+	const { onSubmit, processing } = useOnSubmit();
+
+	if (!billingDetails?.address || !card) {
+		return null;
+	}
+
+	const { address, name } = billingDetails;
+	const { city, country, line1, postal_code, state } = address!;
 
 	return (
-		<div className={classes.root}>
+		<div className={classnames(className, classes.root)}>
 			<div className={classes.container}>
 				<div className={classes.inputsContainer}>
 					<Paper className={classes.section}>
@@ -26,7 +90,7 @@ export const ReviewOrderForm: FC<IProps> = ({ checkoutData, onBack }) => {
 								{country}
 							</FormGroup>
 							<FormGroup inline={true} label="Address:">
-								{address}
+								{line1}
 							</FormGroup>
 							<FormGroup inline={true} label="City:">
 								{city}
@@ -35,7 +99,7 @@ export const ReviewOrderForm: FC<IProps> = ({ checkoutData, onBack }) => {
 								{state}
 							</FormGroup>
 							<FormGroup inline={true} label="Zip/Postal Code:">
-								{zipcode}
+								{postal_code}
 							</FormGroup>
 						</div>
 					</Paper>
@@ -43,12 +107,14 @@ export const ReviewOrderForm: FC<IProps> = ({ checkoutData, onBack }) => {
 						<h3>Payment Method</h3>
 						<div className={classes.sectionContent}>
 							<FormGroup inline={true} label="Cardholder's name:">
-								{cardholder}
+								{name}
 							</FormGroup>
 							<FormGroup inline={true} label="Card details">
 								<div className={classes.creditCardDetails}>
 									<Icon icon="credit-card" />
-									<div className={classes.creditCard}>(Not shown in review)</div>
+									<div className={classes.creditCard}>
+										Card ending in {card.last4}
+									</div>
 								</div>
 							</FormGroup>
 						</div>
@@ -56,11 +122,19 @@ export const ReviewOrderForm: FC<IProps> = ({ checkoutData, onBack }) => {
 				</div>
 				<OrderSummary className={classes.orderSummary} orderDetails={orderDetails}>
 					<div className={classes.payBtnContainer}>
-						<Button className={classes.payBtn} intent="primary" text="Place Order" />
+						<Button
+							className={classes.payBtn}
+							disabled={processing}
+							intent="primary"
+							onClick={onSubmit}
+							text={
+								processing ? <Spinner size={Spinner.SIZE_SMALL} /> : "Place Order"
+							}
+						/>
 					</div>
 				</OrderSummary>
 			</div>
-			<Button intent="primary" onClick={onBack} text="Back" />
+			<Button className={classes.backBtn} intent="primary" onClick={onBack} text="Back" />
 		</div>
 	);
 };

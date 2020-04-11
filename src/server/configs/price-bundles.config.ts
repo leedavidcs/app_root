@@ -3,7 +3,7 @@ interface IPriceBundle {
 	price: number;
 }
 
-export const PriceBundles: Record<number, IPriceBundle> = {
+export const PriceBundles: Record<string, IPriceBundle> = {
 	0: {
 		credits: 500,
 		price: 4.99

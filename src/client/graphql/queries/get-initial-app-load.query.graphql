@@ -1,0 +1,6 @@
+query GetInitialAppLoad {
+	toasts @client {
+		intent
+		message
+	}
+}

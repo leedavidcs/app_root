@@ -62,6 +62,9 @@ const styles = (theme: CustomTheme) => ({
 		display: "flex",
 		justifyContent: "center"
 	},
+	backBtn: {
+		width: 80
+	},
 	payBtn: {
 		width: 120
 	}

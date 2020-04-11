@@ -19,6 +19,9 @@ const styles = (theme: CustomTheme) => ({
 	},
 	billingForm: {
 		marginTop: 48
+	},
+	reviewForm: {
+		marginTop: 48
 	}
 });
 

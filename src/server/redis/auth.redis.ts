@@ -3,10 +3,7 @@ import Redis, { RedisClient } from "redis";
 const host: string = process.env.REDIS_AUTH_HOST || "";
 const port = Number(process.env.REDIS_AUTH_PORT);
 
-export const AuthClient: RedisClient = Redis.createClient({
-	host,
-	port
-});
+export const AuthClient: RedisClient = Redis.createClient({ host, port });
 
 export const saveRefreshToken = (refreshToken: string, userId: string): Promise<number> => {
 	return new Promise<number>((resolve, reject) => {
