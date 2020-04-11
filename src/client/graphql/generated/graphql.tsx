@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 10th 2020 5:11:19 am
+// This file was generated on: Apr 11th 2020 3:37:04 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -612,10 +612,12 @@ export type StripeDetailsWhereInput = {
 
 export type Toast = {
   readonly __typename?: 'Toast';
+  readonly intent?: Maybe<Scalars['String']>;
   readonly message: Scalars['String'];
 };
 
 export type ToastInput = {
+  readonly intent?: Maybe<Scalars['String']>;
   readonly message: Scalars['String'];
 };
 
@@ -848,10 +850,7 @@ export type GetInitialAppLoadQuery = (
   { readonly __typename?: 'Query' }
   & { readonly toasts: ReadonlyArray<(
     { readonly __typename?: 'Toast' }
-    & Pick<Toast, 'message'>
-  )>, readonly user?: Maybe<(
-    { readonly __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
+    & Pick<Toast, 'intent' | 'message'>
   )> }
 );
 
@@ -1484,13 +1483,8 @@ export type GetDataKeyOptionsQueryResult = ApolloReactCommon.QueryResult<GetData
 export const GetInitialAppLoadDocument = gql`
     query GetInitialAppLoad {
   toasts @client {
+    intent
     message
-  }
-  user @client {
-    id
-    email
-    emailVerified
-    username
   }
 }
     `;

@@ -34,7 +34,7 @@ const useOnSubmit = () => {
 			const balance = transactionResult.applySucceededTransaction!;
 			const message = `Success! Your balance is now: ${balance.credits}`;
 
-			setToasts({ variables: { toasts: [{ message }] } });
+			setToasts({ variables: { toasts: [{ intent: "success", message }] } });
 		}
 	});
 

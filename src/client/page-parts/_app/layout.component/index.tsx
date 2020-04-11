@@ -1,4 +1,4 @@
-import { useSetUser } from "@/client/hooks";
+import { useInitialLoadActions, useSetUser } from "@/client/hooks";
 import { Button } from "@blueprintjs/core";
 import React, { FC, ReactElement, useCallback, useEffect, useState } from "react";
 import { AppBar } from "./app-bar.component";
@@ -16,6 +16,8 @@ export const Layout: FC<IProps> = ({ children }) => {
 	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
 
 	useEffect(() => setUser(), [setUser]);
+
+	useInitialLoadActions();
 
 	const isLoaded: boolean = called && !loading;
 
