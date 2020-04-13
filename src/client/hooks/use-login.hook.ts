@@ -10,6 +10,7 @@ import {
 import { writeCookie } from "@/server/authentication/cookie-utils";
 import { useCallback } from "react";
 import { ExecutionResult } from "react-apollo";
+import { useToast } from "./use-toast.hook";
 
 export const useLogin = (
 	options?: LoginLocalUserMutationOptions
@@ -19,6 +20,8 @@ export const useLogin = (
 	) => Promise<ExecutionResult<LoginLocalUserMutation>>,
 	LoginLocalUserMutationResult
 ] => {
+	const toaster = useToast();
+
 	const [loginUser, result] = useLoginLocalUserMutation(options);
 	const [setUser] = useSetUserMutation();
 
@@ -35,12 +38,14 @@ export const useLogin = (
 
 				writeCookie(token, { refreshToken });
 
-				setUser();
+				await setUser();
+
+				toaster.show({ intent: "success", message: "You are now signed in" });
 			}
 
 			return execResult;
 		},
-		[loginUser, setUser]
+		[loginUser, setUser, toaster]
 	);
 
 	return [login, result];
