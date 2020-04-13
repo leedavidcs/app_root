@@ -1,9 +1,9 @@
-import { Toast, User } from "./generated";
+import { GetViewerQuery, Toast } from "./generated";
 
 export interface IClientState {
 	modal: boolean;
 	toasts: Maybe<readonly Toast[]>;
-	user: Maybe<User>;
+	user: GetViewerQuery["viewer"];
 }
 
 export const defaultState: IClientState = {

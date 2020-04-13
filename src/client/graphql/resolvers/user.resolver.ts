@@ -1,14 +1,23 @@
 import { IClientContext } from "@/client/graphql";
-import { SetUserMutationVariables } from "@/client/graphql/generated";
+import {
+	GetViewerDocument,
+	GetViewerQuery,
+	SetUserMutationVariables
+} from "@/client/graphql/generated";
 
-const setUser: LocalResolver<any, IClientContext, SetUserMutationVariables> = (
+const setUser: LocalResolver<any, IClientContext, SetUserMutationVariables> = async (
 	parent,
-	{ user },
-	{ cache }
+	args,
+	{ cache, client }
 ) => {
-	const data = {
-		user: user ? { ...user, __typename: "User" } : null
-	};
+	const viewerResult = await client.query<GetViewerQuery>({
+		query: GetViewerDocument,
+		fetchPolicy: "no-cache"
+	});
+
+	const user = viewerResult.data.viewer ?? null;
+
+	const data = { user };
 
 	cache.writeData({ data });
 

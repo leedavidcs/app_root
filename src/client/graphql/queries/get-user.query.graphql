@@ -1,6 +1,9 @@
 query GetUser {
 	user @client {
 		id
+		balance {
+			credits
+		}
 		email
 		emailVerified
 		username

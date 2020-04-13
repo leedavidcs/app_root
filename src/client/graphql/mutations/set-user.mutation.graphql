@@ -1,6 +1,9 @@
-mutation SetUser($user: UserInput) {
-	setUser(user: $user) @client {
+mutation SetUser {
+	setUser @client {
 		id
+		balance {
+			credits
+		}
 		email
 		emailVerified
 		username
