@@ -1,4 +1,5 @@
 import { ITokenResponse, loginLocal } from "@/server/authentication";
+import { BadInputError } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 
 export const LoginLocalUserInput = inputObjectType({
@@ -25,8 +26,12 @@ export const loginLocalUser = mutationField("loginLocalUser", {
 		})
 	},
 	resolve: async (parent, { input: { password, userIdentifier } }, ctx) => {
-		const tokens: ITokenResponse = await loginLocal({ password, userIdentifier }, ctx);
+		try {
+			const tokens: ITokenResponse = await loginLocal({ password, userIdentifier }, ctx);
 
-		return tokens;
+			return tokens;
+		} catch (err) {
+			throw new BadInputError(typeof err === "string" ? err : err.message);
+		}
 	}
 });
