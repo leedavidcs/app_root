@@ -439,9 +439,8 @@ input TransactionWhereUniqueInput {
 
 """Basic user of the application"""
 type User {
+  balance: Balance
   createdAt: DateTime!
-
-  """The user's email"""
   email: EmailAddress!
   emailVerified: Boolean!
   id: String!

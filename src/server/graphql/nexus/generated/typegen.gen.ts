@@ -484,6 +484,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
+    balance: NexusGenRootTypes['Balance'] | null; // Balance
     createdAt: any; // DateTime!
     email: any; // EmailAddress!
     emailVerified: boolean; // Boolean!

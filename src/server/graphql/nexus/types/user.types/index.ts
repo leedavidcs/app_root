@@ -5,13 +5,15 @@ export const User = objectType({
 	description: "Basic user of the application",
 	definition: (t) => {
 		t.model.id();
-		t.field("email", {
-			type: "EmailAddress",
-			nullable: false,
-			description: "The user's email"
-		});
+		t.field("email", { type: "EmailAddress", nullable: false });
 		t.model.emailVerified();
 		t.model.username();
+		t.field("balance", {
+			type: "Balance",
+			resolve: async ({ id }, args, { prisma }) => {
+				return prisma.balance.findOne({ where: { userId: id } });
+			}
+		});
 		t.model.createdAt();
 		t.model.updatedAt();
 	}
