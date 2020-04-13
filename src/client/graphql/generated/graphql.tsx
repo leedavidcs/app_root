@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 13th 2020 6:37:02 am
+// This file was generated on: Apr 13th 2020 7:02:41 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -824,19 +824,6 @@ export type UpdateOneStockPortfolioMutation = (
   )> }
 );
 
-export type GetBalanceQueryVariables = {
-  userId: Scalars['String'];
-};
-
-
-export type GetBalanceQuery = (
-  { readonly __typename?: 'Query' }
-  & { readonly balance?: Maybe<(
-    { readonly __typename?: 'Balance' }
-    & Pick<Balance, 'credits'>
-  )> }
-);
-
 export type GetDataKeyOptionsQueryVariables = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
@@ -1462,39 +1449,6 @@ export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHook
 export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
-export const GetBalanceDocument = gql`
-    query GetBalance($userId: String!) {
-  balance(where: {userId: $userId}) {
-    credits
-  }
-}
-    `;
-
-/**
- * __useGetBalanceQuery__
- *
- * To run a query within a React component, call `useGetBalanceQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetBalanceQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetBalanceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
-      }
-export function useGetBalanceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
-        }
-export type GetBalanceQueryHookResult = ReturnType<typeof useGetBalanceQuery>;
-export type GetBalanceLazyQueryHookResult = ReturnType<typeof useGetBalanceLazyQuery>;
-export type GetBalanceQueryResult = ApolloReactCommon.QueryResult<GetBalanceQuery, GetBalanceQueryVariables>;
 export const GetDataKeyOptionsDocument = gql`
     query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {

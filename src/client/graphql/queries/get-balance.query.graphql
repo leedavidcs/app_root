@@ -1,5 +1,0 @@
-query GetBalance($userId: String!) {
-	balance(where: { userId: $userId }) {
-		credits
-	}
-}
