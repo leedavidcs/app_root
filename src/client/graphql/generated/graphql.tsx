@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 11th 2020 3:37:04 am
+// This file was generated on: Apr 13th 2020 6:37:02 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -216,12 +216,6 @@ export type MutationSetToastsArgs = {
 
 
 /** Root mutation type */
-export type MutationSetUserArgs = {
-  user?: Maybe<UserInput>;
-};
-
-
-/** Root mutation type */
 export type MutationToggleModalArgs = {
   force?: Maybe<Scalars['Boolean']>;
 };
@@ -236,6 +230,7 @@ export type MutationUpdateOneStockPortfolioArgs = {
 /** Root query type */
 export type Query = RequestRoot & {
   readonly __typename?: 'Query';
+  readonly balance?: Maybe<Balance>;
   /** Retrieves the list of data key options for a stock portfolio header. All filters are 		OR'ed. */
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
   readonly modal: Scalars['Boolean'];
@@ -250,6 +245,12 @@ export type Query = RequestRoot & {
   readonly user?: Maybe<User>;
   /** The viewer of this request */
   readonly viewer?: Maybe<User>;
+};
+
+
+/** Root query type */
+export type QueryBalanceArgs = {
+  where: BalanceWhereUniqueInput;
 };
 
 
@@ -415,10 +416,10 @@ export type Transaction = {
 export type User = {
   readonly __typename?: 'User';
   readonly id: Scalars['String'];
-  /** The user's email */
   readonly email: Scalars['EmailAddress'];
   readonly emailVerified: Scalars['Boolean'];
   readonly username: Scalars['String'];
+  readonly balance?: Maybe<Balance>;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
 };
@@ -426,6 +427,10 @@ export type User = {
 export type StockPortfolioWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
   readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
+};
+
+export type BalanceWhereUniqueInput = {
+  readonly userId?: Maybe<Scalars['String']>;
 };
 
 export type StockPortfolioWhereInput = {
@@ -621,17 +626,6 @@ export type ToastInput = {
   readonly message: Scalars['String'];
 };
 
-export type UserInput = {
-  /** The id of the user */
-  readonly id: Scalars['ID'];
-  /** The user's email */
-  readonly email: Scalars['EmailAddress'];
-  /** Whether the user verified their email address */
-  readonly emailVerified: Scalars['Boolean'];
-  /** The user's encoded password */
-  readonly username: Scalars['String'];
-};
-
 export type ApplySucceededTransactionMutationVariables = {
   paymentIntentId: Scalars['String'];
 };
@@ -789,9 +783,7 @@ export type SetToastsMutation = (
   )> }
 );
 
-export type SetUserMutationVariables = {
-  user?: Maybe<UserInput>;
-};
+export type SetUserMutationVariables = {};
 
 
 export type SetUserMutation = (
@@ -799,6 +791,10 @@ export type SetUserMutation = (
   & { readonly setUser?: Maybe<(
     { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
+    & { readonly balance?: Maybe<(
+      { readonly __typename?: 'Balance' }
+      & Pick<Balance, 'credits'>
+    )> }
   )> }
 );
 
@@ -825,6 +821,19 @@ export type UpdateOneStockPortfolioMutation = (
   & { readonly updateOneStockPortfolio?: Maybe<(
     { readonly __typename?: 'StockPortfolio' }
     & Pick<StockPortfolio, 'id' | 'name'>
+  )> }
+);
+
+export type GetBalanceQueryVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type GetBalanceQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly balance?: Maybe<(
+    { readonly __typename?: 'Balance' }
+    & Pick<Balance, 'credits'>
   )> }
 );
 
@@ -933,6 +942,10 @@ export type GetUserQuery = (
   & { readonly user?: Maybe<(
     { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
+    & { readonly balance?: Maybe<(
+      { readonly __typename?: 'Balance' }
+      & Pick<Balance, 'credits'>
+    )> }
   )> }
 );
 
@@ -944,6 +957,10 @@ export type GetViewerQuery = (
   & { readonly viewer?: Maybe<(
     { readonly __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'emailVerified' | 'username'>
+    & { readonly balance?: Maybe<(
+      { readonly __typename?: 'Balance' }
+      & Pick<Balance, 'credits'>
+    )> }
   )> }
 );
 
@@ -1343,9 +1360,12 @@ export type SetToastsMutationHookResult = ReturnType<typeof useSetToastsMutation
 export type SetToastsMutationResult = ApolloReactCommon.MutationResult<SetToastsMutation>;
 export type SetToastsMutationOptions = ApolloReactCommon.BaseMutationOptions<SetToastsMutation, SetToastsMutationVariables>;
 export const SetUserDocument = gql`
-    mutation SetUser($user: UserInput) {
-  setUser(user: $user) @client {
+    mutation SetUser {
+  setUser @client {
     id
+    balance {
+      credits
+    }
     email
     emailVerified
     username
@@ -1367,7 +1387,6 @@ export type SetUserMutationFn = ApolloReactCommon.MutationFunction<SetUserMutati
  * @example
  * const [setUserMutation, { data, loading, error }] = useSetUserMutation({
  *   variables: {
- *      user: // value for 'user'
  *   },
  * });
  */
@@ -1443,6 +1462,39 @@ export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHook
 export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
+export const GetBalanceDocument = gql`
+    query GetBalance($userId: String!) {
+  balance(where: {userId: $userId}) {
+    credits
+  }
+}
+    `;
+
+/**
+ * __useGetBalanceQuery__
+ *
+ * To run a query within a React component, call `useGetBalanceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBalanceQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetBalanceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
+      }
+export function useGetBalanceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
+        }
+export type GetBalanceQueryHookResult = ReturnType<typeof useGetBalanceQuery>;
+export type GetBalanceLazyQueryHookResult = ReturnType<typeof useGetBalanceLazyQuery>;
+export type GetBalanceQueryResult = ApolloReactCommon.QueryResult<GetBalanceQuery, GetBalanceQueryVariables>;
 export const GetDataKeyOptionsDocument = gql`
     query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
@@ -1703,6 +1755,9 @@ export const GetUserDocument = gql`
     query GetUser {
   user @client {
     id
+    balance {
+      credits
+    }
     email
     emailVerified
     username
@@ -1738,6 +1793,9 @@ export const GetViewerDocument = gql`
     query GetViewer {
   viewer {
     id
+    balance {
+      credits
+    }
     email
     emailVerified
     username
