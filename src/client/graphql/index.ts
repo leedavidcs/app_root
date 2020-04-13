@@ -1,4 +1,4 @@
-import { InMemoryCache } from "apollo-boost";
+import { ApolloClient, InMemoryCache, NormalizedCacheObject } from "apollo-boost";
 import { User } from "./generated";
 
 export * from "./client";
@@ -11,6 +11,7 @@ export * from "./state";
 
 export interface IClientContext {
 	cache: InMemoryCache;
+	client: ApolloClient<NormalizedCacheObject>;
 }
 
 export interface IClientState {
