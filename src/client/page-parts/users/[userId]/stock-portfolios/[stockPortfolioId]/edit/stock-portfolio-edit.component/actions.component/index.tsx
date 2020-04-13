@@ -3,9 +3,9 @@ import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
-	useDeleteStockPortfolioMutation
+	useDeleteStockPortfolioMutation,
+	useGetUserQuery
 } from "@/client/graphql";
-import { useSetUser } from "@/client/hooks";
 import { AnchorButton, Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
@@ -59,7 +59,8 @@ export const Actions: FC<IProps> = (props) => {
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
-	const [, { user }] = useSetUser();
+	const getUserResult = useGetUserQuery();
+	const user = getUserResult.data?.user ?? null;
 
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);

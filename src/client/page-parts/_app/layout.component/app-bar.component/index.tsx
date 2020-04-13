@@ -1,5 +1,5 @@
 import { Brand, SearchInput } from "@/client/components";
-import { useSetUser } from "@/client/hooks";
+import { useGetUserQuery } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
 import { Alignment, Classes, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -33,7 +33,7 @@ export const AppBar: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
-	const [, { user }] = useSetUser();
+	const { data } = useGetUserQuery();
 
 	const [searchText, onSearchChange] = useOnSearch(props);
 
@@ -48,7 +48,7 @@ export const AppBar: FC<IProps> = (props) => {
 					<Brand />
 				</Navbar.Heading>
 				<SearchInput onChange={onSearchChange} value={searchText} />
-				{user ? <ProfileMenu /> : <AuthButtons />}
+				{data?.user ? <ProfileMenu /> : <AuthButtons />}
 			</Navbar.Group>
 		</Navbar>
 	);

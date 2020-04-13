@@ -1,11 +1,11 @@
 import { Anchor, TextInput } from "@/client/components";
 import {
-	LoginLocalUserMutationVariables,
-	RegisterLocalUserMutationVariables,
+	GetUserDocument,
 	RegisterLocalUserPayload,
-	useResendVerifyEmailMutation
+	useResendVerifyEmailMutation,
+	useSetUserMutation
 } from "@/client/graphql";
-import { useAuth, useModal, useSetUser } from "@/client/hooks";
+import { useLogin, useModal, useRegister } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
@@ -55,7 +55,11 @@ const useSetEmail = () => {
 		toggle(true);
 	}, [email, resendVerifyEmail, setContent, toggle]);
 
-	const [setUser] = useSetUser({ onCompleted });
+	const [setUser] = useSetUserMutation({
+		awaitRefetchQueries: true,
+		refetchQueries: [{ query: GetUserDocument }],
+		onCompleted
+	});
 
 	useEffect(() => {
 		email && setUser();
@@ -82,7 +86,8 @@ const useSignInHandler = () => {
  *     registered and logged-in.
  */
 const useFormSubmitHandler = (onSuccess?: () => void) => {
-	const { login, register } = useAuth();
+	const [login] = useLogin();
+	const [register] = useRegister();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const handleRegisterPayload = useCallback(
@@ -96,11 +101,7 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 				return;
 			}
 
-			const variables: LoginLocalUserMutationVariables = {
-				input: { userIdentifier, password }
-			};
-
-			await login({ variables });
+			await login({ input: { userIdentifier, password } });
 
 			onSuccess?.();
 		},
@@ -111,13 +112,11 @@ const useFormSubmitHandler = (onSuccess?: () => void) => {
 		async (data: IFormData): Promise<void> => {
 			const { email, password, username } = data;
 
-			const variables: RegisterLocalUserMutationVariables = {
-				input: { email, password, username }
-			};
-			const result = await register({ variables });
+			const registerResult = await register({ input: { email, password, username } });
+			const registerPayload = registerResult.data?.registerLocalUser ?? null;
 
-			return result
-				? handleRegisterPayload(data, result)
+			return registerPayload
+				? handleRegisterPayload(data, registerPayload)
 				: setErrorMessage("Unexpected error. Please try again");
 		},
 		[handleRegisterPayload, register, setErrorMessage]

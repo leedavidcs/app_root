@@ -2,9 +2,9 @@ import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
 import {
 	GetOneStockPortfolioQuery,
 	GetStockDataQueryVariables,
-	useGetStockDataLazyQuery
+	useGetStockDataLazyQuery,
+	useGetUserQuery
 } from "@/client/graphql";
-import { useSetUser } from "@/client/hooks";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
@@ -57,7 +57,8 @@ const useStockPortfolioHeaders = ({
 };
 
 const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
-	const [, { user }] = useSetUser();
+	const getUserResult = useGetUserQuery();
+	const user = getUserResult.data?.user ?? null;
 
 	const isCreator = user?.id === stockPortfolio.user.id;
 

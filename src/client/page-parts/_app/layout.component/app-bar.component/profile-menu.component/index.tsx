@@ -1,5 +1,5 @@
 import { Popover } from "@/client/components";
-import { useAuth } from "@/client/hooks";
+import { useLogout } from "@/client/hooks";
 import { Icon, Menu } from "@blueprintjs/core";
 import Link from "next/link";
 import React, { FC, useCallback, useState } from "react";
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const useOnClickSignOut = (onCompleted?: () => void) => {
-	const { logout } = useAuth();
+	const [logout] = useLogout();
 
 	return useCallback(() => {
 		logout();

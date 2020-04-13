@@ -1,6 +1,5 @@
 import { Anchor, Tooltip } from "@/client/components";
-import { useGetManyStockPortfoliosQuery } from "@/client/graphql";
-import { ISetUserStates, useSetUser } from "@/client/hooks";
+import { GetUserQuery, useGetManyStockPortfoliosQuery, useGetUserQuery } from "@/client/graphql";
 import { format } from "date-fns";
 import memoizeOne from "memoize-one";
 import { NextRouter, useRouter } from "next/router";
@@ -19,7 +18,9 @@ export const useStockPortfoliosNode = (
 	const classes = useStyles();
 
 	const router: NextRouter = useRouter();
-	const [, { user }] = useSetUser();
+	const getUserResult = useGetUserQuery();
+
+	const user = getUserResult.data?.user ?? null;
 
 	const { data } = useGetManyStockPortfoliosQuery({
 		variables: {
@@ -43,9 +44,7 @@ export const useStockPortfoliosNode = (
 
 	const withUserProps = useCallback(
 		memoizeOne(
-			(
-				_user: NonNullable<ISetUserStates["user"]>
-			): Omit<ICustomTreeNode, "id" | "label"> => ({
+			(_user: GetUserQuery["user"]): Omit<ICustomTreeNode, "id" | "label"> => ({
 				className: classes.btnItem,
 				hasCaret: true,
 				icon: "folder-close",
@@ -64,7 +63,7 @@ export const useStockPortfoliosNode = (
 								{portfolio.name}
 							</Tooltip>
 						),
-						onClick: onClickPortfolio(_user?.id, portfolio.id)
+						onClick: onClickPortfolio(_user!.id, portfolio.id)
 					})),
 					{
 						className: classes.btnItem,
@@ -77,7 +76,7 @@ export const useStockPortfoliosNode = (
 								<Anchor value="Show more" />
 							</Tooltip>
 						),
-						onClick: onShowMore(_user.id)
+						onClick: onShowMore(_user!.id)
 					}
 				]
 			})
