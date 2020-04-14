@@ -57,15 +57,15 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root)}>
-			<div>
-				<Actions
-					columnOptions={optionsResult.options}
-					onAddTicker={dataActions.addTicker}
-					onAddColumn={headerActions.addGridHeader}
-					stockPortfolio={stockPortfolio}
-				/>
-			</div>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
+				<div>
+					<Actions
+						columnOptions={optionsResult.options}
+						onAddTicker={dataActions.addTicker}
+						onAddColumn={headerActions.addGridHeader}
+						stockPortfolio={stockPortfolio}
+					/>
+				</div>
 				<h2 className={classes.portfolioName}>
 					<EditableText
 						control={control}
