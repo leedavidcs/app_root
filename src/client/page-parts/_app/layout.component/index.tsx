@@ -4,6 +4,7 @@ import { Button } from "@blueprintjs/core";
 import React, { FC, ReactElement, useCallback, useEffect, useState } from "react";
 import { AppBar } from "./app-bar.component";
 import { AppDrawer } from "./app-drawer.component";
+import { AppFooter } from "./app-footer.component";
 
 interface IProps {
 	children: ReactElement;
@@ -33,11 +34,14 @@ export const Layout: FC<IProps> = ({ children }) => {
 	}
 
 	return (
-		<main>
-			<AppBar icon={<Button icon="menu" minimal={true} onClick={onClickMenu} />} />
-			<AppDrawer isOpen={isOpen} onClose={onClose} />
-			{children}
-		</main>
+		<>
+			<main>
+				<AppBar icon={<Button icon="menu" minimal={true} onClick={onClickMenu} />} />
+				<AppDrawer isOpen={isOpen} onClose={onClose} />
+				{children}
+			</main>
+			<AppFooter />
+		</>
 	);
 };
 
