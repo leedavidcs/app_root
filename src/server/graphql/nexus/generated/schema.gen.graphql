@@ -107,6 +107,7 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createOneWebhook: Webhook
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
@@ -475,6 +476,15 @@ input UserWhereInput {
   updatedAt: DateTimeFilter
   username: StringFilter
   webhook: WebhookFilter
+}
+
+type Webhook {
+  createdAt: DateTime!
+  id: String!
+  timeout: Int!
+  type: WebhookType!
+  url: String!
+  user: User!
 }
 
 input WebhookFilter {
