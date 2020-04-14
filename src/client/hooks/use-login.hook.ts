@@ -1,4 +1,5 @@
 import {
+	GetUserDocument,
 	LoginLocalUserMutation,
 	LoginLocalUserMutationOptions,
 	LoginLocalUserMutationResult,
@@ -23,7 +24,9 @@ export const useLogin = (
 	const toaster = useToast();
 
 	const [loginUser, result] = useLoginLocalUserMutation(options);
-	const [setUser] = useSetUserMutation();
+	const [setUser] = useSetUserMutation({
+		refetchQueries: [{ query: GetUserDocument }]
+	});
 
 	const login = useCallback(
 		async (variables: LoginLocalUserMutationVariables) => {
