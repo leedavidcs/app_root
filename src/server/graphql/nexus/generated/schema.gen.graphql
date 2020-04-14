@@ -508,6 +508,7 @@ input WebhookWhereInput {
   AND: [WebhookWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
+  name: StringFilter
   NOT: [WebhookWhereInput!]
   OR: [WebhookWhereInput!]
   timeout: IntFilter
