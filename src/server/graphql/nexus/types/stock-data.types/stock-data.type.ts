@@ -1,7 +1,7 @@
 import { StockDataFeatures } from "@/server/configs";
 import { IexType } from "@/server/datasources";
 import { IServerContextWithUser } from "@/server/graphql/context";
-import { AuthorizationError, BadInputError, Logger, UnexpectedError } from "@/server/utils";
+import { BadInputError, Logger } from "@/server/utils";
 import { objectType } from "@nexus/schema";
 import { ForbiddenError } from "apollo-server-micro";
 import { camelCase, get } from "lodash";
@@ -32,17 +32,13 @@ const computeCosts = (tickers: readonly string[], dataKeys: readonly string[]): 
 };
 
 const makeTransaction = async (cost: number, { prisma, user }: IServerContextWithUser) => {
-	if (!user) {
-		throw new AuthorizationError("You must be logged in to request this data.");
+	if (cost === 0) {
+		return;
 	}
 
 	const balance = await prisma.balance.findOne({ where: { userId: user?.id } });
 
-	if (!balance) {
-		throw new UnexpectedError();
-	}
-
-	if (balance.credits < cost) {
+	if (!balance || balance.credits < cost) {
 		throw new ForbiddenError("You have insufficient funds for this request.");
 	}
 
@@ -65,8 +61,32 @@ export const StockData = objectType({
 	definition: (t) => {
 		t.list.string("tickers", { nullable: false });
 		t.list.string("dataKeys", { nullable: false });
+		t.int("refreshCost", {
+			description: "The amount in credits, that a data-refresh would cost",
+			nullable: false,
+			resolve: ({ dataKeys, tickers }) => computeCosts(tickers, dataKeys)
+		});
 		t.list.field("data", {
 			type: "JSONObject",
+			authorize: async ({ dataKeys, tickers }, args, { prisma, user }) => {
+				if (!user) {
+					return false;
+				}
+
+				const cost: number = computeCosts(tickers, dataKeys);
+
+				if (cost === 0) {
+					return true;
+				}
+
+				const balance = await prisma.balance.findOne({ where: { userId: user.id } });
+
+				if (!balance || balance.credits < cost) {
+					return new ForbiddenError("You have insufficient funds for this request.");
+				}
+
+				return true;
+			},
 			resolve: async ({ tickers, dataKeys }, arg, context) => {
 				const { dataSources } = context;
 				const { IexCloudAPI } = dataSources;
@@ -74,10 +94,6 @@ export const StockData = objectType({
 				const types = getTypesFromDataKeys(dataKeys);
 
 				const cost: number = computeCosts(tickers, dataKeys);
-
-				if (cost > 0) {
-					await makeTransaction(cost, context);
-				}
 
 				let results: Record<string, Record<string, any>>;
 				try {
@@ -89,6 +105,8 @@ export const StockData = objectType({
 
 					throw new BadInputError("Could not get data. Inputs may be invalid");
 				}
+
+				await makeTransaction(cost, context);
 
 				const stockDataResult: Record<string, any>[] = tickers.map((ticker) => {
 					return { ticker, ...limitResultToDataKeys(results[ticker], dataKeys) };

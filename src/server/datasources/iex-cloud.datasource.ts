@@ -51,6 +51,7 @@ export class IexCloudAPI extends DataSource {
 		version
 	});
 
+	/** Ensure that data can be retrieved for given symbols */
 	public async areSymbolsValid(symbols: readonly string[]) {
 		try {
 			const result = await this.symbols(symbols, { price: true }, { mock: true });

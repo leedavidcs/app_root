@@ -16,6 +16,9 @@ const styles = (theme: CustomTheme) => ({
 	},
 	title: {
 		marginLeft: 4
+	},
+	creditsDisplay: {
+		marginLeft: 8
 	}
 });
 

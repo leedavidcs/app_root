@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 13th 2020 7:02:41 am
+// This file was generated on: Apr 14th 2020 4:52:58 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -325,6 +325,8 @@ export type StockData = {
   readonly __typename?: 'StockData';
   readonly tickers: ReadonlyArray<Scalars['String']>;
   readonly dataKeys: ReadonlyArray<Scalars['String']>;
+  /** The amount in credits, that a data-refresh would cost */
+  readonly refreshCost: Scalars['Int'];
   readonly data?: Maybe<ReadonlyArray<Scalars['JSONObject']>>;
 };
 
@@ -363,7 +365,7 @@ export type StockPortfolio = {
   readonly headers: ReadonlyArray<StockPortfolioHeader>;
   readonly tickers: ReadonlyArray<Scalars['String']>;
   /** The data that gets resolved based on headers and tickers */
-  readonly stockData?: Maybe<StockData>;
+  readonly stockData: StockData;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
 };
@@ -889,7 +891,10 @@ export type GetOneStockPortfolioQuery = (
     & { readonly headers: ReadonlyArray<(
       { readonly __typename?: 'StockPortfolioHeader' }
       & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
-    )>, readonly user: (
+    )>, readonly stockData: (
+      { readonly __typename?: 'StockData' }
+      & Pick<StockData, 'refreshCost'>
+    ), readonly user: (
       { readonly __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -1604,6 +1609,9 @@ export const GetOneStockPortfolioDocument = gql`
     tickers
     createdAt
     updatedAt
+    stockData {
+      refreshCost
+    }
     user {
       id
       username

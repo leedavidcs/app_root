@@ -419,6 +419,7 @@ export interface NexusGenFieldTypes {
   StockData: { // field return type
     data: any[] | null; // [JSONObject!]
     dataKeys: string[]; // [String!]!
+    refreshCost: number; // Int!
     tickers: string[]; // [String!]!
   }
   StockDataSearch: { // field return type

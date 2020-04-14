@@ -2,8 +2,10 @@ import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
 import {
 	GetOneStockPortfolioQuery,
 	GetStockDataQueryVariables,
+	GetUserDocument,
 	useGetStockDataLazyQuery,
-	useGetUserQuery
+	useGetUserQuery,
+	useSetUserMutation
 } from "@/client/graphql";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -67,7 +69,15 @@ const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 
 const useData = (): UseDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
-	const [getStockData, result] = useGetStockDataLazyQuery({ fetchPolicy: "no-cache" });
+	const [setUser] = useSetUserMutation({
+		awaitRefetchQueries: true,
+		refetchQueries: [{ query: GetUserDocument }]
+	});
+
+	const [getStockData, result] = useGetStockDataLazyQuery({
+		fetchPolicy: "no-cache",
+		onCompleted: () => setUser()
+	});
 
 	const refresh = useCallback(
 		(variables: GetStockDataQueryVariables) => {

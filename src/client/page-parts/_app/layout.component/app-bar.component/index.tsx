@@ -5,6 +5,7 @@ import { Alignment, Classes, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
 import { AuthButtons } from "./auth-buttons.component";
+import { CreditsDisplay } from "./credits-display.component";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
 
@@ -48,6 +49,7 @@ export const AppBar: FC<IProps> = (props) => {
 					<Brand />
 				</Navbar.Heading>
 				<SearchInput onChange={onSearchChange} value={searchText} />
+				<CreditsDisplay className={classes.creditsDisplay} />
 				{data?.user ? <ProfileMenu /> : <AuthButtons />}
 			</Navbar.Group>
 		</Navbar>
