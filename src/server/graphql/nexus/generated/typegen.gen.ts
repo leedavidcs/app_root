@@ -221,6 +221,7 @@ export interface NexusGenInputs {
     webhook?: NexusGenInputs['WebhookFilter'] | null; // WebhookFilter
   }
   WebhookCreateInput: { // input type
+    name: string; // String!
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
   }
@@ -233,6 +234,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     OR?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     timeout?: NexusGenInputs['IntFilter'] | null; // IntFilter

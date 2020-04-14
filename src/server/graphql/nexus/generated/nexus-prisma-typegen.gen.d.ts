@@ -279,8 +279,8 @@ interface NexusPrismaInputs {
   ordering: 'user' | 'userId' | 'customerId'
 }
     webhooks: {
-  filtering: 'id' | 'userId' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },
@@ -302,8 +302,8 @@ interface NexusPrismaInputs {
   ordering: 'user' | 'userId' | 'customerId'
 }
     webhook: {
-  filtering: 'id' | 'userId' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'user' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },  StockPortfolio: {
@@ -427,6 +427,7 @@ interface NexusPrismaTypes {
     id: 'String'
     user: 'User'
     userId: 'String'
+    name: 'String'
     type: 'WebhookType'
     url: 'String'
     timeout: 'Int'
