@@ -1,4 +1,4 @@
-import { CustomTheme } from "@/client/themes";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -13,6 +13,10 @@ const styles = (theme: CustomTheme) => ({
 	},
 	icon: {
 		cursor: "pointer"
+	},
+	itemSubLabel: {
+		fontSize: 12,
+		color: colors.gray3
 	}
 });
 
