@@ -3,8 +3,9 @@ import { arg, inputObjectType, mutationField } from "@nexus/schema";
 export const WebhookCreateInput = inputObjectType({
 	name: "WebhookCreateInput",
 	definition: (t) => {
+		t.string("name", { nullable: false });
 		t.field("type", { type: "WebhookType", nullable: false });
-		t.string("url", { description: "The url to POST to", nullable: false });
+		t.string("url", { nullable: false, description: "The url to POST to" });
 	}
 });
 

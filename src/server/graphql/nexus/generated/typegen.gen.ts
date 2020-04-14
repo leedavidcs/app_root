@@ -221,6 +221,7 @@ export interface NexusGenInputs {
     webhook?: NexusGenInputs['WebhookFilter'] | null; // WebhookFilter
   }
   WebhookCreateInput: { // input type
+    name: string; // String!
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
   }

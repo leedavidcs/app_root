@@ -488,6 +488,7 @@ type Webhook {
 }
 
 input WebhookCreateInput {
+  name: String!
   type: WebhookType!
 
   """The url to POST to"""
