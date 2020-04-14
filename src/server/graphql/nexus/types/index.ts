@@ -10,3 +10,4 @@ export * from "./stock-portfolio.types";
 export * from "./stripe.types";
 export * from "./transaction.types";
 export * from "./user.types";
+export * from "./webhook.types";

@@ -107,6 +107,7 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createOneWebhook(data: WebhookCreateInput!): Webhook
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
@@ -235,6 +236,8 @@ type ResendVerifyEmailPayload {
 type StockData {
   data: [JSONObject!]
   dataKeys: [String!]!
+
+  """The amount in credits, that a data-refresh would cost"""
   refreshCost: Int!
   tickers: [String!]!
 }
@@ -255,7 +258,7 @@ type StockPortfolio {
   name: String!
 
   """The data that gets resolved based on headers and tickers"""
-  stockData: StockData
+  stockData: StockData!
   tickers: [String!]!
   updatedAt: DateTime!
   user: User!
@@ -472,4 +475,44 @@ input UserWhereInput {
   transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
+  webhook: WebhookFilter
+}
+
+type Webhook {
+  createdAt: DateTime!
+  id: String!
+  timeout: Int!
+  type: WebhookType!
+  url: String!
+  user: User!
+}
+
+input WebhookCreateInput {
+  type: WebhookType!
+
+  """The url to POST to"""
+  url: String!
+}
+
+input WebhookFilter {
+  every: WebhookWhereInput
+  none: WebhookWhereInput
+  some: WebhookWhereInput
+}
+
+enum WebhookType {
+  StockDataRetrieved
+}
+
+input WebhookWhereInput {
+  AND: [WebhookWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [WebhookWhereInput!]
+  OR: [WebhookWhereInput!]
+  timeout: IntFilter
+  type: WebhookType
+  url: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
 }
