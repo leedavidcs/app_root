@@ -23,12 +23,14 @@ export const devLoggerPlugin: ApolloServerPlugin = {
 			return;
 		}
 
-		console.log(JSON.stringify(request.variables, null, 2));
-		console.log(request.query);
+		console.log("Request:\n");
+		console.log("Headers:", JSON.stringify(request.http?.headers, null, 2));
+		console.log("Variables", JSON.stringify(request.variables, null, 2));
+		console.log("Query:", request.query);
 
 		return {
 			willSendResponse: ({ response }) => {
-				console.log(response);
+				console.log(JSON.stringify(response, null, 2));
 			}
 		};
 	}

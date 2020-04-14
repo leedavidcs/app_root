@@ -1,3 +1,4 @@
+import { Tooltip } from "@/client/components";
 import { GetOneStockPortfolioQuery, GetStockDataQueryVariables } from "@/client/graphql";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import React, { FC, useCallback, useMemo } from "react";
@@ -24,13 +25,19 @@ const useOnRefresh = ({ onRefresh: _onRefresh, stockPortfolio }: IProps) => {
 };
 
 export const PublicActions: FC<IProps> = (props) => {
-	const { className } = props;
+	const { className, stockPortfolio } = props;
+
+	const refreshCost: number = stockPortfolio.stockData.refreshCost;
 
 	const onRefresh = useOnRefresh(props);
 
 	return (
-		<ButtonGroup className={className}>
-			<Button icon="refresh" onClick={onRefresh} text="Refresh" />
-		</ButtonGroup>
+		<div className={className}>
+			<ButtonGroup>
+				<Tooltip content={`Costs: ${refreshCost} credits`} position="bottom-left">
+					<Button icon="refresh" onClick={onRefresh} text="Refresh" />
+				</Tooltip>
+			</ButtonGroup>
+		</div>
 	);
 };

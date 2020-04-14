@@ -1,5 +1,6 @@
 import { Popover } from "@/client/components";
-import { useAuth } from "@/client/hooks";
+import { useGetUserQuery } from "@/client/graphql";
+import { useLogout } from "@/client/hooks";
 import { Icon, Menu } from "@blueprintjs/core";
 import Link from "next/link";
 import React, { FC, useCallback, useState } from "react";
@@ -10,7 +11,7 @@ interface IProps {
 }
 
 const useOnClickSignOut = (onCompleted?: () => void) => {
-	const { logout } = useAuth();
+	const [logout] = useLogout();
 
 	return useCallback(() => {
 		logout();
@@ -22,6 +23,10 @@ export const ProfileMenu: FC<IProps> = () => {
 	const classes = useStyles();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const getUserResult = useGetUserQuery();
+	const user = getUserResult.data?.user ?? null;
+	const currentCredits: number = user?.balance?.credits ?? 0;
 
 	const onClose = useCallback(() => setIsOpen(false), []);
 	const onOpen = useCallback(() => setIsOpen(true), []);
@@ -35,7 +40,17 @@ export const ProfileMenu: FC<IProps> = () => {
 				<Menu>
 					<Menu.Item icon="user" text="Your profile" />
 					<Link href="/pricing" passHref={true}>
-						<Menu.Item icon="cube" text="Credits" />
+						<Menu.Item
+							icon="cube"
+							text={
+								<>
+									Credits
+									<div className={classes.itemSubLabel}>
+										{currentCredits} credits
+									</div>
+								</>
+							}
+						/>
 					</Link>
 					<Menu.Item icon="log-out" onClick={onClickSignOut} text="Sign out" />
 				</Menu>

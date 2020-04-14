@@ -1,10 +1,11 @@
 import { Brand, SearchInput } from "@/client/components";
-import { useSetUser } from "@/client/hooks";
+import { useGetUserQuery } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
 import { Alignment, Classes, Navbar } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
 import { AuthButtons } from "./auth-buttons.component";
+import { CreditsDisplay } from "./credits-display.component";
 import { ProfileMenu } from "./profile-menu.component";
 import { useStyles } from "./styles";
 
@@ -33,7 +34,7 @@ export const AppBar: FC<IProps> = (props) => {
 
 	const classes = useStyles();
 
-	const [, { user }] = useSetUser();
+	const { data } = useGetUserQuery();
 
 	const [searchText, onSearchChange] = useOnSearch(props);
 
@@ -48,7 +49,8 @@ export const AppBar: FC<IProps> = (props) => {
 					<Brand />
 				</Navbar.Heading>
 				<SearchInput onChange={onSearchChange} value={searchText} />
-				{user ? <ProfileMenu /> : <AuthButtons />}
+				<CreditsDisplay className={classes.creditsDisplay} />
+				{data?.user ? <ProfileMenu /> : <AuthButtons />}
 			</Navbar.Group>
 		</Navbar>
 	);

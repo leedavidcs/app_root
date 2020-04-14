@@ -34,6 +34,7 @@ export const StockPortfolio = objectType({
 		t.model.tickers();
 		t.field("stockData", {
 			type: "StockData",
+			nullable: false,
 			description: "The data that gets resolved based on headers and tickers",
 			resolve: async ({ id, tickers }, args, context) => {
 				const { prisma } = context;

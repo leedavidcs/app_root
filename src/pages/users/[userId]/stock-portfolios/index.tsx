@@ -1,5 +1,5 @@
+import { useGetUserQuery } from "@/client/graphql";
 import { withApollo } from "@/client/hocs";
-import { useSetUser } from "@/client/hooks";
 import { StockPortfolioLookup } from "@/client/page-parts/users/[userId]/stock-portfolios";
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
@@ -26,7 +26,8 @@ const styles = (theme: CustomTheme) => ({
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
 const Page: NextPage = () => {
-	const [, { user }] = useSetUser();
+	const getUserResult = useGetUserQuery();
+	const user = getUserResult.data?.user ?? null;
 
 	const classes = useStyles();
 

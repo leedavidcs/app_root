@@ -4,12 +4,12 @@ import { object, ObjectSchemaDefinition, ValidationError } from "yup";
 export const getYupValidationResolver = <TData extends object = any, TContext = {}>(
 	validationSchema: (data: TData, context: TContext) => ObjectSchemaDefinition<TData>
 ) => {
-	const validationResolver: ValidationResolver<Record<keyof TData, any>, any> = (
+	const validationResolver: ValidationResolver<Record<keyof TData, any>, any> = async (
 		data: TData,
 		context: TContext
 	) => {
 		try {
-			const values = object().shape(validationSchema(data, context)).validateSync(data, {
+			const values = await object().shape(validationSchema(data, context)).validate(data, {
 				abortEarly: false
 			});
 

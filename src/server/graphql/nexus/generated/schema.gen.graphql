@@ -30,6 +30,10 @@ input BalanceWhereInput {
   userId: StringFilter
 }
 
+input BalanceWhereUniqueInput {
+  userId: String
+}
+
 input BooleanFilter {
   equals: Boolean
   not: Boolean
@@ -161,6 +165,8 @@ type PriceBundle {
 
 """Root query type"""
 type Query implements RequestRoot {
+  balance(where: BalanceWhereUniqueInput!): Balance
+
   """
   Retrieves the list of data key options for a stock portfolio header. All filters are 		OR'ed.
   """
@@ -229,6 +235,7 @@ type ResendVerifyEmailPayload {
 type StockData {
   data: [JSONObject!]
   dataKeys: [String!]!
+  refreshCost: Int!
   tickers: [String!]!
 }
 
@@ -433,9 +440,8 @@ input TransactionWhereUniqueInput {
 
 """Basic user of the application"""
 type User {
+  balance: Balance
   createdAt: DateTime!
-
-  """The user's email"""
   email: EmailAddress!
   emailVerified: Boolean!
   id: String!
