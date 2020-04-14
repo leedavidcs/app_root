@@ -235,6 +235,8 @@ type ResendVerifyEmailPayload {
 type StockData {
   data: [JSONObject!]
   dataKeys: [String!]!
+
+  """The amount in credits, that a data-refresh would cost"""
   refreshCost: Int!
   tickers: [String!]!
 }
@@ -255,7 +257,7 @@ type StockPortfolio {
   name: String!
 
   """The data that gets resolved based on headers and tickers"""
-  stockData: StockData
+  stockData: StockData!
   tickers: [String!]!
   updatedAt: DateTime!
   user: User!
@@ -472,4 +474,28 @@ input UserWhereInput {
   transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
+  webhook: WebhookFilter
+}
+
+input WebhookFilter {
+  every: WebhookWhereInput
+  none: WebhookWhereInput
+  some: WebhookWhereInput
+}
+
+enum WebhookType {
+  StockDataRetrieved
+}
+
+input WebhookWhereInput {
+  AND: [WebhookWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [WebhookWhereInput!]
+  OR: [WebhookWhereInput!]
+  timeout: IntFilter
+  type: WebhookType
+  url: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
 }
