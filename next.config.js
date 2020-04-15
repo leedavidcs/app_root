@@ -1,4 +1,5 @@
 const bundleAnalyzer = require("@next/bundle-analyzer");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 const enhance = bundleAnalyzer({ enabled: process.env.ANALYZE === "true" });
 
@@ -26,6 +27,17 @@ const config = {
 		IEXCLOUD_SANDBOX_SECRET_KEY: process.env.IEXCLOUD_SANDBOX_SECRET_KEY,
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
 		STRIPE_PUBLISHABLE: process.env.STRIPE_PUBLISHABLE
+	},
+	webpack: (config, { webpack }) => {
+		config.externals.push("prettier");
+
+		config.plugins.push(new LodashModuleReplacementPlugin({
+			caching: true,
+			memoizing: true,
+			paths: true
+		}));
+
+		return config;
 	}
 };
 
