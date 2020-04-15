@@ -46,7 +46,7 @@ const useStockPortfolio = (): GetOneStockPortfolioQueryResult => {
 	return result;
 };
 
-export const Page: NextPage<IInitialProps> = ({ errorCode, errorTitle }) => {
+const Page: NextPage<IInitialProps> = ({ errorCode, errorTitle }) => {
 	const classes = useStyles();
 
 	const { called, data, loading } = useStockPortfolio();
