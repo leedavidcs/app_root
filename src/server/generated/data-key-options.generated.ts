@@ -1,6 +1,5 @@
-
-	export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
-	[
+export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
+[
   {
     "name": "balanceSheet.accountsPayable",
     "dataKey": "balance-sheet.balancesheet[0].accountsPayable",
@@ -1356,5 +1355,4 @@
     "dataKey": "stats.ytdChangePercent",
     "provider": "IEX_CLOUD"
   }
-]
-	
+];
