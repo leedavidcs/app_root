@@ -1,3 +1,4 @@
+import { BadInputError } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 
 export const StockPortfolioCreateOneWithoutWebhookInput = inputObjectType({
@@ -31,15 +32,30 @@ export const createOneWebhook = mutationField("createOneWebhook", {
 			return false;
 		}
 
-		if (data.stockPortfolio.connect) {
+		if (data.stockPortfolio.connect?.id) {
+			const stockPortfolioId: string = data.stockPortfolio.connect.id;
+
 			const connectedStockPortfolio = await prisma.stockPortfolio.findOne({
-				where: data.stockPortfolio.connect
+				where: { id: stockPortfolioId }
 			});
 
 			const doesUserOwnStockPortfolio: boolean = connectedStockPortfolio?.userId === user.id;
 
 			if (!doesUserOwnStockPortfolio) {
 				return false;
+			}
+
+			const existingWebhook = await prisma.webhook.findOne({
+				where: {
+					stockPortfolioId_name: {
+						stockPortfolioId,
+						name: data.name
+					}
+				}
+			});
+
+			if (existingWebhook) {
+				return new BadInputError(`Name is already taken for this stock portfolio`);
 			}
 		}
 
