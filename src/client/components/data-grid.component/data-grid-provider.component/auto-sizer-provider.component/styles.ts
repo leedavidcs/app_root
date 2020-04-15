@@ -1,5 +1,4 @@
-import { CustomTheme } from "@/client/themes";
-import { transparentize } from "polished";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -10,7 +9,7 @@ const styles = (theme: CustomTheme) => ({
 		outline: {
 			style: "solid",
 			width: 1,
-			color: transparentize(1 - theme.mediumEmphasis, theme.onSurface)
+			color: colors.gray4
 		},
 		fontFamily: theme.fontPrimary,
 		fontSize: 14

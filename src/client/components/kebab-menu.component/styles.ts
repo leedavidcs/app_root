@@ -1,5 +1,4 @@
-import { CustomTheme, getZIndex } from "@/client/themes";
-import { transparentize } from "polished";
+import { colors, CustomTheme, getZIndex } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -19,7 +18,7 @@ const styles = (theme: CustomTheme) => ({
 		border: {
 			style: "solid",
 			width: 1,
-			color: transparentize(1 - theme.mediumEmphasis, theme.onSurface)
+			color: colors.gray4
 		},
 		borderRadius: 3,
 		zIndex: getZIndex("kebab-menu"),

@@ -99,7 +99,6 @@
     "node-iex-cloud": "^2.0.1",
     "nodemailer": "^6.4.6",
     "p-queue": "^6.3.0",
-    "polished": "^3.5.1",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-country-region-selector": "^2.1.0",
