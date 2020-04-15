@@ -10,14 +10,14 @@ import React, {
 	ReactElement,
 	useCallback
 } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	autoComplete?: string;
 	children?: ReactElement;
 	className?: string;
-	control?: ReturnType<typeof useForm>["control"];
+	control?: Control;
 	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;

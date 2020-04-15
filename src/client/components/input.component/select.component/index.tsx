@@ -18,7 +18,7 @@ export interface ISelectItemType {
 	[key: string]: any;
 }
 
-interface ISelectProps<T extends ISelectItemType> {
+export interface ISelectProps<T extends ISelectItemType> {
 	activeItem?: Maybe<T>;
 	children: ReactElement;
 	className?: string;
