@@ -14,6 +14,7 @@
     "build-docker": "echo $(date +%s) && docker-compose build --build-arg CACHE_BUST_FILES_UPDATED=$(date +%s) --pull server",
     "generate:backend": "npm-run-all generate:prisma generate:nexus generate:emails generate:options",
     "generate:emails": "npm run with-script -- src/server/emails/generate",
+    "generate:icons": "npm run with-script -- scripts/generate-icons-module.script",
     "generate:nexus": "npm run with-script -- src/server/graphql/nexus/schema --nexus-exit",
     "generate:prisma": "prisma generate",
     "generate:options": "npm run with-script -- scripts/generate-data-key-options.script",
@@ -120,6 +121,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@blueprintjs/icons": "^3.15.0",
     "@graphql-codegen/cli": "^1.13.2",
     "@graphql-codegen/time": "^1.13.2",
     "@graphql-codegen/typescript": "^1.13.2",

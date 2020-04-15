@@ -10,11 +10,11 @@ export const StandardStory: FC = () => {
 
 	const [onContextMenu] = useContextMenu(
 		<Menu>
-			<Menu.Item icon="git-branch" text="Branch" />
-			<Menu.Item icon="git-commit" text="Commit" />
-			<Menu.Item icon="git-merge" text="Merge" />
-			<Menu.Item icon="git-new-branch" text="New branch" />
-			<Menu.Item icon="git-pull" text="Pull" />
+			<Menu.Item icon="badge" text="Branch" />
+			<Menu.Item icon="badge" text="Commit" />
+			<Menu.Item icon="badge" text="Merge" />
+			<Menu.Item icon="badge" text="New branch" />
+			<Menu.Item icon="badge" text="Pull" />
 		</Menu>
 	);
 
