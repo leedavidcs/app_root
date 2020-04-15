@@ -16,7 +16,7 @@
     "generate:emails": "npm run with-script -- src/server/emails/generate",
     "generate:nexus": "npm run with-script -- src/server/graphql/nexus/schema --nexus-exit",
     "generate:prisma": "prisma generate",
-    "generate:options": "npm run with-script -- src/server/scripts/generate-data-key-options.script",
+    "generate:options": "npm run with-script -- scripts/generate-data-key-options.script",
     "generate:frontend": "graphql-codegen",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix",
