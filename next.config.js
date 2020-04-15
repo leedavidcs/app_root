@@ -1,6 +1,8 @@
 const bundleAnalyzer = require("@next/bundle-analyzer");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
+const path = require("path");
 
-const enhance = bundleAnalyzer({ enabled: process.env.ANALYZE === "true" });
+const enhance = bundleAnalyzer({ enabled: process.env.BUNDLE_ANALYZE === "true" });
 
 const config = {
 	target: "serverless",
@@ -26,6 +28,26 @@ const config = {
 		IEXCLOUD_SANDBOX_SECRET_KEY: process.env.IEXCLOUD_SANDBOX_SECRET_KEY,
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
 		STRIPE_PUBLISHABLE: process.env.STRIPE_PUBLISHABLE
+	},
+	webpack: (config, { webpack }) => {
+		/** Don't include prettier in the api bundle for graphql */
+		config.externals.push("prettier");
+
+		/** PLUGINS */
+		/** Reduce Blueprintjs Icons bundle */
+		config.plugins.push(new webpack.NormalModuleReplacementPlugin(
+			/.*\/generated\/iconSvgPaths.js/,
+			path.resolve(__dirname, "generated/icons.generated.ts")
+		));
+		/** Reduce Lodash bundle */
+		config.plugins.push(new LodashModuleReplacementPlugin({
+			caching: true,
+			memoizing: true,
+			paths: true,
+			shorthands: true
+		}));
+
+		return config;
 	}
 };
 

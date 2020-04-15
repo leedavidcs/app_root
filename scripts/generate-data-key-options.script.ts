@@ -5,6 +5,8 @@ import fs from "fs-extra";
 import { camelCase, isArray, isPlainObject, toLower, trim, uniqBy } from "lodash";
 import path from "path";
 
+const REPLACE_TEXT = "%%CONTENTS%%";
+
 const writePath: string = path.join(
 	process.env.PROJECT_DIRNAME ?? "",
 	"./src/server/generated/data-key-options.generated.ts"
@@ -97,17 +99,17 @@ const getDataKeyOptions = async () => {
 	return options;
 };
 
+const contents =
+`export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
+${REPLACE_TEXT};
+`;
+
 const main = async () => {
 	const dataKeyOptions = await getDataKeyOptions();
 	const sorted = dataKeyOptions.sort((a, b) => a.dataKey.localeCompare(b.dataKey));
 
-	const contents = `
-	export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLOUD" }[] =
-	${JSON.stringify(sorted, null, 2)}
-	`;
-
 	fs.ensureFileSync(writePath);
-	fs.writeFileSync(writePath, contents, {
+	fs.writeFileSync(writePath, contents.replace(REPLACE_TEXT, JSON.stringify(sorted, null, 2)), {
 		encoding: "utf8",
 		flag: "w"
 	});

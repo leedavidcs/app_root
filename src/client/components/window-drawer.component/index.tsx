@@ -1,5 +1,4 @@
 import { Classes, Drawer, IconName, Position } from "@blueprintjs/core";
-
 import classnames from "classnames";
 import React, { CSSProperties, FC, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
