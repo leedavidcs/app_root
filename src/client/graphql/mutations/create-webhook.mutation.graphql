@@ -1,0 +1,18 @@
+mutation CreateWebhook(
+	$name: String!
+	$url: String!
+	$type: WebhookType!
+	$stockPortfolioId: String!
+) {
+	createOneWebhook(
+		data: {
+			name: $name,
+			url: $url,
+			type: $type,
+			stockPortfolio: { connect: { id: $stockPortfolioId } }
+		}
+	) {
+		id
+		createdAt
+	}
+}

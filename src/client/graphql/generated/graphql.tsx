@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 14th 2020 4:52:58 am
+// This file was generated on: Apr 15th 2020 5:44:26 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -80,6 +80,18 @@ export type OrderDetailInput = {
   readonly quantity?: Maybe<Scalars['Int']>;
 };
 
+export type StockPortfolioCreateOneWithoutWebhookInput = {
+  readonly connect?: Maybe<StockPortfolioWhereUniqueInput>;
+};
+
+export type WebhookCreateInput = {
+  readonly name: Scalars['String'];
+  readonly type: WebhookType;
+  readonly url: Scalars['String'];
+  readonly timeout?: Maybe<Scalars['Int']>;
+  readonly stockPortfolio: StockPortfolioCreateOneWithoutWebhookInput;
+};
+
 export type AddressInput = {
   readonly line1: Scalars['String'];
   readonly city?: Maybe<Scalars['String']>;
@@ -134,6 +146,7 @@ export type Mutation = RequestRoot & {
   readonly cancelStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly cancelTransaction?: Maybe<Balance>;
   readonly createOneStockPortfolio: StockPortfolio;
+  readonly createOneWebhook?: Maybe<Webhook>;
   readonly createStripePaymentIntent?: Maybe<StripePaymentIntent>;
   readonly createStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
@@ -175,6 +188,12 @@ export type MutationCancelTransactionArgs = {
 /** Root mutation type */
 export type MutationCreateOneStockPortfolioArgs = {
   data: StockPortfolioCreateInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateOneWebhookArgs = {
+  data: WebhookCreateInput;
 };
 
 
@@ -426,6 +445,16 @@ export type User = {
   readonly updatedAt: Scalars['DateTime'];
 };
 
+export type Webhook = {
+  readonly __typename?: 'Webhook';
+  readonly id: Scalars['String'];
+  readonly stockPortfolio: StockPortfolio;
+  readonly timeout: Scalars['Int'];
+  readonly type: WebhookType;
+  readonly url: Scalars['String'];
+  readonly createdAt: Scalars['DateTime'];
+};
+
 export type StockPortfolioWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
   readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
@@ -441,6 +470,7 @@ export type StockPortfolioWhereInput = {
   readonly name?: Maybe<StringFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly webhook?: Maybe<WebhookFilter>;
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
@@ -487,6 +517,10 @@ export type TransactionWhereUniqueInput = {
 };
 
 
+export enum WebhookType {
+  StockDataRetrieved = 'StockDataRetrieved'
+}
+
 export type UserIdNameCompoundUniqueInput = {
   readonly userId: Scalars['String'];
   readonly name: Scalars['String'];
@@ -515,6 +549,12 @@ export type DateTimeFilter = {
   readonly lte?: Maybe<Scalars['DateTime']>;
   readonly gt?: Maybe<Scalars['DateTime']>;
   readonly gte?: Maybe<Scalars['DateTime']>;
+};
+
+export type WebhookFilter = {
+  readonly every?: Maybe<WebhookWhereInput>;
+  readonly some?: Maybe<WebhookWhereInput>;
+  readonly none?: Maybe<WebhookWhereInput>;
 };
 
 export type UserWhereInput = {
@@ -569,6 +609,20 @@ export enum TransactionStatus {
   Pending = 'PENDING',
   Succeeded = 'SUCCEEDED'
 }
+
+export type WebhookWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly name?: Maybe<StringFilter>;
+  readonly type?: Maybe<WebhookType>;
+  readonly url?: Maybe<StringFilter>;
+  readonly timeout?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
 
 export type BooleanFilter = {
   readonly equals?: Maybe<Scalars['Boolean']>;
@@ -702,6 +756,22 @@ export type CreateStripeSetupIntentMutation = (
   & { readonly createStripeSetupIntent?: Maybe<(
     { readonly __typename?: 'StripeSetupIntent' }
     & Pick<StripeSetupIntent, 'id' | 'client_secret'>
+  )> }
+);
+
+export type CreateWebhookMutationVariables = {
+  name: Scalars['String'];
+  url: Scalars['String'];
+  type: WebhookType;
+  stockPortfolioId: Scalars['String'];
+};
+
+
+export type CreateWebhookMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly createOneWebhook?: Maybe<(
+    { readonly __typename?: 'Webhook' }
+    & Pick<Webhook, 'id' | 'createdAt'>
   )> }
 );
 
@@ -1150,6 +1220,42 @@ export function useCreateStripeSetupIntentMutation(baseOptions?: ApolloReactHook
 export type CreateStripeSetupIntentMutationHookResult = ReturnType<typeof useCreateStripeSetupIntentMutation>;
 export type CreateStripeSetupIntentMutationResult = ApolloReactCommon.MutationResult<CreateStripeSetupIntentMutation>;
 export type CreateStripeSetupIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>;
+export const CreateWebhookDocument = gql`
+    mutation CreateWebhook($name: String!, $url: String!, $type: WebhookType!, $stockPortfolioId: String!) {
+  createOneWebhook(data: {name: $name, url: $url, type: $type, stockPortfolio: {connect: {id: $stockPortfolioId}}}) {
+    id
+    createdAt
+  }
+}
+    `;
+export type CreateWebhookMutationFn = ApolloReactCommon.MutationFunction<CreateWebhookMutation, CreateWebhookMutationVariables>;
+
+/**
+ * __useCreateWebhookMutation__
+ *
+ * To run a mutation, you first call `useCreateWebhookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWebhookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createWebhookMutation, { data, loading, error }] = useCreateWebhookMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *      type: // value for 'type'
+ *      stockPortfolioId: // value for 'stockPortfolioId'
+ *   },
+ * });
+ */
+export function useCreateWebhookMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateWebhookMutation, CreateWebhookMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateWebhookMutation, CreateWebhookMutationVariables>(CreateWebhookDocument, baseOptions);
+      }
+export type CreateWebhookMutationHookResult = ReturnType<typeof useCreateWebhookMutation>;
+export type CreateWebhookMutationResult = ApolloReactCommon.MutationResult<CreateWebhookMutation>;
+export type CreateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateWebhookMutation, CreateWebhookMutationVariables>;
 export const DeleteStockPortfolioDocument = gql`
     mutation DeleteStockPortfolio($id: String!) {
   deleteOneStockPortfolio(where: {id: $id}) {
