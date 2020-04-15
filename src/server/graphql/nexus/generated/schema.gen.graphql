@@ -268,6 +268,10 @@ input StockPortfolioCreateInput {
   name: String!
 }
 
+input StockPortfolioCreateOneWithoutWebhookInput {
+  connect: StockPortfolioWhereUniqueInput
+}
+
 input StockPortfolioFilter {
   every: StockPortfolioWhereInput
   none: StockPortfolioWhereInput
@@ -315,6 +319,7 @@ input StockPortfolioWhereInput {
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
+  webhook: WebhookFilter
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -475,23 +480,22 @@ input UserWhereInput {
   transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
-  webhook: WebhookFilter
 }
 
 type Webhook {
   createdAt: DateTime!
   id: String!
+  stockPortfolio: StockPortfolio!
   timeout: Int!
   type: WebhookType!
   url: String!
-  user: User!
 }
 
 input WebhookCreateInput {
   name: String!
+  stockPortfolio: StockPortfolioCreateOneWithoutWebhookInput!
+  timeout: Int
   type: WebhookType!
-
-  """The url to POST to"""
   url: String!
 }
 
@@ -512,9 +516,9 @@ input WebhookWhereInput {
   name: StringFilter
   NOT: [WebhookWhereInput!]
   OR: [WebhookWhereInput!]
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
   timeout: IntFilter
   type: WebhookType
   url: StringFilter
-  user: UserWhereInput
-  userId: StringFilter
 }

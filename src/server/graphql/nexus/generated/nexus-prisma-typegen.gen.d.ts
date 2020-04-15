@@ -259,11 +259,11 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'webhook' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balances: {
@@ -279,14 +279,14 @@ interface NexusPrismaInputs {
   ordering: 'user' | 'userId' | 'customerId'
 }
     webhooks: {
-  filtering: 'id' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolio' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },
     User: {
     stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
@@ -301,13 +301,12 @@ interface NexusPrismaInputs {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'user' | 'userId' | 'customerId'
 }
-    webhook: {
-  filtering: 'id' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
-}
 
   },  StockPortfolio: {
-
+    webhook: {
+  filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolio' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+}
 
   },  Balance: {
 
@@ -391,7 +390,6 @@ interface NexusPrismaTypes {
     balance: 'Balance'
     transaction: 'Transaction'
     stripeDetails: 'StripeDetails'
-    webhook: 'Webhook'
 
 },  StockPortfolio: {
     id: 'String'
@@ -402,6 +400,7 @@ interface NexusPrismaTypes {
     tickers: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
+    webhook: 'Webhook'
 
 },  Balance: {
     user: 'User'
@@ -425,8 +424,8 @@ interface NexusPrismaTypes {
 
 },  Webhook: {
     id: 'String'
-    user: 'User'
-    userId: 'String'
+    stockPortfolio: 'StockPortfolio'
+    stockPortfolioId: 'String'
     name: 'String'
     type: 'WebhookType'
     url: 'String'

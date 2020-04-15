@@ -1,12 +1,23 @@
-import { BadInputError } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
+
+export const StockPortfolioCreateOneWithoutWebhookInput = inputObjectType({
+	name: "StockPortfolioCreateOneWithoutWebhookInput",
+	definition: (t) => {
+		t.field("connect", { type: "StockPortfolioWhereUniqueInput" });
+	}
+});
 
 export const WebhookCreateInput = inputObjectType({
 	name: "WebhookCreateInput",
 	definition: (t) => {
 		t.string("name", { nullable: false });
 		t.field("type", { type: "WebhookType", nullable: false });
-		t.string("url", { nullable: false, description: "The url to POST to" });
+		t.string("url", { nullable: false });
+		t.int("timeout");
+		t.field("stockPortfolio", {
+			type: "StockPortfolioCreateOneWithoutWebhookInput",
+			nullable: false
+		});
 	}
 });
 
@@ -20,27 +31,19 @@ export const createOneWebhook = mutationField("createOneWebhook", {
 			return false;
 		}
 
-		const webhooks = await prisma.webhook.findMany({
-			where: {
-				name: data.name,
-				userId: user.id
-			}
-		});
+		if (data.stockPortfolio.connect) {
+			const connectedStockPortfolio = await prisma.stockPortfolio.findOne({
+				where: data.stockPortfolio.connect
+			});
 
-		if (webhooks.length !== 0) {
-			return new BadInputError(`Webhook with name "${data.name}" already exists!`);
+			const doesUserOwnStockPortfolio: boolean = connectedStockPortfolio?.userId === user.id;
+
+			if (!doesUserOwnStockPortfolio) {
+				return false;
+			}
 		}
 
 		return true;
 	},
-	resolve: async (parent, { data }, { prisma, user }) => {
-		const webhook = await prisma.webhook.create({
-			data: {
-				...data,
-				user: { connect: { id: user.id } }
-			}
-		});
-
-		return webhook;
-	}
+	resolve: (parent, { data }, { prisma }) => prisma.webhook.create({ data })
 });
