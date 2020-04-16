@@ -11,6 +11,7 @@ interface IBaseSelectProps<T extends any>
 
 interface IFormSelectProps<T extends any> extends IBaseSelectProps<T> {
 	control?: Control;
+	defaultValue?: T;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
 	label?: string;
@@ -31,6 +32,7 @@ const ofType = <T extends any>() => {
 	const BaseComponent: FC<IFormSelectProps<T>> = ({
 		className,
 		control,
+		defaultValue,
 		error,
 		inline,
 		label,
@@ -67,7 +69,7 @@ const ofType = <T extends any>() => {
 	};
 
 	const component: FC<IFormSelectProps<T>> = memo((props) => {
-		const { control, name, value, ...restProps } = props;
+		const { control, defaultValue, name, value, ...restProps } = props;
 
 		if (control) {
 			if (!name) {
@@ -78,6 +80,7 @@ const ofType = <T extends any>() => {
 				<Controller
 					as={BaseComponent}
 					control={control}
+					defaultValue={defaultValue}
 					name={name}
 					onChangeName="onItemSelect"
 					{...restProps}
