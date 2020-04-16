@@ -1,31 +1,37 @@
 import { Classes, IInputGroupProps, IPopoverProps, Menu } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select as BpSelect } from "@blueprintjs/select";
 import classnames from "classnames";
+import { get, toString } from "lodash";
 import React, {
 	ChangeEvent,
 	FC,
 	memo,
 	ReactElement,
 	ReactNode,
+	ReactText,
 	SyntheticEvent,
+	useCallback,
 	useMemo
 } from "react";
 import Highlighter from "react-highlight-words";
 import { useStyles } from "./styles";
 
-export interface ISelectItemType {
-	key: string | number;
-	[key: string]: any;
+interface ISelectItemType<T = any> {
+	key: ReactText;
+	name: ReactText;
+	value: T;
 }
 
-export interface ISelectProps<T extends ISelectItemType> {
+export interface ISelectProps<T> {
 	activeItem?: Maybe<T>;
 	children: ReactElement;
 	className?: string;
 	disabled?: boolean;
 	filterable?: boolean;
-	itemPredicate?: ItemPredicate<T>;
-	itemRenderer?: ItemRenderer<T>;
+	itemPredicate?: ItemPredicate<ISelectItemType<T>>;
+	itemRenderer?: ItemRenderer<ISelectItemType<T>>;
+	itemKey?: (item: T) => ReactText;
+	itemName?: (item: T) => ReactText;
 	items: readonly T[];
 	minimal?: boolean;
 	noResults?: ReactNode;
@@ -42,7 +48,7 @@ export interface ISelectProps<T extends ISelectItemType> {
 }
 
 interface IWithStaticExports {
-	ofType: <T extends ISelectItemType>() => FC<ISelectProps<T>>;
+	ofType: <T extends any>() => FC<ISelectProps<T>>;
 }
 
 const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
@@ -59,28 +65,32 @@ const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
 				autoEscape={true}
 				highlightTag={({ children }) => <strong>{children}</strong>}
 				searchWords={[query]}
-				textToHighlight={item.key.toString()}
+				textToHighlight={item.name.toString()}
 			/>
 		}
 	/>
 );
 
-const ofType = <T extends ISelectItemType>() => {
-	const TypedSelect = BpSelect.ofType<T>();
+const ofType = <T extends any>() => {
+	type InternalItem = ISelectItemType<T>;
+
+	const TypedSelect = BpSelect.ofType<InternalItem>();
 
 	const component: FC<ISelectProps<T>> = memo(
 		({
-			activeItem,
+			activeItem: _activeItem,
 			children,
 			className,
 			disabled,
 			filterable,
 			itemPredicate,
-			itemRenderer = getDefaultRenderer<T>(),
-			items,
+			itemRenderer = getDefaultRenderer<InternalItem>(),
+			itemKey = (value: T) => get(value, "key") ?? toString(value),
+			itemName = (value: T) => get(value, "key") ?? toString(value),
+			items: _items,
 			minimal,
 			noResults = <Menu.Item disabled={true} text="No results." />,
-			onItemSelect,
+			onItemSelect: _onItemSelect,
 			onOpened,
 			onOpening,
 			onQueryChange,
@@ -92,6 +102,26 @@ const ofType = <T extends ISelectItemType>() => {
 			usePortal = true
 		}) => {
 			useStyles();
+
+			const toInternalItem = useCallback(
+				(value: T): InternalItem => {
+					const key = itemKey(value);
+					const name = itemName(value);
+
+					return { key, name, value };
+				},
+				[itemKey, itemName]
+			);
+
+			const items: InternalItem[] = useMemo(() => _items.map(toInternalItem), [
+				_items,
+				toInternalItem
+			]);
+
+			const activeItem = useMemo(
+				() => _activeItem && items.find(({ key }) => key === itemKey(_activeItem)),
+				[_activeItem, itemKey, items]
+			);
 
 			const inputProps: Partial<IInputGroupProps> = useMemo(
 				() => ({
@@ -110,6 +140,10 @@ const ofType = <T extends ISelectItemType>() => {
 				[minimal, onOpened, onOpening, usePortal]
 			);
 
+			const onItemSelect = useCallback((item: InternalItem) => _onItemSelect(item.value), [
+				_onItemSelect
+			]);
+
 			return (
 				<TypedSelect
 					activeItem={activeItem}
@@ -119,7 +153,7 @@ const ofType = <T extends ISelectItemType>() => {
 					inputProps={inputProps}
 					itemPredicate={itemPredicate}
 					itemRenderer={itemRenderer}
-					items={items as T[]}
+					items={items}
 					noResults={noResults}
 					onItemSelect={onItemSelect}
 					onQueryChange={onQueryChange}

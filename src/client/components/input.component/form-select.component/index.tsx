@@ -1,18 +1,15 @@
-import {
-	ISelectItemType,
-	ISelectProps,
-	Select
-} from "@/client/components/input.component/select.component";
+import { ISelectProps, Select } from "@/client/components/input.component/select.component";
 import { Button, FormGroup, Intent } from "@blueprintjs/core";
+import { get, toString } from "lodash";
 import React, { CSSProperties, FC, memo, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
 
-interface IBaseSelectProps<T extends ISelectItemType>
-	extends Omit<ISelectProps<T>, "children" | "onItemSelect"> {
+interface IBaseSelectProps<T extends any>
+	extends Omit<ISelectProps<T>, "activeItem" | "children" | "onItemSelect"> {
 	onItemSelect?: ISelectProps<T>["onItemSelect"];
 }
 
-interface IFormSelectProps<T extends ISelectItemType> extends IBaseSelectProps<T> {
+interface IFormSelectProps<T extends any> extends IBaseSelectProps<T> {
 	control?: Control;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
@@ -25,10 +22,10 @@ interface IFormSelectProps<T extends ISelectItemType> extends IBaseSelectProps<T
 }
 
 interface IWithStaticExports {
-	ofType: <T extends ISelectItemType>() => FC<IFormSelectProps<T>>;
+	ofType: <T extends any>() => FC<IFormSelectProps<T>>;
 }
 
-const ofType = <T extends ISelectItemType>() => {
+const ofType = <T extends any>() => {
 	const TypedSelect = Select.ofType<T>();
 
 	const BaseComponent: FC<IFormSelectProps<T>> = ({
@@ -45,7 +42,11 @@ const ofType = <T extends ISelectItemType>() => {
 		value,
 		...props
 	}) => {
+		const { itemName = (item: T) => get(item, "key") ?? toString(item) } = props;
+
 		const intent: Intent = error ? "danger" : "none";
+
+		const valueText: Maybe<string> = value && itemName(value);
 
 		return (
 			<FormGroup
@@ -58,8 +59,8 @@ const ofType = <T extends ISelectItemType>() => {
 				labelInfo={labelInfo}
 				style={style}
 			>
-				<TypedSelect {...props} onItemSelect={onItemSelect}>
-					<Button intent={intent} text={value?.key ?? placeholder ?? "Select a value"} />
+				<TypedSelect activeItem={value} {...props} onItemSelect={onItemSelect}>
+					<Button intent={intent} text={valueText ?? placeholder ?? "Select a value"} />
 				</TypedSelect>
 			</FormGroup>
 		);

@@ -4,8 +4,8 @@ import {
 	IHeaderOption,
 	ResizeContext
 } from "@/client/components/data-grid.component";
-import { ISelectItemType, Select } from "@/client/components/input.component";
-import React, { FC, memo, useCallback, useContext, useMemo } from "react";
+import { Select } from "@/client/components/input.component";
+import React, { FC, memo, useCallback, useContext } from "react";
 import { SortableElement, SortableElementProps } from "react-sortable-hoc";
 import { HeaderItem } from "./header-item.component";
 import { useStyles } from "./styles";
@@ -18,20 +18,7 @@ export interface IBaseHeaderItemProps extends IHeaderConfig {
 	onEdit: (index: number) => void;
 }
 
-const TypedSelect = Select.ofType<IHeaderOption & ISelectItemType>();
-
-const useOptionItems = ({ options }: IBaseHeaderItemProps) => {
-	const selectOptions: readonly (IHeaderOption & ISelectItemType)[] = useMemo(
-		() =>
-			(options ?? [])?.map((option) => ({
-				...option,
-				key: option.label
-			})),
-		[options]
-	);
-
-	return selectOptions;
-};
+const TypedSelect = Select.ofType<IHeaderOption>();
 
 const useOnSelect = (index: number) => {
 	const { setHeaderOption } = useContext(HeadersContext);
@@ -50,7 +37,7 @@ const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemPro
 		onEdit: _onEdit,
 		...headerProps
 	} = props;
-	const { editable = true, width } = headerProps;
+	const { editable = true, options, width } = headerProps;
 
 	const classes = useStyles();
 
@@ -59,7 +46,9 @@ const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemPro
 	const onSelect = useOnSelect(index);
 
 	const [onContextMenu, { isOpen }] = useHeaderMenu(props);
-	const items = useOptionItems(props);
+
+	const itemKey = useCallback((option: IHeaderOption) => option.label, []);
+	const itemName = useCallback((option: IHeaderOption) => option.label, []);
 
 	return (
 		<div
@@ -69,7 +58,9 @@ const BaseHeaderItem: FC<IBaseHeaderItemProps> = memo((props: IBaseHeaderItemPro
 		>
 			<TypedSelect
 				disabled={!editable || isResizing || isOpen}
-				items={items}
+				itemKey={itemKey}
+				itemName={itemName}
+				items={options ?? []}
 				minimal={true}
 				onItemSelect={onSelect}
 				onOpening={onOpenOptions}
