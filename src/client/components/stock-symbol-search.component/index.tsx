@@ -8,21 +8,15 @@ import { useStyles } from "./styles";
 
 const DEBOUNCE_ON_SEARCH = 1000;
 
-type StockSymbol = SearchStockSymbolsQuery["stockSymbols"][number];
+export type StockSymbolSearchItem = SearchStockSymbolsQuery["stockSymbols"][number];
 
 interface IProps {
 	children: ReactElement;
 	className?: string;
-	onSelect: (symbol: StockSymbol) => void;
+	onSelect: (symbol: StockSymbolSearchItem) => void;
 }
 
-export interface IStockSymbolSearchItem {
-	key: string;
-	symbol: string;
-	securityName: string;
-}
-
-const TypedSelect = Select.ofType<StockSymbol>();
+const TypedSelect = Select.ofType<StockSymbolSearchItem>();
 
 export const StockSymbolSearch: FC<IProps> = memo(({ children, className, onSelect }) => {
 	const classes = useStyles();
@@ -36,9 +30,14 @@ export const StockSymbolSearch: FC<IProps> = memo(({ children, className, onSele
 		[searchSymbols]
 	);
 
+	const itemKey = useCallback((item: StockSymbolSearchItem) => item.symbol, []);
+	const itemName = itemKey;
+
 	return (
 		<TypedSelect
 			className={classnames(classes.root, className)}
+			itemKey={itemKey}
+			itemName={itemName}
 			items={data?.stockSymbols ?? []}
 			minimal={true}
 			noResults={<Menu.Item disabled={true} text={loading ? "Loading..." : "No results."} />}
