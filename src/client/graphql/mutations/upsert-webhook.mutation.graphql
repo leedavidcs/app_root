@@ -5,7 +5,7 @@ mutation UpsertWebhook(
 	$type: WebhookType!
 	$url: String!
 ) {
-	upsertOneWebhook(
+	webhook: upsertOneWebhook(
 		where: {
 			stockPortfolioId_name: {
 				stockPortfolioId: $stockPortfolioId

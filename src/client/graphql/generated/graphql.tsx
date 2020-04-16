@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 15th 2020 10:35:24 pm
+// This file was generated on: Apr 16th 2020 6:54:07 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -917,7 +917,7 @@ export type UpsertWebhookMutationVariables = {
 
 export type UpsertWebhookMutation = (
   { readonly __typename?: 'Mutation' }
-  & { readonly upsertOneWebhook: (
+  & { readonly webhook: (
     { readonly __typename?: 'Webhook' }
     & Pick<Webhook, 'id' | 'createdAt'>
   ) }
@@ -1553,7 +1553,7 @@ export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationRe
 export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
 export const UpsertWebhookDocument = gql`
     mutation UpsertWebhook($name: String!, $stockPortfolioId: String!, $timeout: Int, $type: WebhookType!, $url: String!) {
-  upsertOneWebhook(where: {stockPortfolioId_name: {stockPortfolioId: $stockPortfolioId, name: $name}}, create: {name: $name, stockPortfolio: {connect: {id: $stockPortfolioId}}, timeout: $timeout, type: $type, url: $url}, update: {name: $name, timeout: $timeout, type: $type, url: $url}) {
+  webhook: upsertOneWebhook(where: {stockPortfolioId_name: {stockPortfolioId: $stockPortfolioId, name: $name}}, create: {name: $name, stockPortfolio: {connect: {id: $stockPortfolioId}}, timeout: $timeout, type: $type, url: $url}, update: {name: $name, timeout: $timeout, type: $type, url: $url}) {
     id
     createdAt
   }
