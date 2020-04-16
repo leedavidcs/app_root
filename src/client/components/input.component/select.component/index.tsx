@@ -22,17 +22,21 @@ interface ISelectItemType<T = any> {
 	value: T;
 }
 
-export interface ISelectProps<T> {
+export interface ISelectProps<T, TOriginal = T> {
 	activeItem?: Maybe<T>;
 	children: ReactElement;
 	className?: string;
 	disabled?: boolean;
 	filterable?: boolean;
-	itemPredicate?: ItemPredicate<ISelectItemType<T>>;
-	itemRenderer?: ItemRenderer<ISelectItemType<T>>;
-	itemKey?: (item: T) => ReactText;
-	itemName?: (item: T) => ReactText;
-	items: readonly T[];
+	itemPredicate?: ItemPredicate<ISelectItemType<TOriginal>>;
+	itemRenderer?: ItemRenderer<ISelectItemType<TOriginal>>;
+	itemKey?: (item: TOriginal) => ReactText;
+	itemMap?: {
+		from: (original: TOriginal) => T;
+		to: (to: T) => TOriginal;
+	};
+	itemName?: (item: TOriginal) => ReactText;
+	items: readonly TOriginal[];
 	minimal?: boolean;
 	noResults?: ReactNode;
 	onItemSelect: (item: T, event?: SyntheticEvent<HTMLElement>) => void;
@@ -48,7 +52,7 @@ export interface ISelectProps<T> {
 }
 
 interface IWithStaticExports {
-	ofType: <T extends any>() => FC<ISelectProps<T>>;
+	ofType: <T extends any, TOriginal = T>() => FC<ISelectProps<T, TOriginal>>;
 }
 
 const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
@@ -71,12 +75,12 @@ const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
 	/>
 );
 
-const ofType = <T extends any>() => {
-	type InternalItem = ISelectItemType<T>;
+const ofType = <T extends any, TOriginal = T>() => {
+	type InternalItem = ISelectItemType<TOriginal>;
 
 	const TypedSelect = BpSelect.ofType<InternalItem>();
 
-	const component: FC<ISelectProps<T>> = memo(
+	const component: FC<ISelectProps<T, TOriginal>> = memo(
 		({
 			activeItem: _activeItem,
 			children,
@@ -85,8 +89,12 @@ const ofType = <T extends any>() => {
 			filterable,
 			itemPredicate,
 			itemRenderer = getDefaultRenderer<InternalItem>(),
-			itemKey = (value: T) => get(value, "key") ?? toString(value),
-			itemName = (value: T) => get(value, "key") ?? toString(value),
+			itemKey = (value: TOriginal) => get(value, "key") ?? toString(value),
+			itemMap = {
+				from: (value: any) => value,
+				to: (value: any) => value
+			},
+			itemName = (value: TOriginal) => get(value, "key") ?? toString(value),
 			items: _items,
 			minimal,
 			noResults = <Menu.Item disabled={true} text="No results." />,
@@ -104,7 +112,7 @@ const ofType = <T extends any>() => {
 			useStyles();
 
 			const toInternalItem = useCallback(
-				(value: T): InternalItem => {
+				(value: TOriginal): InternalItem => {
 					const key = itemKey(value);
 					const name = itemName(value);
 
@@ -119,8 +127,10 @@ const ofType = <T extends any>() => {
 			]);
 
 			const activeItem = useMemo(
-				() => _activeItem && items.find(({ key }) => key === itemKey(_activeItem)),
-				[_activeItem, itemKey, items]
+				() =>
+					_activeItem &&
+					items.find(({ key }) => key === itemKey(itemMap.to(_activeItem))),
+				[_activeItem, itemKey, itemMap, items]
 			);
 
 			const inputProps: Partial<IInputGroupProps> = useMemo(
@@ -140,9 +150,10 @@ const ofType = <T extends any>() => {
 				[minimal, onOpened, onOpening, usePortal]
 			);
 
-			const onItemSelect = useCallback((item: InternalItem) => _onItemSelect(item.value), [
-				_onItemSelect
-			]);
+			const onItemSelect = useCallback(
+				(item: InternalItem) => _onItemSelect(itemMap.from(item.value)),
+				[_onItemSelect, itemMap]
+			);
 
 			return (
 				<TypedSelect
