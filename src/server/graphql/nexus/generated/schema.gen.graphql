@@ -107,7 +107,6 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
-  createOneWebhook(data: WebhookCreateInput!): Webhook
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
@@ -124,6 +123,7 @@ type Mutation implements RequestRoot {
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
+  upsertOneWebhook(create: WebhookCreateInput!, update: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook!
 
   """The viewer of this request"""
   viewer: User
@@ -191,6 +191,7 @@ type Query implements RequestRoot {
 
   """The viewer of this request"""
   viewer: User
+  webhook(where: WebhookWhereUniqueInput!): Webhook
 }
 
 input RefreshAccessTokenInput {
@@ -269,7 +270,7 @@ input StockPortfolioCreateInput {
 }
 
 input StockPortfolioCreateOneWithoutWebhookInput {
-  connect: StockPortfolioWhereUniqueInput
+  connect: StockPortfolioWhereUniqueInput!
 }
 
 input StockPortfolioFilter {
@@ -292,6 +293,11 @@ input StockPortfolioHeaderInput {
   name: String!
   resizable: Boolean!
   width: Int!
+}
+
+input StockPortfolioIdNameCompoundUniqueInput {
+  name: String!
+  stockPortfolioId: String!
 }
 
 input StockPortfolioOrderByInput {
@@ -509,6 +515,13 @@ enum WebhookType {
   StockDataRetrieved
 }
 
+input WebhookUpdateInput {
+  name: String
+  timeout: Int
+  type: WebhookType
+  url: String
+}
+
 input WebhookWhereInput {
   AND: [WebhookWhereInput!]
   createdAt: DateTimeFilter
@@ -521,4 +534,9 @@ input WebhookWhereInput {
   timeout: IntFilter
   type: WebhookType
   url: StringFilter
+}
+
+input WebhookWhereUniqueInput {
+  id: String
+  stockPortfolioId_name: StockPortfolioIdNameCompoundUniqueInput
 }

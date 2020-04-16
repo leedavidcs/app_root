@@ -1,0 +1,36 @@
+mutation UpsertWebhook(
+	$name: String!
+	$stockPortfolioId: String!
+	$timeout: Int
+	$type: WebhookType!
+	$url: String!
+) {
+	upsertOneWebhook(
+		where: {
+			stockPortfolioId_name: {
+				stockPortfolioId: $stockPortfolioId
+				name: $name
+			}
+		}
+		create: {
+			name: $name,
+			stockPortfolio: {
+				connect: {
+					id: $stockPortfolioId
+				}
+			}
+			timeout: $timeout
+			type: $type
+			url: $url
+		}
+		update: {
+			name: $name
+			timeout: $timeout
+			type: $type
+			url: $url
+		}
+	) {
+		id
+		createdAt
+	}
+}
