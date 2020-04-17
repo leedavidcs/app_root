@@ -59,7 +59,7 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 
 			const webhook = result.data?.webhook;
 
-			if (webhook) {
+			if (!webhook) {
 				toaster.show({ intent: "danger", message: "Form submission unsuccessful" });
 
 				return;
