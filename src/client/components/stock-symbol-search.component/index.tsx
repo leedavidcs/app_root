@@ -1,44 +1,22 @@
 import { Select } from "@/client/components/input.component";
-import { useSearchStockSymbolsLazyQuery } from "@/client/graphql";
+import { SearchStockSymbolsQuery, useSearchStockSymbolsLazyQuery } from "@/client/graphql";
 import { Menu } from "@blueprintjs/core";
-import { ItemRenderer } from "@blueprintjs/select";
 import classnames from "classnames";
 import { debounce } from "lodash";
-import React, { FC, memo, ReactElement, useCallback, useMemo } from "react";
+import React, { FC, memo, ReactElement, useCallback } from "react";
 import { useStyles } from "./styles";
 
 const DEBOUNCE_ON_SEARCH = 1000;
 
+export type StockSymbolSearchItem = SearchStockSymbolsQuery["stockSymbols"][number];
+
 interface IProps {
 	children: ReactElement;
 	className?: string;
-	onSelect: (symbol: IStockSymbolSearchItem) => void;
+	onSelect: (symbol: StockSymbolSearchItem) => void;
 }
 
-export interface IStockSymbolSearchItem {
-	key: string;
-	symbol: string;
-	securityName: string;
-}
-
-const TypedSelect = Select.ofType<IStockSymbolSearchItem>();
-
-const itemRenderer: ItemRenderer<IStockSymbolSearchItem> = (item, itemProps) => {
-	const { key, symbol, securityName } = item;
-	const { handleClick, modifiers } = itemProps;
-
-	return (
-		<Menu.Item
-			key={key}
-			active={modifiers.active}
-			disabled={modifiers.disabled}
-			onClick={handleClick}
-			text={symbol}
-		>
-			{securityName}
-		</Menu.Item>
-	);
-};
+const TypedSelect = Select.ofType<StockSymbolSearchItem>();
 
 export const StockSymbolSearch: FC<IProps> = memo(({ children, className, onSelect }) => {
 	const classes = useStyles();
@@ -52,21 +30,15 @@ export const StockSymbolSearch: FC<IProps> = memo(({ children, className, onSele
 		[searchSymbols]
 	);
 
-	const items: readonly IStockSymbolSearchItem[] = useMemo(() => {
-		const stockSymbols = data?.stockSymbols ?? [];
-
-		return stockSymbols.map(({ symbol, securityName }) => ({
-			key: symbol,
-			symbol,
-			securityName
-		}));
-	}, [data]);
+	const itemKey = useCallback((item: StockSymbolSearchItem) => item.symbol, []);
+	const itemName = itemKey;
 
 	return (
 		<TypedSelect
 			className={classnames(classes.root, className)}
-			itemRenderer={itemRenderer}
-			items={items}
+			itemKey={itemKey}
+			itemName={itemName}
+			items={data?.stockSymbols ?? []}
 			minimal={true}
 			noResults={<Menu.Item disabled={true} text={loading ? "Loading..." : "No results."} />}
 			onItemSelect={onSelect}

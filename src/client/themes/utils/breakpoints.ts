@@ -3,15 +3,16 @@ const SM = 980;
 const MD = 1280;
 const LG = 1920;
 
-const BreakpointKeyMap = {
+export const BreakpointKeyMap = {
 	xs: [0, XS],
 	sm: [XS, SM],
 	md: [SM, MD],
 	lg: [MD, LG],
-	xl: [LG]
-};
+	xl: [LG, Infinity]
+} as const;
 
-const getMediaPx = (width?: number): string => (typeof width === "number" ? `${width}px` : "none");
+const getMediaPx = (width?: number): string =>
+	typeof width === "number" && isFinite(width) ? `${width}px` : "none";
 
 export const breakpoints = {
 	up: (key: keyof typeof BreakpointKeyMap): string => {

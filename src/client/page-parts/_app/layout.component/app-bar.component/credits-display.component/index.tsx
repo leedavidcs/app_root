@@ -11,7 +11,7 @@ interface IProps {
 export const CreditsDisplay: FC<IProps> = ({ className }) => {
 	useStyles();
 
-	const getUserQuery = useGetUserQuery();
+	const getUserQuery = useGetUserQuery({ fetchPolicy: "cache-only" });
 	const currentBalance: number = getUserQuery.data?.user?.balance?.credits ?? 0;
 
 	return (

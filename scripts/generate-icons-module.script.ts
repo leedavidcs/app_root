@@ -7,6 +7,7 @@ const config: readonly IconName[] = [
 	"arrow-right",
 	"badge",
 	"blank",
+	"caret-down",
 	"caret-right",
 	"chevron-left",
 	"chevron-right",

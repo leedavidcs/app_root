@@ -1,4 +1,4 @@
-import { ISelectItemType, Select } from "@/client/components/input.component/select.component";
+import { Select } from "@/client/components/input.component/select.component";
 import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import Faker from "faker";
@@ -7,14 +7,18 @@ import React, { FC, useCallback, useState } from "react";
 
 const ITEMS_SIZE = 50;
 
-const MOCK_ITEMS: readonly ISelectItemType[] = range(ITEMS_SIZE).map(() => ({
+interface IMockItem {
+	key: string;
+}
+
+const MOCK_ITEMS: readonly IMockItem[] = range(ITEMS_SIZE).map(() => ({
 	key: `${Faker.name.firstName()} ${Faker.name.lastName()}`
 }));
 
 export const StandardStory: FC = () => {
-	const [selected, setSelected] = useState<Maybe<ISelectItemType>>(null);
+	const [selected, setSelected] = useState<Maybe<IMockItem>>(null);
 
-	const onItemSelect = useCallback((item: ISelectItemType) => {
+	const onItemSelect = useCallback((item) => {
 		setSelected(item);
 		action("onItemSelect")(item);
 	}, []);

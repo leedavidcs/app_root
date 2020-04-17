@@ -24,7 +24,7 @@ export const ProfileMenu: FC<IProps> = () => {
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-	const getUserResult = useGetUserQuery();
+	const getUserResult = useGetUserQuery({ fetchPolicy: "cache-only" });
 	const user = getUserResult.data?.user ?? null;
 	const currentCredits: number = user?.balance?.credits ?? 0;
 

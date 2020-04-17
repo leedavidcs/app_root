@@ -1,4 +1,4 @@
-import { IStockSymbolSearchItem, StockSymbolSearch } from "@/client/components";
+import { StockSymbolSearch, StockSymbolSearchItem } from "@/client/components";
 import { Button } from "@blueprintjs/core";
 import React, { FC, useCallback } from "react";
 
@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export const AddTickerInput: FC<IProps> = ({ className, onAddTicker }) => {
-	const onSelect = useCallback(({ symbol }: IStockSymbolSearchItem) => onAddTicker(symbol), [
+	const onSelect = useCallback(({ symbol }: StockSymbolSearchItem) => onAddTicker(symbol), [
 		onAddTicker
 	]);
 

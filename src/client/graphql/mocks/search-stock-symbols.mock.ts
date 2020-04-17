@@ -1,14 +1,17 @@
 import { SearchStockSymbolsDocument } from "@/client/graphql/generated";
 import { MockedResponse } from "@apollo/react-testing";
 import Faker from "faker";
-import { range } from "lodash";
+import { range, uniqBy } from "lodash";
 
 const DATA_SIZE = 10;
-const stockSymbols = range(DATA_SIZE).map(() => ({
-	symbol: Faker.hacker.abbreviation(),
-	securityName: Faker.company.companyName(),
-	__typename: "StockDataSearch"
-}));
+const stockSymbols = uniqBy(
+	range(DATA_SIZE).map(() => ({
+		symbol: Faker.hacker.abbreviation(),
+		securityName: Faker.company.companyName(),
+		__typename: "StockDataSearch"
+	})),
+	"symbol"
+);
 
 export const SearchStockSymbolsMock: MockedResponse = {
 	request: {

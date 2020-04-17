@@ -3,22 +3,17 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		marginLeft: 8,
-
-		[breakpoints.up("md")]: {
-			marginLeft: 20
-		}
+		width: "100%",
+		maxWidth: 800
 	},
-	btn: {
-		"&:last-child": {
-			marginLeft: 8
-		},
+	inputsContainer: {
+		width: "100%",
+		maxWidth: 500,
 
-		[breakpoints.up("md")]: {
-			minWidth: 120,
-
-			"&:last-child": {
-				marginLeft: 12
+		[breakpoints.up("sm")]: {
+			"& .bp3-label": {
+				width: 130,
+				textAlign: "right"
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-import { CheckoutForm } from "@/client/forms/checkout.form";
+import { CheckoutForm } from "@/client/forms";
 import { withAuth } from "@/client/hocs";
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
