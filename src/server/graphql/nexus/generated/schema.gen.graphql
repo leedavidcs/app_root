@@ -192,6 +192,7 @@ type Query implements RequestRoot {
   """The viewer of this request"""
   viewer: User
   webhook(where: WebhookWhereUniqueInput!): Webhook
+  webhooks(after: WebhookWhereUniqueInput, before: WebhookWhereUniqueInput, first: Int, last: Int, orderBy: WebhookOrderByInput, skip: Int, where: WebhookWhereInput): [Webhook!]!
 }
 
 input RefreshAccessTokenInput {
@@ -331,6 +332,17 @@ input StockPortfolioWhereInput {
 input StockPortfolioWhereUniqueInput {
   id: String
   userId_name: UserIdNameCompoundUniqueInput
+}
+
+input StockPortfolioWhereWithoutUserInput {
+  AND: [StockPortfolioWhereWithoutUserInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  name: StringFilter
+  NOT: [StockPortfolioWhereWithoutUserInput!]
+  OR: [StockPortfolioWhereWithoutUserInput!]
+  updatedAt: DateTimeFilter
+  webhook: WebhookFilter
 }
 
 input StringFilter {
@@ -511,6 +523,11 @@ input WebhookFilter {
   some: WebhookWhereInput
 }
 
+input WebhookOrderByInput {
+  createdAt: OrderByArg
+  name: OrderByArg
+}
+
 enum WebhookType {
   StockDataRetrieved
 }
@@ -529,7 +546,7 @@ input WebhookWhereInput {
   name: StringFilter
   NOT: [WebhookWhereInput!]
   OR: [WebhookWhereInput!]
-  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolio: StockPortfolioWhereWithoutUserInput
   stockPortfolioId: StringFilter
   timeout: IntFilter
   type: WebhookType
