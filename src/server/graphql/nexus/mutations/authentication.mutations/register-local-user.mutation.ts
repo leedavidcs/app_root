@@ -2,6 +2,10 @@ import { createEmailHtml, ISendEmailResponse, sendEmail, VerifyEmail } from "@/s
 import { getBaseUrl } from "@/server/utils";
 import { arg, inputObjectType, mutationField, objectType } from "@nexus/schema";
 import { User } from "@prisma/client";
+import { object, string } from "yup";
+
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 30;
 
 export const RegisterLocalUserInput = inputObjectType({
 	name: "RegisterLocalUserInput",
@@ -50,6 +54,14 @@ export const registerLocalUser = mutationField("registerLocalUser", {
 			required: true
 		})
 	},
+	yupValidation: () => ({
+		input: object().shape({
+			username: string()
+				.min(USERNAME_MIN_LENGTH)
+				.max(USERNAME_MAX_LENGTH)
+				.matches(/^[a-z0-9_.-]*$/i)
+		})
+	}),
 	resolve: async (parent, { input: { email, password, username } }, { prisma }) => {
 		const existingUser: User | null = await prisma.user.findOne({ where: { email } });
 
