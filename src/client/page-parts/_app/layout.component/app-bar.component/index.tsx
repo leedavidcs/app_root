@@ -49,8 +49,14 @@ export const AppBar: FC<IProps> = (props) => {
 					<Brand />
 				</Navbar.Heading>
 				<SearchInput onChange={onSearchChange} value={searchText} />
-				<CreditsDisplay className={classes.creditsDisplay} />
-				{data?.user ? <ProfileMenu /> : <AuthButtons />}
+				{data?.user ? (
+					<>
+						<CreditsDisplay className={classes.creditsDisplay} />
+						<ProfileMenu />
+					</>
+				) : (
+					<AuthButtons />
+				)}
 			</Navbar.Group>
 		</Navbar>
 	);

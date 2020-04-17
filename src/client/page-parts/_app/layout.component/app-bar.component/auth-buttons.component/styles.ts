@@ -3,9 +3,17 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		marginLeft: 20
+		marginLeft: 8,
+
+		[breakpoints.up("md")]: {
+			marginLeft: 20
+		}
 	},
 	btn: {
+		"&:last-child": {
+			marginLeft: 8
+		},
+
 		[breakpoints.up("md")]: {
 			minWidth: 120,
 
