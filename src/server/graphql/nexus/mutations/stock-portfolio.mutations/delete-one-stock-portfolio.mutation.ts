@@ -1,4 +1,4 @@
-import { extendType } from "@nexus/schema";
+import { arg, extendType } from "@nexus/schema";
 
 export const deleteOneStockPortfolio = extendType({
 	type: "Mutation",
@@ -6,7 +6,7 @@ export const deleteOneStockPortfolio = extendType({
 		t.field("deleteOneStockPortfolio", {
 			type: "StockPortfolio",
 			args: {
-				where: "StockPortfolioWhereUniqueInput"
+				where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 			},
 			authorize: async (parent, { where }, { prisma, user }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({
