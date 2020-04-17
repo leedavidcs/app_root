@@ -1,6 +1,6 @@
-import { TextInput } from "@/client/components";
+import { Paper, TextInput } from "@/client/components";
 import { UpsertWebhookMutation, useUpsertWebhookMutation, WebhookType } from "@/client/graphql";
-import { useOnFormSubmitError, useToast } from "@/client/hooks";
+import { useBreakpoint, useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -35,10 +35,11 @@ const validationResolver = getYupValidationResolver<IFormData>(() => ({
 
 export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) => {
 	const classes = useStyles();
+	const toaster = useToast();
+
+	const isUpSmBreakpoint = useBreakpoint("up", "sm");
 
 	const [upsertWebhook] = useUpsertWebhookMutation();
-
-	const toaster = useToast();
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
 
@@ -71,28 +72,33 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 
 	return (
 		<form className={classnames(classes.root, className)} onSubmit={handleSubmit(onSubmit)}>
-			<TextInput
-				label="Name"
-				labelInfo="(required)"
-				name="name"
-				error={errors.name?.message}
-				control={control}
-			/>
-			<TextInput
-				label="Payload URL"
-				labelInfo="(required)"
-				name="url"
-				error={errors.name?.message}
-				control={control}
-			/>
-			<WebhookTypeSelect
-				label="Webhook trigger"
-				name="type"
-				defaultValue={webhookTypes[0]}
-				error={errors.type?.message}
-				control={control}
-			/>
-			<Button text="Submit" type="submit" />
+			<Paper className={classes.inputsContainer}>
+				<TextInput
+					label="Name"
+					labelInfo="(required)"
+					name="name"
+					inline={isUpSmBreakpoint}
+					error={errors.name?.message}
+					control={control}
+				/>
+				<TextInput
+					label="Payload URL"
+					labelInfo="(required)"
+					name="url"
+					inline={isUpSmBreakpoint}
+					error={errors.name?.message}
+					control={control}
+				/>
+				<WebhookTypeSelect
+					label="Webhook trigger"
+					name="type"
+					inline={isUpSmBreakpoint}
+					defaultValue={webhookTypes[0]}
+					error={errors.type?.message}
+					control={control}
+				/>
+			</Paper>
+			<Button intent="primary" text="Save webhook" type="submit" />
 		</form>
 	);
 };
