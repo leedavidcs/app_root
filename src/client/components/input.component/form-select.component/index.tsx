@@ -4,12 +4,12 @@ import { get, toString } from "lodash";
 import React, { CSSProperties, FC, memo, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
 
-interface IBaseSelectProps<T extends any>
-	extends Omit<ISelectProps<T>, "activeItem" | "children" | "onItemSelect"> {
-	onItemSelect?: ISelectProps<T>["onItemSelect"];
+interface IBaseSelectProps<T extends any, TOriginal = T>
+	extends Omit<ISelectProps<T, TOriginal>, "activeItem" | "children" | "onItemSelect"> {
+	onItemSelect?: ISelectProps<T, TOriginal>["onItemSelect"];
 }
 
-interface IFormSelectProps<T extends any> extends IBaseSelectProps<T> {
+interface IFormSelectProps<T extends any, TOriginal = T> extends IBaseSelectProps<T, TOriginal> {
 	control?: Control;
 	defaultValue?: T;
 	error?: Maybe<string | ReactElement>;
@@ -23,13 +23,13 @@ interface IFormSelectProps<T extends any> extends IBaseSelectProps<T> {
 }
 
 interface IWithStaticExports {
-	ofType: <T extends any>() => FC<IFormSelectProps<T>>;
+	ofType: <T extends any, TOriginal = T>() => FC<IFormSelectProps<T, TOriginal>>;
 }
 
-const ofType = <T extends any>() => {
-	const TypedSelect = Select.ofType<T>();
+const ofType = <T extends any, TOriginal = T>() => {
+	const TypedSelect = Select.ofType<T, TOriginal>();
 
-	const BaseComponent: FC<IFormSelectProps<T>> = ({
+	const BaseComponent: FC<IFormSelectProps<T, TOriginal>> = ({
 		className,
 		control,
 		defaultValue,
@@ -44,11 +44,17 @@ const ofType = <T extends any>() => {
 		value,
 		...props
 	}) => {
-		const { itemName = (item: T) => get(item, "key") ?? toString(item) } = props;
+		const {
+			itemMap = {
+				to: (item: any) => item,
+				from: (item: any) => item
+			},
+			itemName = (item: TOriginal) => get(item, "key") ?? toString(item)
+		} = props;
 
 		const intent: Intent = error ? "danger" : "none";
 
-		const valueText: Maybe<string> = value && itemName(value);
+		const valueText: Maybe<string> = value && itemName(itemMap.to(value));
 
 		return (
 			<FormGroup
@@ -62,13 +68,17 @@ const ofType = <T extends any>() => {
 				style={style}
 			>
 				<TypedSelect activeItem={value} {...props} onItemSelect={onItemSelect}>
-					<Button intent={intent} text={valueText ?? placeholder ?? "Select a value"} />
+					<Button
+						intent={intent}
+						rightIcon="caret-down"
+						text={valueText ?? placeholder ?? "Select a value"}
+					/>
 				</TypedSelect>
 			</FormGroup>
 		);
 	};
 
-	const component: FC<IFormSelectProps<T>> = memo((props) => {
+	const component: FC<IFormSelectProps<T, TOriginal>> = memo((props) => {
 		const { control, defaultValue, name, value, ...restProps } = props;
 
 		if (control) {

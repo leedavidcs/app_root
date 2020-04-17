@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { get, toString } from "lodash";
 import React, {
 	ChangeEvent,
+	ComponentType,
 	FC,
 	memo,
 	ReactElement,
@@ -13,10 +14,11 @@ import React, {
 	useCallback,
 	useMemo
 } from "react";
-import Highlighter from "react-highlight-words";
+import { DefaultItemRenderer, IItemProps } from "./default-item-renderer.component";
 import { useStyles } from "./styles";
 
-interface ISelectItemType<T = any> {
+export interface ISelectItemType<T = any> {
+	info: ReactNode;
 	key: ReactText;
 	name: ReactText;
 	value: T;
@@ -28,14 +30,15 @@ export interface ISelectProps<T, TOriginal = T> {
 	className?: string;
 	disabled?: boolean;
 	filterable?: boolean;
-	itemPredicate?: ItemPredicate<ISelectItemType<TOriginal>>;
-	itemRenderer?: ItemRenderer<ISelectItemType<TOriginal>>;
+	itemInfo?: (item: TOriginal) => ReactNode;
 	itemKey?: (item: TOriginal) => ReactText;
 	itemMap?: {
 		from: (original: TOriginal) => T;
 		to: (to: T) => TOriginal;
 	};
 	itemName?: (item: TOriginal) => ReactText;
+	itemPredicate?: ItemPredicate<ISelectItemType<TOriginal>>;
+	itemRenderer?: ComponentType<IItemProps<TOriginal>>;
 	items: readonly TOriginal[];
 	minimal?: boolean;
 	noResults?: ReactNode;
@@ -55,26 +58,6 @@ interface IWithStaticExports {
 	ofType: <T extends any, TOriginal = T>() => FC<ISelectProps<T, TOriginal>>;
 }
 
-const getDefaultRenderer = <T extends ISelectItemType>(): ItemRenderer<T> => (
-	item,
-	{ handleClick, modifiers, query }
-) => (
-	<Menu.Item
-		key={item.key}
-		active={modifiers.active}
-		disabled={modifiers.disabled}
-		onClick={handleClick}
-		text={
-			<Highlighter
-				autoEscape={true}
-				highlightTag={({ children }) => <strong>{children}</strong>}
-				searchWords={[query]}
-				textToHighlight={item.name.toString()}
-			/>
-		}
-	/>
-);
-
 const ofType = <T extends any, TOriginal = T>() => {
 	type InternalItem = ISelectItemType<TOriginal>;
 
@@ -87,14 +70,15 @@ const ofType = <T extends any, TOriginal = T>() => {
 			className,
 			disabled,
 			filterable,
-			itemPredicate,
-			itemRenderer = getDefaultRenderer<InternalItem>(),
+			itemInfo,
 			itemKey = (value: TOriginal) => get(value, "key") ?? toString(value),
 			itemMap = {
 				from: (value: any) => value,
 				to: (value: any) => value
 			},
 			itemName = (value: TOriginal) => get(value, "key") ?? toString(value),
+			itemPredicate,
+			itemRenderer: _itemRenderer = DefaultItemRenderer,
 			items: _items,
 			minimal,
 			noResults = <Menu.Item disabled={true} text="No results." />,
@@ -111,14 +95,24 @@ const ofType = <T extends any, TOriginal = T>() => {
 		}) => {
 			useStyles();
 
+			const itemRenderer: ItemRenderer<ISelectItemType<TOriginal>> = useCallback(
+				(item: ISelectItemType<TOriginal>, rendererProps) => {
+					const Item = _itemRenderer;
+
+					return <Item item={item} rendererProps={rendererProps} />;
+				},
+				[_itemRenderer]
+			);
+
 			const toInternalItem = useCallback(
 				(value: TOriginal): InternalItem => {
+					const info = itemInfo?.(value);
 					const key = itemKey(value);
 					const name = itemName(value);
 
-					return { key, name, value };
+					return { key, info, name, value };
 				},
-				[itemKey, itemName]
+				[itemInfo, itemKey, itemName]
 			);
 
 			const items: InternalItem[] = useMemo(() => _items.map(toInternalItem), [
