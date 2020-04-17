@@ -750,6 +750,10 @@ declare global {
      * resolver from executing.
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
+    /**
+     * Rate limit plugin for an individual field. Uses the same directive args as
+     * `graphql-rate-limit`.
+     */
     rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
   }
   interface NexusGenPluginSchemaConfig {

@@ -36,6 +36,12 @@ export class PaymentError extends ApolloError {
 	}
 }
 
+export class RateLimitError extends ApolloError {
+	constructor(message = "This operation was requested too many times.") {
+		super(message, "TOO_MANY_REQUESTS");
+	}
+}
+
 export class UnexpectedError extends ApolloError {
 	constructor(message = "Unexpected Error. Should not reach here.") {
 		super(message, "UNEXPECTED");
