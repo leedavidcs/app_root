@@ -1,6 +1,10 @@
+import { IServerContextWithUser } from "@/server/graphql/context";
+import { AuthClient } from "@/server/redis";
 import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "@nexus/schema";
+import { RedisStore } from "graphql-rate-limit";
 import { nexusPrismaPlugin } from "nexus-prisma";
 import path from "path";
+import { getClientIp } from "request-ip";
 import * as mutations from "./mutations";
 import { rateLimitPlugin } from "./plugins";
 import * as queries from "./queries";
@@ -34,7 +38,22 @@ export const nexusSchema = makeSchema({
 		}),
 		queryComplexityPlugin(),
 		fieldAuthorizePlugin(),
-		rateLimitPlugin()
+		rateLimitPlugin({
+			identifyContext: ({ user, req }: IServerContextWithUser): string => {
+				const userId: Maybe<string> = user?.id;
+				const ip: Maybe<string> = getClientIp(req);
+
+				const identityKey: string = userId ?? ip ?? "";
+
+				return identityKey;
+			},
+			/**
+			 * @description Use the auth redis client, since requests are rate-limited by userIds
+			 * @author David Lee
+			 * @date February 25, 2020
+			 */
+			store: new RedisStore(AuthClient)
+		})
 	],
 	typegenAutoConfig: {
 		sources: [{ source: getPath("../context.ts"), alias: "ctx" }],
