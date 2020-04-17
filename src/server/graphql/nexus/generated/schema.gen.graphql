@@ -187,7 +187,8 @@ type Query implements RequestRoot {
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
   stockSymbols(text: String!): [StockDataSearch!]!
-  transactions(after: TransactionWhereUniqueInput, before: TransactionWhereUniqueInput, first: Int, last: Int, orderBy: TransactionOrderByInput, skip: Int, where: TransactionWhereInput): [Transaction!]!
+  transaction(where: TransactionWhereUniqueInput!): Transaction
+  transactions(after: TransactionWhereUniqueInput, before: TransactionWhereUniqueInput, first: Int, last: Int, skip: Int, where: TransactionWhereWithoutUserInput): [Transaction!]!
 
   """The viewer of this request"""
   viewer: User
@@ -432,11 +433,6 @@ input TransactionOrderByInput {
   createdAt: OrderByArg
   creditsBefore: OrderByArg
   creditsTransacted: OrderByArg
-  id: OrderByArg
-  paymentIntentId: OrderByArg
-  status: OrderByArg
-  user: OrderByArg
-  userId: OrderByArg
 }
 
 enum TransactionStatus {
@@ -462,6 +458,18 @@ input TransactionWhereInput {
 input TransactionWhereUniqueInput {
   id: String
   paymentIntentId: String
+}
+
+input TransactionWhereWithoutUserInput {
+  AND: [TransactionWhereWithoutUserInput!]
+  createdAt: DateTimeFilter
+  creditsBefore: IntFilter
+  creditsTransacted: IntFilter
+  id: StringFilter
+  NOT: [TransactionWhereWithoutUserInput!]
+  OR: [TransactionWhereWithoutUserInput!]
+  paymentIntentId: NullableStringFilter
+  status: TransactionStatus
 }
 
 """Basic user of the application"""
