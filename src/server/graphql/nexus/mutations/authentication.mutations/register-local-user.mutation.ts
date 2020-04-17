@@ -62,6 +62,7 @@ export const registerLocalUser = mutationField("registerLocalUser", {
 				.matches(/^[a-z0-9_.-]*$/i)
 		})
 	}),
+	rateLimit: () => ({ window: "1m", max: 30 }),
 	resolve: async (parent, { input: { email, password, username } }, { prisma }) => {
 		const existingUser: User | null = await prisma.user.findOne({ where: { email } });
 

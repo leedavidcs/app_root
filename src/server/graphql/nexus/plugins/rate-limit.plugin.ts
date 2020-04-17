@@ -43,7 +43,7 @@ export type IFieldRateLimitResolver<TypeName extends string, FieldName extends s
 	args: ArgsValue<TypeName, FieldName>,
 	context: GetGen<"context">,
 	info: GraphQLResolveInfo
-) => MaybePromise<GraphQLRateLimitConfig>;
+) => MaybePromise<GraphQLRateLimitDirectiveArgs>;
 
 export const rateLimitPlugin = (options: GraphQLRateLimitConfig) => {
 	const rateLimiter = getGraphQLRateLimiter(options);
