@@ -1,5 +1,8 @@
+import { NexusGenRootTypes } from "@/server/graphql/nexus/generated/typegen.gen";
 import { BadInputError } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
+import { uniqBy } from "lodash";
+import { array, object } from "yup";
 
 export const StockPortfolioUpdateInput = inputObjectType({
 	name: "StockPortfolioUpdateInput",
@@ -30,6 +33,18 @@ export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", 
 
 		return isOwnedByUser;
 	},
+	yupValidation: () => ({
+		data: object().shape({
+			headers: array<NexusGenRootTypes["StockPortfolioHeader"]>().test({
+				message: "Headers must have unique names",
+				test: (headers) => {
+					const hasUniqNames: boolean = uniqBy(headers, "name").length === headers.length;
+
+					return hasUniqNames;
+				}
+			})
+		})
+	}),
 	resolve: async (
 		parent,
 		{ data: { name, headers, tickers }, where },

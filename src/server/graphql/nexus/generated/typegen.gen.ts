@@ -7,6 +7,7 @@ import * as ctx from "../../context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
 import { IFieldRateLimitResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/rate-limit.plugin"
+import { IFieldYupValidationResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/yup-validation.plugin"
 
 
 declare global {
@@ -755,6 +756,11 @@ declare global {
      * `graphql-rate-limit`.
      */
     rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
+    /**
+     * `yup` validation plugin for an individual field. Requires that an object schema
+     * definition be defined for the input args.
+     */
+    yupValidation?: IFieldYupValidationResolver<TypeName, FieldName>
   }
   interface NexusGenPluginSchemaConfig {
   }

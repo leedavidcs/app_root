@@ -6,7 +6,7 @@ import { nexusPrismaPlugin } from "nexus-prisma";
 import path from "path";
 import { getClientIp } from "request-ip";
 import * as mutations from "./mutations";
-import { rateLimitPlugin } from "./plugins";
+import { rateLimitPlugin, yupValidationPlugin } from "./plugins";
 import * as queries from "./queries";
 import * as types from "./types";
 
@@ -53,7 +53,8 @@ export const nexusSchema = makeSchema({
 			 * @date February 25, 2020
 			 */
 			store: new RedisStore(AuthClient)
-		})
+		}),
+		yupValidationPlugin()
 	],
 	typegenAutoConfig: {
 		sources: [{ source: getPath("../context.ts"), alias: "ctx" }],
