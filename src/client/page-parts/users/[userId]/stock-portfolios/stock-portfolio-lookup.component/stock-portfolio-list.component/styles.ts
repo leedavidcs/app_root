@@ -18,6 +18,4 @@ const styles = (theme: CustomTheme) => ({
 	}
 });
 
-export const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles, {
-	link: true
-});
+export const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);

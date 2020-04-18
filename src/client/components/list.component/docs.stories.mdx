@@ -2,7 +2,7 @@ import { Icon } from "@blueprintjs/core";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { themes } from "@storybook/theming";
 import { SelectableStory } from "./stories";
-import { List, ListItem, ListItemIcon, ListItemText } from ".";
+import { List, ListItem } from ".";
 
 <Meta
 	title="general/list"
@@ -21,8 +21,6 @@ import { List, ListItem, ListItemIcon, ListItemText } from ".";
   * [Props](#props)
     + [List](#list-1)
     + [ListItem](#listitem)
-    + [ListItemIcon](#listitemicon)
-    + [ListItemText](#listitemtext)
   * [StandardStory](#standardstory)
     + [Source](#source)
   * [SelectableStory](#selectablestory)
@@ -41,31 +39,13 @@ styling.
 ### ListItem
 <Props of={ListItem} />
 
-### ListItemIcon
-<Props of={ListItemIcon} />
-
-### ListItemText
-<Props of={ListItemText} />
-
 ## StandardStory
 <Preview>
 	<Story name="standard">
 		<List divider="full">
-			<ListItem>
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Banana" />
-			</ListItem>
-			<ListItem>
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Apple" />
-			</ListItem>
-			<ListItem>
-				<ListItemText primary="Strawberry" />
-			</ListItem>
+			<ListItem icon="badge" text="Banana" info="Is fruit" />
+			<ListItem icon="badge" text="Apple" />
+			<ListItem text="Melon" />
 		</List>
 	</Story>
 </Preview>
@@ -82,34 +62,19 @@ styling.
 
 ### Source
 ```tsx
+import { List, ListItem } from "@/client/components/list.component";
 import React, { FC, useCallback, useState } from "react";
-import { FaApple, FaBacon } from "react-icons/fa";
-import { List, ListItem, ListItemIcon, ListItemText } from "..";
 
 export const SelectableStory: FC = () => {
-	const [selectedIndex, setSelectedIndex] = useState<number>(0);
+	const [selected, setSelected] = useState<number>(0);
 
-	const onClick = useCallback((index: number) => () => setSelectedIndex(index), [
-		setSelectedIndex
-	]);
+	const onClick = useCallback((index: number) => () => setSelected(index), []);
 
 	return (
 		<List divider="full">
-			<ListItem selected={selectedIndex === 0} onClick={onClick(0)}>
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Banana" />
-			</ListItem>
-			<ListItem selected={selectedIndex === 1} onClick={onClick(1)}>
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Apple" />
-			</ListItem>
-			<ListItem selected={selectedIndex === 2} onClick={onClick(2)}>
-				<ListItemText primary="Strawberry" />
-			</ListItem>
+			<ListItem selected={selected === 0} onClick={onClick(0)} icon="badge" text="Banana" />
+			<ListItem selected={selected === 1} onClick={onClick(1)} icon="badge" text="Apple" />
+			<ListItem selected={selected === 2} onClick={onClick(2)} text="Melon" />
 		</List>
 	);
 };
@@ -119,21 +84,9 @@ export const SelectableStory: FC = () => {
 <Preview>
 	<Story name="with-href">
 		<List divider="full">
-			<ListItem href="https://google.com">
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Banana" />
-			</ListItem>
-			<ListItem>
-				<ListItemIcon>
-					<Icon icon="badge" />
-				</ListItemIcon>
-				<ListItemText primary="Apple" />
-			</ListItem>
-			<ListItem>
-				<ListItemText primary="Strawberry" />
-			</ListItem>
+			<ListItem href="https://google.com" icon="badge" text="Banana" />
+			<ListItem icon="badge" text="Apple" />
+			<ListItem text="Melon" />
 		</List>
 	</Story>
 </Preview>

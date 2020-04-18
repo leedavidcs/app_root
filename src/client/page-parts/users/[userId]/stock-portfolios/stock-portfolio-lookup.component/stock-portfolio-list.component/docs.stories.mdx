@@ -23,13 +23,13 @@ A list that displays the stock portfolios that the user has created.
 ## Props
 <Props of={StockPortfolioList} />
 
+## StandardStory
 export const stockPortfolios = range(10).map(() => ({
 	id: Faker.random.uuid(),
 	name: Faker.name.firstName(),
 	updatedAt: Faker.date.recent().toDateString()
 }));
 
-## StandardStory
 <Preview>
 	<Story name="standard">
 		<div style={{ width: 500 }}>

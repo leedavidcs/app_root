@@ -1,6 +1,7 @@
 import { DividerVariant } from "@/client/components/divider.component";
 import classnames from "classnames";
-import React, { FC, ReactNode, useMemo } from "react";
+import React, { FC, memo, ReactNode, useMemo } from "react";
+import { IListItemProps, ListItem } from "./list-item.component";
 import { ListContext } from "./list.context";
 import { useStyles } from "./styles";
 
@@ -16,7 +17,11 @@ interface IProps {
 	divider?: DividerVariant | null;
 }
 
-export const List: FC<IProps> = ({ children, divider = null, className }) => {
+interface IWithStaticProps {
+	Item: FC<IListItemProps>;
+}
+
+const _List: FC<IProps> = memo(({ children, divider = null, className }) => {
 	const classes = useStyles();
 
 	const value = useMemo(() => ({ divider }), [divider]);
@@ -26,4 +31,10 @@ export const List: FC<IProps> = ({ children, divider = null, className }) => {
 			<ul className={classnames(classes.root, className)}>{children}</ul>
 		</ListContext.Provider>
 	);
-};
+});
+
+_List.displayName = "List";
+
+(_List as FC<IProps> & IWithStaticProps).Item = ListItem;
+
+export const List = _List as FC<IProps> & IWithStaticProps;

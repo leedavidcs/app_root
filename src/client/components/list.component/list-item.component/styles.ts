@@ -4,28 +4,28 @@ import { createUseStyles } from "react-jss";
 const styles = (theme: CustomTheme) => ({
 	root: {
 		position: "relative",
-		textAlign: "left",
-		textDecoration: "none",
 		backgroundColor: theme.surface,
-		color: theme.onSurface
-	},
-	padded: {
-		display: "flex",
-		justifyContent: "flex-start",
-		alignItems: "center",
-		boxSizing: "border-box",
-		height: "100%",
-		width: "100%",
-		padding: "8px 16px",
-		cursor: ({ href, selected }) =>
-			typeof selected === "boolean" || href ? "pointer" : "unset"
+		color: theme.onSurface,
+
+		"& a, a:hover": {
+			textDecoration: "none",
+			color: theme.onSurface
+		}
 	},
 	link: {
 		display: "flex",
-		height: "100%",
-		width: "100%",
-		color: "unset",
-		textDecoration: "none"
+		padding: "10px 14px",
+
+		"& > .bp3-icon": {
+			marginTop: 3,
+			marginRight: 8
+		}
+	},
+	textWrapper: {
+		flexGrow: 1
+	},
+	info: {
+		fontSize: 12
 	},
 	divider: {
 		width: "100%",
