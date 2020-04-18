@@ -35,11 +35,9 @@ export const stockPortfolioQueries = extendType({
 				query: stringArg()
 			},
 			resolve: async (parent, { query, where }, { prisma }) => {
-				const result = await prisma.stockPortfolio.findMany({
+				const count = await prisma.stockPortfolio.count({
 					where: applyGenerators(where, [stringFilter("name", query)])
 				});
-
-				const count: number = result.length;
 
 				return count;
 			}
