@@ -12,7 +12,7 @@ export const getSchemaWithMiddleware = ({
 	"resolvers" | "schemaDirectives" | "typeDefs"
 >): GraphQLSchema => {
 	const schema: GraphQLSchema = makeExecutableSchema({ resolvers, schemaDirectives, typeDefs });
-	const middlewares: readonly IMiddlewareGenerator<any, any, any>[] = [validation, permissions];
+	const middlewares: readonly IMiddlewareGenerator<any, any, any>[] = [validation];
 
 	const schemaWithMiddleware: GraphQLSchema = applyMiddleware(schema, ...middlewares);
 

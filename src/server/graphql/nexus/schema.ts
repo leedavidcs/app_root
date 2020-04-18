@@ -20,7 +20,7 @@ const getPath = (fileName: string): string => {
 
 const isGenerateScript: boolean = process.argv.includes("--nexus-exit");
 
-export const nexusSchema = makeSchema({
+export const schema = makeSchema({
 	shouldGenerateArtifacts: isGenerateScript,
 	shouldExitAfterGenerateArtifacts: isGenerateScript,
 	types: { ...mutations, ...queries, ...types },
