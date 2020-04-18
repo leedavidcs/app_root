@@ -13,6 +13,7 @@ query GetWebhooks(
 		id
 		name
 		type
+		url
 		createdAt
 	}
 	count: webhookCount(where: $where)
