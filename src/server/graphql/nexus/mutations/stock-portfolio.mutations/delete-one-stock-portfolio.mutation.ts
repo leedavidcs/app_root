@@ -8,6 +8,7 @@ export const deleteOneStockPortfolio = extendType({
 			args: {
 				where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 			},
+			rateLimit: () => ({ window: "1m", max: 30 }),
 			authorize: async (parent, { where }, { prisma, user }) => {
 				if (!user) {
 					return false;

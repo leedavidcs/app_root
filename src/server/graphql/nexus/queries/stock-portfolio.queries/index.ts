@@ -10,6 +10,7 @@ export const stockPortfolioQueries = extendType({
 			type: "StockPortfolio",
 			list: true,
 			nullable: false,
+			rateLimit: () => ({ window: "1m", max: 30 }),
 			args: {
 				after: arg({ type: "StockPortfolioWhereUniqueInput" }),
 				before: arg({ type: "StockPortfolioWhereUniqueInput" }),

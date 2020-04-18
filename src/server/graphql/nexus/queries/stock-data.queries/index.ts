@@ -6,6 +6,7 @@ export const stockData = queryField("stockData", {
 		tickers: stringArg({ list: true, nullable: false }),
 		dataKeys: stringArg({ list: true, nullable: false })
 	},
+	rateLimit: () => ({ window: "1m", max: 30 }),
 	resolve: (parent, { tickers, dataKeys }) => ({ tickers, dataKeys })
 });
 
@@ -16,6 +17,7 @@ export const stockSymbols = queryField("stockSymbols", {
 	args: {
 		text: stringArg({ nullable: false })
 	},
+	rateLimit: () => ({ window: "1s", max: 30 }),
 	resolve: (parent, { text }, { dataSources }) => {
 		const { IexCloudAPI } = dataSources;
 

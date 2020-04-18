@@ -25,19 +25,7 @@ export const rateLimits: IMiddlewareGenerator<any, IServerContext, any> = speedL
 		store: new RedisStore(AuthClient)
 	},
 	{
-		Query: {
-			stockPortfolios: { window: "1m", max: 30 },
-			stockData: { window: "1m", max: 30 },
-			stockSymbols: { window: "1s", max: 5 }
-		},
-		Mutation: {
-			loginLocalUser: { window: "1m", max: 30 },
-			refreshAccessToken: { window: "1m", max: 30 },
-			registerLocalUser: { window: "1m", max: 1 },
-			resendVerifyEmail: { window: "1m", max: 30 },
-			createOneStockPortfolio: { window: "1m", max: 30 },
-			updateOneStockPortfolio: { window: "1m", max: 30 },
-			deleteOneStockPortfolio: { window: "1m", max: 30 }
-		}
+		Query: {},
+		Mutation: {}
 	}
 );

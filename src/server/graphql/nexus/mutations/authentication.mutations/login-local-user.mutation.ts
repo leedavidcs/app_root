@@ -25,6 +25,7 @@ export const loginLocalUser = mutationField("loginLocalUser", {
 			required: true
 		})
 	},
+	rateLimit: () => ({ window: "1m", max: 30 }),
 	resolve: async (parent, { input: { password, userIdentifier } }, ctx) => {
 		try {
 			const tokens: ITokenResponse = await loginLocal({ password, userIdentifier }, ctx);
