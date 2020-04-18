@@ -1,0 +1,32 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { boolean } from "@storybook/addon-knobs";
+import { WebhookList } from ".";
+
+<Meta
+	title="page-parts/users/[userId]/stock-portfolios/[stockPortfolioId]/webhooks/webhook-list"
+	component={WebhookList}
+/>
+
+# WebhookList
+
+- [Table of contents](#webhooklist)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+A list that displays the webhooks that the user has created for a stock portfolio.
+
+## Props
+<Props of={WebhookList} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<WebhookList loading={boolean("loading", false)} webhooks={[]} />
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
