@@ -387,6 +387,7 @@ export interface NexusGenRootTypes {
   Webhook: { // root type
     createdAt: any; // DateTime!
     id: string; // String!
+    name: string; // String!
     timeout: number; // Int!
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
@@ -584,6 +585,7 @@ export interface NexusGenFieldTypes {
   Webhook: { // field return type
     createdAt: any; // DateTime!
     id: string; // String!
+    name: string; // String!
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
     timeout: number; // Int!
     type: NexusGenEnums['WebhookType']; // WebhookType!
