@@ -50,7 +50,7 @@ const Page: NextPage = () => {
 			<StockPortfolioLookup
 				className={classes.lookup}
 				onClickOpen={onClickOpen}
-				userId={userId.toString()}
+				userId={userId as string}
 			/>
 		</main>
 	);

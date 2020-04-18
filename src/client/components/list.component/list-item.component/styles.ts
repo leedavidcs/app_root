@@ -25,6 +25,7 @@ const styles = (theme: CustomTheme) => ({
 		flexGrow: 1
 	},
 	info: {
+		marginTop: 4,
 		fontSize: 12
 	},
 	divider: {

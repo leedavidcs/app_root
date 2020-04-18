@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 17th 2020 11:44:23 pm
+// This file was generated on: Apr 18th 2020 4:52:38 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1116,7 +1116,7 @@ export type GetWebhooksQuery = (
   & { count: Query['webhookCount'] }
   & { readonly webhooks: ReadonlyArray<(
     { readonly __typename?: 'Webhook' }
-    & Pick<Webhook, 'id' | 'name' | 'type' | 'createdAt'>
+    & Pick<Webhook, 'id' | 'name' | 'type' | 'url' | 'createdAt'>
   )> }
 );
 
@@ -1996,6 +1996,7 @@ export const GetWebhooksDocument = gql`
     id
     name
     type
+    url
     createdAt
   }
   count: webhookCount(where: $where)

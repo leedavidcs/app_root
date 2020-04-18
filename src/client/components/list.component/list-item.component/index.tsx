@@ -70,7 +70,7 @@ export const ListItem: FC<IListItemProps> = memo(
 							<Text className={Classes.FILL} ellipsize={true}>
 								{text}
 							</Text>
-							<div className={classes.info}>{info}</div>
+							{info && <div className={classes.info}>{info}</div>}
 						</div>
 						{children}
 					</a>
