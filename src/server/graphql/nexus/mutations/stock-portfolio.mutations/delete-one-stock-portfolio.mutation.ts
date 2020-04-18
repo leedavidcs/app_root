@@ -9,6 +9,10 @@ export const deleteOneStockPortfolio = extendType({
 				where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 			},
 			authorize: async (parent, { where }, { prisma, user }) => {
+				if (!user) {
+					return false;
+				}
+
 				const stockPortfolio = await prisma.stockPortfolio.findOne({
 					where,
 					include: {

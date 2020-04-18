@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "graphql";
 import { applyMiddleware, IMiddlewareGenerator } from "graphql-middleware";
 import { IExecutableSchemaDefinition, makeExecutableSchema } from "graphql-tools";
-import { permissions, rateLimits, validation } from "./middlewares";
+import { rateLimits, validation } from "./middlewares";
 
 export const getSchemaWithMiddleware = ({
 	schemaDirectives,
@@ -20,11 +20,7 @@ export const getSchemaWithMiddleware = ({
 };
 
 export const applyMiddlewaresToSchema = (schema: GraphQLSchema): GraphQLSchema => {
-	const middlewares: readonly IMiddlewareGenerator<any, any, any>[] = [
-		rateLimits,
-		validation,
-		permissions
-	];
+	const middlewares: readonly IMiddlewareGenerator<any, any, any>[] = [rateLimits, validation];
 
 	const schemaWithMiddleware: GraphQLSchema = applyMiddleware(schema, ...middlewares);
 

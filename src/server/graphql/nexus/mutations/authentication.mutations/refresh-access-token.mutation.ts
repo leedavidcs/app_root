@@ -20,6 +20,13 @@ export const refreshAccessToken = mutationField("refreshAccessToken", {
 			required: true
 		})
 	},
+	authorize: (parent, args, { user }) => {
+		if (!user) {
+			return false;
+		}
+
+		return true;
+	},
 	resolve: async (parent, { input: { refreshToken } }) => {
 		const accessToken: string | null = await _refreshAccessToken(refreshToken);
 
