@@ -1,6 +1,13 @@
+import { WebhookType } from "@/client/graphql";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { boolean } from "@storybook/addon-knobs";
+import Faker from "faker";
+import { range } from "lodash";
 import { WebhookList } from ".";
+//
+Faker.seed(1);
+
+export const DATA_SIZE = 10;
 
 <Meta
 	title="page-parts/users/[userId]/stock-portfolios/[stockPortfolioId]/webhooks/webhook-list"
@@ -22,9 +29,17 @@ A list that displays the webhooks that the user has created for a stock portfoli
 <Props of={WebhookList} />
 
 ## StandardStory
+export const webhooks = range(DATA_SIZE).map(() => ({
+	id: Faker.random.uuid(),
+	name: Faker.lorem.sentence(),
+	url: Faker.internet.url(),
+	createdAt: Faker.date.past(),
+	type: WebhookType.StockDataRetrieved
+}));
+
 <Preview>
 	<Story name="standard">
-		<WebhookList loading={boolean("loading", false)} webhooks={[]} />
+		<WebhookList loading={boolean("loading", false)} webhooks={webhooks} />
 	</Story>
 </Preview>
 

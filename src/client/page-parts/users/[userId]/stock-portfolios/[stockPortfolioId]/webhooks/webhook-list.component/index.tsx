@@ -1,4 +1,4 @@
-import { List, ListItem } from "@/client/components";
+import { List } from "@/client/components";
 import { GetWebhooksQuery } from "@/client/graphql";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -21,7 +21,7 @@ export const WebhookList: FC<IProps> = memo(({ className, loading, webhooks }) =
 		return (
 			<List className={className} divider="full">
 				{range(LOADING_ELEMENTS).map((__, i) => (
-					<ListItem
+					<List.Item
 						key={i}
 						text={<div className={classnames(classes.loadName, Classes.SKELETON)} />}
 						info={<div className={classnames(classes.loadUrl, Classes.SKELETON)} />}
@@ -34,7 +34,7 @@ export const WebhookList: FC<IProps> = memo(({ className, loading, webhooks }) =
 	return (
 		<List className={className} divider="full">
 			{webhooks.map(({ id, name, url }) => (
-				<ListItem key={id} text={name} info={url} />
+				<List.Item key={id} text={name} info={url} />
 			))}
 		</List>
 	);
