@@ -1,8 +1,7 @@
-import { List, ListItem, ListItemText } from "@/client/components/list.component";
 import { Overlay } from "@/client/components/overlay.component";
 import { Popover } from "@/client/components/popover.component";
 import { useHover, useTheme } from "@/client/hooks";
-import { Icon } from "@blueprintjs/core";
+import { Icon, Menu } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
@@ -38,13 +37,15 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 
 	const tooltip: ReactElement = useMemo(
 		() => (
-			<List>
+			<Menu>
 				{options.map((option) => (
-					<ListItem key={option.text} selected={false} onClick={onOptionClick(option)}>
-						<ListItemText primary={option.text} />
-					</ListItem>
+					<Menu.Item
+						key={option.text}
+						onClick={onOptionClick(option)}
+						text={option.text}
+					/>
 				))}
-			</List>
+			</Menu>
 		),
 		[onOptionClick, options]
 	);

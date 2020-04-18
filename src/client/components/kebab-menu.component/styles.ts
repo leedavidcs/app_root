@@ -1,4 +1,4 @@
-import { colors, CustomTheme, getZIndex } from "@/client/themes";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -15,14 +15,12 @@ const styles = (theme: CustomTheme) => ({
 		cursor: "pointer"
 	},
 	menu: {
-		border: {
-			style: "solid",
-			width: 1,
-			color: colors.gray4
-		},
-		borderRadius: 3,
-		zIndex: getZIndex("kebab-menu"),
-		overflow: "hidden"
+		overflow: "hidden",
+
+		"& .bp3-menu": {
+			border: `1px solid ${colors.gray3}`,
+			backgroundColor: theme.surface
+		}
 	}
 });
 
