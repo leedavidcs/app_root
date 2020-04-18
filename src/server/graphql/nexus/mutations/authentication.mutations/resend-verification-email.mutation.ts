@@ -16,6 +16,14 @@ export const ResendVerifyEmailPayload = objectType({
 export const resendVerifyEmail = mutationField("resendVerifyEmail", {
 	type: "ResendVerifyEmailPayload",
 	description: "Resends the account verification email to the logged-in user",
+	rateLimit: () => ({ window: "1m", max: 30 }),
+	authorize: (parent, args, { user }) => {
+		if (!user) {
+			return false;
+		}
+
+		return true;
+	},
 	resolve: async (parent, args, { user }) => {
 		const { email, id, username } = user;
 

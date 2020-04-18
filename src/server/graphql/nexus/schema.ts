@@ -20,7 +20,7 @@ const getPath = (fileName: string): string => {
 
 const isGenerateScript: boolean = process.argv.includes("--nexus-exit");
 
-export const nexusSchema = makeSchema({
+export const schema = makeSchema({
 	shouldGenerateArtifacts: isGenerateScript,
 	shouldExitAfterGenerateArtifacts: isGenerateScript,
 	types: { ...mutations, ...queries, ...types },
@@ -37,7 +37,6 @@ export const nexusSchema = makeSchema({
 			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") }
 		}),
 		queryComplexityPlugin(),
-		fieldAuthorizePlugin(),
 		rateLimitPlugin({
 			identifyContext: ({ user, req }: IServerContextWithUser): string => {
 				const userId: Maybe<string> = user?.id;
@@ -54,6 +53,7 @@ export const nexusSchema = makeSchema({
 			 */
 			store: new RedisStore(AuthClient)
 		}),
+		fieldAuthorizePlugin(),
 		yupValidationPlugin()
 	],
 	typegenAutoConfig: {

@@ -1,1 +1,1 @@
-export { nexusSchema } from "./schema";
+export { schema } from "./schema";

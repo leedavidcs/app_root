@@ -10,6 +10,7 @@ export const stockPortfolioQueries = extendType({
 			type: "StockPortfolio",
 			list: true,
 			nullable: false,
+			rateLimit: () => ({ window: "1m", max: 30 }),
 			args: {
 				after: arg({ type: "StockPortfolioWhereUniqueInput" }),
 				before: arg({ type: "StockPortfolioWhereUniqueInput" }),
@@ -35,11 +36,9 @@ export const stockPortfolioQueries = extendType({
 				query: stringArg()
 			},
 			resolve: async (parent, { query, where }, { prisma }) => {
-				const result = await prisma.stockPortfolio.findMany({
+				const count = await prisma.stockPortfolio.count({
 					where: applyGenerators(where, [stringFilter("name", query)])
 				});
-
-				const count: number = result.length;
 
 				return count;
 			}
