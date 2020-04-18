@@ -193,6 +193,7 @@ type Query implements RequestRoot {
   """The viewer of this request"""
   viewer: User
   webhook(where: WebhookWhereUniqueInput!): Webhook
+  webhookCount(where: WebhookWhereInput): Int!
   webhooks(after: WebhookWhereUniqueInput, before: WebhookWhereUniqueInput, first: Int, last: Int, orderBy: WebhookOrderByInput, skip: Int, where: WebhookWhereInput): [Webhook!]!
 }
 

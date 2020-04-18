@@ -5,8 +5,8 @@
 
 import * as ctx from "../../context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
-import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
 import { IFieldRateLimitResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/rate-limit.plugin"
+import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
 import { IFieldYupValidationResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/yup-validation.plugin"
 
 
@@ -493,6 +493,7 @@ export interface NexusGenFieldTypes {
     transactions: NexusGenRootTypes['Transaction'][]; // [Transaction!]!
     viewer: NexusGenRootTypes['User'] | null; // User
     webhook: NexusGenRootTypes['Webhook'] | null; // Webhook
+    webhookCount: number; // Int!
     webhooks: NexusGenRootTypes['Webhook'][]; // [Webhook!]!
   }
   RegisterLocalUserPayload: { // field return type
@@ -680,6 +681,9 @@ export interface NexusGenArgTypes {
     webhook: { // args
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
+    webhookCount: { // args
+      where?: NexusGenInputs['WebhookWhereInput'] | null; // WebhookWhereInput
+    }
     webhooks: { // args
       after?: NexusGenInputs['WebhookWhereUniqueInput'] | null; // WebhookWhereUniqueInput
       before?: NexusGenInputs['WebhookWhereUniqueInput'] | null; // WebhookWhereUniqueInput
@@ -743,6 +747,11 @@ declare global {
      */
     complexity?: QueryComplexity<TypeName, FieldName>
     /**
+     * Rate limit plugin for an individual field. Uses the same directive args as
+     * `graphql-rate-limit`.
+     */
+    rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
+    /**
      * Authorization for an individual field. Returning "true"
      * or "Promise<true>" means the field can be accessed.
      * Returning "false" or "Promise<false>" will respond
@@ -751,11 +760,6 @@ declare global {
      * resolver from executing.
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
-    /**
-     * Rate limit plugin for an individual field. Uses the same directive args as
-     * `graphql-rate-limit`.
-     */
-    rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
     /**
      * `yup` validation plugin for an individual field. Requires that an object schema
      * definition be defined for the input args.
