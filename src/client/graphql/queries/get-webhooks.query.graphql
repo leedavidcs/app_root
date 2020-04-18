@@ -1,0 +1,19 @@
+query GetWebhooks(
+	$first: Int
+	$skip: Int
+	$after: WebhookWhereUniqueInput
+	$where: WebhookWhereInput
+) {
+	webhooks(
+		first: $first
+		skip: $skip
+		after: $after
+		where: $where
+	) {
+		id
+		name
+		type
+		createdAt
+	}
+	count: webhookCount(where: $where)
+}

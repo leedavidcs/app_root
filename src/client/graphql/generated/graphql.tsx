@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 16th 2020 6:54:07 am
+// This file was generated on: Apr 17th 2020 11:44:23 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -99,6 +99,29 @@ export type WebhookUpdateInput = {
   readonly timeout?: Maybe<Scalars['Int']>;
 };
 
+export type TransactionWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
+};
+
+export type TransactionOrderByInput = {
+  readonly creditsBefore?: Maybe<OrderByArg>;
+  readonly creditsTransacted?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
+export type TransactionWhereWithoutUserInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<TransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
+  readonly OR?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
+};
+
 export type StockPortfolioIdNameCompoundUniqueInput = {
   readonly stockPortfolioId: Scalars['String'];
   readonly name: Scalars['String'];
@@ -107,6 +130,36 @@ export type StockPortfolioIdNameCompoundUniqueInput = {
 export type WebhookWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
   readonly stockPortfolioId_name?: Maybe<StockPortfolioIdNameCompoundUniqueInput>;
+};
+
+export type WebhookOrderByInput = {
+  readonly name?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
+export type StockPortfolioWhereWithoutUserInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly name?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly webhook?: Maybe<WebhookFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+};
+
+export type WebhookWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly name?: Maybe<StringFilter>;
+  readonly type?: Maybe<WebhookType>;
+  readonly url?: Maybe<StringFilter>;
+  readonly timeout?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereWithoutUserInput>;
 };
 
 export type AddressInput = {
@@ -279,11 +332,14 @@ export type Query = RequestRoot & {
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
   readonly stockSymbols: ReadonlyArray<StockDataSearch>;
   readonly toasts: ReadonlyArray<Toast>;
+  readonly transaction?: Maybe<Transaction>;
   readonly transactions: ReadonlyArray<Transaction>;
   readonly user?: Maybe<User>;
   /** The viewer of this request */
   readonly viewer?: Maybe<User>;
   readonly webhook?: Maybe<Webhook>;
+  readonly webhookCount: Scalars['Int'];
+  readonly webhooks: ReadonlyArray<Webhook>;
 };
 
 
@@ -341,9 +397,14 @@ export type QueryStockSymbolsArgs = {
 
 
 /** Root query type */
+export type QueryTransactionArgs = {
+  where: TransactionWhereUniqueInput;
+};
+
+
+/** Root query type */
 export type QueryTransactionsArgs = {
-  where?: Maybe<TransactionWhereInput>;
-  orderBy?: Maybe<TransactionOrderByInput>;
+  where?: Maybe<TransactionWhereWithoutUserInput>;
   skip?: Maybe<Scalars['Int']>;
   after?: Maybe<TransactionWhereUniqueInput>;
   before?: Maybe<TransactionWhereUniqueInput>;
@@ -355,6 +416,24 @@ export type QueryTransactionsArgs = {
 /** Root query type */
 export type QueryWebhookArgs = {
   where: WebhookWhereUniqueInput;
+};
+
+
+/** Root query type */
+export type QueryWebhookCountArgs = {
+  where?: Maybe<WebhookWhereInput>;
+};
+
+
+/** Root query type */
+export type QueryWebhooksArgs = {
+  where?: Maybe<WebhookWhereInput>;
+  orderBy?: Maybe<WebhookOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<WebhookWhereUniqueInput>;
+  before?: Maybe<WebhookWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 /** Common properties for Query, Mutation and Subscription types */
@@ -474,6 +553,7 @@ export type User = {
 export type Webhook = {
   readonly __typename?: 'Webhook';
   readonly id: Scalars['String'];
+  readonly name: Scalars['String'];
   readonly stockPortfolio: StockPortfolio;
   readonly timeout: Scalars['Int'];
   readonly type: WebhookType;
@@ -481,13 +561,13 @@ export type Webhook = {
   readonly createdAt: Scalars['DateTime'];
 };
 
+export type BalanceWhereUniqueInput = {
+  readonly userId?: Maybe<Scalars['String']>;
+};
+
 export type StockPortfolioWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
   readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
-};
-
-export type BalanceWhereUniqueInput = {
-  readonly userId?: Maybe<Scalars['String']>;
 };
 
 export type StockPortfolioWhereInput = {
@@ -510,36 +590,6 @@ export type StockPortfolioOrderByInput = {
   readonly name?: Maybe<OrderByArg>;
   readonly createdAt?: Maybe<OrderByArg>;
   readonly updatedAt?: Maybe<OrderByArg>;
-};
-
-export type TransactionWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly userId?: Maybe<StringFilter>;
-  readonly creditsBefore?: Maybe<IntFilter>;
-  readonly creditsTransacted?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly paymentIntentId?: Maybe<NullableStringFilter>;
-  readonly status?: Maybe<TransactionStatus>;
-  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-};
-
-export type TransactionOrderByInput = {
-  readonly id?: Maybe<OrderByArg>;
-  readonly user?: Maybe<OrderByArg>;
-  readonly userId?: Maybe<OrderByArg>;
-  readonly creditsBefore?: Maybe<OrderByArg>;
-  readonly creditsTransacted?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-  readonly paymentIntentId?: Maybe<OrderByArg>;
-  readonly status?: Maybe<OrderByArg>;
-};
-
-export type TransactionWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-  readonly paymentIntentId?: Maybe<Scalars['String']>;
 };
 
 
@@ -605,51 +655,6 @@ export enum OrderByArg {
   Desc = 'desc'
 }
 
-export type IntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
-};
-
-export type NullableStringFilter = {
-  readonly equals?: Maybe<Scalars['String']>;
-  readonly not?: Maybe<Scalars['String']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly lt?: Maybe<Scalars['String']>;
-  readonly lte?: Maybe<Scalars['String']>;
-  readonly gt?: Maybe<Scalars['String']>;
-  readonly gte?: Maybe<Scalars['String']>;
-  readonly contains?: Maybe<Scalars['String']>;
-  readonly startsWith?: Maybe<Scalars['String']>;
-  readonly endsWith?: Maybe<Scalars['String']>;
-};
-
-export enum TransactionStatus {
-  Failed = 'FAILED',
-  Pending = 'PENDING',
-  Succeeded = 'SUCCEEDED'
-}
-
-export type WebhookWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly name?: Maybe<StringFilter>;
-  readonly type?: Maybe<WebhookType>;
-  readonly url?: Maybe<StringFilter>;
-  readonly timeout?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly AND?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
 export type BooleanFilter = {
   readonly equals?: Maybe<Scalars['Boolean']>;
   readonly not?: Maybe<Scalars['Boolean']>;
@@ -688,6 +693,20 @@ export type BalanceWhereInput = {
   readonly user?: Maybe<UserWhereInput>;
 };
 
+export type TransactionWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<TransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
+
 export type StripeDetailsWhereInput = {
   readonly userId?: Maybe<StringFilter>;
   readonly customerId?: Maybe<StringFilter>;
@@ -696,6 +715,37 @@ export type StripeDetailsWhereInput = {
   readonly NOT?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
   readonly user?: Maybe<UserWhereInput>;
 };
+
+export type IntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
+
+export type NullableStringFilter = {
+  readonly equals?: Maybe<Scalars['String']>;
+  readonly not?: Maybe<Scalars['String']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly lt?: Maybe<Scalars['String']>;
+  readonly lte?: Maybe<Scalars['String']>;
+  readonly gt?: Maybe<Scalars['String']>;
+  readonly gte?: Maybe<Scalars['String']>;
+  readonly contains?: Maybe<Scalars['String']>;
+  readonly startsWith?: Maybe<Scalars['String']>;
+  readonly endsWith?: Maybe<Scalars['String']>;
+};
+
+export enum TransactionStatus {
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Succeeded = 'SUCCEEDED'
+}
 
 export type Toast = {
   readonly __typename?: 'Toast';
@@ -1050,6 +1100,23 @@ export type GetViewerQuery = (
       { readonly __typename?: 'Balance' }
       & Pick<Balance, 'credits'>
     )> }
+  )> }
+);
+
+export type GetWebhooksQueryVariables = {
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<WebhookWhereUniqueInput>;
+  where?: Maybe<WebhookWhereInput>;
+};
+
+
+export type GetWebhooksQuery = (
+  { readonly __typename?: 'Query' }
+  & { count: Query['webhookCount'] }
+  & { readonly webhooks: ReadonlyArray<(
+    { readonly __typename?: 'Webhook' }
+    & Pick<Webhook, 'id' | 'name' | 'type' | 'createdAt'>
   )> }
 );
 
@@ -1923,6 +1990,46 @@ export function useGetViewerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetViewerQueryHookResult = ReturnType<typeof useGetViewerQuery>;
 export type GetViewerLazyQueryHookResult = ReturnType<typeof useGetViewerLazyQuery>;
 export type GetViewerQueryResult = ApolloReactCommon.QueryResult<GetViewerQuery, GetViewerQueryVariables>;
+export const GetWebhooksDocument = gql`
+    query GetWebhooks($first: Int, $skip: Int, $after: WebhookWhereUniqueInput, $where: WebhookWhereInput) {
+  webhooks(first: $first, skip: $skip, after: $after, where: $where) {
+    id
+    name
+    type
+    createdAt
+  }
+  count: webhookCount(where: $where)
+}
+    `;
+
+/**
+ * __useGetWebhooksQuery__
+ *
+ * To run a query within a React component, call `useGetWebhooksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWebhooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWebhooksQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      after: // value for 'after'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetWebhooksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetWebhooksQuery, GetWebhooksQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetWebhooksQuery, GetWebhooksQueryVariables>(GetWebhooksDocument, baseOptions);
+      }
+export function useGetWebhooksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetWebhooksQuery, GetWebhooksQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetWebhooksQuery, GetWebhooksQueryVariables>(GetWebhooksDocument, baseOptions);
+        }
+export type GetWebhooksQueryHookResult = ReturnType<typeof useGetWebhooksQuery>;
+export type GetWebhooksLazyQueryHookResult = ReturnType<typeof useGetWebhooksLazyQuery>;
+export type GetWebhooksQueryResult = ApolloReactCommon.QueryResult<GetWebhooksQuery, GetWebhooksQueryVariables>;
 export const SearchStockSymbolsDocument = gql`
     query SearchStockSymbols($text: String!) {
   stockSymbols(text: $text) {

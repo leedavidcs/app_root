@@ -512,6 +512,7 @@ input UserWhereInput {
 type Webhook {
   createdAt: DateTime!
   id: String!
+  name: String!
   stockPortfolio: StockPortfolio!
   timeout: Int!
   type: WebhookType!
