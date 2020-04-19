@@ -18,5 +18,6 @@ export * from "./ripple.component";
 export * from "./stepper.component";
 export * from "./stock-symbol-search.component";
 export * from "./styles-provider.component";
+export * from "./tabs.component";
 export * from "./tooltip.component";
 export * from "./window-drawer.component";
