@@ -1,5 +1,10 @@
 import { useTheme } from "@/client/hooks";
-import { PopoverPosition, PopperModifiers, Tooltip as BpTooltip } from "@blueprintjs/core";
+import {
+	PopoverPosition,
+	PopperBoundary,
+	PopperModifiers,
+	Tooltip as BpTooltip
+} from "@blueprintjs/core";
 
 import classnames from "classnames";
 import React, { FC, ReactElement, SyntheticEvent } from "react";
@@ -7,6 +12,7 @@ import { useStyles } from "./styles";
 
 interface IProps {
 	arrow?: boolean;
+	boundary?: PopperBoundary;
 	children?: Maybe<ReactElement> | string;
 	className?: string;
 	content?: Maybe<ReactElement> | string;
@@ -26,6 +32,7 @@ export const Tooltip: FC<IProps> = (props) => {
 
 	const {
 		arrow = true,
+		boundary = "viewport",
 		children,
 		className,
 		content,
@@ -44,8 +51,14 @@ export const Tooltip: FC<IProps> = (props) => {
 
 	const modifiers: PopperModifiers = {
 		arrow: { enabled: arrow },
-		flip: { enabled: flip },
-		preventOverflow: { enabled: preventOverflow }
+		flip: {
+			enabled: flip,
+			boundariesElement: boundary
+		},
+		preventOverflow: {
+			enabled: preventOverflow,
+			boundariesElement: boundary
+		}
 	};
 
 	return (

@@ -1,10 +1,16 @@
-import { Popover as BpPopover, PopoverPosition, PopperModifiers } from "@blueprintjs/core";
+import {
+	Popover as BpPopover,
+	PopoverPosition,
+	PopperBoundary,
+	PopperModifiers
+} from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, memo, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
 	arrow?: boolean;
+	boundary?: PopperBoundary;
 	children: Maybe<ReactElement> | string;
 	className?: string;
 	content: Maybe<ReactElement> | string;
@@ -22,6 +28,7 @@ interface IProps {
 export const Popover: FC<IProps> = memo(
 	({
 		arrow = false,
+		boundary = "viewport",
 		children,
 		className,
 		content,
@@ -39,8 +46,14 @@ export const Popover: FC<IProps> = memo(
 
 		const modifiers: PopperModifiers = {
 			arrow: { enabled: arrow },
-			flip: { enabled: flip },
-			preventOverflow: { enabled: preventOverflow }
+			flip: {
+				enabled: flip,
+				boundariesElement: boundary
+			},
+			preventOverflow: {
+				enabled: preventOverflow,
+				boundariesElement: boundary
+			}
 		};
 
 		return (
