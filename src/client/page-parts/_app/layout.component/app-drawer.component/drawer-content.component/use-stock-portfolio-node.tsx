@@ -31,8 +31,8 @@ export const useStockPortfoliosNode = (
 	});
 
 	const onClickPortfolio = useCallback(
-		(userId: string, portfolioId: string) => () => {
-			router.push(`/users/${userId}/stock-portfolios/${portfolioId}`);
+		(portfolioId: string) => () => {
+			router.push(`/stock-portfolios/${portfolioId}`);
 		},
 		[router]
 	);
@@ -63,7 +63,7 @@ export const useStockPortfoliosNode = (
 								{portfolio.name}
 							</Tooltip>
 						),
-						onClick: onClickPortfolio(_user!.id, portfolio.id)
+						onClick: onClickPortfolio(portfolio.id)
 					})),
 					{
 						className: classes.btnItem,

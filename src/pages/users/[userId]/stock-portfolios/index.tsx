@@ -4,7 +4,7 @@ import { StockPortfolioLookup } from "@/client/page-parts/users/[userId]/stock-p
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";
-import React, { useCallback } from "react";
+import React from "react";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -35,23 +35,12 @@ const Page: NextPage = () => {
 
 	const { userId } = router.query;
 
-	const onClickOpen = useCallback(
-		(stockPortfolioId: string) => {
-			router.push(`/users/${userId}/stock-portfolios/${stockPortfolioId}`);
-		},
-		[router, userId]
-	);
-
 	const username: Maybe<string> = user?.id === userId ? "My" : user?.username;
 
 	return (
 		<main className={classes.root}>
 			{username && <h3 className={classes.lookupHeader}>{username} Stock Portfolios</h3>}
-			<StockPortfolioLookup
-				className={classes.lookup}
-				onClickOpen={onClickOpen}
-				userId={userId as string}
-			/>
+			<StockPortfolioLookup className={classes.lookup} userId={userId as string} />
 		</main>
 	);
 };

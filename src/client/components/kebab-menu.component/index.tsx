@@ -52,7 +52,9 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 
 	const onClick = useCallback(
 		(event: MouseEvent<HTMLDivElement>) => {
+			event.preventDefault();
 			event.stopPropagation();
+
 			setIsOpen(true);
 		},
 		[setIsOpen]

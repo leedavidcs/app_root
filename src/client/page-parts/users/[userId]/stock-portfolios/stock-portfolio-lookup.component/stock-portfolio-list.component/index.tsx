@@ -1,5 +1,6 @@
 import { IKebabMenuOption, KebabMenu, List, ListItem } from "@/client/components";
-import { GetManyStockPortfoliosQuery } from "@/client/graphql";
+import { GetManyStockPortfoliosQuery, useDeleteStockPortfolioMutation } from "@/client/graphql";
+import { useToast } from "@/client/hooks";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
@@ -9,72 +10,82 @@ import { useStyles } from "./styles";
 
 const LOADING_ELEMENTS = 3;
 
+type StockPortfolio = GetManyStockPortfoliosQuery["stockPortfolios"][number];
+
 interface IProps {
 	className?: string;
 	loading: boolean;
-	/** onClick listener, when a stock portfolio gets clicked on. Passes the id. */
-	onClickOpen: (id: string) => void;
-	onClickDelete: (id: string) => void;
-	stockPortfolios: Maybe<GetManyStockPortfoliosQuery["stockPortfolios"]>;
+	onDelete?: () => void;
+	stockPortfolios: Maybe<readonly StockPortfolio[]>;
 }
 
-export const StockPortfolioList: FC<IProps> = memo(
-	({
-		className,
-		loading,
-		onClickDelete: _onClickDelete,
-		onClickOpen: _onClickOpen,
-		stockPortfolios
-	}) => {
-		const classes = useStyles();
+const useOnClickDelete = (props: IProps) => {
+	const toaster = useToast();
 
-		const onClickDelete = useCallback((id: string) => () => _onClickDelete(id), [
-			_onClickDelete
-		]);
+	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({
+		onCompleted: props.onDelete
+	});
 
-		const onClickOpen = useCallback((id: string) => () => _onClickOpen(id), [_onClickOpen]);
+	return useCallback(
+		({ id, name }: StockPortfolio) => async () => {
+			await deleteStockPortfolio({ variables: { id } });
 
-		const kebabOptions = useCallback(
-			(id: string): readonly IKebabMenuOption[] => [
-				{ text: "Delete", onClick: onClickDelete(id) }
-			],
-			[onClickDelete]
-		);
+			toaster.show({
+				intent: "success",
+				message: `Deleted portfolio: ${name}`
+			});
+		},
+		[deleteStockPortfolio, toaster]
+	);
+};
 
-		if (loading || !stockPortfolios) {
-			return (
-				<List className={className} divider="full">
-					{range(LOADING_ELEMENTS).map((__, i) => (
-						<ListItem
-							key={i}
-							text={
-								<div className={classnames(classes.loadName, Classes.SKELETON)} />
-							}
-							info={
-								<div className={classnames(classes.loadDate, Classes.SKELETON)} />
-							}
-						/>
-					))}
-				</List>
-			);
-		}
+export const StockPortfolioList: FC<IProps> = memo((props) => {
+	const { className, loading, stockPortfolios } = props;
 
+	const classes = useStyles();
+
+	const onClickDelete = useOnClickDelete(props);
+
+	const kebabOptions = useCallback(
+		(stockPortfolio: StockPortfolio): readonly IKebabMenuOption[] => [
+			{ text: "Delete", onClick: onClickDelete(stockPortfolio) }
+		],
+		[onClickDelete]
+	);
+
+	if (loading || !stockPortfolios) {
 		return (
 			<List className={className} divider="full">
-				{stockPortfolios.map(({ id, name, updatedAt }, i) => (
+				{range(LOADING_ELEMENTS).map((__, i) => (
 					<ListItem
-						key={id}
-						onClick={onClickOpen(id)}
-						ripple={false}
-						text={name}
-						info={`Updated at: ${format(new Date(updatedAt), "PPPppp")}`}
-					>
-						<KebabMenu options={kebabOptions(id)} />
-					</ListItem>
+						key={i}
+						text={<div className={classnames(classes.loadName, Classes.SKELETON)} />}
+						info={<div className={classnames(classes.loadDate, Classes.SKELETON)} />}
+					/>
 				))}
 			</List>
 		);
 	}
-);
+
+	return (
+		<List className={className} divider="full">
+			{stockPortfolios.map((stockPortfolio) => {
+				const { id, name, updatedAt } = stockPortfolio;
+
+				return (
+					<ListItem
+						key={id}
+						href={`/stock-portfolios/${id}`}
+						ripple={false}
+						text={name}
+						info={`Updated at: ${format(new Date(updatedAt), "PPPppp")}`}
+					>
+						<KebabMenu options={kebabOptions(stockPortfolio)} />
+					</ListItem>
+				);
+			})}
+		</List>
+	);
+});
 
 StockPortfolioList.displayName = "StockPortfolioList";
