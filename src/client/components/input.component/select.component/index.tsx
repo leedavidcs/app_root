@@ -99,9 +99,11 @@ const ofType = <T extends any, TOriginal = T>() => {
 				(item: ISelectItemType<TOriginal>, rendererProps) => {
 					const Item = _itemRenderer;
 
-					return <Item item={item} rendererProps={rendererProps} />;
+					const key = itemMap.from(item.value);
+
+					return <Item key={key} item={item} rendererProps={rendererProps} />;
 				},
-				[_itemRenderer]
+				[_itemRenderer, itemMap]
 			);
 
 			const toInternalItem = useCallback(
