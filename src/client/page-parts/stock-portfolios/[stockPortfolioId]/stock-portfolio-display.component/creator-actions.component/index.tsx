@@ -57,12 +57,12 @@ export const CreatorActions: FC<IProps> = (props) => {
 		return null;
 	}
 
-	const { id, name, user } = stockPortfolio;
+	const { id, name } = stockPortfolio;
 
 	return (
 		<>
 			<ButtonGroup className={className}>
-				<Link href={`/users/${user.id}/stock-portfolios/${id}/edit`} passHref={true}>
+				<Link href={`/stock-portfolios/${id}/edit`} passHref={true}>
 					<AnchorButton icon="edit" text="Edit" />
 				</Link>
 				<Button icon="trash" onClick={onBtnDelete} text="Delete" />

@@ -6,7 +6,7 @@ import {
 	useGetOneStockPortfolioQuery
 } from "@/client/graphql";
 import { withAuth } from "@/client/hocs";
-import { StockPortfolioEdit } from "@/client/page-parts/users/[userId]/stock-portfolios/[stockPortfolioId]/edit";
+import { StockPortfolioEdit } from "@/client/page-parts/stock-portfolios/[stockPortfolioId]/edit";
 import { CustomTheme } from "@/client/themes";
 import { StockPortfolioWhereUniqueInput } from "@prisma/client";
 import HttpStatus from "http-status-codes";

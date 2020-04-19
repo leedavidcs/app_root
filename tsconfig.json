@@ -31,6 +31,7 @@
 			"@/client/*": ["./src/client/*"],
 			"@/server/*": ["./src/server/*"]
 		},
+		"sourceMap": true,
 		"typeRoots": [
 			"node_modules/@types"
 		]

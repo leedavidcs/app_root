@@ -6,7 +6,16 @@ import { useHover, useIsLastChild } from "@/client/hooks";
 import { Classes, Icon, IconName, Text } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
-import React, { FC, Fragment, memo, MouseEvent, ReactNode, useContext, useRef } from "react";
+import React, {
+	ComponentType,
+	FC,
+	Fragment,
+	memo,
+	MouseEvent,
+	ReactNode,
+	useContext,
+	useRef
+} from "react";
 import { useStyles } from "./styles";
 
 const OVERLAY_HOVER_OPACITY = 0.04;
@@ -54,7 +63,7 @@ export const ListItem: FC<IListItemProps> = memo(
 
 		const { divider } = useContext(ListContext);
 
-		const LinkType = href ? Link : Fragment;
+		const LinkType: ComponentType<any> = href ? Link : Fragment;
 
 		const [isLastItem] = useIsLastChild(ref);
 
@@ -63,7 +72,7 @@ export const ListItem: FC<IListItemProps> = memo(
 
 		return (
 			<li className={classnames(classes.root, className)} onClick={onClick} ref={ref}>
-				<LinkType href={href ?? ""} passHref={true}>
+				<LinkType {...(href ? { href } : {})}>
 					<a className={classes.link}>
 						{icon && <Icon icon={icon} />}
 						<div className={classes.textWrapper}>

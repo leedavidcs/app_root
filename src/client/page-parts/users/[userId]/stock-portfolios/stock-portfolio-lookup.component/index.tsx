@@ -1,15 +1,13 @@
 import { IPaginationProps, Pagination } from "@/client/components";
 import {
 	CreateStockPortfolioMutation,
-	DeleteStockPortfolioMutation,
 	GetManyStockPortfoliosQueryVariables,
 	useCreateStockPortfolioMutation,
-	useDeleteStockPortfolioMutation,
 	useGetManyStockPortfoliosQuery
 } from "@/client/graphql";
-import { useToast } from "@/client/hooks";
 import { Button, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
+import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { StockPortfolioFilter } from "./stock-portfolio-filter.component";
 import { StockPortfolioList } from "./stock-portfolio-list.component";
@@ -19,7 +17,6 @@ const DEFAULT_PAGINATION_FIRST = 10;
 
 interface IProps {
 	className?: string;
-	onClickOpen: (id: string) => void;
 	userId?: string;
 }
 
@@ -45,14 +42,16 @@ const useOnPage = (
 	return [pagination, onPage];
 };
 
-const useOnClickNew = ({ onClickOpen }: IProps) => {
+const useOnClickNew = () => {
+	const router: NextRouter = useRouter();
+
 	const onCompleted = useCallback(
 		(data: CreateStockPortfolioMutation) => {
 			const { id } = data.createOneStockPortfolio;
 
-			onClickOpen(id);
+			router.push(`/stock-portfolios/${id}`);
 		},
-		[onClickOpen]
+		[router]
 	);
 
 	const [createStockPortfolio] = useCreateStockPortfolioMutation({ onCompleted });
@@ -64,37 +63,8 @@ const useOnClickNew = ({ onClickOpen }: IProps) => {
 	}, [createStockPortfolio]);
 };
 
-const useOnClickDelete = (onCompleted: (data: DeleteStockPortfolioMutation) => void) => {
-	const toaster = useToast();
-
-	const _onCompleted = useCallback(
-		(data: DeleteStockPortfolioMutation) => {
-			const deleted = data.deleteOneStockPortfolio;
-
-			if (deleted) {
-				toaster.show({
-					intent: "success",
-					message: `Deleted portfolio: ${deleted.name}`
-				});
-			}
-
-			onCompleted(data);
-		},
-		[onCompleted, toaster]
-	);
-
-	const [deleteStockPortfolio] = useDeleteStockPortfolioMutation({ onCompleted: _onCompleted });
-
-	return useCallback(
-		(id: string) => {
-			deleteStockPortfolio({ variables: { id } });
-		},
-		[deleteStockPortfolio]
-	);
-};
-
 export const StockPortfolioLookup: FC<IProps> = (props) => {
-	const { className, onClickOpen, userId } = props;
+	const { className, userId } = props;
 
 	const classes = useStyles();
 
@@ -106,7 +76,7 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 	const [lastFilters, setLastFilters] = useState<GetManyStockPortfoliosQueryVariables>(filters);
 	const [pagination, onPage] = useOnPage(filters);
 
-	const onClickNew = useOnClickNew(props);
+	const onClickNew = useOnClickNew();
 
 	const onSubmitFilters = useCallback(
 		(value: GetManyStockPortfoliosQueryVariables) => setLastFilters({ ...value }),
@@ -123,11 +93,10 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 		[lastFilters, pagination, userId]
 	);
 
-	const { data, loading, refetch } = useGetManyStockPortfoliosQuery({ variables });
-
-	const onDeleteCompleted = useCallback(() => refetch(variables), [refetch, variables]);
-
-	const onClickDelete = useOnClickDelete(onDeleteCompleted);
+	const { data, loading, refetch } = useGetManyStockPortfoliosQuery({
+		variables,
+		fetchPolicy: "no-cache"
+	});
 
 	return (
 		<div className={classnames(Classes.DARK, classes.root, className)}>
@@ -143,8 +112,7 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 				<StockPortfolioList
 					className={classes.results}
 					loading={loading}
-					onClickDelete={onClickDelete}
-					onClickOpen={onClickOpen}
+					onDelete={refetch}
 					stockPortfolios={data?.stockPortfolios}
 				/>
 			</div>

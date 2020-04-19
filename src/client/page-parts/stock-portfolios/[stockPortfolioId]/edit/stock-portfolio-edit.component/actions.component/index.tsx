@@ -3,8 +3,7 @@ import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
-	useDeleteStockPortfolioMutation,
-	useGetUserQuery
+	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
 import { AnchorButton, Button, ButtonGroup, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -26,8 +25,8 @@ interface IProps {
 const useOnDelete = ({ stockPortfolio }: IProps) => {
 	const router: NextRouter = useRouter();
 
-	const onCompleted = useCallback(
-		(data: DeleteStockPortfolioMutation) => {
+	const [deletePortfolio] = useDeleteStockPortfolioMutation({
+		onCompleted: (data: DeleteStockPortfolioMutation) => {
 			if (!data.deleteOneStockPortfolio || !stockPortfolio) {
 				return;
 			}
@@ -35,11 +34,8 @@ const useOnDelete = ({ stockPortfolio }: IProps) => {
 			const { user } = stockPortfolio;
 
 			router.push(`/users/${user.id}/stock-portfolios`);
-		},
-		[router, stockPortfolio]
-	);
-
-	const [deletePortfolio] = useDeleteStockPortfolioMutation({ onCompleted });
+		}
+	});
 
 	return useCallback(() => {
 		if (!stockPortfolio) {
@@ -58,9 +54,6 @@ export const Actions: FC<IProps> = (props) => {
 	const classes = useStyles();
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
-
-	const getUserResult = useGetUserQuery();
-	const user = getUserResult.data?.user ?? null;
 
 	const onBtnDelete = useCallback(() => setAlertOpen(true), [setAlertOpen]);
 	const onAlertClose = useCallback(() => setAlertOpen(false), [setAlertOpen]);
@@ -81,10 +74,7 @@ export const Actions: FC<IProps> = (props) => {
 					/>
 				</div>
 				<ButtonGroup className={classnames(Classes.DARK, className)}>
-					<Link
-						href={user ? `/users/${user.id}/stock-portfolios/${id}` : "/sign-up"}
-						passHref={true}
-					>
+					<Link href={`/stock-portfolios/${id}`} passHref={true}>
 						<AnchorButton text="View" />
 					</Link>
 					<Button icon="saved" text="Save" type="submit" />

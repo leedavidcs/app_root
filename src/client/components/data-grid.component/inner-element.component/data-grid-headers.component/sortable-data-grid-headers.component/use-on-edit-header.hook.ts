@@ -42,10 +42,10 @@ export const useOnEditHeader = (): UseOnEditHeaderResult => {
 	const onEscKey = useKeyDown("esc", stopEdit);
 	const onEnterKey = useKeyDown(
 		"enter",
-		useCallback(flow(updateLabel, stopEdit), [stopEdit, updateLabel])
+		useCallback(flow([updateLabel, stopEdit]), [stopEdit, updateLabel])
 	);
 	const onKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
-		flow(onEscKey, onEnterKey),
+		flow([onEscKey, onEnterKey]),
 		[onEnterKey, onEscKey]
 	);
 
