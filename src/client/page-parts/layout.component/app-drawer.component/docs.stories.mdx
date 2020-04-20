@@ -1,0 +1,31 @@
+import { Button } from "@blueprintjs/core"
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback, useState } from "react";
+import { AppDrawer } from ".";
+
+<Meta title="page-parts/app-drawer" component={AppDrawer} />
+
+# AppDrawer
+
+## Description
+Side-drawer to be opened from the navbar, to be used for additional navigation.
+
+## Props
+<Props of={AppDrawer} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		{() => {
+			const [isOpen, setIsOpen] = useState(false);
+			const onClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+			const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+			return (
+				<>
+					<AppDrawer isOpen={isOpen} onClose={onClose} />
+					<Button intent="primary" onClick={onClick} text="Toggle app drawer" />
+				</>
+			);
+		}}
+	</Story>
+</Preview>

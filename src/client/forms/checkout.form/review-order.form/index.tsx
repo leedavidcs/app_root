@@ -1,8 +1,8 @@
 import { Paper } from "@/client/components";
-import { OrderSummary } from "@/client/components/order-summary.component";
 import { Context } from "@/client/forms/checkout.form/provider.component";
 import { useApplySucceededTransactionMutation, useSetToastsMutation } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
+import { OrderSummary } from "@/client/page-parts";
 import { Button, FormGroup, Icon, Spinner } from "@blueprintjs/core";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import classnames from "classnames";

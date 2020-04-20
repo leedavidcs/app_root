@@ -1,6 +1,6 @@
 import { useGetUserQuery } from "@/client/graphql";
 import { withApollo } from "@/client/hocs";
-import { StockPortfolioLookup } from "@/client/page-parts/users/[userId]/stock-portfolios";
+import { StockPortfolioLookup } from "@/client/page-parts";
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import { NextRouter, useRouter } from "next/router";

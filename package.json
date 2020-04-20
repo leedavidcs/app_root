@@ -114,7 +114,7 @@
     "typescript": "^3.8.3",
     "use-resize-observer": "^6.1.0-alpha.1",
     "winston": "^3.2.1",
-    "yup": "^0.28.3",
+    "yup": "^0.28.4",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

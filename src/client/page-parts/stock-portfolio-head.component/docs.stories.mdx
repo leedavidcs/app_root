@@ -1,0 +1,26 @@
+import { GetOneStockPortfolioMock } from "@/client/graphql/mocks/get-one-stock-portfolio.mock";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockPortfolioHead } from ".";
+
+<Meta title="page-parts/stock-portfolio-head" component={StockPortfolioHead} />
+
+# StockPortfolioHead
+
+## Description
+The head of a stock-portfolio, which will show ownership, name, meta-details, and additional
+navigation.
+
+## Props
+<Props of={StockPortfolioHead} />
+
+## StandardStory
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
+<Preview>
+	<Story name="standard">
+		<StockPortfolioHead stockPortfolio={stockPortfolio} />
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

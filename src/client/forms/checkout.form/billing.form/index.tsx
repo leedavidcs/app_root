@@ -1,7 +1,6 @@
 import {
 	CountrySelect,
 	CreditCardInput,
-	OrderSummary,
 	Paper,
 	RegionSelect,
 	TextInput
@@ -13,6 +12,7 @@ import {
 	useCreateStripeSetupIntentMutation
 } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
+import { OrderSummary } from "@/client/page-parts";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button, Spinner } from "@blueprintjs/core";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
