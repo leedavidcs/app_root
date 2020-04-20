@@ -8,6 +8,7 @@ export * from "./input.component";
 export * from "./interactable.component";
 export * from "./kebab-menu.component";
 export * from "./list.component";
+export * from "./menu.component";
 export * from "./modal.component";
 export * from "./overlay.component";
 export * from "./pagination.component";

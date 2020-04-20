@@ -1,0 +1,27 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { Menu } from ".";
+
+<Meta title="general/menu" component={Menu} />
+
+# Menu
+
+## Description
+A limited feature set of [@blueprintjs/menu](https://blueprintjs.com/docs/#core/components/menu)
+with custom features and stylings.
+
+## Props
+<Props of={Menu} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Menu activeItem={1}>
+			<Menu.Item icon="badge" id={0} text="Banana" />
+			<Menu.Item icon="badge" id={1} text="Apple" />
+			<Menu.Item href="http://google.com" id={2} text="Melon" />
+		</Menu>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
