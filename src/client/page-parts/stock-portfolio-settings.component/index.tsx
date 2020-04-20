@@ -19,6 +19,10 @@ export const StockPortfolioSettings: FC<IProps> = ({ stockPortfolio }) => {
 		<div className={classes.root}>
 			<List divider="full" selectedItem={router.asPath}>
 				<List.Item
+					href={`/stock-portfolios/${stockPortfolio.id}/settings`}
+					text="Options"
+				/>
+				<List.Item
 					href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks`}
 					text="Webhooks"
 				/>
