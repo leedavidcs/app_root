@@ -10,7 +10,7 @@ const HEADERS_COUNT = 20;
 const TICKERS_COUNT = 50;
 
 const mockHeaders = range(HEADERS_COUNT).map(() => ({
-	name: Faker.name.firstName(),
+	name: Faker.lorem.words(),
 	dataKey: Faker.name.lastName(),
 	width: Faker.random.number({ min: 50, max: 100 }),
 	frozen: false,
