@@ -48,6 +48,10 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 				tickers: mockTickers,
 				createdAt: Faker.date.past().toDateString(),
 				updatedAt: Faker.date.recent().toDateString(),
+				stockData: {
+					refreshCost: Faker.random.number(),
+					__typename: "StockData"
+				},
 				user: {
 					id: mockUser.id,
 					username: mockUser.username,
