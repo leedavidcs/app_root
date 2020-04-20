@@ -65,7 +65,7 @@ export const CreatorActions: FC<IProps> = (props) => {
 				<Link href={`/stock-portfolios/${id}/edit`} passHref={true}>
 					<AnchorButton icon="edit" text="Edit" />
 				</Link>
-				<Button icon="trash" onClick={onBtnDelete} text="Delete" />
+				<Button icon="trash" intent="danger" onClick={onBtnDelete} text="Delete" />
 			</ButtonGroup>
 			<Alert
 				cancelButtonText="Cancel"

@@ -21,11 +21,9 @@ const _Tabs: FC<IProps> = ({ children, className, onChange, selectedTab }) => {
 	const value = useMemo(() => ({ onChange, selectedTab }), [onChange, selectedTab]);
 
 	return (
-		<div style={{ position: "relative" }}>
-			<TabsContext.Provider value={value}>
-				<nav className={className}>{children}</nav>
-			</TabsContext.Provider>
-		</div>
+		<TabsContext.Provider value={value}>
+			<nav className={className}>{children}</nav>
+		</TabsContext.Provider>
 	);
 };
 

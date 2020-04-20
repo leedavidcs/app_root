@@ -18,7 +18,7 @@ export interface ITabProps {
 	disabled?: boolean;
 	href?: string;
 	icon?: IconName;
-	id: ReactText;
+	id?: ReactText;
 	onClick?: (event: MouseEvent<HTMLElement>) => void;
 	text: ReactNode;
 }
@@ -28,7 +28,7 @@ export const Tab: FC<ITabProps> = ({
 	disabled,
 	href,
 	icon,
-	id,
+	id = href ?? "",
 	onClick: _onClick,
 	text
 }) => {
