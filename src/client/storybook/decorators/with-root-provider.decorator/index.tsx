@@ -14,7 +14,7 @@ export const withRootProvider: DecoratorFunction<ReactElement> = (getStory) => {
 		<Elements stripe={stripePromise}>
 			<MockNextRouter>
 				<MockApollo>
-					<StylesProvider>
+					<StylesProvider style={{ padding: "0 25px" }}>
 						<ClickOutsideProvider>
 							<ModalProvider>{getStory()}</ModalProvider>
 						</ClickOutsideProvider>

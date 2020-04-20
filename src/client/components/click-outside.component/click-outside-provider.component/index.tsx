@@ -1,7 +1,15 @@
 import { useDictionary } from "@/client/hooks";
 import { makeConcurrentFunc } from "@/client/utils";
 import classnames from "classnames";
-import React, { FC, MouseEvent, MouseEventHandler, ReactNode, useCallback, useMemo } from "react";
+import React, {
+	CSSProperties,
+	FC,
+	MouseEvent,
+	MouseEventHandler,
+	ReactNode,
+	useCallback,
+	useMemo
+} from "react";
 import { ClickOutsideContext, IHandlerInfo } from "./click-outside.context";
 import { useStyles } from "./styles";
 
@@ -10,6 +18,7 @@ export * from "./click-outside.context";
 interface IProps {
 	children: ReactNode;
 	className?: string;
+	style?: CSSProperties;
 }
 
 /**
@@ -31,7 +40,7 @@ interface IProps {
  * @author David Lee
  * @date January 16, 2020
  */
-export const ClickOutsideProvider: FC<IProps> = ({ children, className }) => {
+export const ClickOutsideProvider: FC<IProps> = ({ children, className, style }) => {
 	const classes = useStyles();
 
 	const { dictRef, register, unregister } = useDictionary<IHandlerInfo>({
@@ -68,6 +77,7 @@ export const ClickOutsideProvider: FC<IProps> = ({ children, className }) => {
 				onClick={onClick}
 				onMouseDown={onMouseDown}
 				onMouseUp={onMouseUp}
+				style={style}
 			>
 				{children}
 			</div>

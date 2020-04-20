@@ -1,4 +1,4 @@
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -11,11 +11,7 @@ const styles = (theme: CustomTheme) => ({
 		}
 	},
 	root: {
-		height: "100%",
-
-		[breakpoints.up("sm")]: {
-			padding: "96px 25px"
-		}
+		marginTop: 72
 	}
 });
 
