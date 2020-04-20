@@ -9,10 +9,11 @@ type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 
 interface IProps {
 	className?: string;
+	editing?: boolean;
 	stockPortfolio: StockPortfolio;
 }
 
-export const StockPortfolioHead: FC<IProps> = ({ className, stockPortfolio }) => {
+export const StockPortfolioHead: FC<IProps> = ({ className, editing, stockPortfolio }) => {
 	const classes = useStyles();
 
 	const router: NextRouter = useRouter();
@@ -29,7 +30,9 @@ export const StockPortfolioHead: FC<IProps> = ({ className, stockPortfolio }) =>
 	return (
 		<div className={classnames(classes.root, className)}>
 			<div className={classes.detailsContainer}>
-				<ResourcePath activePath={router.asPath} icon="grid">
+				<ResourcePath
+					activePath={editing ? `/stock-portfolios/${stockPortfolio.id}` : router.asPath}
+				>
 					<ResourcePath.Part
 						href={`/users/${stockPortfolio.user.id}`}
 						text={stockPortfolio.user.username}

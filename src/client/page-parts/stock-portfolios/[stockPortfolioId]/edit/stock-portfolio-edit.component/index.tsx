@@ -16,6 +16,7 @@ import { useOnRowContextMenu } from "./use-on-row-context-menu.hook";
 import { useOptions } from "./use-options.hook";
 
 export interface IStockPortfolioEditProps {
+	className?: string;
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 }
 
@@ -29,7 +30,7 @@ const validationSchema = () => ({ name: string().min(1) });
 const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
 
 export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => {
-	const { stockPortfolio } = props;
+	const { className, stockPortfolio } = props;
 
 	const classes = useStyles();
 
@@ -56,7 +57,7 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 	const { name, updatedAt, user } = stockPortfolio;
 
 	return (
-		<div className={classnames(Classes.DARK, classes.root)}>
+		<div className={classnames(Classes.DARK, classes.root, className)}>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div>
 					<Actions

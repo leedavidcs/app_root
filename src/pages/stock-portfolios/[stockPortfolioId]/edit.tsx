@@ -6,8 +6,9 @@ import {
 	useGetOneStockPortfolioQuery
 } from "@/client/graphql";
 import { withAuth } from "@/client/hocs";
+import { StockPortfolioHead } from "@/client/page-parts/stock-portfolios/[stockPortfolioId]";
 import { StockPortfolioEdit } from "@/client/page-parts/stock-portfolios/[stockPortfolioId]/edit";
-import { CustomTheme } from "@/client/themes";
+import { breakpoints, CustomTheme } from "@/client/themes";
 import { StockPortfolioWhereUniqueInput } from "@prisma/client";
 import HttpStatus from "http-status-codes";
 import { NextPage } from "next";
@@ -23,9 +24,19 @@ interface IInitialProps {
 
 const styles = (theme: CustomTheme) => ({
 	root: {
+		color: theme.onBackground
+	},
+	head: {
+		marginBottom: 24
+	},
+	edit: {
 		maxWidth: 1280,
 		margin: "0 auto",
-		color: theme.onBackground
+
+		[breakpoints.up("sm")]: {
+			paddingLeft: 25,
+			paddingRight: 25
+		}
 	}
 });
 
@@ -55,19 +66,26 @@ const Page: NextPage<IInitialProps> = ({ errorCode, errorTitle }) => {
 		return <Error statusCode={errorCode} title={errorTitle} />;
 	}
 
-	const notFound: boolean = called && !loading && !data;
+	const stockPortfolio = data?.stockPortfolio;
+
+	const notFound: boolean = called && !loading && !stockPortfolio;
 
 	if (notFound) {
 		return <Error statusCode={HttpStatus.NOT_FOUND} title="Resource was not found" />;
 	}
 
+	if (loading || !stockPortfolio) {
+		return null;
+	}
+
 	return (
 		<main className={classes.root}>
-			{loading || !data?.stockPortfolio ? (
-				<p>loading...</p>
-			) : (
-				<StockPortfolioEdit stockPortfolio={data?.stockPortfolio} />
-			)}
+			<StockPortfolioHead
+				className={classes.head}
+				editing={true}
+				stockPortfolio={stockPortfolio}
+			/>
+			<StockPortfolioEdit className={classes.edit} stockPortfolio={stockPortfolio} />
 		</main>
 	);
 };
