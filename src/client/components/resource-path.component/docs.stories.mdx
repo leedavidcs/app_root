@@ -1,0 +1,31 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import Faker from "faker";
+import { ResourcePath } from ".";
+//
+Faker.seed(1);
+
+<Meta title="general/resource-path" component={ResourcePath} />
+
+# ResourcePath
+
+## Description
+A type of nav, where paths are depicted as a forward-slash delimited list, like file-paths.
+
+## Props
+<Props of={ResourcePath} />
+
+## StandardStory
+export const username = Faker.name.findName();
+export const lorem = Faker.lorem.word();
+
+<Preview>
+	<Story name="standard">
+		<ResourcePath icon="badge">
+			<ResourcePath.Part href="http://google.com" text={username} />
+			<ResourcePath.Part active={true} href="http://google.com" text={lorem} />
+		</ResourcePath>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
