@@ -20,9 +20,9 @@ export const lorem = Faker.lorem.word();
 
 <Preview>
 	<Story name="standard">
-		<ResourcePath icon="badge">
-			<ResourcePath.Part href="http://google.com" text={username} />
-			<ResourcePath.Part active={true} href="http://google.com" text={lorem} />
+		<ResourcePath activePath={1} icon="badge">
+			<ResourcePath.Part href="http://google.com" id={0} text={username} />
+			<ResourcePath.Part href="http://google.com" id={1} text={lorem} />
 		</ResourcePath>
 	</Story>
 </Preview>

@@ -1,18 +1,26 @@
+import { ResourcePathContext } from "@/client/components/resource-path.component/context";
 import { useIsLastChild } from "@/client/hooks";
 import classnames from "classnames";
 import Link from "next/link";
-import React, { FC, Fragment, useRef } from "react";
+import React, { FC, Fragment, ReactText, useContext, useRef } from "react";
 import { useStyles } from "./styles";
 
 export interface IResourcePathPart {
-	active?: boolean;
 	className?: string;
 	href?: string;
+	id?: ReactText;
 	text: string;
 }
 
-export const ResourcePathPart: FC<IResourcePathPart> = ({ active, className, href, text }) => {
+export const ResourcePathPart: FC<IResourcePathPart> = ({
+	className,
+	href,
+	id = href ?? "",
+	text
+}) => {
 	const classes = useStyles();
+
+	const { activePath } = useContext(ResourcePathContext);
 
 	const ref = useRef<HTMLElement>(null);
 
@@ -20,8 +28,10 @@ export const ResourcePathPart: FC<IResourcePathPart> = ({ active, className, hre
 
 	const PartType = href ? "a" : "span";
 
+	const active: boolean = activePath === id;
+
 	return (
-		<span ref={ref} className={classnames(classes.root, className)}>
+		<span ref={ref} className={className}>
 			{React.createElement<any>(
 				href ? Link : Fragment,
 				href ? { href } : {},

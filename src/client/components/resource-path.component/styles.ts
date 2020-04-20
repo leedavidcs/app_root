@@ -5,7 +5,9 @@ const styles = (theme: CustomTheme) => ({
 	root: {
 		display: "flex",
 		alignItems: "center",
+		margin: 0,
 		fontFamily: theme.fontPrimary,
+		fontSize: 18,
 		fontWeight: "unset"
 	},
 	icon: {
