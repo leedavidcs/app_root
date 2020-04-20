@@ -11,6 +11,10 @@ import { withAuth } from "./with-auth.hoc";
 
 type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 
+interface IOptions {
+	requireOwner?: boolean;
+}
+
 interface IPageProps {
 	stockPortfolio: StockPortfolio;
 	[key: string]: any;
@@ -30,9 +34,9 @@ interface IInitialProps {
  * @author David Lee
  * @date April 20, 2020
  */
-export const withStockPortfolioAuth = <P extends IPageProps, IP = any>() => (
-	PageComponent: NextPage<P, IP>
-) => {
+export const withStockPortfolioAuth = <P extends IPageProps, IP = any>(
+	options: IOptions = { requireOwner: true }
+) => (PageComponent: NextPage<P, IP>) => {
 	const AuthedPage: NextPage<P & IInitialProps, any> = (props) => {
 		const { errorCode, errorTitle, stockPortfolio } = props;
 
@@ -68,7 +72,7 @@ export const withStockPortfolioAuth = <P extends IPageProps, IP = any>() => (
 
 		const isCreator: boolean = user?.id === stockPortfolio.user.id;
 
-		if (!isCreator) {
+		if (options.requireOwner && !isCreator) {
 			return {
 				errorCode: HttpStatus.FORBIDDEN,
 				errorTitle: "Access to resource is forbidden"
