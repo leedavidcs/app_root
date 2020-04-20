@@ -1,4 +1,7 @@
-import { StockSymbolSearch, StockSymbolSearchItem } from "@/client/components";
+import {
+	StockSymbolSearch,
+	StockSymbolSearchItem
+} from "@/client/page-parts/stock-symbol-search.component";
 import { Button } from "@blueprintjs/core";
 import React, { FC, useCallback } from "react";
 

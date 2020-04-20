@@ -1,4 +1,4 @@
-import { Paper } from "@/client/components/paper.component";
+import { Paper } from "@/client/components";
 import { OrderDetailType } from "@/client/graphql";
 import classnames from "classnames";
 import React, { FC, ReactElement, useMemo } from "react";

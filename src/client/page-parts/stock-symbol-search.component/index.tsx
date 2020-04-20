@@ -1,4 +1,4 @@
-import { Select } from "@/client/components/input.component";
+import { Select } from "@/client/components";
 import { SearchStockSymbolsQuery, useSearchStockSymbolsLazyQuery } from "@/client/graphql";
 import { Menu } from "@blueprintjs/core";
 import classnames from "classnames";

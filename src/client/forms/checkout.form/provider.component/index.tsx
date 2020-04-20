@@ -1,5 +1,5 @@
-import { IOrderDetail } from "@/client/components";
 import { StripeCard } from "@/client/graphql";
+import { IOrderDetail } from "@/client/page-parts";
 import { PaymentMethodCreateParams } from "@stripe/stripe-js";
 import React, { FC, memo, ReactElement, useMemo, useState } from "react";
 import { Context } from "./context";
