@@ -13,8 +13,6 @@ const addUserToContext = (
 });
 
 /**
- * !Important - This requires the wrapped page to have `withApollo` with `options.ssr = true`
- *
  * @description Requires that a user is authenticated. If not, the user is redirected to
  *     `/login`.
  * @author David Lee
