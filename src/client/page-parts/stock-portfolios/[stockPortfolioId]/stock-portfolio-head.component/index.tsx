@@ -45,7 +45,13 @@ export const StockPortfolioHead: FC<IProps> = ({ className, editing, stockPortfo
 			</div>
 			<Tabs className={classes.tabs} selectedTab={router.asPath}>
 				<Tabs.Tab href={`/stock-portfolios/${stockPortfolio.id}`} icon="grid" text="Data" />
-				{isOwner && <Tabs.Tab icon="cog" id={1} text="Settings" />}
+				{isOwner && (
+					<Tabs.Tab
+						href={`/stock-portfolios/${stockPortfolio.id}/settings`}
+						icon="cog"
+						text="Settings"
+					/>
+				)}
 			</Tabs>
 		</div>
 	);
