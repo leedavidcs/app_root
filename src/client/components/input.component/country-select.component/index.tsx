@@ -2,12 +2,12 @@ import { FormGroup, Intent } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { ChangeEvent, FC, memo, ReactElement } from "react";
 import { CountryDropdown } from "react-country-region-selector";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	control?: ReturnType<typeof useForm>["control"];
+	control?: Control<any>;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;

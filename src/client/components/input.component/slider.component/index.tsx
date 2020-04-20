@@ -3,12 +3,12 @@ import { countDecimalPlaces } from "@blueprintjs/core/lib/cjs/common/utils";
 import classnames from "classnames";
 import { round } from "lodash";
 import React, { CSSProperties, FC, KeyboardEvent, ReactElement, useCallback } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	control?: ReturnType<typeof useForm>["control"];
+	control?: Control<any>;
 	disabled?: boolean;
 	error?: Maybe<string> | ReactElement;
 	inline?: boolean;

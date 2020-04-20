@@ -14,6 +14,7 @@ export * from "./order-summary.component";
 export * from "./pagination.component";
 export * from "./paper.component";
 export * from "./popover.component";
+export * from "./resource-path.component";
 export * from "./ripple.component";
 export * from "./stepper.component";
 export * from "./stock-symbol-search.component";

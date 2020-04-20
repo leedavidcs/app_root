@@ -10,7 +10,7 @@ interface IBaseSelectProps<T extends any, TOriginal = T>
 }
 
 interface IFormSelectProps<T extends any, TOriginal = T> extends IBaseSelectProps<T, TOriginal> {
-	control?: Control;
+	control?: Control<any>;
 	defaultValue?: T;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;

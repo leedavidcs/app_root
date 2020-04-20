@@ -16,6 +16,7 @@ import { PublicActions } from "./public-actions.component";
 import { useStyles } from "./styles";
 
 interface IProps {
+	className?: string;
 	onDelete?: () => void;
 	onEdit?: () => void;
 	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
@@ -103,11 +104,11 @@ const useData = (): UseDataResult => {
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
-	const { stockPortfolio } = props;
+	const { className, stockPortfolio } = props;
 
 	const classes = useStyles();
 
-	const { name, tickers, updatedAt, user } = stockPortfolio;
+	const { tickers, updatedAt, user } = stockPortfolio;
 
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
 	const [dataStates, dataActions] = useData();
@@ -120,7 +121,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
 
 	return (
-		<div className={classnames(Classes.DARK, classes.root)}>
+		<div className={classnames(Classes.DARK, classes.root, className)}>
 			<div className={classes.btnContainer}>
 				<PublicActions
 					className={classes.publicActions}
@@ -129,7 +130,6 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 				/>
 				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
 			</div>
-			{name && <h2 className={classes.portfolioName}>{name}</h2>}
 			<Paper className={classes.portfolioContainer}>
 				{!dataStates.called ? (
 					<NonIdealState

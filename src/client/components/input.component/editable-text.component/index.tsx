@@ -1,11 +1,11 @@
 import { EditableText as BpEditableText, FormGroup, Intent } from "@blueprintjs/core";
 import React, { CSSProperties, FC, ReactElement, useCallback, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	control?: ReturnType<typeof useForm>["control"];
+	control?: Control<any>;
 	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react";
+import React, { CSSProperties, FC, ReactElement } from "react";
 import { GlobalStyles } from "./global-styles.component";
 import { JssProvider } from "./jss-provider.component";
 
@@ -7,12 +7,13 @@ export * from "./jss-provider.component";
 
 interface IProps {
 	children: ReactElement;
+	style?: CSSProperties;
 }
 
-export const StylesProvider: FC<IProps> = ({ children }) => {
+export const StylesProvider: FC<IProps> = ({ children, style }) => {
 	return (
 		<JssProvider>
-			<GlobalStyles>{children}</GlobalStyles>
+			<GlobalStyles style={style}>{children}</GlobalStyles>
 		</JssProvider>
 	);
 };

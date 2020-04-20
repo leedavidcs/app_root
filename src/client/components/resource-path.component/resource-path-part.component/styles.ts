@@ -2,16 +2,11 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	"@global": {
-		"html, body": {
-			height: "100%",
-			margin: 0,
-			padding: 0,
-			backgroundColor: theme.background
-		}
+	active: {
+		fontWeight: "bold"
 	},
-	root: {
-		marginTop: 72
+	divider: {
+		margin: "0 4px"
 	}
 });
 

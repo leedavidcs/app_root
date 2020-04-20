@@ -4,7 +4,7 @@ import React, { FC, memo, ReactElement } from "react";
 import { Control } from "react-hook-form";
 
 interface IProps {
-	control: Control;
+	control: Control<any>;
 	defaultValue?: WebhookType;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;

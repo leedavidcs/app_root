@@ -17,7 +17,7 @@ interface IProps {
 	autoComplete?: string;
 	children?: ReactElement;
 	className?: string;
-	control?: Control;
+	control?: Control<any>;
 	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;
