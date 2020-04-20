@@ -7,12 +7,12 @@ import { Classes, Icon, IconName, Text } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
 import React, {
-	ComponentType,
 	FC,
 	Fragment,
 	memo,
 	MouseEvent,
 	ReactNode,
+	ReactText,
 	useContext,
 	useRef
 } from "react";
@@ -33,6 +33,12 @@ export interface IListItemProps {
 	className?: string;
 	/** Href, if this list item should act as a link */
 	href?: string;
+	/** Icon to be prepended to the list item */
+	icon?: IconName;
+	/** ID to be used to determine selection if set by the parent `List` component */
+	id?: ReactText;
+	/** Info to be appended after the `text` property */
+	info?: ReactNode;
 	/**
 	 * Click handler.
 	 */
@@ -48,32 +54,45 @@ export interface IListItemProps {
 	 * selectable (highlights on hover, ripples on click)
 	 */
 	selected?: boolean;
+	/** Text to be displayed */
 	text?: ReactNode;
-	info?: ReactNode;
-	icon?: IconName;
 }
 
 export const ListItem: FC<IListItemProps> = memo(
-	({ children, className, href, icon, info, onClick, ripple, selected, text }) => {
+	({
+		children,
+		className,
+		href,
+		icon,
+		id = href ?? "",
+		info,
+		onClick,
+		ripple,
+		selected,
+		text
+	}) => {
 		const classes = useStyles();
 
 		const ref = useRef<HTMLLIElement>(null);
 
 		const [hovered] = useHover<HTMLLIElement>(false, {}, ref);
 
-		const { divider } = useContext(ListContext);
-
-		const LinkType: ComponentType<any> = href ? Link : Fragment;
+		const { divider, selectedItem } = useContext(ListContext);
 
 		const [isLastItem] = useIsLastChild(ref);
 
 		const opacity: number = selected ? OVERLAY_FOCUS_OPACITY : OVERLAY_HOVER_OPACITY;
 		const isInteractable = Boolean(onClick ?? href);
+		const isSelected: boolean = selected ?? selectedItem === id;
+
+		const TagType = href ? "a" : "span";
 
 		return (
 			<li className={classnames(classes.root, className)} onClick={onClick} ref={ref}>
-				<LinkType {...(href ? { href } : {})}>
-					<a className={classes.link}>
+				{React.createElement<any>(
+					href ? Link : Fragment,
+					href ? { href } : {},
+					<TagType className={classes.link}>
 						{icon && <Icon icon={icon} />}
 						<div className={classes.textWrapper}>
 							<Text className={Classes.FILL} ellipsize={true}>
@@ -82,10 +101,10 @@ export const ListItem: FC<IListItemProps> = memo(
 							{info && <div className={classes.info}>{info}</div>}
 						</div>
 						{children}
-					</a>
-				</LinkType>
+					</TagType>
+				)}
 				<Overlay
-					active={isInteractable && (hovered || selected)}
+					active={isInteractable && (hovered || isSelected)}
 					clickThrough={true}
 					opacity={opacity}
 				/>
