@@ -1,9 +1,6 @@
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
-import {
-	StockPortfolioDisplay,
-	StockPortfolioHead
-} from "@/client/page-parts/stock-portfolios/[stockPortfolioId]";
+import { StockPortfolioDisplay, StockPortfolioHead } from "@/client/page-parts";
 import { breakpoints, CustomTheme } from "@/client/themes";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";

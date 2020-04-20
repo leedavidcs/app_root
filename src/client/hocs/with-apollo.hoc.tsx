@@ -1,6 +1,6 @@
 import { ModalProvider } from "@/client/components";
 import { createApolloClient } from "@/client/graphql";
-import { Layout } from "@/client/page-parts/_app";
+import { Layout } from "@/client/page-parts";
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import { IncomingMessage } from "http";
 import { NextPage, NextPageContext } from "next";

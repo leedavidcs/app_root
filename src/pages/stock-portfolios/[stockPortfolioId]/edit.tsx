@@ -1,7 +1,6 @@
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
-import { StockPortfolioHead } from "@/client/page-parts/stock-portfolios/[stockPortfolioId]";
-import { StockPortfolioEdit } from "@/client/page-parts/stock-portfolios/[stockPortfolioId]/edit";
+import { StockPortfolioEdit, StockPortfolioHead } from "@/client/page-parts";
 import { breakpoints, CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import React from "react";
