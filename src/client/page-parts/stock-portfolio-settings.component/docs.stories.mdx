@@ -1,0 +1,25 @@
+import { GetOneStockPortfolioMock } from "@/client/graphql/mocks/get-one-stock-portfolio.mock";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockPortfolioSettings } from ".";
+
+<Meta title="page-parts/stock-portfolio-settings" component={StockPortfolioSettings} />
+
+# StockPortfolioSettings
+
+## Description
+Settings menu (tabs) for a stock-portfolio on the stock-portfolios settings page.
+
+## Props
+<Props of={StockPortfolioSettings} />
+
+## StandardStory
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
+<Preview>
+	<Story name="standard">
+		<StockPortfolioSettings stockPortfolio={stockPortfolio} />
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
