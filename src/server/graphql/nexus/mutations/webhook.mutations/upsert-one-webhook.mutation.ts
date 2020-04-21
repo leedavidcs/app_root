@@ -1,5 +1,6 @@
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import { AuthenticationError, ForbiddenError } from "apollo-server-micro";
+import { object, string } from "yup";
 
 export const StockPortfolioCreateOneWithoutWebhookInput = inputObjectType({
 	name: "StockPortfolioCreateOneWithoutWebhookInput",
@@ -40,6 +41,14 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 		create: arg({ type: "WebhookCreateInput", nullable: false }),
 		update: arg({ type: "WebhookUpdateInput", nullable: false })
 	},
+	yupValidation: () => ({
+		create: object().shape({
+			url: string().url("Url is invalid")
+		}),
+		update: object().shape({
+			url: string().url("Url is invalid")
+		})
+	}),
 	authorize: async (parent, { where, create }, { prisma, user }) => {
 		if (!user) {
 			return new AuthenticationError("This request requires authentication");
