@@ -18,15 +18,25 @@ export const useOnFormSubmitError = ({ setError }: IOptions) => {
 	const onFormError = useCallback(
 		(err: any) => {
 			if (err instanceof GraphQLError) {
-				if (err.extensions?.code === "BAD_USER_INPUT") {
-					const invalidArgs: Record<string, IBadUserInputArgInfo> =
-						err.extensions?.invalidArgs ?? [];
+				switch (err.extensions?.code) {
+					case "BAD_USER_INPUT": {
+						const invalidArgs: Record<string, IBadUserInputArgInfo> =
+							err.extensions?.invalidArgs ?? [];
 
-					Object.keys(invalidArgs).forEach((key) =>
-						setError(key, invalidArgs[key].message)
-					);
+						Object.keys(invalidArgs).forEach((key) =>
+							setError(key, invalidArgs[key].message)
+						);
 
-					return;
+						return;
+					}
+					case "FORBIDDEN":
+						toaster.show({
+							intent: "danger",
+							message: "You do not have permission for this action"
+						});
+
+						return;
+					default:
 				}
 			}
 
