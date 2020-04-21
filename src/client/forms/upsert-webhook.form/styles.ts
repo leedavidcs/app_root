@@ -1,21 +1,31 @@
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
 		width: "100%",
-		maxWidth: 800
+		padding: 0
+	},
+	section: {
+		padding: 12,
+
+		"&:not(:last-child)": {
+			borderBottom: `1px solid ${colors.darkGray4}`
+		}
+	},
+	code: {
+		backgroundColor: theme.code,
+		padding: "0 2px",
+		margin: "0 2px",
+		borderRadius: 3
 	},
 	inputsContainer: {
 		width: "100%",
 		maxWidth: 500,
-
-		[breakpoints.up("sm")]: {
-			"& .bp3-label": {
-				width: 130,
-				textAlign: "right"
-			}
-		}
+		marginBottom: 32
+	},
+	title: {
+		fontSize: 14
 	}
 });
 

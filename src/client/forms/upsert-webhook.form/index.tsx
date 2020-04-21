@@ -1,9 +1,10 @@
-import { Paper, TextInput } from "@/client/components";
+import { Card, ResourcePath, TextInput } from "@/client/components";
 import { UpsertWebhookMutation, useUpsertWebhookMutation, WebhookType } from "@/client/graphql";
-import { useBreakpoint, useOnFormSubmitError, useToast } from "@/client/hooks";
+import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import classnames from "classnames";
+import Link from "next/link";
 import React, { FC, useCallback } from "react";
 import { ExecutionResult } from "react-apollo";
 import { useForm } from "react-hook-form";
@@ -37,8 +38,6 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 	const classes = useStyles();
 	const toaster = useToast();
 
-	const isUpSmBreakpoint = useBreakpoint("up", "sm");
-
 	const [upsertWebhook] = useUpsertWebhookMutation();
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
@@ -71,34 +70,61 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 	);
 
 	return (
-		<form className={classnames(classes.root, className)} onSubmit={handleSubmit(onSubmit)}>
-			<Paper className={classes.inputsContainer}>
-				<TextInput
-					label="Name"
-					labelInfo="(required)"
-					name="name"
-					inline={isUpSmBreakpoint}
-					error={errors.name?.message}
-					control={control}
-				/>
-				<TextInput
-					label="Payload URL"
-					labelInfo="(required)"
-					name="url"
-					inline={isUpSmBreakpoint}
-					error={errors.name?.message}
-					control={control}
-				/>
-				<WebhookTypeSelect
-					label="Webhook trigger"
-					name="type"
-					inline={isUpSmBreakpoint}
-					defaultValue={webhookTypes[0]}
-					error={errors.type?.message}
-					control={control}
-				/>
-			</Paper>
-			<Button intent="primary" text="Save webhook" type="submit" />
-		</form>
+		<Card
+			className={classnames(classes.root, className)}
+			title={
+				<ResourcePath className={classes.title}>
+					<ResourcePath.Part
+						href={`/stock-portfolios/${stockPortfolioId}/settings/webhooks`}
+						text="Webhooks"
+					/>
+					<ResourcePath.Part
+						href={`/stock-portfolios/${stockPortfolioId}/settings/webhooks/new`}
+						text="Add webhook"
+					/>
+				</ResourcePath>
+			}
+		>
+			<div>
+				<div className={classes.section}>
+					<p>
+						We&apos;ll send a <code className={classes.code}>POST</code> request to the
+						URL below, with a payload that is structured depending on the
+						webhook-trigger selected. More information at{" "}
+						{/** TODO. Add developer documentation */}
+						<Link href="">
+							<a>our developer documentation</a>
+						</Link>
+						.
+					</p>
+				</div>
+				<form className={classes.section} onSubmit={handleSubmit(onSubmit)}>
+					<div className={classes.inputsContainer}>
+						<TextInput
+							label="Name"
+							labelInfo="(required)"
+							name="name"
+							error={errors.name?.message}
+							control={control}
+						/>
+						<TextInput
+							label="Payload URL"
+							labelInfo="(required)"
+							name="url"
+							error={errors.name?.message}
+							control={control}
+						/>
+						<WebhookTypeSelect
+							label="Webhook trigger"
+							name="type"
+							defaultValue={webhookTypes[0]}
+							error={errors.type?.message}
+							control={control}
+						/>
+					</div>
+					<Button intent="primary" text="Save webhook" type="submit" />
+				</form>
+			</div>
+		</Card>
 	);
 };
