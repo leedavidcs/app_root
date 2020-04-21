@@ -1,7 +1,7 @@
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioEdit, StockPortfolioHead } from "@/client/page-parts";
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { breakpoints, colors, CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import React from "react";
 import { createUseStyles } from "react-jss";
@@ -17,7 +17,13 @@ const styles = (theme: CustomTheme) => ({
 		color: theme.onBackground
 	},
 	head: {
-		marginBottom: 24
+		marginBottom: 24,
+		borderBottom: `1px solid ${colors.darkGray4}`,
+
+		"& > *": {
+			maxWidth: 1280,
+			margin: "auto"
+		}
 	},
 	edit: {
 		maxWidth: 1280,
@@ -37,11 +43,10 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 
 	return (
 		<main className={classes.root}>
-			<StockPortfolioHead
-				className={classes.head}
-				editing={true}
-				stockPortfolio={stockPortfolio}
-			/>
+			<div className={classes.head}>
+				<StockPortfolioHead editing={true} stockPortfolio={stockPortfolio} />
+			</div>
+
 			<StockPortfolioEdit className={classes.edit} stockPortfolio={stockPortfolio} />
 		</main>
 	);
