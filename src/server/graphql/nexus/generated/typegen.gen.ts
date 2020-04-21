@@ -126,7 +126,6 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    user?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     userId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   StockPortfolioUpdateInput: { // input type

@@ -309,7 +309,6 @@ input StockPortfolioOrderByInput {
   id: OrderByArg
   name: OrderByArg
   updatedAt: OrderByArg
-  user: OrderByArg
   userId: OrderByArg
 }
 
