@@ -24,12 +24,18 @@ interface IFormData {
 
 const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	name: string().required("Name is required"),
-	url: string().required("Url is required"),
+	url: string()
+		.required("Url is required")
+		.url("Url is invalid")
+		.test({
+			message: "Url host localhost is not supported",
+			test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
+		}),
 	type: string<WebhookType>()
 		.required("Type is required")
 		.test({
 			message: "Type is invalid",
-			test: (value) => webhookTypes.some((type) => type === value.value)
+			test: (value) => webhookTypes.some((type) => type === value)
 		})
 }));
 
