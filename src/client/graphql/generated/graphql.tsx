@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 18th 2020 4:52:38 am
+// This file was generated on: Apr 21st 2020 8:52:07 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -219,6 +219,7 @@ export type Mutation = RequestRoot & {
   readonly createStripePaymentIntent?: Maybe<StripePaymentIntent>;
   readonly createStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
+  readonly deleteOneWebhook?: Maybe<Webhook>;
   /** Logins in the user, and returns an expiring access token */
   readonly loginLocalUser?: Maybe<TokenPayload>;
   /** Refreshes the currently logged-in user's access token */
@@ -271,6 +272,12 @@ export type MutationCreateStripePaymentIntentArgs = {
 /** Root mutation type */
 export type MutationDeleteOneStockPortfolioArgs = {
   where: StockPortfolioWhereUniqueInput;
+};
+
+
+/** Root mutation type */
+export type MutationDeleteOneWebhookArgs = {
+  where: WebhookWhereUniqueInput;
 };
 
 
@@ -848,6 +855,19 @@ export type DeleteStockPortfolioMutation = (
   )> }
 );
 
+export type DeleteWebhookMutationVariables = {
+  id: Scalars['String'];
+};
+
+
+export type DeleteWebhookMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly webhook?: Maybe<(
+    { readonly __typename?: 'Webhook' }
+    & Pick<Webhook, 'id' | 'name'>
+  )> }
+);
+
 export type LoginLocalUserMutationVariables = {
   input: LoginLocalUserInput;
 };
@@ -1347,6 +1367,39 @@ export function useDeleteStockPortfolioMutation(baseOptions?: ApolloReactHooks.M
 export type DeleteStockPortfolioMutationHookResult = ReturnType<typeof useDeleteStockPortfolioMutation>;
 export type DeleteStockPortfolioMutationResult = ApolloReactCommon.MutationResult<DeleteStockPortfolioMutation>;
 export type DeleteStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteStockPortfolioMutation, DeleteStockPortfolioMutationVariables>;
+export const DeleteWebhookDocument = gql`
+    mutation DeleteWebhook($id: String!) {
+  webhook: deleteOneWebhook(where: {id: $id}) {
+    id
+    name
+  }
+}
+    `;
+export type DeleteWebhookMutationFn = ApolloReactCommon.MutationFunction<DeleteWebhookMutation, DeleteWebhookMutationVariables>;
+
+/**
+ * __useDeleteWebhookMutation__
+ *
+ * To run a mutation, you first call `useDeleteWebhookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteWebhookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteWebhookMutation, { data, loading, error }] = useDeleteWebhookMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteWebhookMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteWebhookMutation, DeleteWebhookMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteWebhookMutation, DeleteWebhookMutationVariables>(DeleteWebhookDocument, baseOptions);
+      }
+export type DeleteWebhookMutationHookResult = ReturnType<typeof useDeleteWebhookMutation>;
+export type DeleteWebhookMutationResult = ApolloReactCommon.MutationResult<DeleteWebhookMutation>;
+export type DeleteWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteWebhookMutation, DeleteWebhookMutationVariables>;
 export const LoginLocalUserDocument = gql`
     mutation LoginLocalUser($input: LoginLocalUserInput!) {
   loginLocalUser(input: $input) {

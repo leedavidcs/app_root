@@ -468,6 +468,7 @@ export interface NexusGenFieldTypes {
     createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
+    deleteOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
@@ -616,6 +617,9 @@ export interface NexusGenArgTypes {
     }
     deleteOneStockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+    }
+    deleteOneWebhook: { // args
+      where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
     loginLocalUser: { // args
       input: NexusGenInputs['LoginLocalUserInput']; // LoginLocalUserInput!
