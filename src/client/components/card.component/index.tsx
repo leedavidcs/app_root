@@ -34,7 +34,9 @@ export const Card: FC<IProps> = ({ children, className, elevation = 0, onClick, 
 
 	const interactive = Boolean(onClick);
 
-	const overlayOpacity: number = isPressed
+	const overlayOpacity: number = !interactive
+		? elevationToOpacityMap[elevation]
+		: isPressed
 		? PRESS_OPACITY
 		: isHovered
 		? HOVER_OPACITY
@@ -50,7 +52,7 @@ export const Card: FC<IProps> = ({ children, className, elevation = 0, onClick, 
 			{...hoverResult.handlers}
 		>
 			{title && <div className={classes.title}>{title}</div>}
-			<div className={classes.content}>{children}</div>
+			{children}
 			<Overlay
 				active={true}
 				animate={renderCount !== 0}

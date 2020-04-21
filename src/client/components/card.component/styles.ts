@@ -15,9 +15,6 @@ const styles = (theme: CustomTheme) => ({
 		padding: "8px 10px",
 		borderBottom: `1px solid ${colors.darkGray4}`,
 		fontSize: 14
-	},
-	content: {
-		padding: 12
 	}
 });
 
