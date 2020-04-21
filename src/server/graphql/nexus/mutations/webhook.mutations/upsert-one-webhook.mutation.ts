@@ -45,6 +45,16 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 			return new AuthenticationError("This request requires authentication");
 		}
 
+		const stockPortfolio = await prisma.stockPortfolio.findOne({
+			where: create.stockPortfolio.connect
+		});
+
+		if (stockPortfolio?.userId !== user.id) {
+			return new ForbiddenError(
+				"Cannot create a webhook for a stock portfolio belonging to a different user"
+			);
+		}
+
 		const existing = await prisma.webhook.findOne({
 			where,
 			include: {
@@ -52,11 +62,7 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 			}
 		});
 
-		const stockPortfolio = await prisma.stockPortfolio.findOne({
-			where: create.stockPortfolio.connect
-		});
-
-		if (existing?.stockPortfolio.userId !== user.id || stockPortfolio?.userId !== user.id) {
+		if (existing && existing.stockPortfolio.userId !== user.id) {
 			return new ForbiddenError(
 				"Cannot create a webhook for a stock portfolio belonging to a different user"
 			);
