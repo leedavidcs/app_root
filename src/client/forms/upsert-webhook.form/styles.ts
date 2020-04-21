@@ -2,10 +2,6 @@ import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	root: {
-		width: "100%",
-		padding: 0
-	},
 	section: {
 		padding: 12,
 
