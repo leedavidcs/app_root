@@ -13,7 +13,7 @@ const styles = (theme: CustomTheme) => ({
 		}
 	},
 	selected: {
-		border: `1px solid ${colors.gray3}`
+		border: `1px solid ${colors.darkGray4}`
 	}
 });
 
