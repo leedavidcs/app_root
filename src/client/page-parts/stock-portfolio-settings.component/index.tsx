@@ -23,6 +23,7 @@ export const StockPortfolioSettings: FC<IProps> = ({ stockPortfolio }) => {
 					text="Options"
 				/>
 				<List.Item
+					selected={router.asPath.includes("/webhooks")}
 					href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks`}
 					text="Webhooks"
 				/>
