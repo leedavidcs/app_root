@@ -25,7 +25,7 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 	const classes = useStyles({ size });
 	const { theme } = useTheme();
 
-	const [isHovered, hoverRef] = useHover<HTMLDivElement>(false, { stopPropagation: true });
+	const [isHovered, hoverResult] = useHover<HTMLDivElement>(false, { stopPropagation: true });
 
 	const onOptionClick = useCallback(
 		(option: IKebabMenuOption) => (event: MouseEvent<HTMLElement>) => {
@@ -70,7 +70,11 @@ export const KebabMenu: FC<IProps> = ({ className, options, size = DEFAULT_SIZE 
 			onClose={onClickOut}
 			content={tooltip}
 		>
-			<div ref={hoverRef} className={classnames(classes.root, className)} onClick={onClick}>
+			<div
+				ref={hoverResult.ref}
+				className={classnames(classes.root, className)}
+				onClick={onClick}
+			>
 				<Icon icon="more" />
 				<Overlay
 					active={isOpen || isHovered}

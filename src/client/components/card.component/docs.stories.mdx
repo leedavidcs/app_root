@@ -1,0 +1,32 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { number } from "@storybook/addon-knobs";
+import Faker from "faker";
+import { Card } from ".";
+//
+Faker.seed(1);
+
+<Meta title="general/card" component={Card} />
+
+# Card
+
+## Description
+A wrapped around [@blueprintjs/card](https://blueprintjs.com/docs/#core/components/card) with
+custom styling and additional behaviors.
+
+## Props
+<Props of={Card} />
+
+## StandardStory
+export const paragraphs = Faker.lorem.paragraphs();
+
+<Preview>
+	<Story name="standard">
+		<Card elevation={number("elevation", 0)} onClick={action("onClick")} title="Example Card">
+			<p>{paragraphs}</p>
+		</Card>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

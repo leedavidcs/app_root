@@ -19,7 +19,7 @@ export const Interactable = forwardRef<any, IProps>(
 		const classes = useStyles();
 		const { theme } = useTheme();
 
-		const [isHovered, hoverRef] = useHover<any>(false, { stopPropagation: true });
+		const [isHovered, hoverResult] = useHover<any>(false, { stopPropagation: true });
 
 		/**
 		 * !HACK
@@ -33,7 +33,7 @@ export const Interactable = forwardRef<any, IProps>(
 		return (
 			<RootType
 				{...restProps}
-				ref={composeRefs(hoverRef, ref)}
+				ref={composeRefs(hoverResult.ref, ref)}
 				className={classnames(classes.root, className)}
 				onClick={onClick}
 			>
