@@ -14,6 +14,7 @@ const styles = (theme: CustomTheme) => ({
 	},
 	link: {
 		display: "flex",
+		alignItems: "center",
 		padding: "10px 14px",
 
 		"& > .bp3-icon": {
