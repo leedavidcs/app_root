@@ -1,16 +1,7 @@
-import { UpsertWebhookForm } from "@/client/forms";
-import { GetOneStockPortfolioQuery } from "@/client/graphql";
-import { withStockPortfolioAuth } from "@/client/hocs";
 import { CustomTheme } from "@/client/themes";
 import { NextPage } from "next";
 import React from "react";
 import { createUseStyles } from "react-jss";
-
-type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
-
-interface IProps {
-	stockPortfolio: StockPortfolio;
-}
 
 const styles = (theme: CustomTheme) => ({
 	root: {
@@ -22,14 +13,10 @@ const styles = (theme: CustomTheme) => ({
 
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
-const Page: NextPage<IProps> = ({ stockPortfolio }) => {
+const Page: NextPage = () => {
 	const classes = useStyles();
 
-	return (
-		<main className={classes.root}>
-			<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} />
-		</main>
-	);
+	return <main className={classes.root}>Webhook page works~!</main>;
 };
 
-export default withStockPortfolioAuth()(Page);
+export default Page;
