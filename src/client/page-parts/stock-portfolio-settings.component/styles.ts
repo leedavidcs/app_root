@@ -5,15 +5,13 @@ const styles = (theme: CustomTheme) => ({
 	root: {
 		width: "100%",
 		minWidth: 220,
-		height: "max-content",
 		border: `1px solid ${colors.darkGray4}`,
 		borderRadius: 3,
 		overflow: "hidden",
 		backgroundColor: theme.surface,
 
 		"& .bp3-menu": {
-			backgroundColor: theme.surface,
-			color: theme.link
+			backgroundColor: theme.surface
 		},
 
 		[breakpoints.up("sm")]: {

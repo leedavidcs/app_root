@@ -29,11 +29,12 @@ const styles = (theme: CustomTheme) => ({
 		}
 	},
 	container: {
-		display: "flex",
 		maxWidth: 980,
 		margin: "0 auto",
 
 		[breakpoints.up("sm")]: {
+			display: "flex",
+			alignItems: "flex-start",
 			padding: "0 25px"
 		}
 	},
@@ -45,6 +46,14 @@ const styles = (theme: CustomTheme) => ({
 		margin: "0 0 16px",
 		paddingBottom: 8,
 		borderBottom: `1px solid ${colors.darkGray4}`
+	},
+	createNewWrapper: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		height: 60,
+		borderBottom: `1px solid ${colors.darkGray4}`,
+		backgroundColor: theme.surface
 	}
 });
 
@@ -76,7 +85,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 				<StockPortfolioSettings stockPortfolio={stockPortfolio} />
 				<div className={classes.content}>
 					<h2 className={classes.settingHeader}>Webhooks</h2>
-					<div>
+					<div className={classes.createNewWrapper}>
 						<Link
 							href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks/new`}
 							passHref={true}

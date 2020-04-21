@@ -36,6 +36,7 @@ const styles = (theme: CustomTheme) => ({
 
 		[breakpoints.up("sm")]: {
 			display: "flex",
+			alignItems: "flex-start",
 			padding: "0 25px"
 		}
 	},
