@@ -329,6 +329,22 @@ input StockPortfolioOrderByInput {
   userId: OrderByArg
 }
 
+input StockPortfolioSettingsFilter {
+  every: StockPortfolioSettingsWhereInput
+  none: StockPortfolioSettingsWhereInput
+  some: StockPortfolioSettingsWhereInput
+}
+
+input StockPortfolioSettingsWhereInput {
+  AND: [StockPortfolioSettingsWhereInput!]
+  enableSnapshots: BooleanFilter
+  NOT: [StockPortfolioSettingsWhereInput!]
+  OR: [StockPortfolioSettingsWhereInput!]
+  pollInterval: IntFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+}
+
 input StockPortfolioUpdateInput {
   headers: [StockPortfolioHeaderInput!]
   name: String
@@ -343,6 +359,7 @@ input StockPortfolioWhereInput {
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
   snapshot: SnapshotFilter
+  stockPortfolioSettings: StockPortfolioSettingsFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter

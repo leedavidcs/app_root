@@ -250,6 +250,7 @@ type GetNexusPrisma<
 interface ModelTypes {
   User: prisma.User
   StockPortfolio: prisma.StockPortfolio
+  StockPortfolioSettings: prisma.StockPortfolioSettings
   Balance: prisma.Balance
   Transaction: prisma.Transaction
   StripeDetails: prisma.StripeDetails
@@ -264,8 +265,12 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'stockPortfolioSettings' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
+}
+    stockPortfolioSettings: {
+  filtering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval'
 }
     balances: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -291,7 +296,7 @@ interface NexusPrismaInputs {
   },
     User: {
     stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'stockPortfolioSettings' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
@@ -308,6 +313,10 @@ interface NexusPrismaInputs {
 }
 
   },  StockPortfolio: {
+    stockPortfolioSettings: {
+  filtering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval'
+}
     webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
@@ -316,6 +325,9 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
+
+  },  StockPortfolioSettings: {
+
 
   },  Balance: {
 
@@ -341,6 +353,8 @@ interface NexusPrismaTypes {
     users: 'User'
     stockPortfolio: 'StockPortfolio'
     stockPortfolios: 'StockPortfolio'
+    stockPortfolioSettings: 'StockPortfolioSettings'
+    stockPortfolioSettings: 'StockPortfolioSettings'
     balance: 'Balance'
     balances: 'Balance'
     transaction: 'Transaction'
@@ -366,6 +380,12 @@ interface NexusPrismaTypes {
     deleteOneStockPortfolio: 'StockPortfolio'
     deleteManyStockPortfolio: 'BatchPayload'
     upsertOneStockPortfolio: 'StockPortfolio'
+    createOneStockPortfolioSettings: 'StockPortfolioSettings'
+    updateOneStockPortfolioSettings: 'StockPortfolioSettings'
+    updateManyStockPortfolioSettings: 'BatchPayload'
+    deleteOneStockPortfolioSettings: 'StockPortfolioSettings'
+    deleteManyStockPortfolioSettings: 'BatchPayload'
+    upsertOneStockPortfolioSettings: 'StockPortfolioSettings'
     createOneBalance: 'Balance'
     updateOneBalance: 'Balance'
     updateManyBalance: 'BatchPayload'
@@ -420,8 +440,15 @@ interface NexusPrismaTypes {
     tickers: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
+    stockPortfolioSettings: 'StockPortfolioSettings'
     webhook: 'Webhook'
     snapshot: 'Snapshot'
+
+},  StockPortfolioSettings: {
+    stockPortfolio: 'StockPortfolio'
+    stockPortfolioId: 'String'
+    enableSnapshots: 'Boolean'
+    pollInterval: 'Int'
 
 },  Balance: {
     user: 'User'
@@ -468,6 +495,7 @@ interface NexusPrismaTypes {
 interface NexusPrismaMethods {
   User: NexusPrismaFields<'User'>
   StockPortfolio: NexusPrismaFields<'StockPortfolio'>
+  StockPortfolioSettings: NexusPrismaFields<'StockPortfolioSettings'>
   Balance: NexusPrismaFields<'Balance'>
   Transaction: NexusPrismaFields<'Transaction'>
   StripeDetails: NexusPrismaFields<'StripeDetails'>
