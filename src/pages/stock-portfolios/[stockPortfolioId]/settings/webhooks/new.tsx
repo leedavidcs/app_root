@@ -71,13 +71,14 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 								text="Webhooks"
 							/>
 							<ResourcePath.Part
+								active={true}
 								href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks/new`}
 								text="Add webhook"
 							/>
 						</ResourcePath>
 					}
 				>
-					<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} operation="create" />
+					<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} />
 				</Card>
 			</div>
 		</main>
