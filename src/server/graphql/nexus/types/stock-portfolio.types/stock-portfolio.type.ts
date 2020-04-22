@@ -31,6 +31,7 @@ export const StockPortfolio = objectType({
 			}
 		});
 		t.model.tickers();
+		t.model.settings();
 		t.field("stockData", {
 			type: "StockData",
 			nullable: false,
@@ -45,24 +46,7 @@ export const StockPortfolio = objectType({
 				);
 				const dataKeys: string[] = parsedHeaders.map(({ dataKey }) => dataKey);
 
-				return { dataKeys, tickers };
-			}
-		});
-		t.field("settings", {
-			type: "StockPortfolioSettings",
-			nullable: false,
-			resolve: async ({ id }, args, { prisma }) => {
-				const settings = await prisma.stockPortfolioSettings.findOne({
-					where: { stockPortfolioId: id }
-				});
-
-				if (settings) {
-					return settings;
-				}
-
-				return await prisma.stockPortfolioSettings.create({
-					data: { stockPortfolio: { connect: { id } } }
-				});
+				return { dataKeys, stockPortfolioId: id, tickers };
 			}
 		});
 		t.list.field("snapshots", {
