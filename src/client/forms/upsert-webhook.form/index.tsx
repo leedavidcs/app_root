@@ -1,9 +1,8 @@
 import { Alert, TextInput } from "@/client/components";
 import {
-	CreateWebhookMutation,
-	UpdateWebhookMutation,
 	useCreateWebhookMutation,
 	useDeleteWebhookMutation,
+	useSetToastsMutation,
 	useUpdateWebhookMutation,
 	WebhookType
 } from "@/client/graphql";
@@ -11,14 +10,12 @@ import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import Link from "next/link";
+import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
-import { ExecutionResult } from "react-apollo";
 import { useForm } from "react-hook-form";
 import { object, string } from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
-
-type Webhook = CreateWebhookMutation["webhook"];
 
 interface IProps {
 	className?: string;
@@ -56,8 +53,13 @@ const validationResolver = getYupValidationResolver<IFormData>(() => ({
 export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, webhookId }) => {
 	const classes = useStyles();
 	const toaster = useToast();
+	const router: NextRouter = useRouter();
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
+
+	const [setToasts] = useSetToastsMutation({
+		onCompleted: () => router.push(`/stock-portfolios/${stockPortfolioId}/settings/webhooks`)
+	});
 
 	const [createWebhook] = useCreateWebhookMutation({
 		onCompleted: () => {
@@ -69,7 +71,15 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 			toaster.show({ intent: "success", message: "Webhook was successfully updated" });
 		}
 	});
-	const [deleteWebhook] = useDeleteWebhookMutation();
+	const [deleteWebhook] = useDeleteWebhookMutation({
+		onCompleted: () => {
+			setToasts({
+				variables: {
+					toasts: [{ intent: "success", message: "Webhook was successfully deleted" }]
+				}
+			});
+		}
+	});
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
 
@@ -79,8 +89,6 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 
 	const onSubmit = useCallback(
 		async (formData: IFormData) => {
-			let result: ExecutionResult<CreateWebhookMutation | UpdateWebhookMutation>;
-
 			const data = {
 				...formData.data,
 				stockPortfolio: { connect: { id: stockPortfolioId } }
@@ -88,27 +96,15 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 
 			try {
 				if (webhookId) {
-					result = await updateWebhook({ variables: { where: { id: webhookId }, data } });
+					await updateWebhook({ variables: { where: { id: webhookId }, data } });
 				} else {
-					result = await createWebhook({ variables: { data } });
+					await createWebhook({ variables: { data } });
 				}
 			} catch (err) {
 				onFormSubmitError(err);
-
-				return;
 			}
-
-			const webhook: Maybe<Webhook> = result.data?.webhook;
-
-			if (!webhook) {
-				toaster.show({ intent: "danger", message: "Form submission unsuccessful" });
-
-				return;
-			}
-
-			toaster.show({ intent: "success", message: "Webhook was successfully created" });
 		},
-		[createWebhook, onFormSubmitError, stockPortfolioId, toaster, updateWebhook, webhookId]
+		[createWebhook, onFormSubmitError, stockPortfolioId, updateWebhook, webhookId]
 	);
 
 	const onAlertOpen = useCallback(() => setAlertOpen(true), []);
