@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 21st 2020 10:38:06 am
+// This file was generated on: Apr 21st 2020 10:54:01 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1138,6 +1138,27 @@ export type GetViewerQuery = (
   )> }
 );
 
+export type GetWebhookQueryVariables = {
+  where: WebhookWhereUniqueInput;
+};
+
+
+export type GetWebhookQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly webhook?: Maybe<(
+    { readonly __typename?: 'Webhook' }
+    & Pick<Webhook, 'id' | 'name' | 'timeout' | 'type'>
+    & { readonly stockPortfolio: (
+      { readonly __typename?: 'StockPortfolio' }
+      & Pick<StockPortfolio, 'id' | 'name'>
+      & { readonly user: (
+        { readonly __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
+    ) }
+  )> }
+);
+
 export type GetWebhooksQueryVariables = {
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -2088,6 +2109,50 @@ export function useGetViewerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetViewerQueryHookResult = ReturnType<typeof useGetViewerQuery>;
 export type GetViewerLazyQueryHookResult = ReturnType<typeof useGetViewerLazyQuery>;
 export type GetViewerQueryResult = ApolloReactCommon.QueryResult<GetViewerQuery, GetViewerQueryVariables>;
+export const GetWebhookDocument = gql`
+    query GetWebhook($where: WebhookWhereUniqueInput!) {
+  webhook(where: $where) {
+    id
+    name
+    timeout
+    type
+    stockPortfolio {
+      id
+      name
+      user {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetWebhookQuery__
+ *
+ * To run a query within a React component, call `useGetWebhookQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWebhookQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWebhookQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetWebhookQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetWebhookQuery, GetWebhookQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetWebhookQuery, GetWebhookQueryVariables>(GetWebhookDocument, baseOptions);
+      }
+export function useGetWebhookLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetWebhookQuery, GetWebhookQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetWebhookQuery, GetWebhookQueryVariables>(GetWebhookDocument, baseOptions);
+        }
+export type GetWebhookQueryHookResult = ReturnType<typeof useGetWebhookQuery>;
+export type GetWebhookLazyQueryHookResult = ReturnType<typeof useGetWebhookLazyQuery>;
+export type GetWebhookQueryResult = ApolloReactCommon.QueryResult<GetWebhookQuery, GetWebhookQueryVariables>;
 export const GetWebhooksDocument = gql`
     query GetWebhooks($first: Int, $skip: Int, $after: WebhookWhereUniqueInput, $where: WebhookWhereInput) {
   webhooks(first: $first, skip: $skip, after: $after, where: $where) {

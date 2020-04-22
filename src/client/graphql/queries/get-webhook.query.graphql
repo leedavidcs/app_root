@@ -1,0 +1,16 @@
+query GetWebhook($where: WebhookWhereUniqueInput!) {
+	webhook(where: $where) {
+		id
+		name
+		timeout
+		type
+		stockPortfolio {
+			id
+			name
+			user {
+				id
+				username
+			}
+		}
+	}
+}
