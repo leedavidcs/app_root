@@ -1,13 +1,14 @@
 import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
-import React, { CSSProperties, FC, KeyboardEventHandler } from "react";
+import React, { CSSProperties, FC, KeyboardEventHandler, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
 	control?: Control<any>;
+	defaultValue?: number;
 	disabled?: boolean;
-	error?: Maybe<string>;
+	error?: Maybe<string | ReactElement>;
 	icon?: IconName;
 	inline?: boolean;
 	label?: string;
@@ -84,7 +85,14 @@ const BaseNumberInput: FC<IProps> = ({
 };
 
 export const NumberInput: FC<IProps> = (props) => {
-	const { control, name, value, onValueChange, ...restProps } = props;
+	const {
+		control,
+		defaultValue = Math.min(Math.max(0, props.min ?? 0), props.max ?? Infinity),
+		name,
+		value,
+		onValueChange,
+		...restProps
+	} = props;
 
 	if (control) {
 		if (!name) {
@@ -96,8 +104,8 @@ export const NumberInput: FC<IProps> = (props) => {
 				as={BaseNumberInput}
 				control={control}
 				name={name}
+				defaultValue={defaultValue}
 				{...restProps}
-				defaultValue={Math.min(Math.max(0, props.min ?? 0), props.max ?? Infinity)}
 				onChange={([valueAsNumber]) => valueAsNumber}
 				onChangeName="onValueChange"
 			/>
