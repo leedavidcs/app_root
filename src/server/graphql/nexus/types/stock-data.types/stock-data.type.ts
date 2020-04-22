@@ -60,19 +60,15 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 	});
 };
 
-const shouldCreateSnapshot = (stockPortfolio: Maybe<StockPortfolio>): boolean => {
-	return stockPortfolio?.settings.enableSnapshots ?? false;
-};
+const shouldCreateSnapshot = (
+	stockPortfolio: Maybe<StockPortfolio>
+): stockPortfolio is StockPortfolio => stockPortfolio?.settings.enableSnapshots ?? false;
 
 const createSnapshot = async (
-	stockPortfolio: Maybe<StockPortfolio>,
+	stockPortfolio: StockPortfolio,
 	data: readonly Record<string, any>[],
 	{ prisma }: IServerContextWithUser
 ): Promise<boolean> => {
-	if (!stockPortfolio?.settings?.enableSnapshots) {
-		return false;
-	}
-
 	await prisma.snapshot.create({
 		data: {
 			stockPortfolio: { connect: { id: stockPortfolio.id } },
@@ -121,25 +117,7 @@ export const StockData = objectType({
 		});
 		t.list.field("data", {
 			type: "JSONObject",
-			authorize: async ({ dataKeys, tickers }, args, { prisma, user }) => {
-				if (!user) {
-					return false;
-				}
-
-				const cost: number = computeCosts(tickers, dataKeys);
-
-				if (cost === 0) {
-					return true;
-				}
-
-				const balance = await prisma.balance.findOne({ where: { userId: user.id } });
-
-				if (!balance || balance.credits < cost) {
-					return new ForbiddenError("You have insufficient funds for this request.");
-				}
-
-				return true;
-			},
+			authorize: (parent, args, { user }) => Boolean(user),
 			resolve: async ({ stockPortfolioId, tickers, dataKeys }, arg, context) => {
 				const { dataSources, prisma } = context;
 				const { IexCloudAPI } = dataSources;
@@ -176,7 +154,9 @@ export const StockData = objectType({
 					return { ticker, ...limitResultToDataKeys(results[ticker], dataKeys) };
 				});
 
-				await createSnapshot(stockPortfolio, stockDataResult, context);
+				if (shouldCreateSnapshot(stockPortfolio)) {
+					await createSnapshot(stockPortfolio, stockDataResult, context);
+				}
 
 				return stockDataResult;
 			}
