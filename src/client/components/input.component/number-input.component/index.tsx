@@ -1,10 +1,11 @@
 import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
-
 import React, { CSSProperties, FC, KeyboardEventHandler } from "react";
+import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
+	control?: Control<any>;
 	disabled?: boolean;
 	error?: Maybe<string>;
 	icon?: IconName;
@@ -15,6 +16,7 @@ interface IProps {
 	min?: number;
 	majorStepSize?: number;
 	minorStepSize?: number;
+	name?: string;
 	onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 	onValueChange?: (valueAsNumber: number, valueAsString: string) => void;
 	placeholder?: string;
@@ -23,7 +25,7 @@ interface IProps {
 	value?: number;
 }
 
-export const NumberInput: FC<IProps> = ({
+const BaseNumberInput: FC<IProps> = ({
 	className,
 	disabled,
 	error,
@@ -35,6 +37,7 @@ export const NumberInput: FC<IProps> = ({
 	min,
 	majorStepSize,
 	minorStepSize,
+	name,
 	onKeyDown,
 	onValueChange,
 	placeholder,
@@ -69,6 +72,7 @@ export const NumberInput: FC<IProps> = ({
 				min={min}
 				majorStepSize={majorStepSize ?? stepSize}
 				minorStepSize={minorStepSize ?? stepSize}
+				name={name}
 				onKeyDown={onKeyDown}
 				onValueChange={onValueChange}
 				placeholder={placeholder}
@@ -77,4 +81,28 @@ export const NumberInput: FC<IProps> = ({
 			/>
 		</FormGroup>
 	);
+};
+
+export const NumberInput: FC<IProps> = (props) => {
+	const { control, name, value, onValueChange, ...restProps } = props;
+
+	if (control) {
+		if (!name) {
+			throw new Error("Number input is used in a form without a name!");
+		}
+
+		return (
+			<Controller
+				as={BaseNumberInput}
+				control={control}
+				name={name}
+				{...restProps}
+				defaultValue={Math.min(Math.max(0, props.min ?? 0), props.max ?? Infinity)}
+				onChange={([valueAsNumber]) => valueAsNumber}
+				onChangeName="onValueChange"
+			/>
+		);
+	}
+
+	return <BaseNumberInput {...props} />;
 };
