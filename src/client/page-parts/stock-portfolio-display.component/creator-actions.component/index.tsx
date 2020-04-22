@@ -1,4 +1,4 @@
-import { Alert } from "@/client/components/alert.component";
+import { Alert } from "@/client/components";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
