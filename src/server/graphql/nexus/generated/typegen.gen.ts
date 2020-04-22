@@ -147,6 +147,10 @@ export interface NexusGenInputs {
     none?: NexusGenInputs['StockPortfolioSettingsWhereInput'] | null; // StockPortfolioSettingsWhereInput
     some?: NexusGenInputs['StockPortfolioSettingsWhereInput'] | null; // StockPortfolioSettingsWhereInput
   }
+  StockPortfolioSettingsUpdateInput: { // input type
+    enableSnapshots?: boolean | null; // Boolean
+    pollInterval?: number | null; // Int
+  }
   StockPortfolioSettingsWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioSettingsWhereInput'][] | null; // [StockPortfolioSettingsWhereInput!]
     enableSnapshots?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
@@ -155,6 +159,9 @@ export interface NexusGenInputs {
     pollInterval?: NexusGenInputs['IntFilter'] | null; // IntFilter
     stockPortfolio?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
     stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  StockPortfolioSettingsWhereUniqueInput: { // input type
+    stockPortfolioId: string; // String!
   }
   StockPortfolioUpdateInput: { // input type
     headers?: NexusGenInputs['StockPortfolioHeaderInput'][] | null; // [StockPortfolioHeaderInput!]
@@ -468,7 +475,9 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioIdNameCompoundUniqueInput: NexusGenInputs['StockPortfolioIdNameCompoundUniqueInput'];
   StockPortfolioOrderByInput: NexusGenInputs['StockPortfolioOrderByInput'];
   StockPortfolioSettingsFilter: NexusGenInputs['StockPortfolioSettingsFilter'];
+  StockPortfolioSettingsUpdateInput: NexusGenInputs['StockPortfolioSettingsUpdateInput'];
   StockPortfolioSettingsWhereInput: NexusGenInputs['StockPortfolioSettingsWhereInput'];
+  StockPortfolioSettingsWhereUniqueInput: NexusGenInputs['StockPortfolioSettingsWhereUniqueInput'];
   StockPortfolioUpdateInput: NexusGenInputs['StockPortfolioUpdateInput'];
   StockPortfolioWhereInput: NexusGenInputs['StockPortfolioWhereInput'];
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
@@ -521,6 +530,7 @@ export interface NexusGenFieldTypes {
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
+    updateOneStockPortfolioSettings: NexusGenRootTypes['StockPortfolioSettings'] | null; // StockPortfolioSettings
     updateOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     viewer: NexusGenRootTypes['User'] | null; // User
   }
@@ -706,6 +716,10 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['StockPortfolioUpdateInput']; // StockPortfolioUpdateInput!
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
     }
+    updateOneStockPortfolioSettings: { // args
+      data: NexusGenInputs['StockPortfolioSettingsUpdateInput']; // StockPortfolioSettingsUpdateInput!
+      where: NexusGenInputs['StockPortfolioSettingsWhereUniqueInput']; // StockPortfolioSettingsWhereUniqueInput!
+    }
     updateOneWebhook: { // args
       data: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
@@ -782,7 +796,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "SnapshotFilter" | "SnapshotWhereInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsFilter" | "StockPortfolioSettingsWhereInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "SnapshotFilter" | "SnapshotWhereInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsFilter" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg" | "OrderDetailType" | "TransactionStatus" | "WebhookType";
 
