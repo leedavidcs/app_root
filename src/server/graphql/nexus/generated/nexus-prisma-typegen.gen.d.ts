@@ -254,6 +254,7 @@ interface ModelTypes {
   Transaction: prisma.Transaction
   StripeDetails: prisma.StripeDetails
   Webhook: prisma.Webhook
+  Snapshot: prisma.Snapshot
 }
   
 interface NexusPrismaInputs {
@@ -263,7 +264,7 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balances: {
@@ -282,11 +283,15 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
+    snapshots: {
+  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'createdAt'
+}
 
   },
     User: {
     stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
@@ -307,6 +312,10 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
+    snapshot: {
+  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'createdAt'
+}
 
   },  Balance: {
 
@@ -318,6 +327,9 @@ interface NexusPrismaInputs {
 
 
   },  Webhook: {
+
+
+  },  Snapshot: {
 
 
   }
@@ -337,6 +349,8 @@ interface NexusPrismaTypes {
     stripeDetails: 'StripeDetails'
     webhook: 'Webhook'
     webhooks: 'Webhook'
+    snapshot: 'Snapshot'
+    snapshots: 'Snapshot'
 
   },
   Mutation: {
@@ -376,6 +390,12 @@ interface NexusPrismaTypes {
     deleteOneWebhook: 'Webhook'
     deleteManyWebhook: 'BatchPayload'
     upsertOneWebhook: 'Webhook'
+    createOneSnapshot: 'Snapshot'
+    updateOneSnapshot: 'Snapshot'
+    updateManySnapshot: 'BatchPayload'
+    deleteOneSnapshot: 'Snapshot'
+    deleteManySnapshot: 'BatchPayload'
+    upsertOneSnapshot: 'Snapshot'
 
   },
   User: {
@@ -401,6 +421,7 @@ interface NexusPrismaTypes {
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     webhook: 'Webhook'
+    snapshot: 'Snapshot'
 
 },  Balance: {
     user: 'User'
@@ -432,6 +453,15 @@ interface NexusPrismaTypes {
     timeout: 'Int'
     createdAt: 'DateTime'
 
+},  Snapshot: {
+    id: 'String'
+    tickers: 'String'
+    headers: 'String'
+    stockPortfolio: 'StockPortfolio'
+    stockPortfolioId: 'String'
+    data: 'String'
+    createdAt: 'DateTime'
+
 }
 }
 
@@ -442,6 +472,7 @@ interface NexusPrismaMethods {
   Transaction: NexusPrismaFields<'Transaction'>
   StripeDetails: NexusPrismaFields<'StripeDetails'>
   Webhook: NexusPrismaFields<'Webhook'>
+  Snapshot: NexusPrismaFields<'Snapshot'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }

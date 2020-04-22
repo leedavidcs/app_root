@@ -239,6 +239,22 @@ type ResendVerifyEmailPayload {
   success: Boolean!
 }
 
+input SnapshotFilter {
+  every: SnapshotWhereInput
+  none: SnapshotWhereInput
+  some: SnapshotWhereInput
+}
+
+input SnapshotWhereInput {
+  AND: [SnapshotWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [SnapshotWhereInput!]
+  OR: [SnapshotWhereInput!]
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+}
+
 type StockData {
   data: [JSONObject!]
   dataKeys: [String!]!
@@ -326,6 +342,7 @@ input StockPortfolioWhereInput {
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
+  snapshot: SnapshotFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
