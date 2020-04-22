@@ -23,39 +23,20 @@ export const WebhookCreateInput = inputObjectType({
 	}
 });
 
-export const WebhookUpdateInput = inputObjectType({
-	name: "WebhookUpdateInput",
-	definition: (t) => {
-		t.string("name");
-		t.field("type", { type: "WebhookType" });
-		t.string("url");
-		t.int("timeout");
-	}
-});
-
-export const upsertOneWebhook = mutationField("upsertOneWebhook", {
+export const createOneWebhook = mutationField("createOneWebhook", {
 	type: "Webhook",
 	nullable: false,
 	args: {
-		where: arg({ type: "WebhookWhereUniqueInput", nullable: false }),
-		create: arg({ type: "WebhookCreateInput", nullable: false }),
-		update: arg({ type: "WebhookUpdateInput", nullable: false })
+		data: arg({ type: "WebhookCreateInput", nullable: false })
 	},
-	yupValidation: () => ({
-		create: object().shape({
-			url: string().url("Url is invalid")
-		}),
-		update: object().shape({
-			url: string().url("Url is invalid")
-		})
-	}),
-	authorize: async (parent, { where, create }, { prisma, user }) => {
+	rateLimit: () => ({ window: "1m", max: 30 }),
+	authorize: async (parent, { data }, { prisma, user }) => {
 		if (!user) {
 			return new AuthenticationError("This request requires authentication");
 		}
 
 		const stockPortfolio = await prisma.stockPortfolio.findOne({
-			where: create.stockPortfolio.connect
+			where: data.stockPortfolio.connect
 		});
 
 		if (stockPortfolio?.userId !== user.id) {
@@ -64,22 +45,37 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 			);
 		}
 
-		const existing = await prisma.webhook.findOne({
-			where,
-			include: {
-				stockPortfolio: true
-			}
-		});
-
-		if (existing && existing.stockPortfolio.userId !== user.id) {
-			return new ForbiddenError(
-				"Cannot create a webhook for a stock portfolio belonging to a different user"
-			);
-		}
-
 		return true;
 	},
-	resolve: (parent, { where, create, update }, { prisma }) => {
-		return prisma.webhook.upsert({ where, create, update });
-	}
+	yupValidation: (parent, { data }, { prisma }) => ({
+		data: object().shape({
+			name: string()
+				.required("Name is required")
+				.test({
+					message: `Webhook with name "${data.name}" already exists`,
+					test: async (value) => {
+						const stockPortfolio = await prisma.stockPortfolio.findOne({
+							where: data.stockPortfolio.connect
+						});
+
+						const webhook = await prisma.webhook.findOne({
+							where: {
+								stockPortfolioId_name: {
+									stockPortfolioId: stockPortfolio!.id,
+									name: value
+								}
+							}
+						});
+
+						if (webhook) {
+							return false;
+						}
+
+						return true;
+					}
+				}),
+			url: string().required("Url is required").url("Url is invalid")
+		})
+	}),
+	resolve: (parent, args, { prisma }) => prisma.webhook.create(args)
 });

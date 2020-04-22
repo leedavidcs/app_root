@@ -107,6 +107,7 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createOneWebhook(data: WebhookCreateInput!): Webhook!
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
@@ -124,7 +125,7 @@ type Mutation implements RequestRoot {
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
-  upsertOneWebhook(create: WebhookCreateInput!, update: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook!
+  updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
 
   """The viewer of this request"""
   viewer: User

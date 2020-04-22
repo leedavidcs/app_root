@@ -10,6 +10,7 @@ import {
 import { UserInputError } from "apollo-server-micro";
 import { GraphQLResolveInfo } from "graphql";
 import path from "path";
+import { ManualFieldError } from "react-hook-form";
 import { object, ObjectSchemaDefinition, ValidationError } from "yup";
 
 /* eslint-disable no-console */
@@ -93,12 +94,19 @@ export const yupValidationPlugin = () => {
 						throw errors;
 					}
 
+					/**
+					 * @description Construct invalidArgs in a way that is easily consumed by
+					 *     react-hook-form, if form names are the same as inputs. `name` is a
+					 *     lodash/(get/set)-compatible path
+					 * @author David Lee
+					 * @date April 21, 2020
+					 */
 					const invalidArgs = errors.inner.reduce(
-						(fieldErrors, { message, path: _path, type = "validation", value }) => ({
+						(fieldErrors, { message, path: name, type = "validation", value }) => [
 							...fieldErrors,
-							[_path]: { message, type, value }
-						}),
-						{}
+							{ message, name, type }
+						],
+						[] as readonly ManualFieldError<any>[]
 					);
 
 					throw new UserInputError("Invalid user input", { invalidArgs });

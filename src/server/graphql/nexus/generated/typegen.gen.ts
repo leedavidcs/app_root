@@ -464,6 +464,7 @@ export interface NexusGenFieldTypes {
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    createOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
     createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
@@ -473,7 +474,7 @@ export interface NexusGenFieldTypes {
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
-    upsertOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
+    updateOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     viewer: NexusGenRootTypes['User'] | null; // User
   }
   PriceBundle: { // field return type
@@ -610,6 +611,9 @@ export interface NexusGenArgTypes {
     createOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioCreateInput']; // StockPortfolioCreateInput!
     }
+    createOneWebhook: { // args
+      data: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
+    }
     createStripePaymentIntent: { // args
       orderDetails: NexusGenInputs['OrderDetailInput'][]; // [OrderDetailInput!]!
       paymentMethodId: string; // String!
@@ -633,9 +637,8 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['StockPortfolioUpdateInput']; // StockPortfolioUpdateInput!
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
     }
-    upsertOneWebhook: { // args
-      create: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
-      update: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
+    updateOneWebhook: { // args
+      data: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
   }
