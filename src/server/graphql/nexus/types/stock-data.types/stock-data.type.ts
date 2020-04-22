@@ -1,10 +1,14 @@
 import { StockDataFeatures } from "@/server/configs";
+import { SnapshotConfig } from "@/server/configs/snapshot.config";
 import { IexType } from "@/server/datasources";
 import { IServerContextWithUser } from "@/server/graphql/context";
-import { BadInputError, Logger } from "@/server/utils";
+import { Logger } from "@/server/utils";
 import { objectType } from "@nexus/schema";
-import { ForbiddenError } from "apollo-server-micro";
+import { StockPortfolio as _StockPortfolio, StockPortfolioSettings } from "@prisma/client";
+import { ForbiddenError, UserInputError } from "apollo-server-micro";
 import { camelCase, get } from "lodash";
+
+type StockPortfolio = _StockPortfolio & { settings: StockPortfolioSettings };
 
 const getTypesFromDataKeys = (dataKeys: readonly string[]): Record<IexType, boolean> => {
 	const types: Record<IexType, boolean> = dataKeys
@@ -56,27 +60,22 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 	});
 };
 
+const shouldCreateSnapshot = (stockPortfolio: Maybe<StockPortfolio>): boolean => {
+	return stockPortfolio?.settings.enableSnapshots ?? false;
+};
+
 const createSnapshot = async (
-	stockPortfolioId: Maybe<string>,
+	stockPortfolio: Maybe<StockPortfolio>,
 	data: readonly Record<string, any>[],
 	{ prisma }: IServerContextWithUser
-): Promise<void> => {
-	if (!stockPortfolioId) {
-		return;
-	}
-
-	const stockPortfolio = await prisma.stockPortfolio.findOne({
-		where: { id: stockPortfolioId },
-		include: { settings: true }
-	});
-
+): Promise<boolean> => {
 	if (!stockPortfolio?.settings?.enableSnapshots) {
-		return;
+		return false;
 	}
 
 	await prisma.snapshot.create({
 		data: {
-			stockPortfolio: { connect: { id: stockPortfolioId } },
+			stockPortfolio: { connect: { id: stockPortfolio.id } },
 			tickers: { set: stockPortfolio.tickers },
 			headers: {
 				set: stockPortfolio.headers.map((header) => {
@@ -88,6 +87,8 @@ const createSnapshot = async (
 			data: { set: data.map((datum) => JSON.stringify(datum)) }
 		}
 	});
+
+	return true;
 };
 
 export const StockData = objectType({
@@ -103,7 +104,20 @@ export const StockData = objectType({
 		t.int("refreshCost", {
 			description: "The amount in credits, that a data-refresh would cost",
 			nullable: false,
-			resolve: ({ dataKeys, tickers }) => computeCosts(tickers, dataKeys)
+			resolve: async ({ stockPortfolioId, tickers, dataKeys }, args, { prisma }) => {
+				const stockPortfolio = await prisma.stockPortfolio.findOne({
+					where: { id: stockPortfolioId },
+					include: { settings: true }
+				});
+
+				let cost: number = computeCosts(tickers, dataKeys);
+
+				if (shouldCreateSnapshot(stockPortfolio)) {
+					cost += SnapshotConfig.price;
+				}
+
+				return cost;
+			}
 		});
 		t.list.field("data", {
 			type: "JSONObject",
@@ -127,12 +141,21 @@ export const StockData = objectType({
 				return true;
 			},
 			resolve: async ({ stockPortfolioId, tickers, dataKeys }, arg, context) => {
-				const { dataSources } = context;
+				const { dataSources, prisma } = context;
 				const { IexCloudAPI } = dataSources;
 
-				const types = getTypesFromDataKeys(dataKeys);
+				const stockPortfolio = await prisma.stockPortfolio.findOne({
+					where: { id: stockPortfolioId },
+					include: { settings: true }
+				});
 
-				const cost: number = computeCosts(tickers, dataKeys);
+				let cost: number = computeCosts(tickers, dataKeys);
+
+				if (shouldCreateSnapshot(stockPortfolio)) {
+					cost += SnapshotConfig.price;
+				}
+
+				const types = getTypesFromDataKeys(dataKeys);
 
 				let results: Record<string, Record<string, any>>;
 				try {
@@ -142,7 +165,9 @@ export const StockData = objectType({
 
 					Logger.error(message);
 
-					throw new BadInputError("Could not get data. Inputs may be invalid");
+					throw new UserInputError("Could not get data. Inputs may be invalid", {
+						invalidArgs: []
+					});
 				}
 
 				await makeTransaction(cost, context);
@@ -151,7 +176,7 @@ export const StockData = objectType({
 					return { ticker, ...limitResultToDataKeys(results[ticker], dataKeys) };
 				});
 
-				await createSnapshot(stockPortfolioId, stockDataResult, context);
+				await createSnapshot(stockPortfolio, stockDataResult, context);
 
 				return stockDataResult;
 			}
