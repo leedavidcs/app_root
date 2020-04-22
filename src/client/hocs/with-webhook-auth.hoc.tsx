@@ -63,7 +63,7 @@ export const withWebhookAuth = <P extends IPageProps, IP = any>(
 			return { errorCode: HttpStatus.NOT_FOUND, errorTitle: "Resource was not found" };
 		}
 
-		const isCreator: boolean = user?.id === webhook.id;
+		const isCreator: boolean = user?.id === webhook.stockPortfolio.user.id;
 
 		if (options.requireOwner && !isCreator) {
 			return {
