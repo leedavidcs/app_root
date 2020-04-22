@@ -56,7 +56,7 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 						}
 					});
 
-					if (toEdit.id !== withSameName.id) {
+					if (toEdit!.id !== withSameName?.id) {
 						return false;
 					}
 
