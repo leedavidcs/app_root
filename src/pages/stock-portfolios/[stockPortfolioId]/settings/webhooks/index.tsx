@@ -75,7 +75,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 	return (
 		<main className={classes.root}>
 			<div className={classes.head}>
-				<StockPortfolioHead stockPortfolio={stockPortfolio} />
+				<StockPortfolioHead selectedTab="settings" stockPortfolio={stockPortfolio} />
 			</div>
 			<div className={classes.container}>
 				<StockPortfolioSettings stockPortfolio={stockPortfolio} />

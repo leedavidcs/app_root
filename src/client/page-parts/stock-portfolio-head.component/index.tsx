@@ -1,22 +1,21 @@
 import { ResourcePath, Tabs } from "@/client/components";
 import { GetOneStockPortfolioQuery, useGetUserQuery } from "@/client/graphql";
 import classnames from "classnames";
-import { NextRouter, useRouter } from "next/router";
 import React, { FC } from "react";
 import { useStyles } from "./styles";
 
 type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
 
+type TabId = "data" | "settings";
+
 interface IProps {
 	className?: string;
-	editing?: boolean;
+	selectedTab?: TabId;
 	stockPortfolio: StockPortfolio;
 }
 
-export const StockPortfolioHead: FC<IProps> = ({ className, editing, stockPortfolio }) => {
+export const StockPortfolioHead: FC<IProps> = ({ className, selectedTab, stockPortfolio }) => {
 	const classes = useStyles();
-
-	const router: NextRouter = useRouter();
 
 	const { data } = useGetUserQuery({ fetchPolicy: "cache-only" });
 	const user = data?.user;
@@ -30,24 +29,28 @@ export const StockPortfolioHead: FC<IProps> = ({ className, editing, stockPortfo
 	return (
 		<div className={classnames(classes.root, className)}>
 			<div className={classes.detailsContainer}>
-				<ResourcePath
-					activePath={editing ? `/stock-portfolios/${stockPortfolio.id}` : router.asPath}
-				>
+				<ResourcePath>
 					<ResourcePath.Part
 						href={`/users/${stockPortfolio.user.id}`}
 						text={stockPortfolio.user.username}
 					/>
 					<ResourcePath.Part
+						active={true}
 						href={`/stock-portfolios/${stockPortfolio.id}`}
 						text={stockPortfolio.name}
 					/>
 				</ResourcePath>
 			</div>
-			<Tabs className={classes.tabs} selectedTab={router.asPath}>
-				<Tabs.Tab href={`/stock-portfolios/${stockPortfolio.id}`} icon="grid" text="Data" />
+			<Tabs className={classes.tabs} selectedTab={selectedTab}>
+				<Tabs.Tab
+					id="data"
+					href={`/stock-portfolios/${stockPortfolio.id}`}
+					icon="grid"
+					text="Data"
+				/>
 				{isOwner && (
 					<Tabs.Tab
-						active={router.asPath.includes("/settings")}
+						id="settings"
 						href={`/stock-portfolios/${stockPortfolio.id}/settings`}
 						icon="cog"
 						text="Settings"

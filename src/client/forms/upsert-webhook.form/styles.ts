@@ -22,6 +22,9 @@ const styles = (theme: CustomTheme) => ({
 	},
 	title: {
 		fontSize: 14
+	},
+	deleteBtn: {
+		marginLeft: 8
 	}
 });
 

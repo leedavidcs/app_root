@@ -42,11 +42,21 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 			name: string().test({
 				message: `Webhook with name "${data.name}" already exists`,
 				test: async (value) => {
-					const webhook = await prisma.webhook.findOne({
-						where
+					const toEdit = await prisma.webhook.findOne({
+						where,
+						include: { stockPortfolio: true }
 					});
 
-					if (webhook && webhook.name === data.name) {
+					const withSameName = await prisma.webhook.findOne({
+						where: {
+							stockPortfolioId_name: {
+								stockPortfolioId: toEdit!.stockPortfolioId,
+								name: value
+							}
+						}
+					});
+
+					if (toEdit.id !== withSameName.id) {
 						return false;
 					}
 

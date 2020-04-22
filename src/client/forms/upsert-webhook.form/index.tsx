@@ -1,8 +1,9 @@
-import { TextInput } from "@/client/components";
+import { Alert, TextInput } from "@/client/components";
 import {
 	CreateWebhookMutation,
 	UpdateWebhookMutation,
 	useCreateWebhookMutation,
+	useDeleteWebhookMutation,
 	useUpdateWebhookMutation,
 	WebhookType
 } from "@/client/graphql";
@@ -10,7 +11,7 @@ import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import Link from "next/link";
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { ExecutionResult } from "react-apollo";
 import { useForm } from "react-hook-form";
 import { object, string } from "yup";
@@ -22,7 +23,7 @@ type Webhook = CreateWebhookMutation["webhook"];
 interface IProps {
 	className?: string;
 	stockPortfolioId: string;
-	operation: "create" | "update";
+	webhookId?: string;
 }
 
 interface IFormData {
@@ -52,12 +53,23 @@ const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	})
 }));
 
-export const UpsertWebhookForm: FC<IProps> = ({ className, operation, stockPortfolioId }) => {
+export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, webhookId }) => {
 	const classes = useStyles();
 	const toaster = useToast();
 
-	const [createWebhook] = useCreateWebhookMutation();
-	const [updateWebhook] = useUpdateWebhookMutation();
+	const [alertOpen, setAlertOpen] = useState<boolean>(false);
+
+	const [createWebhook] = useCreateWebhookMutation({
+		onCompleted: () => {
+			toaster.show({ intent: "success", message: "Webhook was successfully created" });
+		}
+	});
+	const [updateWebhook] = useUpdateWebhookMutation({
+		onCompleted: () => {
+			toaster.show({ intent: "success", message: "Webhook was successfully updated" });
+		}
+	});
+	const [deleteWebhook] = useDeleteWebhookMutation();
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
 
@@ -69,22 +81,16 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, operation, stockPortf
 		async (formData: IFormData) => {
 			let result: ExecutionResult<CreateWebhookMutation | UpdateWebhookMutation>;
 
-			const where = { stockPortfolioId_name: { stockPortfolioId, name: formData.data.name } };
 			const data = {
 				...formData.data,
 				stockPortfolio: { connect: { id: stockPortfolioId } }
 			};
 
 			try {
-				switch (operation) {
-					case "create":
-						result = await createWebhook({ variables: { data } });
-						break;
-					case "update":
-						result = await updateWebhook({ variables: { where, data } });
-						break;
-					default:
-						throw new Error("Invalid operation");
+				if (webhookId) {
+					result = await updateWebhook({ variables: { where: { id: webhookId }, data } });
+				} else {
+					result = await createWebhook({ variables: { data } });
 				}
 			} catch (err) {
 				onFormSubmitError(err);
@@ -102,48 +108,89 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, operation, stockPortf
 
 			toaster.show({ intent: "success", message: "Webhook was successfully created" });
 		},
-		[createWebhook, onFormSubmitError, operation, stockPortfolioId, toaster, updateWebhook]
+		[createWebhook, onFormSubmitError, stockPortfolioId, toaster, updateWebhook, webhookId]
 	);
 
+	const onAlertOpen = useCallback(() => setAlertOpen(true), []);
+	const onAlertClose = useCallback(() => setAlertOpen(false), []);
+
+	const onDelete = useCallback(() => {
+		if (!webhookId) {
+			throw new Error("Attempted to delete a webhook without an id");
+		}
+
+		deleteWebhook({ variables: { id: webhookId } });
+	}, [deleteWebhook, webhookId]);
+
 	return (
-		<div className={className}>
-			<div className={classes.section}>
-				<p>
-					We&apos;ll send a <code className={classes.code}>POST</code> request to the URL
-					below, with a payload that is structured depending on the webhook-trigger
-					selected. More information at {/** TODO. Add developer documentation */}
-					<Link href="">
-						<a>our developer documentation</a>
-					</Link>
-					.
-				</p>
-			</div>
-			<form className={classes.section} onSubmit={handleSubmit(onSubmit)}>
-				<div className={classes.inputsContainer}>
-					<TextInput
-						label="Name"
-						labelInfo="(required)"
-						name="data.name"
-						error={errors.data?.name?.message}
-						control={control}
-					/>
-					<TextInput
-						label="Payload URL"
-						labelInfo="(required)"
-						name="data.url"
-						error={errors.data?.url?.message}
-						control={control}
-					/>
-					<WebhookTypeSelect
-						label="Webhook trigger"
-						name="data.type"
-						defaultValue={webhookTypes[0]}
-						error={errors.data?.type?.message}
-						control={control}
-					/>
+		<>
+			<div className={className}>
+				<div className={classes.section}>
+					<p>
+						We&apos;ll send a <code className={classes.code}>POST</code> request to the
+						URL below, with a payload that is structured depending on the
+						webhook-trigger selected. More information at{" "}
+						{/** TODO. Add developer documentation */}
+						<Link href="">
+							<a>our developer documentation</a>
+						</Link>
+						.
+					</p>
 				</div>
-				<Button intent="primary" text="Save webhook" type="submit" />
-			</form>
-		</div>
+				<form className={classes.section} onSubmit={handleSubmit(onSubmit)}>
+					<div className={classes.inputsContainer}>
+						<TextInput
+							label="Name"
+							labelInfo="(required)"
+							name="data.name"
+							error={errors.data?.name?.message}
+							control={control}
+						/>
+						<TextInput
+							label="Payload URL"
+							labelInfo="(required)"
+							name="data.url"
+							error={errors.data?.url?.message}
+							control={control}
+						/>
+						<WebhookTypeSelect
+							label="Webhook trigger"
+							name="data.type"
+							defaultValue={webhookTypes[0]}
+							error={errors.data?.type?.message}
+							control={control}
+						/>
+					</div>
+					<Button
+						intent="primary"
+						text={`${typeof webhookId === "string" ? "Update" : "Create"} webhook`}
+						type="submit"
+					/>
+					{webhookId && (
+						<Button
+							className={classes.deleteBtn}
+							icon="trash"
+							intent="danger"
+							onClick={onAlertOpen}
+							text="Delete"
+						/>
+					)}
+				</form>
+			</div>
+			<Alert
+				cancelButtonText="Cancel"
+				confirmButtonText="Delete"
+				icon="trash"
+				intent="danger"
+				isOpen={alertOpen}
+				onClose={onAlertClose}
+				onConfirm={onDelete}
+			>
+				<>
+					<p>You are about to delete this Webhook. This action cannot be undone.</p>
+					<p>Do you wish to continue?</p>
+				</>
+			</Alert>
+		</>
 	);
 };

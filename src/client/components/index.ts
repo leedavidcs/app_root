@@ -1,3 +1,4 @@
+export * from "./alert.component";
 export * from "./brand.component";
 export * from "./card.component";
 export * from "./carousel.component";
