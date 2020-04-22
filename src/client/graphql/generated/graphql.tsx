@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 21st 2020 10:54:01 pm
+// This file was generated on: Apr 22nd 2020 12:36:35 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1150,8 +1150,14 @@ export type GetWebhookQuery = (
     & Pick<Webhook, 'id' | 'name' | 'timeout' | 'type'>
     & { readonly stockPortfolio: (
       { readonly __typename?: 'StockPortfolio' }
-      & Pick<StockPortfolio, 'id' | 'name'>
-      & { readonly user: (
+      & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
+      & { readonly headers: ReadonlyArray<(
+        { readonly __typename?: 'StockPortfolioHeader' }
+        & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
+      )>, readonly stockData: (
+        { readonly __typename?: 'StockData' }
+        & Pick<StockData, 'refreshCost'>
+      ), readonly user: (
         { readonly __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
       ) }
@@ -2119,6 +2125,19 @@ export const GetWebhookDocument = gql`
     stockPortfolio {
       id
       name
+      headers {
+        name
+        dataKey
+        frozen
+        resizable
+        width
+      }
+      tickers
+      createdAt
+      updatedAt
+      stockData {
+        refreshCost
+      }
       user {
         id
         username
