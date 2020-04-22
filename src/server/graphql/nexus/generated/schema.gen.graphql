@@ -185,6 +185,8 @@ type Query implements RequestRoot {
     provider: String
   ): [DataKeyOption!]!
   priceBundles: [PriceBundle!]!
+  snapshot(where: SnapshotWhereUniqueInput!): Snapshot
+  snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
   stockData(dataKeys: [String!]!, tickers: [String!]!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
@@ -259,6 +261,12 @@ type SnapshotHeader implements StockPortfolioDataHeader {
   name: String!
 }
 
+input SnapshotOrderByInput {
+  createdAt: OrderByArg
+  id: OrderByArg
+  stockPortfolioId: OrderByArg
+}
+
 input SnapshotWhereInput {
   AND: [SnapshotWhereInput!]
   createdAt: DateTimeFilter
@@ -267,6 +275,10 @@ input SnapshotWhereInput {
   OR: [SnapshotWhereInput!]
   stockPortfolio: StockPortfolioWhereInput
   stockPortfolioId: StringFilter
+}
+
+input SnapshotWhereUniqueInput {
+  id: String!
 }
 
 type StockData {
