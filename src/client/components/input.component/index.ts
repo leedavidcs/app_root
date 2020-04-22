@@ -10,4 +10,5 @@ export * from "./region-select.component";
 export * from "./search-input.component";
 export * from "./select.component";
 export * from "./slider.component";
+export * from "./switch.component";
 export * from "./text-input.component";
