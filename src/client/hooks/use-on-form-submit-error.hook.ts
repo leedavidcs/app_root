@@ -1,18 +1,15 @@
 import { GraphQLError } from "graphql";
 import { useCallback } from "react";
-import { FormContextValues } from "react-hook-form";
+import { ManualFieldError } from "react-hook-form";
 import { useToast } from "./use-toast.hook";
 
-interface IOptions {
-	setError: FormContextValues["setError"];
+interface IOptions<T extends Record<string, any>> {
+	onBadUserInput?: (invalidArgs: ManualFieldError<T>[]) => void;
 }
 
-interface IBadUserInputArgInfo {
-	message: string;
-	value: any;
-}
-
-export const useOnFormSubmitError = ({ setError }: IOptions) => {
+export const useOnFormSubmitError = <T extends Record<string, any>>({
+	onBadUserInput
+}: IOptions<T>) => {
 	const toaster = useToast();
 
 	const onFormError = useCallback(
@@ -20,12 +17,10 @@ export const useOnFormSubmitError = ({ setError }: IOptions) => {
 			if (err instanceof GraphQLError) {
 				switch (err.extensions?.code) {
 					case "BAD_USER_INPUT": {
-						const invalidArgs: Record<string, IBadUserInputArgInfo> =
+						const invalidArgs: ManualFieldError<T>[] =
 							err.extensions?.invalidArgs ?? [];
 
-						Object.keys(invalidArgs).forEach((key) =>
-							setError(key, invalidArgs[key].message)
-						);
+						onBadUserInput?.(invalidArgs);
 
 						return;
 					}
@@ -42,7 +37,7 @@ export const useOnFormSubmitError = ({ setError }: IOptions) => {
 
 			toaster.show({ intent: "danger", message: "Form submission unsuccessful" });
 		},
-		[setError, toaster]
+		[onBadUserInput, toaster]
 	);
 
 	return onFormError;

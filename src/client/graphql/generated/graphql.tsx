@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 21st 2020 8:52:07 am
+// This file was generated on: Apr 21st 2020 10:38:06 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -216,6 +216,7 @@ export type Mutation = RequestRoot & {
   readonly cancelStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly cancelTransaction?: Maybe<Balance>;
   readonly createOneStockPortfolio: StockPortfolio;
+  readonly createOneWebhook: Webhook;
   readonly createStripePaymentIntent?: Maybe<StripePaymentIntent>;
   readonly createStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
@@ -232,7 +233,7 @@ export type Mutation = RequestRoot & {
   readonly setUser?: Maybe<User>;
   readonly toggleModal: Scalars['Boolean'];
   readonly updateOneStockPortfolio?: Maybe<StockPortfolio>;
-  readonly upsertOneWebhook: Webhook;
+  readonly updateOneWebhook?: Maybe<Webhook>;
   /** The viewer of this request */
   readonly viewer?: Maybe<User>;
 };
@@ -259,6 +260,12 @@ export type MutationCancelTransactionArgs = {
 /** Root mutation type */
 export type MutationCreateOneStockPortfolioArgs = {
   data: StockPortfolioCreateInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateOneWebhookArgs = {
+  data: WebhookCreateInput;
 };
 
 
@@ -319,10 +326,9 @@ export type MutationUpdateOneStockPortfolioArgs = {
 
 
 /** Root mutation type */
-export type MutationUpsertOneWebhookArgs = {
+export type MutationUpdateOneWebhookArgs = {
   where: WebhookWhereUniqueInput;
-  create: WebhookCreateInput;
-  update: WebhookUpdateInput;
+  data: WebhookUpdateInput;
 };
 
 /** Root query type */
@@ -592,7 +598,6 @@ export type StockPortfolioWhereInput = {
 
 export type StockPortfolioOrderByInput = {
   readonly id?: Maybe<OrderByArg>;
-  readonly user?: Maybe<OrderByArg>;
   readonly userId?: Maybe<OrderByArg>;
   readonly name?: Maybe<OrderByArg>;
   readonly createdAt?: Maybe<OrderByArg>;
@@ -842,6 +847,19 @@ export type CreateStripeSetupIntentMutation = (
   )> }
 );
 
+export type CreateWebhookMutationVariables = {
+  data: WebhookCreateInput;
+};
+
+
+export type CreateWebhookMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly webhook: (
+    { readonly __typename?: 'Webhook' }
+    & Pick<Webhook, 'id' | 'name'>
+  ) }
+);
+
 export type DeleteStockPortfolioMutationVariables = {
   id: Scalars['String'];
 };
@@ -976,21 +994,18 @@ export type UpdateOneStockPortfolioMutation = (
   )> }
 );
 
-export type UpsertWebhookMutationVariables = {
-  name: Scalars['String'];
-  stockPortfolioId: Scalars['String'];
-  timeout?: Maybe<Scalars['Int']>;
-  type: WebhookType;
-  url: Scalars['String'];
+export type UpdateWebhookMutationVariables = {
+  where: WebhookWhereUniqueInput;
+  data: WebhookUpdateInput;
 };
 
 
-export type UpsertWebhookMutation = (
+export type UpdateWebhookMutation = (
   { readonly __typename?: 'Mutation' }
-  & { readonly webhook: (
+  & { readonly webhook?: Maybe<(
     { readonly __typename?: 'Webhook' }
-    & Pick<Webhook, 'id' | 'createdAt'>
-  ) }
+    & Pick<Webhook, 'id' | 'name'>
+  )> }
 );
 
 export type GetDataKeyOptionsQueryVariables = {
@@ -1334,6 +1349,39 @@ export function useCreateStripeSetupIntentMutation(baseOptions?: ApolloReactHook
 export type CreateStripeSetupIntentMutationHookResult = ReturnType<typeof useCreateStripeSetupIntentMutation>;
 export type CreateStripeSetupIntentMutationResult = ApolloReactCommon.MutationResult<CreateStripeSetupIntentMutation>;
 export type CreateStripeSetupIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateStripeSetupIntentMutation, CreateStripeSetupIntentMutationVariables>;
+export const CreateWebhookDocument = gql`
+    mutation CreateWebhook($data: WebhookCreateInput!) {
+  webhook: createOneWebhook(data: $data) {
+    id
+    name
+  }
+}
+    `;
+export type CreateWebhookMutationFn = ApolloReactCommon.MutationFunction<CreateWebhookMutation, CreateWebhookMutationVariables>;
+
+/**
+ * __useCreateWebhookMutation__
+ *
+ * To run a mutation, you first call `useCreateWebhookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWebhookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createWebhookMutation, { data, loading, error }] = useCreateWebhookMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateWebhookMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateWebhookMutation, CreateWebhookMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateWebhookMutation, CreateWebhookMutationVariables>(CreateWebhookDocument, baseOptions);
+      }
+export type CreateWebhookMutationHookResult = ReturnType<typeof useCreateWebhookMutation>;
+export type CreateWebhookMutationResult = ApolloReactCommon.MutationResult<CreateWebhookMutation>;
+export type CreateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateWebhookMutation, CreateWebhookMutationVariables>;
 export const DeleteStockPortfolioDocument = gql`
     mutation DeleteStockPortfolio($id: String!) {
   deleteOneStockPortfolio(where: {id: $id}) {
@@ -1671,43 +1719,40 @@ export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHook
 export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
-export const UpsertWebhookDocument = gql`
-    mutation UpsertWebhook($name: String!, $stockPortfolioId: String!, $timeout: Int, $type: WebhookType!, $url: String!) {
-  webhook: upsertOneWebhook(where: {stockPortfolioId_name: {stockPortfolioId: $stockPortfolioId, name: $name}}, create: {name: $name, stockPortfolio: {connect: {id: $stockPortfolioId}}, timeout: $timeout, type: $type, url: $url}, update: {name: $name, timeout: $timeout, type: $type, url: $url}) {
+export const UpdateWebhookDocument = gql`
+    mutation UpdateWebhook($where: WebhookWhereUniqueInput!, $data: WebhookUpdateInput!) {
+  webhook: updateOneWebhook(where: $where, data: $data) {
     id
-    createdAt
+    name
   }
 }
     `;
-export type UpsertWebhookMutationFn = ApolloReactCommon.MutationFunction<UpsertWebhookMutation, UpsertWebhookMutationVariables>;
+export type UpdateWebhookMutationFn = ApolloReactCommon.MutationFunction<UpdateWebhookMutation, UpdateWebhookMutationVariables>;
 
 /**
- * __useUpsertWebhookMutation__
+ * __useUpdateWebhookMutation__
  *
- * To run a mutation, you first call `useUpsertWebhookMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertWebhookMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateWebhookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWebhookMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [upsertWebhookMutation, { data, loading, error }] = useUpsertWebhookMutation({
+ * const [updateWebhookMutation, { data, loading, error }] = useUpdateWebhookMutation({
  *   variables: {
- *      name: // value for 'name'
- *      stockPortfolioId: // value for 'stockPortfolioId'
- *      timeout: // value for 'timeout'
- *      type: // value for 'type'
- *      url: // value for 'url'
+ *      where: // value for 'where'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function useUpsertWebhookMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpsertWebhookMutation, UpsertWebhookMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpsertWebhookMutation, UpsertWebhookMutationVariables>(UpsertWebhookDocument, baseOptions);
+export function useUpdateWebhookMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateWebhookMutation, UpdateWebhookMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateWebhookMutation, UpdateWebhookMutationVariables>(UpdateWebhookDocument, baseOptions);
       }
-export type UpsertWebhookMutationHookResult = ReturnType<typeof useUpsertWebhookMutation>;
-export type UpsertWebhookMutationResult = ApolloReactCommon.MutationResult<UpsertWebhookMutation>;
-export type UpsertWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<UpsertWebhookMutation, UpsertWebhookMutationVariables>;
+export type UpdateWebhookMutationHookResult = ReturnType<typeof useUpdateWebhookMutation>;
+export type UpdateWebhookMutationResult = ApolloReactCommon.MutationResult<UpdateWebhookMutation>;
+export type UpdateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateWebhookMutation, UpdateWebhookMutationVariables>;
 export const GetDataKeyOptionsDocument = gql`
     query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
   dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {

@@ -1,5 +1,11 @@
 import { TextInput } from "@/client/components";
-import { UpsertWebhookMutation, useUpsertWebhookMutation, WebhookType } from "@/client/graphql";
+import {
+	CreateWebhookMutation,
+	UpdateWebhookMutation,
+	useCreateWebhookMutation,
+	useUpdateWebhookMutation,
+	WebhookType
+} from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
@@ -7,61 +13,86 @@ import Link from "next/link";
 import React, { FC, useCallback } from "react";
 import { ExecutionResult } from "react-apollo";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import { object, string } from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
+
+type Webhook = CreateWebhookMutation["webhook"];
 
 interface IProps {
 	className?: string;
 	stockPortfolioId: string;
+	operation: "create" | "update";
 }
 
 interface IFormData {
-	name: string;
-	url: string;
-	type: WebhookType;
+	data: {
+		name: string;
+		url: string;
+		type: WebhookType;
+	};
 }
 
 const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	name: string().required("Name is required"),
-	url: string()
-		.required("Url is required")
-		.url("Url is invalid")
-		.test({
-			message: "Url host localhost is not supported",
-			test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
-		}),
-	type: string<WebhookType>()
-		.required("Type is required")
-		.test({
-			message: "Type is invalid",
-			test: (value) => webhookTypes.some((type) => type === value)
-		})
+	data: object().shape({
+		name: string().required("Name is required"),
+		url: string()
+			.required("Url is required")
+			.url("Url is invalid")
+			.test({
+				message: "Url host localhost is not supported",
+				test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
+			}),
+		type: string<WebhookType>()
+			.required("Type is required")
+			.test({
+				message: "Type is invalid",
+				test: (value) => webhookTypes.some((type) => type === value)
+			})
+	})
 }));
 
-export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) => {
+export const UpsertWebhookForm: FC<IProps> = ({ className, operation, stockPortfolioId }) => {
 	const classes = useStyles();
 	const toaster = useToast();
 
-	const [upsertWebhook] = useUpsertWebhookMutation();
+	const [createWebhook] = useCreateWebhookMutation();
+	const [updateWebhook] = useUpdateWebhookMutation();
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
 
-	const onFormSubmitError = useOnFormSubmitError({ setError });
+	const onFormSubmitError = useOnFormSubmitError<IFormData>({
+		onBadUserInput: (invalidArgs) => setError(invalidArgs)
+	});
 
 	const onSubmit = useCallback(
-		async ({ name, url, type }: IFormData) => {
-			let result: ExecutionResult<UpsertWebhookMutation>;
+		async (formData: IFormData) => {
+			let result: ExecutionResult<CreateWebhookMutation | UpdateWebhookMutation>;
+
+			const where = { stockPortfolioId_name: { stockPortfolioId, name: formData.data.name } };
+			const data = {
+				...formData.data,
+				stockPortfolio: { connect: { id: stockPortfolioId } }
+			};
 
 			try {
-				result = await upsertWebhook({ variables: { name, url, stockPortfolioId, type } });
+				switch (operation) {
+					case "create":
+						result = await createWebhook({ variables: { data } });
+						break;
+					case "update":
+						result = await updateWebhook({ variables: { where, data } });
+						break;
+					default:
+						throw new Error("Invalid operation");
+				}
 			} catch (err) {
 				onFormSubmitError(err);
 
 				return;
 			}
 
-			const webhook = result.data?.webhook;
+			const webhook: Maybe<Webhook> = result.data?.webhook;
 
 			if (!webhook) {
 				toaster.show({ intent: "danger", message: "Form submission unsuccessful" });
@@ -71,7 +102,7 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 
 			toaster.show({ intent: "success", message: "Webhook was successfully created" });
 		},
-		[onFormSubmitError, stockPortfolioId, toaster, upsertWebhook]
+		[createWebhook, onFormSubmitError, operation, stockPortfolioId, toaster, updateWebhook]
 	);
 
 	return (
@@ -92,22 +123,22 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId }) =
 					<TextInput
 						label="Name"
 						labelInfo="(required)"
-						name="name"
-						error={errors.name?.message}
+						name="data.name"
+						error={errors.data?.name?.message}
 						control={control}
 					/>
 					<TextInput
 						label="Payload URL"
 						labelInfo="(required)"
-						name="url"
-						error={errors.name?.message}
+						name="data.url"
+						error={errors.data?.url?.message}
 						control={control}
 					/>
 					<WebhookTypeSelect
 						label="Webhook trigger"
-						name="type"
+						name="data.type"
 						defaultValue={webhookTypes[0]}
-						error={errors.type?.message}
+						error={errors.data?.type?.message}
 						control={control}
 					/>
 				</div>
