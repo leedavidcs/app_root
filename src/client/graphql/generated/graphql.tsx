@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 22nd 2020 12:36:35 am
+// This file was generated on: Apr 22nd 2020 12:47:14 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -70,6 +70,17 @@ export type StockPortfolioUpdateInput = {
   readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
 };
 
+export type StockPortfolioSettingsWhereUniqueInput = {
+  readonly stockPortfolioId: Scalars['String'];
+};
+
+export type StockPortfolioSettingsUpdateInput = {
+  /** Whether snapshots should be saved per-data-refresh of this stock-portfolio */
+  readonly enableSnapshots?: Maybe<Scalars['Boolean']>;
+  /** The time, in minutes, for when more data should be fetched for the stock-portfolio */
+  readonly pollInterval?: Maybe<Scalars['Int']>;
+};
+
 export enum OrderDetailType {
   PriceBundle = 'PriceBundle'
 }
@@ -97,6 +108,10 @@ export type WebhookUpdateInput = {
   readonly type?: Maybe<WebhookType>;
   readonly url?: Maybe<Scalars['String']>;
   readonly timeout?: Maybe<Scalars['Int']>;
+};
+
+export type SnapshotWhereUniqueInput = {
+  readonly id: Scalars['String'];
 };
 
 export type TransactionWhereUniqueInput = {
@@ -202,6 +217,16 @@ export enum DataKey_Provider {
   IexCloud = 'IEX_CLOUD'
 }
 
+export type FeaturePricingConfig = {
+  readonly __typename?: 'FeaturePricingConfig';
+  readonly price: Scalars['Int'];
+};
+
+export type FeaturePricing = {
+  readonly __typename?: 'FeaturePricing';
+  readonly snapshot: FeaturePricingConfig;
+};
+
 export type PriceBundle = {
   readonly __typename?: 'PriceBundle';
   readonly id: Scalars['String'];
@@ -233,6 +258,7 @@ export type Mutation = RequestRoot & {
   readonly setUser?: Maybe<User>;
   readonly toggleModal: Scalars['Boolean'];
   readonly updateOneStockPortfolio?: Maybe<StockPortfolio>;
+  readonly updateOneStockPortfolioSettings?: Maybe<StockPortfolioSettings>;
   readonly updateOneWebhook?: Maybe<Webhook>;
   /** The viewer of this request */
   readonly viewer?: Maybe<User>;
@@ -326,6 +352,13 @@ export type MutationUpdateOneStockPortfolioArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateOneStockPortfolioSettingsArgs = {
+  where: StockPortfolioSettingsWhereUniqueInput;
+  data: StockPortfolioSettingsUpdateInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateOneWebhookArgs = {
   where: WebhookWhereUniqueInput;
   data: WebhookUpdateInput;
@@ -337,8 +370,11 @@ export type Query = RequestRoot & {
   readonly balance?: Maybe<Balance>;
   /** Retrieves the list of data key options for a stock portfolio header. All filters are 		OR'ed. */
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
+  readonly featurePricing: FeaturePricing;
   readonly modal: Scalars['Boolean'];
   readonly priceBundles: ReadonlyArray<PriceBundle>;
+  readonly snapshot?: Maybe<Snapshot>;
+  readonly snapshots: ReadonlyArray<Snapshot>;
   readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
@@ -367,6 +403,24 @@ export type QueryDataKeyOptionsArgs = {
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
   provider?: Maybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QuerySnapshotArgs = {
+  where: SnapshotWhereUniqueInput;
+};
+
+
+/** Root query type */
+export type QuerySnapshotsArgs = {
+  where?: Maybe<SnapshotWhereInput>;
+  orderBy?: Maybe<SnapshotOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<SnapshotWhereUniqueInput>;
+  before?: Maybe<SnapshotWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -458,8 +512,25 @@ export type RequestRoot = {
 
 
 
+export type SnapshotHeader = StockPortfolioDataHeader & {
+  readonly __typename?: 'SnapshotHeader';
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+};
+
+export type Snapshot = {
+  readonly __typename?: 'Snapshot';
+  readonly id: Scalars['String'];
+  readonly stockPortfolio: StockPortfolio;
+  readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly headers: ReadonlyArray<SnapshotHeader>;
+  readonly data: ReadonlyArray<Scalars['JSONObject']>;
+};
+
 export type StockData = {
   readonly __typename?: 'StockData';
+  /** The id of the stock-portfolio that this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings. */
+  readonly stockPortfolioId?: Maybe<Scalars['String']>;
   readonly tickers: ReadonlyArray<Scalars['String']>;
   readonly dataKeys: ReadonlyArray<Scalars['String']>;
   /** The amount in credits, that a data-refresh would cost */
@@ -484,7 +555,7 @@ export type StockPortfolioHeaderInput = {
   readonly resizable: Scalars['Boolean'];
 };
 
-export type StockPortfolioHeader = {
+export type StockPortfolioHeader = StockPortfolioDataHeader & {
   readonly __typename?: 'StockPortfolioHeader';
   readonly name: Scalars['String'];
   readonly dataKey: Scalars['String'];
@@ -501,10 +572,24 @@ export type StockPortfolio = {
   readonly name: Scalars['String'];
   readonly headers: ReadonlyArray<StockPortfolioHeader>;
   readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly settings: StockPortfolioSettings;
   /** The data that gets resolved based on headers and tickers */
   readonly stockData: StockData;
+  readonly snapshots: ReadonlyArray<Snapshot>;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
+};
+
+export type StockPortfolioDataHeader = {
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+};
+
+export type StockPortfolioSettings = {
+  readonly __typename?: 'StockPortfolioSettings';
+  readonly stockPortfolio: StockPortfolio;
+  readonly enableSnapshots: Scalars['Boolean'];
+  readonly pollInterval: Scalars['Int'];
 };
 
 export type StripeCard = {
@@ -578,6 +663,22 @@ export type BalanceWhereUniqueInput = {
   readonly userId?: Maybe<Scalars['String']>;
 };
 
+export type SnapshotWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type SnapshotOrderByInput = {
+  readonly id?: Maybe<OrderByArg>;
+  readonly stockPortfolioId?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
 export type StockPortfolioWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
   readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
@@ -590,10 +691,12 @@ export type StockPortfolioWhereInput = {
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
   readonly webhook?: Maybe<WebhookFilter>;
+  readonly snapshot?: Maybe<SnapshotFilter>;
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly user?: Maybe<UserWhereInput>;
+  readonly settings?: Maybe<StockPortfolioSettingsWhereInput>;
 };
 
 export type StockPortfolioOrderByInput = {
@@ -608,11 +711,6 @@ export type StockPortfolioOrderByInput = {
 export enum WebhookType {
   StockDataRetrieved = 'StockDataRetrieved'
 }
-
-export type UserIdNameCompoundUniqueInput = {
-  readonly userId: Scalars['String'];
-  readonly name: Scalars['String'];
-};
 
 export type StringFilter = {
   readonly equals?: Maybe<Scalars['String']>;
@@ -639,10 +737,26 @@ export type DateTimeFilter = {
   readonly gte?: Maybe<Scalars['DateTime']>;
 };
 
+export enum OrderByArg {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type UserIdNameCompoundUniqueInput = {
+  readonly userId: Scalars['String'];
+  readonly name: Scalars['String'];
+};
+
 export type WebhookFilter = {
   readonly every?: Maybe<WebhookWhereInput>;
   readonly some?: Maybe<WebhookWhereInput>;
   readonly none?: Maybe<WebhookWhereInput>;
+};
+
+export type SnapshotFilter = {
+  readonly every?: Maybe<SnapshotWhereInput>;
+  readonly some?: Maybe<SnapshotWhereInput>;
+  readonly none?: Maybe<SnapshotWhereInput>;
 };
 
 export type UserWhereInput = {
@@ -662,10 +776,15 @@ export type UserWhereInput = {
   readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
 };
 
-export enum OrderByArg {
-  Asc = 'asc',
-  Desc = 'desc'
-}
+export type StockPortfolioSettingsWhereInput = {
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly enableSnapshots?: Maybe<BooleanFilter>;
+  readonly pollInterval?: Maybe<IntFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
 
 export type BooleanFilter = {
   readonly equals?: Maybe<Scalars['Boolean']>;
@@ -694,6 +813,17 @@ export type StripeDetailsFilter = {
   readonly every?: Maybe<StripeDetailsWhereInput>;
   readonly some?: Maybe<StripeDetailsWhereInput>;
   readonly none?: Maybe<StripeDetailsWhereInput>;
+};
+
+export type IntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
 };
 
 export type BalanceWhereInput = {
@@ -726,17 +856,6 @@ export type StripeDetailsWhereInput = {
   readonly OR?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
   readonly user?: Maybe<UserWhereInput>;
-};
-
-export type IntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
 };
 
 export type NullableStringFilter = {
@@ -994,6 +1113,24 @@ export type UpdateOneStockPortfolioMutation = (
   )> }
 );
 
+export type UpdateStockPortfolioSettingsMutationVariables = {
+  where: StockPortfolioSettingsWhereUniqueInput;
+  data: StockPortfolioSettingsUpdateInput;
+};
+
+
+export type UpdateStockPortfolioSettingsMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly updateOneStockPortfolioSettings?: Maybe<(
+    { readonly __typename?: 'StockPortfolioSettings' }
+    & Pick<StockPortfolioSettings, 'enableSnapshots' | 'pollInterval'>
+    & { readonly stockPortfolio: (
+      { readonly __typename?: 'StockPortfolio' }
+      & Pick<StockPortfolio, 'id' | 'name'>
+    ) }
+  )> }
+);
+
 export type UpdateWebhookMutationVariables = {
   where: WebhookWhereUniqueInput;
   data: WebhookUpdateInput;
@@ -1021,6 +1158,20 @@ export type GetDataKeyOptionsQuery = (
     { readonly __typename?: 'DataKeyOption' }
     & Pick<DataKeyOption, 'name' | 'dataKey' | 'provider'>
   )> }
+);
+
+export type GetFeaturePricingQueryVariables = {};
+
+
+export type GetFeaturePricingQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly featurePricing: (
+    { readonly __typename?: 'FeaturePricing' }
+    & { readonly snapshot: (
+      { readonly __typename?: 'FeaturePricingConfig' }
+      & Pick<FeaturePricingConfig, 'price'>
+    ) }
+  ) }
 );
 
 export type GetInitialAppLoadQueryVariables = {};
@@ -1746,6 +1897,44 @@ export function useUpdateOneStockPortfolioMutation(baseOptions?: ApolloReactHook
 export type UpdateOneStockPortfolioMutationHookResult = ReturnType<typeof useUpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationResult = ApolloReactCommon.MutationResult<UpdateOneStockPortfolioMutation>;
 export type UpdateOneStockPortfolioMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOneStockPortfolioMutation, UpdateOneStockPortfolioMutationVariables>;
+export const UpdateStockPortfolioSettingsDocument = gql`
+    mutation UpdateStockPortfolioSettings($where: StockPortfolioSettingsWhereUniqueInput!, $data: StockPortfolioSettingsUpdateInput!) {
+  updateOneStockPortfolioSettings(where: $where, data: $data) {
+    stockPortfolio {
+      id
+      name
+    }
+    enableSnapshots
+    pollInterval
+  }
+}
+    `;
+export type UpdateStockPortfolioSettingsMutationFn = ApolloReactCommon.MutationFunction<UpdateStockPortfolioSettingsMutation, UpdateStockPortfolioSettingsMutationVariables>;
+
+/**
+ * __useUpdateStockPortfolioSettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdateStockPortfolioSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStockPortfolioSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStockPortfolioSettingsMutation, { data, loading, error }] = useUpdateStockPortfolioSettingsMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateStockPortfolioSettingsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateStockPortfolioSettingsMutation, UpdateStockPortfolioSettingsMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateStockPortfolioSettingsMutation, UpdateStockPortfolioSettingsMutationVariables>(UpdateStockPortfolioSettingsDocument, baseOptions);
+      }
+export type UpdateStockPortfolioSettingsMutationHookResult = ReturnType<typeof useUpdateStockPortfolioSettingsMutation>;
+export type UpdateStockPortfolioSettingsMutationResult = ApolloReactCommon.MutationResult<UpdateStockPortfolioSettingsMutation>;
+export type UpdateStockPortfolioSettingsMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateStockPortfolioSettingsMutation, UpdateStockPortfolioSettingsMutationVariables>;
 export const UpdateWebhookDocument = gql`
     mutation UpdateWebhook($where: WebhookWhereUniqueInput!, $data: WebhookUpdateInput!) {
   webhook: updateOneWebhook(where: $where, data: $data) {
@@ -1817,6 +2006,40 @@ export function useGetDataKeyOptionsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetDataKeyOptionsQueryHookResult = ReturnType<typeof useGetDataKeyOptionsQuery>;
 export type GetDataKeyOptionsLazyQueryHookResult = ReturnType<typeof useGetDataKeyOptionsLazyQuery>;
 export type GetDataKeyOptionsQueryResult = ApolloReactCommon.QueryResult<GetDataKeyOptionsQuery, GetDataKeyOptionsQueryVariables>;
+export const GetFeaturePricingDocument = gql`
+    query GetFeaturePricing {
+  featurePricing {
+    snapshot {
+      price
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetFeaturePricingQuery__
+ *
+ * To run a query within a React component, call `useGetFeaturePricingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFeaturePricingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFeaturePricingQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFeaturePricingQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetFeaturePricingQuery, GetFeaturePricingQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetFeaturePricingQuery, GetFeaturePricingQueryVariables>(GetFeaturePricingDocument, baseOptions);
+      }
+export function useGetFeaturePricingLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetFeaturePricingQuery, GetFeaturePricingQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetFeaturePricingQuery, GetFeaturePricingQueryVariables>(GetFeaturePricingDocument, baseOptions);
+        }
+export type GetFeaturePricingQueryHookResult = ReturnType<typeof useGetFeaturePricingQuery>;
+export type GetFeaturePricingLazyQueryHookResult = ReturnType<typeof useGetFeaturePricingLazyQuery>;
+export type GetFeaturePricingQueryResult = ApolloReactCommon.QueryResult<GetFeaturePricingQuery, GetFeaturePricingQueryVariables>;
 export const GetInitialAppLoadDocument = gql`
     query GetInitialAppLoad {
   toasts @client {
