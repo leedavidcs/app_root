@@ -125,6 +125,7 @@ type Mutation implements RequestRoot {
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
+  updateOneStockPortfolioSettings(data: StockPortfolioSettingsUpdateInput!, where: StockPortfolioSettingsWhereUniqueInput!): StockPortfolioSettings
   updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
 
   """The viewer of this request"""
@@ -361,6 +362,18 @@ input StockPortfolioSettingsFilter {
   some: StockPortfolioSettingsWhereInput
 }
 
+input StockPortfolioSettingsUpdateInput {
+  """
+  Whether snapshots should be saved per-data-refresh of this stock-portfolio
+  """
+  enableSnapshots: Boolean
+
+  """
+  The time, in minutes, for when more data should be fetched for the stock-portfolio
+  """
+  pollInterval: Int
+}
+
 input StockPortfolioSettingsWhereInput {
   AND: [StockPortfolioSettingsWhereInput!]
   enableSnapshots: BooleanFilter
@@ -369,6 +382,10 @@ input StockPortfolioSettingsWhereInput {
   pollInterval: IntFilter
   stockPortfolio: StockPortfolioWhereInput
   stockPortfolioId: StringFilter
+}
+
+input StockPortfolioSettingsWhereUniqueInput {
+  stockPortfolioId: String!
 }
 
 input StockPortfolioUpdateInput {
