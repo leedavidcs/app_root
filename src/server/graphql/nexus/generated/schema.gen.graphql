@@ -275,6 +275,11 @@ type StockData {
 
   """The amount in credits, that a data-refresh would cost"""
   refreshCost: Int!
+
+  """
+  The id of the stock-portfolio that this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings.
+  """
+  stockPortfolioId: String
   tickers: [String!]!
 }
 
@@ -356,12 +361,6 @@ type StockPortfolioSettings {
   stockPortfolio: StockPortfolio!
 }
 
-input StockPortfolioSettingsFilter {
-  every: StockPortfolioSettingsWhereInput
-  none: StockPortfolioSettingsWhereInput
-  some: StockPortfolioSettingsWhereInput
-}
-
 input StockPortfolioSettingsUpdateInput {
   """
   Whether snapshots should be saved per-data-refresh of this stock-portfolio
@@ -401,8 +400,8 @@ input StockPortfolioWhereInput {
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
+  settings: StockPortfolioSettingsWhereInput
   snapshot: SnapshotFilter
-  stockPortfolioSettings: StockPortfolioSettingsFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter

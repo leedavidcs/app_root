@@ -56,9 +56,48 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 	});
 };
 
+const createSnapshot = async (
+	stockPortfolioId: Maybe<string>,
+	data: readonly Record<string, any>[],
+	{ prisma }: IServerContextWithUser
+): Promise<void> => {
+	if (!stockPortfolioId) {
+		return;
+	}
+
+	const stockPortfolio = await prisma.stockPortfolio.findOne({
+		where: { id: stockPortfolioId },
+		include: { settings: true }
+	});
+
+	if (!stockPortfolio?.settings?.enableSnapshots) {
+		return;
+	}
+
+	await prisma.snapshot.create({
+		data: {
+			stockPortfolio: { connect: { id: stockPortfolioId } },
+			tickers: { set: stockPortfolio.tickers },
+			headers: {
+				set: stockPortfolio.headers.map((header) => {
+					const { name, dataKey } = JSON.parse(header);
+
+					return JSON.stringify({ name, dataKey });
+				})
+			},
+			data: { set: data.map((datum) => JSON.stringify(datum)) }
+		}
+	});
+};
+
 export const StockData = objectType({
 	name: "StockData",
 	definition: (t) => {
+		t.string("stockPortfolioId", {
+			description:
+				"The id of the stock-portfolio that this data is being generated for. If provided, \
+				snapshots may be created depending on the stock-portfolio's settings."
+		});
 		t.list.string("tickers", { nullable: false });
 		t.list.string("dataKeys", { nullable: false });
 		t.int("refreshCost", {
@@ -87,7 +126,7 @@ export const StockData = objectType({
 
 				return true;
 			},
-			resolve: async ({ tickers, dataKeys }, arg, context) => {
+			resolve: async ({ stockPortfolioId, tickers, dataKeys }, arg, context) => {
 				const { dataSources } = context;
 				const { IexCloudAPI } = dataSources;
 
@@ -111,6 +150,8 @@ export const StockData = objectType({
 				const stockDataResult: Record<string, any>[] = tickers.map((ticker) => {
 					return { ticker, ...limitResultToDataKeys(results[ticker], dataKeys) };
 				});
+
+				await createSnapshot(stockPortfolioId, stockDataResult, context);
 
 				return stockDataResult;
 			}

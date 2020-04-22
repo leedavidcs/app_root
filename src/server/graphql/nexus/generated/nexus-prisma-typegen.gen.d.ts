@@ -265,7 +265,7 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'stockPortfolioSettings' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     stockPortfolioSettings: {
@@ -296,7 +296,7 @@ interface NexusPrismaInputs {
   },
     User: {
     stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'stockPortfolioSettings' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
@@ -313,10 +313,6 @@ interface NexusPrismaInputs {
 }
 
   },  StockPortfolio: {
-    stockPortfolioSettings: {
-  filtering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval'
-}
     webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
@@ -438,9 +434,9 @@ interface NexusPrismaTypes {
     name: 'String'
     headers: 'String'
     tickers: 'String'
+    settings: 'StockPortfolioSettings'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    stockPortfolioSettings: 'StockPortfolioSettings'
     webhook: 'Webhook'
     snapshot: 'Snapshot'
 
