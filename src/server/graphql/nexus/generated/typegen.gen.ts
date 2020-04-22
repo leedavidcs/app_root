@@ -341,6 +341,10 @@ export interface NexusGenRootTypes {
     name: string; // String!
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
+  FeaturePricing: {};
+  FeaturePricingConfig: { // root type
+    price: number; // Int!
+  }
   Mutation: {};
   PriceBundle: { // root type
     credits: number; // Int!
@@ -520,6 +524,12 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     provider: NexusGenEnums['DataKey_Provider']; // DataKey_Provider!
   }
+  FeaturePricing: { // field return type
+    snapshot: NexusGenRootTypes['FeaturePricingConfig']; // FeaturePricingConfig!
+  }
+  FeaturePricingConfig: { // field return type
+    price: number; // Int!
+  }
   Mutation: { // field return type
     applySucceededTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
@@ -547,6 +557,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     balance: NexusGenRootTypes['Balance'] | null; // Balance
     dataKeyOptions: NexusGenRootTypes['DataKeyOption'][]; // [DataKeyOption!]!
+    featurePricing: NexusGenRootTypes['FeaturePricing']; // FeaturePricing!
     priceBundles: NexusGenRootTypes['PriceBundle'][]; // [PriceBundle!]!
     snapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
@@ -814,7 +825,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
 export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 

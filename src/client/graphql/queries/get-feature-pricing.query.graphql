@@ -1,0 +1,7 @@
+query GetFeaturePricing {
+	featurePricing {
+		snapshot {
+			price
+		}
+	}
+}

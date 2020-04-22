@@ -1,5 +1,4 @@
-import { StockDataFeatures } from "@/server/configs";
-import { SnapshotConfig } from "@/server/configs/snapshot.config";
+import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
 import { IexType } from "@/server/datasources";
 import { IServerContextWithUser } from "@/server/graphql/context";
 import { Logger } from "@/server/utils";

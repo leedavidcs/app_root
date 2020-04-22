@@ -77,6 +77,14 @@ A field whose value conforms to the standard internet email address format as sp
 """
 scalar EmailAddress
 
+type FeaturePricing {
+  snapshot: FeaturePricingConfig!
+}
+
+type FeaturePricingConfig {
+  price: Int!
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -184,6 +192,7 @@ type Query implements RequestRoot {
     """Filter by provider (partial works)"""
     provider: String
   ): [DataKeyOption!]!
+  featurePricing: FeaturePricing!
   priceBundles: [PriceBundle!]!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
