@@ -6,6 +6,7 @@ import React, { FC, Fragment, ReactText, useContext, useRef } from "react";
 import { useStyles } from "./styles";
 
 export interface IResourcePathPart {
+	active?: boolean;
 	className?: string;
 	href?: string;
 	id?: ReactText;
@@ -13,6 +14,7 @@ export interface IResourcePathPart {
 }
 
 export const ResourcePathPart: FC<IResourcePathPart> = ({
+	active: _active,
 	className,
 	href,
 	id = href ?? "",
@@ -28,7 +30,7 @@ export const ResourcePathPart: FC<IResourcePathPart> = ({
 
 	const PartType = href ? "a" : "span";
 
-	const active: boolean = activePath === id;
+	const active: boolean = _active ?? activePath === id;
 
 	return (
 		<span ref={ref} className={className}>
