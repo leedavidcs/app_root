@@ -35,11 +35,11 @@ export const Layout: FC<IProps> = ({ children }) => {
 
 	return (
 		<>
-			<main>
+			<div>
 				<AppBar icon={<Button icon="menu" minimal={true} onClick={onClickMenu} />} />
 				<AppDrawer isOpen={isOpen} onClose={onClose} />
 				{children}
-			</main>
+			</div>
 			<AppFooter />
 		</>
 	);

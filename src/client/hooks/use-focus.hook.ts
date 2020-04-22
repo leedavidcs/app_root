@@ -1,9 +1,29 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import {
+	MouseEvent,
+	MutableRefObject,
+	RefObject,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState
+} from "react";
+
+type UseFocusResult<T> = [
+	boolean,
+	{
+		ref: MutableRefObject<T | null>;
+		handlers: {
+			onFocus: (event: MouseEvent<T>) => void;
+			onBlur: (event: MouseEvent<T>) => void;
+		};
+	}
+];
 
 export const useFocus = <T extends Element = Element>(
 	initial: boolean,
 	ref?: RefObject<T>
-): [boolean, RefObject<T>] => {
+): UseFocusResult<T> => {
 	const [isFocused, setIsFocused] = useState<boolean>(initial);
 
 	const createdRef: RefObject<T> = useRef<T>(null);
@@ -28,5 +48,13 @@ export const useFocus = <T extends Element = Element>(
 		};
 	}, [focusRef, onFocus, onBlur]);
 
-	return [isFocused, focusRef];
+	const focusResult = useMemo(
+		() => ({
+			ref: focusRef,
+			handlers: { onFocus, onBlur }
+		}),
+		[focusRef, onBlur, onFocus]
+	);
+
+	return [isFocused, focusResult];
 };

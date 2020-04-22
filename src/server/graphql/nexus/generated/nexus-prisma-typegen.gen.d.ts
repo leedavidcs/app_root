@@ -264,48 +264,48 @@ interface NexusPrismaInputs {
 }
     stockPortfolios: {
   filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
+  ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balances: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'userId' | 'credits'
+  ordering: 'userId' | 'credits'
 }
     transactions: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
+  ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
     stripeDetails: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'userId' | 'customerId'
+  ordering: 'userId' | 'customerId'
 }
     webhooks: {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolio' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+  ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },
     User: {
     stockPortfolio: {
   filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
+  ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'userId' | 'credits'
+  ordering: 'userId' | 'credits'
 }
     transaction: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'user' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
+  ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
     stripeDetails: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'user' | 'userId' | 'customerId'
+  ordering: 'userId' | 'customerId'
 }
 
   },  StockPortfolio: {
     webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolio' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+  ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },  Balance: {

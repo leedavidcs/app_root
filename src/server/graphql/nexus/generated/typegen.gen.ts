@@ -126,7 +126,6 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    user?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     userId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   StockPortfolioUpdateInput: { // input type
@@ -465,15 +464,17 @@ export interface NexusGenFieldTypes {
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    createOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
     createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
+    deleteOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
-    upsertOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
+    updateOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     viewer: NexusGenRootTypes['User'] | null; // User
   }
   PriceBundle: { // field return type
@@ -610,12 +611,18 @@ export interface NexusGenArgTypes {
     createOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioCreateInput']; // StockPortfolioCreateInput!
     }
+    createOneWebhook: { // args
+      data: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
+    }
     createStripePaymentIntent: { // args
       orderDetails: NexusGenInputs['OrderDetailInput'][]; // [OrderDetailInput!]!
       paymentMethodId: string; // String!
     }
     deleteOneStockPortfolio: { // args
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+    }
+    deleteOneWebhook: { // args
+      where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
     loginLocalUser: { // args
       input: NexusGenInputs['LoginLocalUserInput']; // LoginLocalUserInput!
@@ -630,9 +637,8 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['StockPortfolioUpdateInput']; // StockPortfolioUpdateInput!
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
     }
-    upsertOneWebhook: { // args
-      create: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
-      update: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
+    updateOneWebhook: { // args
+      data: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
   }

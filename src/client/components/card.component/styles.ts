@@ -2,25 +2,18 @@ import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	section: {
-		padding: 12,
+	root: {
+		position: "relative",
+		padding: 0,
+		border: `1px solid ${colors.darkGray4}`,
 
-		"&:not(:last-child)": {
-			borderBottom: `1px solid ${colors.darkGray4}`
+		"&.bp3-card": {
+			backgroundColor: theme.surface
 		}
 	},
-	code: {
-		backgroundColor: theme.code,
-		padding: "0 2px",
-		margin: "0 2px",
-		borderRadius: 3
-	},
-	inputsContainer: {
-		width: "100%",
-		maxWidth: 500,
-		marginBottom: 32
-	},
 	title: {
+		padding: "8px 10px",
+		borderBottom: `1px solid ${colors.darkGray4}`,
 		fontSize: 14
 	}
 });

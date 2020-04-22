@@ -14,6 +14,7 @@ import React, {
 import { useStyles } from "./styles";
 
 export interface ITabProps {
+	active?: boolean;
 	className?: string;
 	disabled?: boolean;
 	href?: string;
@@ -24,6 +25,7 @@ export interface ITabProps {
 }
 
 export const Tab: FC<ITabProps> = ({
+	active,
 	className,
 	disabled,
 	href,
@@ -47,7 +49,7 @@ export const Tab: FC<ITabProps> = ({
 
 	const TabType = href ? AnchorButton : Button;
 
-	const isSelected: boolean = selectedTab === id;
+	const isSelected: boolean = active ?? selectedTab === id;
 
 	return React.createElement<any>(
 		href ? Link : Fragment,

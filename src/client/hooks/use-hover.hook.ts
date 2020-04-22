@@ -1,4 +1,13 @@
-import { MutableRefObject, RefObject, useCallback, useEffect, useRef, useState } from "react";
+import {
+	MouseEvent,
+	MutableRefObject,
+	RefObject,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState
+} from "react";
 
 interface IOptions {
 	stopPropagation: boolean;
@@ -8,11 +17,22 @@ const DEFAULT_OPTIONS: IOptions = {
 	stopPropagation: false
 };
 
+type UseHoverResult<T> = [
+	boolean,
+	{
+		ref: MutableRefObject<T | null>;
+		handlers: {
+			onMouseOver: (event: MouseEvent<T>) => void;
+			onMouseOut: (event: MouseEvent<T>) => void;
+		};
+	}
+];
+
 export const useHover = <T extends Element = Element>(
 	initial: boolean,
 	options?: Partial<IOptions>,
 	ref?: MutableRefObject<T | null>
-): [boolean, MutableRefObject<T | null>] => {
+): UseHoverResult<T> => {
 	const [isHovered, setIsHovered] = useState<boolean>(initial);
 
 	const finalOptions: IOptions = { ...DEFAULT_OPTIONS, ...options };
@@ -54,5 +74,13 @@ export const useHover = <T extends Element = Element>(
 		};
 	}, [hoverRef, onMouseOver, onMouseOut]);
 
-	return [isHovered, hoverRef];
+	const hoverResults = useMemo(
+		() => ({
+			ref: hoverRef,
+			handlers: { onMouseOut, onMouseOver }
+		}),
+		[hoverRef, onMouseOut, onMouseOver]
+	);
+
+	return [isHovered, hoverResults];
 };

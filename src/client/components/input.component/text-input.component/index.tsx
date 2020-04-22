@@ -96,6 +96,7 @@ const BaseTextInput: FC<IProps> = (props) => {
 					onChange={onChange}
 					onKeyDown={onKeyDown}
 					placeholder={placeholder}
+					spellCheck={false}
 					type={type}
 					value={value}
 				/>

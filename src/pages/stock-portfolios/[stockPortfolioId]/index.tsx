@@ -1,7 +1,7 @@
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioDisplay, StockPortfolioHead } from "@/client/page-parts";
-import { breakpoints, CustomTheme } from "@/client/themes";
+import { breakpoints, colors, CustomTheme } from "@/client/themes";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { NextPage } from "next";
@@ -19,7 +19,13 @@ const styles = (theme: CustomTheme) => ({
 		color: theme.onBackground
 	},
 	head: {
-		marginBottom: 24
+		marginBottom: 24,
+		borderBottom: `1px solid ${colors.darkGray4}`,
+
+		"& > *": {
+			maxWidth: 1280,
+			margin: "auto"
+		}
 	},
 	display: {
 		maxWidth: 1280,
@@ -39,7 +45,9 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 
 	return (
 		<main className={classnames(Classes.DARK, classes.root)}>
-			<StockPortfolioHead className={classes.head} stockPortfolio={stockPortfolio} />
+			<div className={classes.head}>
+				<StockPortfolioHead stockPortfolio={stockPortfolio} />
+			</div>
 			<StockPortfolioDisplay className={classes.display} stockPortfolio={stockPortfolio} />
 		</main>
 	);

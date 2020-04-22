@@ -9,6 +9,9 @@ const styles = (theme: CustomTheme) => ({
 	loadUrl: {
 		height: 12,
 		maxWidth: 200
+	},
+	url: {
+		color: theme.link
 	}
 });
 

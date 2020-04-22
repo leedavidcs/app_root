@@ -1,4 +1,5 @@
 export * from "./brand.component";
+export * from "./card.component";
 export * from "./carousel.component";
 export * from "./click-outside.component";
 export * from "./data-grid.component";

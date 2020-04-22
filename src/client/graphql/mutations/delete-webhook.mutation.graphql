@@ -1,0 +1,10 @@
+mutation DeleteWebhook($id: String!) {
+	webhook: deleteOneWebhook(
+		where: {
+			id: $id
+		}
+	) {
+		id
+		name
+	}
+}

@@ -84,7 +84,7 @@
 			"warn",
 			{
 				"code": 100,
-				"ignorePattern": "((https?://.+)|(import.+\"@/client/page-parts/.+;$))"
+				"ignorePattern": "((https?://.+)|(href=)|(import.+\"@/client/page-parts/.+;$))"
 			}
 		],
 		"mdx/no-unused-expressions": "off",

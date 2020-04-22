@@ -1,3 +1,5 @@
+import { Card } from "@/client/components/card.component";
+import { ResourcePath } from "@/client/components/resource-path.component";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { UpsertWebhookForm } from ".";
 
@@ -22,7 +24,18 @@ export const stockPortfolioId = "";
 
 <Preview>
 	<Story name="standard">
-    <UpsertWebhookForm stockPortfolioId={stockPortfolioId} />
+    <div style={{ width: 800 }}>
+      <Card
+        title={
+          <ResourcePath style={{ fontSize: 14 }}>
+            <ResourcePath.Part href="http://google.com" text="Webhooks" />
+            <ResourcePath.Part href="http://google.com" text="Add webhook" />
+          </ResourcePath>
+        }
+      >
+        <UpsertWebhookForm stockPortfolioId={stockPortfolioId} />
+      </Card>
+    </div>
 	</Story>
 </Preview>
 

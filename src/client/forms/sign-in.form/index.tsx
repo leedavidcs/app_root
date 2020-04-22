@@ -14,6 +14,10 @@ interface IFormData {
 	userIdentifier: string;
 }
 
+interface IProps {
+	onComplete?: () => void;
+}
+
 /**
  * @todo Should implement this handler later
  * @author David Lee
@@ -50,7 +54,7 @@ const useValidationResolver = () => {
 	return validationResolver;
 };
 
-export const SignInForm: FC = () => {
+export const SignInForm: FC<IProps> = ({ onComplete }) => {
 	const classes = useStyles();
 
 	const onClickForgotPassword = useForgotPasswordHandler();
@@ -64,7 +68,13 @@ export const SignInForm: FC = () => {
 	});
 
 	const { toggle } = useModal();
-	const [login] = useLogin({ onCompleted: () => toggle(false) });
+	const [login] = useLogin({
+		onCompleted: () => {
+			toggle(false);
+
+			onComplete?.();
+		}
+	});
 
 	const onSubmit = useCallback(
 		async (data: IFormData) => {

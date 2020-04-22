@@ -1,14 +1,12 @@
-import { breakpoints, colors, CustomTheme } from "@/client/themes";
+import { breakpoints, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		position: "relative",
-		borderBottom: `1px solid ${colors.gray3}`
+		position: "relative"
 	},
 	detailsContainer: {
-		maxWidth: 1280,
-		margin: "0 auto 28px",
+		marginBottom: 24,
 
 		[breakpoints.up("sm")]: {
 			padding: "0 25px"
@@ -17,8 +15,6 @@ const styles = (theme: CustomTheme) => ({
 	tabs: {
 		position: "relative",
 		top: 1,
-		maxWidth: 1280,
-		margin: "0 auto",
 
 		[breakpoints.up("sm")]: {
 			padding: "0 25px"
