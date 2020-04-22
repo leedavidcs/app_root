@@ -49,6 +49,23 @@ export const StockPortfolio = objectType({
 				return { dataKeys, tickers };
 			}
 		});
+		t.field("settings", {
+			type: "StockPortfolioSettings",
+			nullable: false,
+			resolve: async ({ id }, args, { prisma }) => {
+				const settings = await prisma.stockPortfolioSettings.findOne({
+					where: { stockPortfolioId: id }
+				});
+
+				if (settings) {
+					return settings;
+				}
+
+				return await prisma.stockPortfolioSettings.create({
+					data: { stockPortfolio: { connect: { id } } }
+				});
+			}
+		});
 		t.model.createdAt();
 		t.model.updatedAt();
 	}

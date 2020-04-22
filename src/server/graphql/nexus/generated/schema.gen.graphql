@@ -329,6 +329,12 @@ input StockPortfolioOrderByInput {
   userId: OrderByArg
 }
 
+type StockPortfolioSettings {
+  enableSnapshots: Boolean!
+  pollInterval: Int!
+  stockPortfolio: StockPortfolio!
+}
+
 input StockPortfolioSettingsFilter {
   every: StockPortfolioSettingsWhereInput
   none: StockPortfolioSettingsWhereInput
