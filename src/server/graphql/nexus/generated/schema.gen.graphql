@@ -239,10 +239,23 @@ type ResendVerifyEmailPayload {
   success: Boolean!
 }
 
+type Snapshot {
+  data: [JSONObject!]!
+  headers: [SnapshotHeader!]!
+  id: String!
+  stockPortfolio: StockPortfolio!
+  tickers: [String!]!
+}
+
 input SnapshotFilter {
   every: SnapshotWhereInput
   none: SnapshotWhereInput
   some: SnapshotWhereInput
+}
+
+type SnapshotHeader implements StockPortfolioDataHeader {
+  dataKey: String!
+  name: String!
 }
 
 input SnapshotWhereInput {
@@ -278,6 +291,8 @@ type StockPortfolio {
   headers: [StockPortfolioHeader!]!
   id: String!
   name: String!
+  settings: StockPortfolioSettings!
+  snapshots: [Snapshot!]!
 
   """The data that gets resolved based on headers and tickers"""
   stockData: StockData!
@@ -294,13 +309,18 @@ input StockPortfolioCreateOneWithoutWebhookInput {
   connect: StockPortfolioWhereUniqueInput!
 }
 
+interface StockPortfolioDataHeader {
+  dataKey: String!
+  name: String!
+}
+
 input StockPortfolioFilter {
   every: StockPortfolioWhereInput
   none: StockPortfolioWhereInput
   some: StockPortfolioWhereInput
 }
 
-type StockPortfolioHeader {
+type StockPortfolioHeader implements StockPortfolioDataHeader {
   dataKey: String!
   frozen: Boolean!
   name: String!

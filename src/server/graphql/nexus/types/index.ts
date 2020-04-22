@@ -5,6 +5,7 @@ export * from "./data-key.types";
 export * from "./price-bundle.types";
 export * from "./root.types";
 export * from "./scalars.types";
+export * from "./snapshot.types";
 export * from "./stock-data.types";
 export * from "./stock-portfolio.types";
 export * from "./stock-portfolio-settings.types";

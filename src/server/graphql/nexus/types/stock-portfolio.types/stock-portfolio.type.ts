@@ -3,8 +3,7 @@ import { objectType } from "@nexus/schema";
 export const StockPortfolioHeader = objectType({
 	name: "StockPortfolioHeader",
 	definition: (t) => {
-		t.string("name", { nullable: false });
-		t.string("dataKey", { nullable: false });
+		t.implements("StockPortfolioDataHeader");
 		t.boolean("frozen", { nullable: false });
 		t.boolean("resizable", { nullable: false });
 		t.int("width", { nullable: false });
@@ -64,6 +63,17 @@ export const StockPortfolio = objectType({
 				return await prisma.stockPortfolioSettings.create({
 					data: { stockPortfolio: { connect: { id } } }
 				});
+			}
+		});
+		t.list.field("snapshots", {
+			type: "Snapshot",
+			nullable: false,
+			resolve: async ({ id }, args, { prisma }) => {
+				const snapshots = await prisma.snapshot.findMany({
+					where: { stockPortfolioId: id }
+				});
+
+				return snapshots;
 			}
 		});
 		t.model.createdAt();
