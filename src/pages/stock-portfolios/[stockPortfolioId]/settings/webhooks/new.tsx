@@ -77,7 +77,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 						</ResourcePath>
 					}
 				>
-					<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} />
+					<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} operation="create" />
 				</Card>
 			</div>
 		</main>
