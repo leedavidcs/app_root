@@ -216,11 +216,6 @@ export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLO
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "book.quote.iexMarketPercent",
-    "dataKey": "book.quote.iexMarketPercent",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "book.quote.iexRealtimePrice",
     "dataKey": "book.quote.iexRealtimePrice",
     "provider": "IEX_CLOUD"
@@ -333,51 +328,6 @@ export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLO
   {
     "name": "book.systemEvent.timestamp",
     "dataKey": "book.systemEvent.timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isIso",
-    "dataKey": "book.trades[0].isISO",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOddLot",
-    "dataKey": "book.trades[0].isOddLot",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isOutsideRegularHours",
-    "dataKey": "book.trades[0].isOutsideRegularHours",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isSinglePriceCross",
-    "dataKey": "book.trades[0].isSinglePriceCross",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.isTradeThroughExempt",
-    "dataKey": "book.trades[0].isTradeThroughExempt",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.price",
-    "dataKey": "book.trades[0].price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.size",
-    "dataKey": "book.trades[0].size",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.timestamp",
-    "dataKey": "book.trades[0].timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.trades.tradeId",
-    "dataKey": "book.trades[0].tradeId",
     "provider": "IEX_CLOUD"
   },
   {
@@ -1168,11 +1118,6 @@ export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLO
   {
     "name": "quote.iexLastUpdated",
     "dataKey": "quote.iexLastUpdated",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "quote.iexMarketPercent",
-    "dataKey": "quote.iexMarketPercent",
     "provider": "IEX_CLOUD"
   },
   {

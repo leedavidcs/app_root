@@ -346,6 +346,14 @@ export interface NexusGenRootTypes {
   ResendVerifyEmailPayload: { // root type
     success: boolean; // Boolean!
   }
+  Snapshot: { // root type
+    id: string; // String!
+    tickers: string[]; // [String!]!
+  }
+  SnapshotHeader: { // root type
+    dataKey: string; // String!
+    name: string; // String!
+  }
   StockData: { // root type
     dataKeys: string[]; // [String!]!
     tickers: string[]; // [String!]!
@@ -370,6 +378,10 @@ export interface NexusGenRootTypes {
     name: string; // String!
     resizable: boolean; // Boolean!
     width: number; // Int!
+  }
+  StockPortfolioSettings: { // root type
+    enableSnapshots: boolean; // Boolean!
+    pollInterval: number; // Int!
   }
   StripeCard: { // root type
     brand: string; // String!
@@ -422,6 +434,7 @@ export interface NexusGenRootTypes {
     url: string; // String!
   }
   RequestRoot: NexusGenRootTypes['Mutation'] | NexusGenRootTypes['Query'];
+  StockPortfolioDataHeader: NexusGenRootTypes['SnapshotHeader'] | NexusGenRootTypes['StockPortfolioHeader'];
   String: string;
   Int: number;
   Float: number;
@@ -540,6 +553,17 @@ export interface NexusGenFieldTypes {
   ResendVerifyEmailPayload: { // field return type
     success: boolean; // Boolean!
   }
+  Snapshot: { // field return type
+    data: any[]; // [JSONObject!]!
+    headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
+    id: string; // String!
+    stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    tickers: string[]; // [String!]!
+  }
+  SnapshotHeader: { // field return type
+    dataKey: string; // String!
+    name: string; // String!
+  }
   StockData: { // field return type
     data: any[] | null; // [JSONObject!]
     dataKeys: string[]; // [String!]!
@@ -558,6 +582,8 @@ export interface NexusGenFieldTypes {
     headers: NexusGenRootTypes['StockPortfolioHeader'][]; // [StockPortfolioHeader!]!
     id: string; // String!
     name: string; // String!
+    settings: NexusGenRootTypes['StockPortfolioSettings']; // StockPortfolioSettings!
+    snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
     stockData: NexusGenRootTypes['StockData']; // StockData!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
@@ -569,6 +595,11 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     resizable: boolean; // Boolean!
     width: number; // Int!
+  }
+  StockPortfolioSettings: { // field return type
+    enableSnapshots: boolean; // Boolean!
+    pollInterval: number; // Int!
+    stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
   }
   StripeCard: { // field return type
     brand: string; // String!
@@ -628,6 +659,10 @@ export interface NexusGenFieldTypes {
   }
   RequestRoot: { // field return type
     viewer: NexusGenRootTypes['User'] | null; // User
+  }
+  StockPortfolioDataHeader: { // field return type
+    dataKey: string; // String!
+    name: string; // String!
   }
 }
 
@@ -740,17 +775,18 @@ export interface NexusGenArgTypes {
 
 export interface NexusGenAbstractResolveReturnTypes {
   RequestRoot: "Mutation" | "Query"
+  StockPortfolioDataHeader: "SnapshotHeader" | "StockPortfolioHeader"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
 export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "SnapshotFilter" | "SnapshotWhereInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsFilter" | "StockPortfolioSettingsWhereInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg" | "OrderDetailType" | "TransactionStatus" | "WebhookType";
 
-export type NexusGenInterfaceNames = "RequestRoot";
+export type NexusGenInterfaceNames = "RequestRoot" | "StockPortfolioDataHeader";
 
 export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "String" | "UserPassword";
 
