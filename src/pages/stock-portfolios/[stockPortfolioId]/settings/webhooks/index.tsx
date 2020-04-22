@@ -62,7 +62,7 @@ const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(
 const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 	const classes = useStyles();
 
-	const { data, loading } = useGetWebhooksQuery({
+	const { data, loading, refetch } = useGetWebhooksQuery({
 		variables: {
 			where: {
 				stockPortfolioId: { equals: stockPortfolio.id }
@@ -71,10 +71,6 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 	});
 
 	const webhooks: Maybe<readonly Webhook[]> = data?.webhooks;
-
-	if (loading || !webhooks) {
-		return null;
-	}
 
 	return (
 		<main className={classes.root}>
@@ -93,7 +89,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 							<AnchorButton intent="primary" text="Add webhook" />
 						</Link>
 					</div>
-					<WebhookList webhooks={webhooks} />
+					<WebhookList loading={loading} refetch={refetch} webhooks={webhooks} />
 				</div>
 			</div>
 		</main>
