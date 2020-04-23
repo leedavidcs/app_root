@@ -1,5 +1,6 @@
 import { Alert, TextInput } from "@/client/components";
 import {
+	GetWebhookQuery,
 	useCreateWebhookMutation,
 	useDeleteWebhookMutation,
 	useSetToastsMutation,
@@ -17,10 +18,12 @@ import { object, string } from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
 
+type Webhook = NonNullable<GetWebhookQuery["webhook"]>;
+
 interface IProps {
 	className?: string;
 	stockPortfolioId: string;
-	webhookId?: string;
+	webhook?: Webhook;
 }
 
 interface IFormData {
@@ -50,7 +53,8 @@ const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	})
 }));
 
-export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, webhookId }) => {
+// Populate initial form (for update)
+export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, webhook }) => {
 	const classes = useStyles();
 	const toaster = useToast();
 	const router: NextRouter = useRouter();
@@ -95,8 +99,8 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 			};
 
 			try {
-				if (webhookId) {
-					await updateWebhook({ variables: { where: { id: webhookId }, data } });
+				if (webhook) {
+					await updateWebhook({ variables: { where: { id: webhook.id }, data } });
 				} else {
 					await createWebhook({ variables: { data } });
 				}
@@ -104,19 +108,19 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 				onFormSubmitError(err);
 			}
 		},
-		[createWebhook, onFormSubmitError, stockPortfolioId, updateWebhook, webhookId]
+		[createWebhook, onFormSubmitError, stockPortfolioId, updateWebhook, webhook]
 	);
 
 	const onAlertOpen = useCallback(() => setAlertOpen(true), []);
 	const onAlertClose = useCallback(() => setAlertOpen(false), []);
 
 	const onDelete = useCallback(() => {
-		if (!webhookId) {
+		if (!webhook) {
 			throw new Error("Attempted to delete a webhook without an id");
 		}
 
-		deleteWebhook({ variables: { id: webhookId } });
-	}, [deleteWebhook, webhookId]);
+		deleteWebhook({ variables: { id: webhook.id } });
+	}, [deleteWebhook, webhook]);
 
 	return (
 		<>
@@ -136,6 +140,7 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 				<form className={classes.section} onSubmit={handleSubmit(onSubmit)}>
 					<div className={classes.inputsContainer}>
 						<TextInput
+							defaultValue={webhook?.name}
 							label="Name"
 							labelInfo="(required)"
 							name="data.name"
@@ -143,6 +148,7 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 							control={control}
 						/>
 						<TextInput
+							defaultValue={webhook?.url}
 							label="Payload URL"
 							labelInfo="(required)"
 							name="data.url"
@@ -150,19 +156,19 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 							control={control}
 						/>
 						<WebhookTypeSelect
+							defaultValue={webhook?.type ?? webhookTypes[0]}
 							label="Webhook trigger"
 							name="data.type"
-							defaultValue={webhookTypes[0]}
 							error={errors.data?.type?.message}
 							control={control}
 						/>
 					</div>
 					<Button
 						intent="primary"
-						text={`${typeof webhookId === "string" ? "Update" : "Create"} webhook`}
+						text={`${webhook ? "Update" : "Create"} webhook`}
 						type="submit"
 					/>
-					{webhookId && (
+					{webhook && (
 						<Button
 							className={classes.deleteBtn}
 							icon="trash"
