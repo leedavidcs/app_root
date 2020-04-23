@@ -1,10 +1,12 @@
 import { ResourcePath, Tabs } from "@/client/components";
-import { GetOneStockPortfolioQuery, useGetUserQuery } from "@/client/graphql";
+import { StockPortfolio as _StockPortfolio, useGetUserQuery, User } from "@/client/graphql";
 import classnames from "classnames";
 import React, { FC } from "react";
 import { useStyles } from "./styles";
 
-type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
+type StockPortfolio = Pick<_StockPortfolio, "id" | "name"> & {
+	user: Pick<User, "id" | "username">;
+};
 
 type TabId = "data" | "settings";
 

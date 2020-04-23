@@ -77,6 +77,14 @@ A field whose value conforms to the standard internet email address format as sp
 """
 scalar EmailAddress
 
+type FeaturePricing {
+  snapshot: FeaturePricingConfig!
+}
+
+type FeaturePricingConfig {
+  price: Int!
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -184,10 +192,11 @@ type Query implements RequestRoot {
     """Filter by provider (partial works)"""
     provider: String
   ): [DataKeyOption!]!
+  featurePricing: FeaturePricing!
   priceBundles: [PriceBundle!]!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
-  stockData(dataKeys: [String!]!, tickers: [String!]!): StockData
+  stockData(where: StockDataWhereUniqueInput!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
@@ -281,18 +290,22 @@ input SnapshotWhereUniqueInput {
   id: String!
 }
 
+"""
+The data for a stock-portfolio, derived from its headers and tickers. Accessing the `data` prop of this type will incur a transaction for the `viewer` of this request
+"""
 type StockData {
+  """
+  The data for this stock-portfolio. Accessing this property incurs a transaction for the viewer of this request
+  """
   data: [JSONObject!]
-  dataKeys: [String!]!
 
   """The amount in credits, that a data-refresh would cost"""
-  refreshCost: Int!
+  refreshCost(enableSnapshots: Boolean): Int!
 
   """
-  The id of the stock-portfolio that this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings.
+  The stock portfolio for which this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings.
   """
-  stockPortfolioId: String
-  tickers: [String!]!
+  stockPortfolio: StockPortfolio!
 }
 
 type StockDataSearch {
@@ -301,6 +314,10 @@ type StockDataSearch {
   securityName: String!
   securityType: String!
   symbol: String!
+}
+
+input StockDataWhereUniqueInput {
+  stockPortfolioId: String!
 }
 
 """StockPortfolio entity. This is what gets shown on the data grid"""

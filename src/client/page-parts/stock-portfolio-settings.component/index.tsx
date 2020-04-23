@@ -1,10 +1,10 @@
 import { List } from "@/client/components";
-import { GetOneStockPortfolioQuery } from "@/client/graphql";
+import { StockPortfolio as _StockPortfolio } from "@/client/graphql";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC } from "react";
 import { useStyles } from "./styles";
 
-type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
+type StockPortfolio = Pick<_StockPortfolio, "id">;
 
 interface IProps {
 	stockPortfolio: StockPortfolio;

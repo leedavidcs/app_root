@@ -34,26 +34,25 @@ interface IProps {
 	value?: string;
 }
 
-const BaseTextInput: FC<IProps> = (props) => {
-	const {
-		autoComplete,
-		children,
-		className,
-		defaultValue,
-		disabled,
-		error,
-		icon,
-		inline,
-		label,
-		labelInfo,
-		onChange,
-		onKeyDown: _onKeyDown,
-		placeholder,
-		style,
-		type,
-		value
-	} = props;
-
+const BaseTextInput: FC<IProps> = ({
+	autoComplete,
+	children,
+	className,
+	defaultValue,
+	disabled,
+	error,
+	icon,
+	inline,
+	label,
+	labelInfo,
+	name,
+	onChange,
+	onKeyDown: _onKeyDown,
+	placeholder,
+	style,
+	type,
+	value
+}) => {
 	const classes = useStyles();
 
 	const intent: Intent = error ? "danger" : "none";
@@ -93,6 +92,7 @@ const BaseTextInput: FC<IProps> = (props) => {
 					disabled={disabled}
 					intent={intent}
 					leftIcon={icon}
+					name={name}
 					onChange={onChange}
 					onKeyDown={onKeyDown}
 					placeholder={placeholder}
@@ -107,7 +107,7 @@ const BaseTextInput: FC<IProps> = (props) => {
 };
 
 export const TextInput: FC<IProps> = (props) => {
-	const { control, name, value, onChange, ...restProps } = props;
+	const { control, defaultValue, name, value, onChange, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -120,7 +120,7 @@ export const TextInput: FC<IProps> = (props) => {
 				control={control}
 				name={name}
 				{...restProps}
-				defaultValue=""
+				defaultValue={defaultValue}
 				onChange={([event]) => event.target.value || ""}
 			/>
 		);

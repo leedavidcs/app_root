@@ -1,16 +1,26 @@
-import { StockDataFeatures } from "@/server/configs";
-import { SnapshotConfig } from "@/server/configs/snapshot.config";
+import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
 import { IexType } from "@/server/datasources";
 import { IServerContextWithUser } from "@/server/graphql/context";
-import { Logger } from "@/server/utils";
-import { objectType } from "@nexus/schema";
-import { StockPortfolio as _StockPortfolio, StockPortfolioSettings } from "@prisma/client";
+import { Logger, NotFoundError } from "@/server/utils";
+import { booleanArg, objectType } from "@nexus/schema";
+import { Snapshot, StockPortfolio, StockPortfolioSettings, Transaction } from "@prisma/client";
 import { ForbiddenError, UserInputError } from "apollo-server-micro";
+import { oneLine } from "common-tags";
 import { camelCase, get } from "lodash";
 
-type StockPortfolio = _StockPortfolio & { settings: StockPortfolioSettings };
+type StockPortfolioWithSettings = StockPortfolio & { settings: StockPortfolioSettings };
 
-const getTypesFromDataKeys = (dataKeys: readonly string[]): Record<IexType, boolean> => {
+const getDataKeys = (stockPortfolio: StockPortfolioWithSettings): readonly string[] => {
+	const dataKeys: readonly string[] = stockPortfolio.headers.map((header) => {
+		const { dataKey } = JSON.parse(header);
+
+		return dataKey;
+	});
+
+	return dataKeys;
+};
+
+const getTypes = (dataKeys: readonly string[]): Record<IexType, boolean> => {
 	const types: Record<IexType, boolean> = dataKeys
 		.map((dataKey) => camelCase(dataKey.split(".")[0]))
 		.reduce((acc, key) => ({ ...acc, [key]: true }), {} as Record<IexType, boolean>);
@@ -25,19 +35,33 @@ const limitResultToDataKeys = (
 	return dataKeys.reduce((acc, dataKey) => ({ ...acc, [dataKey]: get(result, dataKey) }), {});
 };
 
-const computeCosts = (tickers: readonly string[], dataKeys: readonly string[]): number => {
+const computeCosts = (stockPortfolio: StockPortfolioWithSettings): number => {
+	const { headers, tickers } = stockPortfolio;
+
+	const dataKeys: readonly string[] = headers.map((header) => {
+		const { dataKey } = JSON.parse(header);
+
+		return dataKey;
+	});
+
 	const multiplier: number = tickers.length;
 
-	const types: readonly IexType[] = Object.keys(getTypesFromDataKeys(dataKeys)) as IexType[];
+	const types: readonly IexType[] = Object.keys(getTypes(dataKeys)) as IexType[];
 
-	const cost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
+	const snapshotCost: number = stockPortfolio.settings.enableSnapshots ? SnapshotConfig.price : 0;
+	const dataCost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
 
-	return multiplier * cost;
+	const totalCost: number = snapshotCost + dataCost;
+
+	return multiplier * totalCost;
 };
 
-const makeTransaction = async (cost: number, { prisma, user }: IServerContextWithUser) => {
+const createTransaction = async (
+	cost: number,
+	{ prisma, user }: IServerContextWithUser
+): Promise<Maybe<Transaction>> => {
 	if (cost === 0) {
-		return;
+		return null;
 	}
 
 	const balance = await prisma.balance.findOne({ where: { userId: user?.id } });
@@ -51,7 +75,7 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 		where: { userId: user.id }
 	});
 
-	await prisma.transaction.create({
+	return await prisma.transaction.create({
 		data: {
 			creditsBefore: balance.credits,
 			creditsTransacted: -cost,
@@ -60,16 +84,16 @@ const makeTransaction = async (cost: number, { prisma, user }: IServerContextWit
 	});
 };
 
-const shouldCreateSnapshot = (
-	stockPortfolio: Maybe<StockPortfolio>
-): stockPortfolio is StockPortfolio => stockPortfolio?.settings.enableSnapshots ?? false;
+const shouldCreateSnapshot = (stockPortfolio: StockPortfolioWithSettings): boolean => {
+	return stockPortfolio.settings.enableSnapshots;
+};
 
 const createSnapshot = async (
 	stockPortfolio: StockPortfolio,
 	data: readonly Record<string, any>[],
 	{ prisma }: IServerContextWithUser
-): Promise<boolean> => {
-	await prisma.snapshot.create({
+): Promise<Snapshot> => {
+	return prisma.snapshot.create({
 		data: {
 			stockPortfolio: { connect: { id: stockPortfolio.id } },
 			tickers: { set: stockPortfolio.tickers },
@@ -83,57 +107,90 @@ const createSnapshot = async (
 			data: { set: data.map((datum) => JSON.stringify(datum)) }
 		}
 	});
+};
 
-	return true;
+const mapToStockPortfolio = (
+	data: Record<string, Record<string, any>>,
+	stockPortfolio: StockPortfolioWithSettings
+): Record<string, any>[] => {
+	const { tickers } = stockPortfolio;
+	const dataKeys: readonly string[] = getDataKeys(stockPortfolio);
+
+	return tickers.map((ticker) => {
+		return { ticker, ...limitResultToDataKeys(data[ticker], dataKeys) };
+	});
 };
 
 export const StockData = objectType({
 	name: "StockData",
+	description: oneLine`
+		The data for a stock-portfolio, derived from its headers and tickers. Accessing the \`data\`
+		prop of this type will incur a transaction for the \`viewer\` of this request
+	`,
 	definition: (t) => {
-		t.string("stockPortfolioId", {
-			description:
-				"The id of the stock-portfolio that this data is being generated for. If provided, \
-				snapshots may be created depending on the stock-portfolio's settings."
+		t.field("stockPortfolio", {
+			type: "StockPortfolio",
+			nullable: false,
+			description: oneLine`
+				The stock portfolio for which this data is being generated for. If provided, \
+				snapshots may be created depending on the stock-portfolio's settings.
+			`
 		});
-		t.list.string("tickers", { nullable: false });
-		t.list.string("dataKeys", { nullable: false });
 		t.int("refreshCost", {
 			description: "The amount in credits, that a data-refresh would cost",
 			nullable: false,
-			resolve: async ({ stockPortfolioId, tickers, dataKeys }, args, { prisma }) => {
+			args: {
+				enableSnapshots: booleanArg()
+			},
+			resolve: async ({ stockPortfolio: { id } }, args, context) => {
+				const { prisma } = context;
+
 				const stockPortfolio = await prisma.stockPortfolio.findOne({
-					where: { id: stockPortfolioId },
+					where: { id },
 					include: { settings: true }
 				});
 
-				let cost: number = computeCosts(tickers, dataKeys);
-
-				if (shouldCreateSnapshot(stockPortfolio)) {
-					cost += SnapshotConfig.price;
+				if (!stockPortfolio) {
+					throw new NotFoundError();
 				}
+
+				const cost: number = computeCosts(stockPortfolio);
 
 				return cost;
 			}
 		});
 		t.list.field("data", {
 			type: "JSONObject",
+			list: true,
+			description: oneLine`
+				The data for this stock-portfolio. Accessing this property incurs a transaction for
+				the viewer of this request
+			`,
 			authorize: (parent, args, { user }) => Boolean(user),
-			resolve: async ({ stockPortfolioId, tickers, dataKeys }, arg, context) => {
+			/**
+			 * @description With complexity = 300 and maxComplexity = 500, data can be requested
+			 *     once per request
+			 * @author David Lee
+			 * @date April 23, 2020
+			 */
+			complexity: 300,
+			resolve: async ({ stockPortfolio: { id, tickers } }, arg, context) => {
 				const { dataSources, prisma } = context;
 				const { IexCloudAPI } = dataSources;
 
 				const stockPortfolio = await prisma.stockPortfolio.findOne({
-					where: { id: stockPortfolioId },
+					where: { id },
 					include: { settings: true }
 				});
 
-				let cost: number = computeCosts(tickers, dataKeys);
-
-				if (shouldCreateSnapshot(stockPortfolio)) {
-					cost += SnapshotConfig.price;
+				if (!stockPortfolio) {
+					throw new NotFoundError();
 				}
 
-				const types = getTypesFromDataKeys(dataKeys);
+				const cost: number = computeCosts(stockPortfolio);
+
+				const dataKeys: readonly string[] = getDataKeys(stockPortfolio);
+				const types: Record<IexType, boolean> = getTypes(dataKeys);
 
 				let results: Record<string, Record<string, any>>;
 				try {
@@ -148,17 +205,15 @@ export const StockData = objectType({
 					});
 				}
 
-				await makeTransaction(cost, context);
+				await createTransaction(cost, context);
 
-				const stockDataResult: Record<string, any>[] = tickers.map((ticker) => {
-					return { ticker, ...limitResultToDataKeys(results[ticker], dataKeys) };
-				});
+				const mapped: Record<string, any>[] = mapToStockPortfolio(results, stockPortfolio);
 
 				if (shouldCreateSnapshot(stockPortfolio)) {
-					await createSnapshot(stockPortfolio, stockDataResult, context);
+					await createSnapshot(stockPortfolio, mapped, context);
 				}
 
-				return stockDataResult;
+				return mapped;
 			}
 		});
 	}

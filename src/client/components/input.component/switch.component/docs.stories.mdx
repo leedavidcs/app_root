@@ -1,0 +1,48 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { Switch } from ".";
+import { StandardStory } from "./stories";
+
+<Meta title="general/inputs/switch" component={Switch} />
+
+# Switch
+
+## Description
+A limited feature set of
+[@blueprintjs/switch](https://blueprintjs.com/docs/#core/components/switch).
+
+## Props
+<Props of={Switch} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Switch } from "@/client/components/input.component/switch.component";
+import { Paper } from "@/client/components/paper.component";
+import { Button } from "@blueprintjs/core";
+import { action } from "@storybook/addon-actions";
+import React, { FC } from "react";
+import { useForm } from "react-hook-form";
+
+interface IFormData {
+	switch: boolean;
+}
+
+export const StandardStory: FC = () => {
+	const { control, handleSubmit } = useForm<IFormData>();
+
+	return (
+		<Paper>
+			<form onSubmit={handleSubmit(action("onSubmit"))}>
+				<Switch control={control} label="Click me!" name="switch" />
+				<Button type="submit" text="Submit" />
+			</form>
+		</Paper>
+	);
+};
+```

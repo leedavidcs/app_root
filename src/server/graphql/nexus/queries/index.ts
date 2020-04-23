@@ -1,5 +1,6 @@
 export * from "./balance.queries";
 export * from "./data-key.queries";
+export * from "./feature-pricing.queries";
 export * from "./price-bundle.queries";
 export * from "./snapshot.queries";
 export * from "./stock-data.queries";

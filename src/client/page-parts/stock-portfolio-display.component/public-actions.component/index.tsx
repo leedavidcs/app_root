@@ -10,14 +10,10 @@ interface IProps {
 }
 
 const useOnRefresh = ({ onRefresh: _onRefresh, stockPortfolio }: IProps) => {
-	const { headers, tickers } = stockPortfolio;
-
-	const dataKeys: readonly string[] = headers.map(({ dataKey }) => dataKey);
-
-	const variables: GetStockDataQueryVariables = useMemo(() => ({ dataKeys, tickers }), [
-		dataKeys,
-		tickers
-	]);
+	const variables: GetStockDataQueryVariables = useMemo(
+		() => ({ where: { stockPortfolioId: stockPortfolio.id } }),
+		[stockPortfolio.id]
+	);
 
 	const onRefresh = useCallback(() => _onRefresh(variables), [_onRefresh, variables]);
 

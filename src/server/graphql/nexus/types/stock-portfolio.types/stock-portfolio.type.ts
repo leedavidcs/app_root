@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/server/utils";
 import { objectType } from "@nexus/schema";
 
 export const StockPortfolioHeader = objectType({
@@ -36,15 +37,14 @@ export const StockPortfolio = objectType({
 			type: "StockData",
 			nullable: false,
 			description: "The data that gets resolved based on headers and tickers",
-			resolve: async ({ id, tickers }, args, { prisma }) => {
+			resolve: async ({ id }, args, { prisma }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
-				const parsedHeaders = (stockPortfolio?.headers || []).map((header) =>
-					JSON.parse(header)
-				);
-				const dataKeys: string[] = parsedHeaders.map(({ dataKey }) => dataKey);
+				if (!stockPortfolio) {
+					throw new NotFoundError();
+				}
 
-				return { dataKeys, stockPortfolioId: id, tickers };
+				return { stockPortfolio };
 			}
 		});
 		t.list.field("snapshots", {

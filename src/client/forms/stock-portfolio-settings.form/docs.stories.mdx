@@ -1,0 +1,30 @@
+import { GetOneStockPortfolioMock } from "@/client/graphql/mocks/get-one-stock-portfolio.mock";
+import { Card } from "@/client/components";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockPortfolioSettingsForm } from ".";
+
+<Meta title="forms/stock-portfolio-settings-form" component={StockPortfolioSettingsForm} />
+
+# StockPortfolioSettingsForm
+
+## Description
+The form that is presented on the `Options` tab on the settings page for a stock-portfolio.
+
+## Props
+<Props of={StockPortfolioSettingsForm} />
+
+## StandardStory
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
+<Preview>
+	<Story name="standard">
+		<div style={{ width: 800 }}>
+			<Card title="Options" style={{ fontSize: 14 }}>
+				<StockPortfolioSettingsForm stockPortfolio={stockPortfolio} />
+			</Card>
+		</div>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
