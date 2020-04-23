@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 23rd 2020 1:20:59 am
+// This file was generated on: Apr 23rd 2020 11:59:54 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -112,6 +112,10 @@ export type WebhookUpdateInput = {
 
 export type SnapshotWhereUniqueInput = {
   readonly id: Scalars['String'];
+};
+
+export type StockDataWhereUniqueInput = {
+  readonly stockPortfolioId: Scalars['String'];
 };
 
 export type TransactionWhereUniqueInput = {
@@ -426,8 +430,7 @@ export type QuerySnapshotsArgs = {
 
 /** Root query type */
 export type QueryStockDataArgs = {
-  tickers: ReadonlyArray<Scalars['String']>;
-  dataKeys: ReadonlyArray<Scalars['String']>;
+  where: StockDataWhereUniqueInput;
 };
 
 
@@ -527,15 +530,21 @@ export type Snapshot = {
   readonly data: ReadonlyArray<Scalars['JSONObject']>;
 };
 
+/** The data for a stock-portfolio, derived from its headers and tickers. Accessing the `data` prop of this type will incur a transaction for the `viewer` of this request */
 export type StockData = {
   readonly __typename?: 'StockData';
-  /** The id of the stock-portfolio that this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings. */
-  readonly stockPortfolioId?: Maybe<Scalars['String']>;
-  readonly tickers: ReadonlyArray<Scalars['String']>;
-  readonly dataKeys: ReadonlyArray<Scalars['String']>;
+  /** The stock portfolio for which this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings. */
+  readonly stockPortfolio: StockPortfolio;
   /** The amount in credits, that a data-refresh would cost */
   readonly refreshCost: Scalars['Int'];
+  /** The data for this stock-portfolio. Accessing this property incurs a transaction for the viewer of this request */
   readonly data?: Maybe<ReadonlyArray<Scalars['JSONObject']>>;
+};
+
+
+/** The data for a stock-portfolio, derived from its headers and tickers. Accessing the `data` prop of this type will incur a transaction for the `viewer` of this request */
+export type StockDataRefreshCostArgs = {
+  enableSnapshots?: Maybe<Scalars['Boolean']>;
 };
 
 export type StockDataSearch = {
@@ -1249,8 +1258,7 @@ export type GetPriceBundlesQuery = (
 );
 
 export type GetStockDataQueryVariables = {
-  tickers: ReadonlyArray<Scalars['String']>;
-  dataKeys: ReadonlyArray<Scalars['String']>;
+  where: StockDataWhereUniqueInput;
 };
 
 
@@ -2230,8 +2238,8 @@ export type GetPriceBundlesQueryHookResult = ReturnType<typeof useGetPriceBundle
 export type GetPriceBundlesLazyQueryHookResult = ReturnType<typeof useGetPriceBundlesLazyQuery>;
 export type GetPriceBundlesQueryResult = ApolloReactCommon.QueryResult<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>;
 export const GetStockDataDocument = gql`
-    query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
-  stockData(tickers: $tickers, dataKeys: $dataKeys) {
+    query GetStockData($where: StockDataWhereUniqueInput!) {
+  stockData(where: $where) {
     data
   }
 }
@@ -2249,8 +2257,7 @@ export const GetStockDataDocument = gql`
  * @example
  * const { data, loading, error } = useGetStockDataQuery({
  *   variables: {
- *      tickers: // value for 'tickers'
- *      dataKeys: // value for 'dataKeys'
+ *      where: // value for 'where'
  *   },
  * });
  */

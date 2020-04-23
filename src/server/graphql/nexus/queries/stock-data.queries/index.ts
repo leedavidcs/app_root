@@ -1,13 +1,30 @@
-import { queryField, stringArg } from "@nexus/schema";
+import { NotFoundError } from "@/server/utils";
+import { arg, inputObjectType, queryField, stringArg } from "@nexus/schema";
+
+export const StockDataWhereUniqueInput = inputObjectType({
+	name: "StockDataWhereUniqueInput",
+	definition: (t) => {
+		t.string("stockPortfolioId", { nullable: false });
+	}
+});
 
 export const stockData = queryField("stockData", {
 	type: "StockData",
 	args: {
-		tickers: stringArg({ list: true, nullable: false }),
-		dataKeys: stringArg({ list: true, nullable: false })
+		where: arg({ type: "StockDataWhereUniqueInput", nullable: false })
 	},
 	rateLimit: () => ({ window: "1m", max: 30 }),
-	resolve: (parent, { tickers, dataKeys }) => ({ tickers, dataKeys })
+	resolve: async (parent, { where }, { prisma }) => {
+		const stockPortfolio = await prisma.stockPortfolio.findOne({
+			where: { id: where.stockPortfolioId }
+		});
+
+		if (!stockPortfolio) {
+			throw new NotFoundError();
+		}
+
+		return { stockPortfolio };
+	}
 });
 
 export const stockSymbols = queryField("stockSymbols", {

@@ -1,5 +1,5 @@
-query GetStockData($tickers: [String!]!, $dataKeys: [String!]!) {
-	stockData(tickers: $tickers, dataKeys: $dataKeys) {
+query GetStockData($where: StockDataWhereUniqueInput!) {
+	stockData(where: $where) {
 		data
 	}
 }
