@@ -61,13 +61,17 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 
 	const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
-	const [setToasts] = useSetToastsMutation({
-		onCompleted: () => router.push(`/stock-portfolios/${stockPortfolioId}/settings/webhooks`)
-	});
+	const [setToasts] = useSetToastsMutation();
 
 	const [createWebhook] = useCreateWebhookMutation({
-		onCompleted: () => {
-			toaster.show({ intent: "success", message: "Webhook was successfully created" });
+		onCompleted: async (result) => {
+			await setToasts({
+				variables: {
+					toasts: [{ intent: "success", message: "Webhook was successfully created" }]
+				}
+			});
+
+			router.push(`/webhooks/${result.webhook.id}`);
 		}
 	});
 	const [updateWebhook] = useUpdateWebhookMutation({
@@ -76,12 +80,14 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 		}
 	});
 	const [deleteWebhook] = useDeleteWebhookMutation({
-		onCompleted: () => {
-			setToasts({
+		onCompleted: async () => {
+			await setToasts({
 				variables: {
 					toasts: [{ intent: "success", message: "Webhook was successfully deleted" }]
 				}
 			});
+
+			router.push(`/stock-portfolios/${stockPortfolioId}/settings/webhooks`);
 		}
 	});
 
