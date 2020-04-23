@@ -4,6 +4,7 @@ query GetWebhook($where: WebhookWhereUniqueInput!) {
 		name
 		timeout
 		type
+		url
 		stockPortfolio {
 			id
 			name
