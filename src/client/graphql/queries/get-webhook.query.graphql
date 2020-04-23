@@ -8,19 +8,6 @@ query GetWebhook($where: WebhookWhereUniqueInput!) {
 		stockPortfolio {
 			id
 			name
-			headers {
-				name
-				dataKey
-				frozen
-				resizable
-				width
-			}
-			tickers
-			createdAt
-			updatedAt
-			stockData {
-				refreshCost
-			}
 			user {
 				id
 				username

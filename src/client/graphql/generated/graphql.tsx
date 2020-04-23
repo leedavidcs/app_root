@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 22nd 2020 10:09:40 pm
+// This file was generated on: Apr 23rd 2020 1:20:59 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1230,6 +1230,9 @@ export type GetOneStockPortfolioQuery = (
     ), readonly user: (
       { readonly __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
+    ), readonly settings: (
+      { readonly __typename?: 'StockPortfolioSettings' }
+      & Pick<StockPortfolioSettings, 'enableSnapshots' | 'pollInterval'>
     ) }
   )> }
 );
@@ -1301,14 +1304,8 @@ export type GetWebhookQuery = (
     & Pick<Webhook, 'id' | 'name' | 'timeout' | 'type' | 'url'>
     & { readonly stockPortfolio: (
       { readonly __typename?: 'StockPortfolio' }
-      & Pick<StockPortfolio, 'id' | 'name' | 'tickers' | 'createdAt' | 'updatedAt'>
-      & { readonly headers: ReadonlyArray<(
-        { readonly __typename?: 'StockPortfolioHeader' }
-        & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
-      )>, readonly stockData: (
-        { readonly __typename?: 'StockData' }
-        & Pick<StockData, 'refreshCost'>
-      ), readonly user: (
+      & Pick<StockPortfolio, 'id' | 'name'>
+      & { readonly user: (
         { readonly __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
       ) }
@@ -2165,6 +2162,10 @@ export const GetOneStockPortfolioDocument = gql`
       id
       username
     }
+    settings {
+      enableSnapshots
+      pollInterval
+    }
   }
 }
     `;
@@ -2349,19 +2350,6 @@ export const GetWebhookDocument = gql`
     stockPortfolio {
       id
       name
-      headers {
-        name
-        dataKey
-        frozen
-        resizable
-        width
-      }
-      tickers
-      createdAt
-      updatedAt
-      stockData {
-        refreshCost
-      }
       user {
         id
         username

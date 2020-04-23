@@ -19,5 +19,9 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 			id
 			username
 		}
+		settings {
+			enableSnapshots
+			pollInterval
+		}
 	}
 }
