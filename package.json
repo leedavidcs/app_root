@@ -65,7 +65,7 @@
     "@types/react-window": "^1.8.2",
     "@types/redis": "^2.8.18",
     "@types/request-ip": "0.0.35",
-    "@types/yup": "^0.26.37",
+    "@types/yup": "^0.28.0",
     "@types/zxcvbn": "^4.4.0",
     "apollo-boost": "^0.4.7",
     "apollo-link-context": "^1.0.20",
