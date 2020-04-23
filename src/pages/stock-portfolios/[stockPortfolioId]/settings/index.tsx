@@ -1,3 +1,5 @@
+import { Card } from "@/client/components";
+import { StockPortfolioSettingsForm } from "@/client/forms";
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioHead, StockPortfolioSettings } from "@/client/page-parts";
@@ -26,11 +28,12 @@ const styles = (theme: CustomTheme) => ({
 		}
 	},
 	container: {
-		display: "flex",
 		maxWidth: 980,
 		margin: "0 auto",
 
 		[breakpoints.up("sm")]: {
+			display: "flex",
+			alignItems: "flex-start",
 			padding: "0 25px"
 		}
 	},
@@ -39,7 +42,8 @@ const styles = (theme: CustomTheme) => ({
 		marginLeft: 32
 	},
 	settingHeader: {
-		margin: 0,
+		marginTop: 0,
+		marginBottom: 16,
 		paddingBottom: 8,
 		borderBottom: `1px solid ${colors.darkGray4}`
 	}
@@ -59,6 +63,9 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 				<StockPortfolioSettings stockPortfolio={stockPortfolio} />
 				<div className={classes.content}>
 					<h2 className={classes.settingHeader}>Options</h2>
+					<Card>
+						<StockPortfolioSettingsForm stockPortfolio={stockPortfolio} />
+					</Card>
 				</div>
 			</div>
 		</main>
