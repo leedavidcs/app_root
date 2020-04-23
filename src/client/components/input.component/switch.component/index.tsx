@@ -1,6 +1,6 @@
 import { Alignment, Switch as BpSwitch } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, FormEventHandler, ReactElement, ReactNode } from "react";
+import React, { FC, FormEventHandler, ReactElement, ReactNode, useCallback } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
@@ -54,7 +54,23 @@ const BaseSwitch: FC<IProps> = ({
 };
 
 export const Switch: FC<IProps> = (props) => {
-	const { checked, control, defaultChecked = false, name, onChange, ...restProps } = props;
+	const {
+		checked,
+		control,
+		defaultChecked = false,
+		name,
+		onChange: _onChange,
+		...restProps
+	} = props;
+
+	const onChange = useCallback(
+		([event]) => {
+			_onChange?.(event);
+
+			return event.currentTarget.checked;
+		},
+		[_onChange]
+	);
 
 	if (control) {
 		if (!name) {
@@ -68,7 +84,7 @@ export const Switch: FC<IProps> = (props) => {
 				name={name}
 				defaultValue={defaultChecked}
 				{...restProps}
-				onChange={([event]) => event.currentTarget.checked}
+				onChange={onChange}
 				valueName="checked"
 			/>
 		);
