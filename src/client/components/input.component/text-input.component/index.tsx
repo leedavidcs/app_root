@@ -107,7 +107,7 @@ const BaseTextInput: FC<IProps> = ({
 };
 
 export const TextInput: FC<IProps> = (props) => {
-	const { control, name, value, onChange, ...restProps } = props;
+	const { control, defaultValue, name, value, onChange, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -120,7 +120,7 @@ export const TextInput: FC<IProps> = (props) => {
 				control={control}
 				name={name}
 				{...restProps}
-				defaultValue=""
+				defaultValue={defaultValue}
 				onChange={([event]) => event.target.value || ""}
 			/>
 		);

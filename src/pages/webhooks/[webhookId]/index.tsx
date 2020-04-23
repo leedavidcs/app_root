@@ -80,10 +80,7 @@ const Page: NextPage<IProps> = ({ webhook }) => {
 						</ResourcePath>
 					}
 				>
-					<UpsertWebhookForm
-						stockPortfolioId={stockPortfolio.id}
-						webhookId={webhook.id}
-					/>
+					<UpsertWebhookForm stockPortfolioId={stockPortfolio.id} webhook={webhook} />
 				</Card>
 			</div>
 		</main>
