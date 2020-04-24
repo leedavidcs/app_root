@@ -1,5 +1,6 @@
 import { verifyEmail } from "@/server/authentication";
-import { NotFoundError } from "@/server/utils";
+import { NotFoundError, runMiddleware } from "@/server/utils";
+import Cors from "cors";
 import HttpStatus from "http-status-codes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { object, string, ValidationError } from "yup";
@@ -7,6 +8,8 @@ import { object, string, ValidationError } from "yup";
 const inputSchema = object({ userId: string().required() });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+	await runMiddleware(req, res, Cors({ methods: ["GET"] }));
+
 	let validatedInputs: ReturnType<typeof inputSchema.validateSync>;
 
 	try {
