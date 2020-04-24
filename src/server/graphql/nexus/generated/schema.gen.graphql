@@ -140,6 +140,17 @@ type Mutation implements RequestRoot {
   viewer: User
 }
 
+input NullableIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
 input NullableStringFilter {
   contains: String
   endsWith: String
@@ -251,6 +262,27 @@ type ResendVerifyEmailPayload {
   success: Boolean!
 }
 
+input ScheduledEventFilter {
+  every: ScheduledEventWhereInput
+  none: ScheduledEventWhereInput
+  some: ScheduledEventWhereInput
+}
+
+input ScheduledEventWhereInput {
+  AND: [ScheduledEventWhereInput!]
+  hour: NullableIntFilter
+  id: StringFilter
+  interval: NullableIntFilter
+  minute: NullableIntFilter
+  next: DateTimeFilter
+  NOT: [ScheduledEventWhereInput!]
+  OR: [ScheduledEventWhereInput!]
+  stockPortfolioEvent: StockPortfolioEventFilter
+  timezone: StringFilter
+  user: UserWhereInput
+  userId: StringFilter
+}
+
 type Snapshot {
   data: [JSONObject!]!
   headers: [SnapshotHeader!]!
@@ -349,6 +381,27 @@ interface StockPortfolioDataHeader {
   name: String!
 }
 
+input StockPortfolioEventFilter {
+  every: StockPortfolioEventWhereInput
+  none: StockPortfolioEventWhereInput
+  some: StockPortfolioEventWhereInput
+}
+
+enum StockPortfolioEventType {
+  DataRetrieved
+}
+
+input StockPortfolioEventWhereInput {
+  AND: [StockPortfolioEventWhereInput!]
+  NOT: [StockPortfolioEventWhereInput!]
+  OR: [StockPortfolioEventWhereInput!]
+  scheduledEvent: ScheduledEventWhereInput
+  scheduledEventId: StringFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  type: StockPortfolioEventType
+}
+
 input StockPortfolioFilter {
   every: StockPortfolioWhereInput
   none: StockPortfolioWhereInput
@@ -431,6 +484,7 @@ input StockPortfolioWhereInput {
   OR: [StockPortfolioWhereInput!]
   settings: StockPortfolioSettingsWhereInput
   snapshot: SnapshotFilter
+  stockPortfolioEvent: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
@@ -608,6 +662,7 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
+  scheduledEvent: ScheduledEventFilter
   stockPortfolio: StockPortfolioFilter
   stripeDetails: StripeDetailsFilter
   transaction: TransactionFilter

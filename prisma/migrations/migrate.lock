@@ -15,3 +15,5 @@
 20200422021403-snapshot-model
 20200422030903-stock-portfolio-settings-model
 20200422072046-1-1-stock-portfolio-settings
+20200424111357-stock-portfolio-event-model
+20200424112428-remove-fk-stock-portfolio-event

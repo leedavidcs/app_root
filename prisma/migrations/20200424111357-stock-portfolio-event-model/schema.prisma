@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -127,6 +127,7 @@ model ScheduledEvent {
   interval            Int?
   timezone            String               @default("America/Los_Angeles")
   next                DateTime
+  stockPortfolioEvent StockPortfolioEvent?
 }
 
 enum StockPortfolioEventType {
