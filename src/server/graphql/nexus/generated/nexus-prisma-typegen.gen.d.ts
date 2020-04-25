@@ -295,8 +295,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
     scheduledEvents: {
-  filtering: 'id' | 'userId' | 'minute' | 'hour' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'userId' | 'minute' | 'hour' | 'interval' | 'timezone' | 'next'
+  filtering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next'
 }
     stockPortfolioEvents: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
@@ -322,8 +322,8 @@ interface NexusPrismaInputs {
   ordering: 'userId' | 'customerId'
 }
     scheduledEvent: {
-  filtering: 'id' | 'userId' | 'minute' | 'hour' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'userId' | 'minute' | 'hour' | 'interval' | 'timezone' | 'next'
+  filtering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next'
 }
 
   },  StockPortfolio: {
@@ -534,9 +534,9 @@ interface NexusPrismaTypes {
     id: 'String'
     user: 'User'
     userId: 'String'
-    days: 'Days'
-    minute: 'Int'
+    days: 'Day'
     hour: 'Int'
+    minute: 'Int'
     interval: 'Int'
     timezone: 'String'
     next: 'DateTime'

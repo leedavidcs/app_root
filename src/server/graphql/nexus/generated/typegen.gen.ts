@@ -29,10 +29,54 @@ export interface NexusGenInputs {
     state?: string | null; // String
     zipcode?: string | null; // String
   }
+  BalanceCreateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['BalanceWhereUniqueInput'][] | null; // [BalanceWhereUniqueInput!]
+    create?: NexusGenInputs['BalanceCreateWithoutUserInput'][] | null; // [BalanceCreateWithoutUserInput!]
+  }
+  BalanceCreateWithoutUserInput: { // input type
+    credits?: number | null; // Int
+  }
   BalanceFilter: { // input type
     every?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
     none?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
     some?: NexusGenInputs['BalanceWhereInput'] | null; // BalanceWhereInput
+  }
+  BalanceScalarWhereInput: { // input type
+    AND?: NexusGenInputs['BalanceScalarWhereInput'][] | null; // [BalanceScalarWhereInput!]
+    credits?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    NOT?: NexusGenInputs['BalanceScalarWhereInput'][] | null; // [BalanceScalarWhereInput!]
+    OR?: NexusGenInputs['BalanceScalarWhereInput'][] | null; // [BalanceScalarWhereInput!]
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  BalanceUpdateManyDataInput: { // input type
+    credits?: number | null; // Int
+  }
+  BalanceUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['BalanceUpdateManyDataInput']; // BalanceUpdateManyDataInput!
+    where: NexusGenInputs['BalanceScalarWhereInput']; // BalanceScalarWhereInput!
+  }
+  BalanceUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['BalanceWhereUniqueInput'][] | null; // [BalanceWhereUniqueInput!]
+    create?: NexusGenInputs['BalanceCreateWithoutUserInput'][] | null; // [BalanceCreateWithoutUserInput!]
+    delete?: NexusGenInputs['BalanceWhereUniqueInput'][] | null; // [BalanceWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['BalanceScalarWhereInput'][] | null; // [BalanceScalarWhereInput!]
+    disconnect?: NexusGenInputs['BalanceWhereUniqueInput'][] | null; // [BalanceWhereUniqueInput!]
+    set?: NexusGenInputs['BalanceWhereUniqueInput'][] | null; // [BalanceWhereUniqueInput!]
+    update?: NexusGenInputs['BalanceUpdateWithWhereUniqueWithoutUserInput'][] | null; // [BalanceUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['BalanceUpdateManyWithWhereNestedInput'][] | null; // [BalanceUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['BalanceUpsertWithWhereUniqueWithoutUserInput'][] | null; // [BalanceUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  BalanceUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['BalanceUpdateWithoutUserDataInput']; // BalanceUpdateWithoutUserDataInput!
+    where: NexusGenInputs['BalanceWhereUniqueInput']; // BalanceWhereUniqueInput!
+  }
+  BalanceUpdateWithoutUserDataInput: { // input type
+    credits?: number | null; // Int
+  }
+  BalanceUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['BalanceCreateWithoutUserInput']; // BalanceCreateWithoutUserInput!
+    update: NexusGenInputs['BalanceUpdateWithoutUserDataInput']; // BalanceUpdateWithoutUserDataInput!
+    where: NexusGenInputs['BalanceWhereUniqueInput']; // BalanceWhereUniqueInput!
   }
   BalanceWhereInput: { // input type
     AND?: NexusGenInputs['BalanceWhereInput'][] | null; // [BalanceWhereInput!]
@@ -109,10 +153,116 @@ export interface NexusGenInputs {
     password: any; // UserPassword!
     username: string; // String!
   }
+  ScheduledEventCreateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['ScheduledEventWhereUniqueInput'][] | null; // [ScheduledEventWhereUniqueInput!]
+    create?: NexusGenInputs['ScheduledEventCreateWithoutUserInput'][] | null; // [ScheduledEventCreateWithoutUserInput!]
+  }
+  ScheduledEventCreateOneWithoutStockPortfolioEventInput: { // input type
+    create: NexusGenInputs['ScheduledEventCreateWithoutStockPortfolioEventInput']; // ScheduledEventCreateWithoutStockPortfolioEventInput!
+  }
+  ScheduledEventCreateWithoutStockPortfolioEventInput: { // input type
+    days?: NexusGenInputs['ScheduledEventCreatedaysInput'] | null; // ScheduledEventCreatedaysInput
+    hour?: number | null; // Int
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    timezone?: string | null; // String
+  }
+  ScheduledEventCreateWithoutUserInput: { // input type
+    days?: NexusGenInputs['ScheduledEventCreatedaysInput'] | null; // ScheduledEventCreatedaysInput
+    hour?: number | null; // Int
+    id?: string | null; // String
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    next?: any | null; // DateTime
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventCreateManyWithoutScheduledEventInput'] | null; // StockPortfolioEventCreateManyWithoutScheduledEventInput
+    timezone?: string | null; // String
+  }
+  ScheduledEventCreatedaysInput: { // input type
+    set?: NexusGenEnums['Day'][] | null; // [Day!]
+  }
   ScheduledEventFilter: { // input type
     every?: NexusGenInputs['ScheduledEventWhereInput'] | null; // ScheduledEventWhereInput
     none?: NexusGenInputs['ScheduledEventWhereInput'] | null; // ScheduledEventWhereInput
     some?: NexusGenInputs['ScheduledEventWhereInput'] | null; // ScheduledEventWhereInput
+  }
+  ScheduledEventScalarWhereInput: { // input type
+    AND?: NexusGenInputs['ScheduledEventScalarWhereInput'][] | null; // [ScheduledEventScalarWhereInput!]
+    hour?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    interval?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    minute?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    next?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    NOT?: NexusGenInputs['ScheduledEventScalarWhereInput'][] | null; // [ScheduledEventScalarWhereInput!]
+    OR?: NexusGenInputs['ScheduledEventScalarWhereInput'][] | null; // [ScheduledEventScalarWhereInput!]
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
+    timezone?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  ScheduledEventUpdateManyDataInput: { // input type
+    days?: NexusGenInputs['ScheduledEventUpdatedaysInput'] | null; // ScheduledEventUpdatedaysInput
+    hour?: number | null; // Int
+    id?: string | null; // String
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    next?: any | null; // DateTime
+    timezone?: string | null; // String
+  }
+  ScheduledEventUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['ScheduledEventUpdateManyDataInput']; // ScheduledEventUpdateManyDataInput!
+    where: NexusGenInputs['ScheduledEventScalarWhereInput']; // ScheduledEventScalarWhereInput!
+  }
+  ScheduledEventUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['ScheduledEventWhereUniqueInput'][] | null; // [ScheduledEventWhereUniqueInput!]
+    create?: NexusGenInputs['ScheduledEventCreateWithoutUserInput'][] | null; // [ScheduledEventCreateWithoutUserInput!]
+    delete?: NexusGenInputs['ScheduledEventWhereUniqueInput'][] | null; // [ScheduledEventWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['ScheduledEventScalarWhereInput'][] | null; // [ScheduledEventScalarWhereInput!]
+    disconnect?: NexusGenInputs['ScheduledEventWhereUniqueInput'][] | null; // [ScheduledEventWhereUniqueInput!]
+    set?: NexusGenInputs['ScheduledEventWhereUniqueInput'][] | null; // [ScheduledEventWhereUniqueInput!]
+    update?: NexusGenInputs['ScheduledEventUpdateWithWhereUniqueWithoutUserInput'][] | null; // [ScheduledEventUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['ScheduledEventUpdateManyWithWhereNestedInput'][] | null; // [ScheduledEventUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['ScheduledEventUpsertWithWhereUniqueWithoutUserInput'][] | null; // [ScheduledEventUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput: { // input type
+    connect?: NexusGenInputs['ScheduledEventWhereUniqueInput'] | null; // ScheduledEventWhereUniqueInput
+    create?: NexusGenInputs['ScheduledEventCreateWithoutStockPortfolioEventInput'] | null; // ScheduledEventCreateWithoutStockPortfolioEventInput
+    update?: NexusGenInputs['ScheduledEventUpdateWithoutStockPortfolioEventDataInput'] | null; // ScheduledEventUpdateWithoutStockPortfolioEventDataInput
+    upsert?: NexusGenInputs['ScheduledEventUpsertWithoutStockPortfolioEventInput'] | null; // ScheduledEventUpsertWithoutStockPortfolioEventInput
+  }
+  ScheduledEventUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['ScheduledEventUpdateWithoutUserDataInput']; // ScheduledEventUpdateWithoutUserDataInput!
+    where: NexusGenInputs['ScheduledEventWhereUniqueInput']; // ScheduledEventWhereUniqueInput!
+  }
+  ScheduledEventUpdateWithoutStockPortfolioEventDataInput: { // input type
+    days?: NexusGenInputs['ScheduledEventUpdatedaysInput'] | null; // ScheduledEventUpdatedaysInput
+    hour?: number | null; // Int
+    id?: string | null; // String
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    next?: any | null; // DateTime
+    timezone?: string | null; // String
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutScheduledEventInput'] | null; // UserUpdateOneRequiredWithoutScheduledEventInput
+  }
+  ScheduledEventUpdateWithoutUserDataInput: { // input type
+    days?: NexusGenInputs['ScheduledEventUpdatedaysInput'] | null; // ScheduledEventUpdatedaysInput
+    hour?: number | null; // Int
+    id?: string | null; // String
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    next?: any | null; // DateTime
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventUpdateManyWithoutScheduledEventInput'] | null; // StockPortfolioEventUpdateManyWithoutScheduledEventInput
+    timezone?: string | null; // String
+  }
+  ScheduledEventUpdatedaysInput: { // input type
+    set?: NexusGenEnums['Day'][] | null; // [Day!]
+  }
+  ScheduledEventUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['ScheduledEventCreateWithoutUserInput']; // ScheduledEventCreateWithoutUserInput!
+    update: NexusGenInputs['ScheduledEventUpdateWithoutUserDataInput']; // ScheduledEventUpdateWithoutUserDataInput!
+    where: NexusGenInputs['ScheduledEventWhereUniqueInput']; // ScheduledEventWhereUniqueInput!
+  }
+  ScheduledEventUpsertWithoutStockPortfolioEventInput: { // input type
+    create: NexusGenInputs['ScheduledEventCreateWithoutStockPortfolioEventInput']; // ScheduledEventCreateWithoutStockPortfolioEventInput!
+    update: NexusGenInputs['ScheduledEventUpdateWithoutStockPortfolioEventDataInput']; // ScheduledEventUpdateWithoutStockPortfolioEventDataInput!
   }
   ScheduledEventWhereInput: { // input type
     AND?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
@@ -128,6 +278,29 @@ export interface NexusGenInputs {
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
+  ScheduledEventWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
+  SnapshotCreateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['SnapshotWhereUniqueInput'][] | null; // [SnapshotWhereUniqueInput!]
+    create?: NexusGenInputs['SnapshotCreateWithoutStockPortfolioInput'][] | null; // [SnapshotCreateWithoutStockPortfolioInput!]
+  }
+  SnapshotCreateWithoutStockPortfolioInput: { // input type
+    createdAt?: any | null; // DateTime
+    data?: NexusGenInputs['SnapshotCreatedataInput'] | null; // SnapshotCreatedataInput
+    headers?: NexusGenInputs['SnapshotCreateheadersInput'] | null; // SnapshotCreateheadersInput
+    id?: string | null; // String
+    tickers?: NexusGenInputs['SnapshotCreatetickersInput'] | null; // SnapshotCreatetickersInput
+  }
+  SnapshotCreatedataInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SnapshotCreateheadersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SnapshotCreatetickersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
   SnapshotFilter: { // input type
     every?: NexusGenInputs['SnapshotWhereInput'] | null; // SnapshotWhereInput
     none?: NexusGenInputs['SnapshotWhereInput'] | null; // SnapshotWhereInput
@@ -137,6 +310,61 @@ export interface NexusGenInputs {
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     stockPortfolioId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+  }
+  SnapshotScalarWhereInput: { // input type
+    AND?: NexusGenInputs['SnapshotScalarWhereInput'][] | null; // [SnapshotScalarWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['SnapshotScalarWhereInput'][] | null; // [SnapshotScalarWhereInput!]
+    OR?: NexusGenInputs['SnapshotScalarWhereInput'][] | null; // [SnapshotScalarWhereInput!]
+    stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  SnapshotUpdateManyDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    data?: NexusGenInputs['SnapshotUpdatedataInput'] | null; // SnapshotUpdatedataInput
+    headers?: NexusGenInputs['SnapshotUpdateheadersInput'] | null; // SnapshotUpdateheadersInput
+    id?: string | null; // String
+    tickers?: NexusGenInputs['SnapshotUpdatetickersInput'] | null; // SnapshotUpdatetickersInput
+  }
+  SnapshotUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['SnapshotUpdateManyDataInput']; // SnapshotUpdateManyDataInput!
+    where: NexusGenInputs['SnapshotScalarWhereInput']; // SnapshotScalarWhereInput!
+  }
+  SnapshotUpdateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['SnapshotWhereUniqueInput'][] | null; // [SnapshotWhereUniqueInput!]
+    create?: NexusGenInputs['SnapshotCreateWithoutStockPortfolioInput'][] | null; // [SnapshotCreateWithoutStockPortfolioInput!]
+    delete?: NexusGenInputs['SnapshotWhereUniqueInput'][] | null; // [SnapshotWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['SnapshotScalarWhereInput'][] | null; // [SnapshotScalarWhereInput!]
+    disconnect?: NexusGenInputs['SnapshotWhereUniqueInput'][] | null; // [SnapshotWhereUniqueInput!]
+    set?: NexusGenInputs['SnapshotWhereUniqueInput'][] | null; // [SnapshotWhereUniqueInput!]
+    update?: NexusGenInputs['SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+    updateMany?: NexusGenInputs['SnapshotUpdateManyWithWhereNestedInput'][] | null; // [SnapshotUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+  }
+  SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    data: NexusGenInputs['SnapshotUpdateWithoutStockPortfolioDataInput']; // SnapshotUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['SnapshotWhereUniqueInput']; // SnapshotWhereUniqueInput!
+  }
+  SnapshotUpdateWithoutStockPortfolioDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    data?: NexusGenInputs['SnapshotUpdatedataInput'] | null; // SnapshotUpdatedataInput
+    headers?: NexusGenInputs['SnapshotUpdateheadersInput'] | null; // SnapshotUpdateheadersInput
+    id?: string | null; // String
+    tickers?: NexusGenInputs['SnapshotUpdatetickersInput'] | null; // SnapshotUpdatetickersInput
+  }
+  SnapshotUpdatedataInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SnapshotUpdateheadersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SnapshotUpdatetickersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['SnapshotCreateWithoutStockPortfolioInput']; // SnapshotCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['SnapshotUpdateWithoutStockPortfolioDataInput']; // SnapshotUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['SnapshotWhereUniqueInput']; // SnapshotWhereUniqueInput!
   }
   SnapshotWhereInput: { // input type
     AND?: NexusGenInputs['SnapshotWhereInput'][] | null; // [SnapshotWhereInput!]
@@ -156,13 +384,139 @@ export interface NexusGenInputs {
   StockPortfolioCreateInput: { // input type
     name: string; // String!
   }
+  StockPortfolioCreateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioWhereUniqueInput'][] | null; // [StockPortfolioWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioCreateWithoutUserInput'][] | null; // [StockPortfolioCreateWithoutUserInput!]
+  }
+  StockPortfolioCreateOneWithoutStockPortfolioEventInput: { // input type
+    connect: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+  }
   StockPortfolioCreateOneWithoutWebhookInput: { // input type
     connect: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+  }
+  StockPortfolioCreateWithoutStockPortfolioEventInput: { // input type
+    createdAt?: any | null; // DateTime
+    headers?: NexusGenInputs['StockPortfolioCreateheadersInput'] | null; // StockPortfolioCreateheadersInput
+    id?: string | null; // String
+    name: string; // String!
+    settings: NexusGenInputs['StockPortfolioSettingsCreateOneWithoutStockPortfolioInput']; // StockPortfolioSettingsCreateOneWithoutStockPortfolioInput!
+    snapshot?: NexusGenInputs['SnapshotCreateManyWithoutStockPortfolioInput'] | null; // SnapshotCreateManyWithoutStockPortfolioInput
+    tickers?: NexusGenInputs['StockPortfolioCreatetickersInput'] | null; // StockPortfolioCreatetickersInput
+    updatedAt?: any | null; // DateTime
+    user: NexusGenInputs['UserCreateOneWithoutStockPortfolioInput']; // UserCreateOneWithoutStockPortfolioInput!
+    webhook?: NexusGenInputs['WebhookCreateManyWithoutStockPortfolioInput'] | null; // WebhookCreateManyWithoutStockPortfolioInput
+  }
+  StockPortfolioCreateWithoutUserInput: { // input type
+    createdAt?: any | null; // DateTime
+    headers?: NexusGenInputs['StockPortfolioCreateheadersInput'] | null; // StockPortfolioCreateheadersInput
+    id?: string | null; // String
+    name: string; // String!
+    settings: NexusGenInputs['StockPortfolioSettingsCreateOneWithoutStockPortfolioInput']; // StockPortfolioSettingsCreateOneWithoutStockPortfolioInput!
+    snapshot?: NexusGenInputs['SnapshotCreateManyWithoutStockPortfolioInput'] | null; // SnapshotCreateManyWithoutStockPortfolioInput
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventCreateManyWithoutStockPortfolioInput'] | null; // StockPortfolioEventCreateManyWithoutStockPortfolioInput
+    tickers?: NexusGenInputs['StockPortfolioCreatetickersInput'] | null; // StockPortfolioCreatetickersInput
+    updatedAt?: any | null; // DateTime
+    webhook?: NexusGenInputs['WebhookCreateManyWithoutStockPortfolioInput'] | null; // WebhookCreateManyWithoutStockPortfolioInput
+  }
+  StockPortfolioCreateheadersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  StockPortfolioCreatetickersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  StockPortfolioEventCreateInput: { // input type
+    scheduledEvent: NexusGenInputs['ScheduledEventCreateOneWithoutStockPortfolioEventInput']; // ScheduledEventCreateOneWithoutStockPortfolioEventInput!
+    stockPortfolio: NexusGenInputs['StockPortfolioCreateOneWithoutStockPortfolioEventInput']; // StockPortfolioCreateOneWithoutStockPortfolioEventInput!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
+  }
+  StockPortfolioEventCreateManyWithoutScheduledEventInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioEventCreateWithoutScheduledEventInput'][] | null; // [StockPortfolioEventCreateWithoutScheduledEventInput!]
+  }
+  StockPortfolioEventCreateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioEventCreateWithoutStockPortfolioInput'][] | null; // [StockPortfolioEventCreateWithoutStockPortfolioInput!]
+  }
+  StockPortfolioEventCreateWithoutScheduledEventInput: { // input type
+    stockPortfolio: NexusGenInputs['StockPortfolioCreateOneWithoutStockPortfolioEventInput']; // StockPortfolioCreateOneWithoutStockPortfolioEventInput!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
+  }
+  StockPortfolioEventCreateWithoutStockPortfolioInput: { // input type
+    scheduledEvent: NexusGenInputs['ScheduledEventCreateOneWithoutStockPortfolioEventInput']; // ScheduledEventCreateOneWithoutStockPortfolioEventInput!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
   }
   StockPortfolioEventFilter: { // input type
     every?: NexusGenInputs['StockPortfolioEventWhereInput'] | null; // StockPortfolioEventWhereInput
     none?: NexusGenInputs['StockPortfolioEventWhereInput'] | null; // StockPortfolioEventWhereInput
     some?: NexusGenInputs['StockPortfolioEventWhereInput'] | null; // StockPortfolioEventWhereInput
+  }
+  StockPortfolioEventScalarWhereInput: { // input type
+    AND?: NexusGenInputs['StockPortfolioEventScalarWhereInput'][] | null; // [StockPortfolioEventScalarWhereInput!]
+    NOT?: NexusGenInputs['StockPortfolioEventScalarWhereInput'][] | null; // [StockPortfolioEventScalarWhereInput!]
+    OR?: NexusGenInputs['StockPortfolioEventScalarWhereInput'][] | null; // [StockPortfolioEventScalarWhereInput!]
+    scheduledEventId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventUpdateInput: { // input type
+    scheduledEvent?: NexusGenInputs['ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput'] | null; // ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput
+    stockPortfolio?: NexusGenInputs['StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput'] | null; // StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput
+    type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventUpdateManyDataInput: { // input type
+    type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['StockPortfolioEventUpdateManyDataInput']; // StockPortfolioEventUpdateManyDataInput!
+    where: NexusGenInputs['StockPortfolioEventScalarWhereInput']; // StockPortfolioEventScalarWhereInput!
+  }
+  StockPortfolioEventUpdateManyWithoutScheduledEventInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioEventCreateWithoutScheduledEventInput'][] | null; // [StockPortfolioEventCreateWithoutScheduledEventInput!]
+    delete?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['StockPortfolioEventScalarWhereInput'][] | null; // [StockPortfolioEventScalarWhereInput!]
+    disconnect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    set?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    update?: NexusGenInputs['StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput'][] | null; // [StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput!]
+    updateMany?: NexusGenInputs['StockPortfolioEventUpdateManyWithWhereNestedInput'][] | null; // [StockPortfolioEventUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput'][] | null; // [StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput!]
+  }
+  StockPortfolioEventUpdateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioEventCreateWithoutStockPortfolioInput'][] | null; // [StockPortfolioEventCreateWithoutStockPortfolioInput!]
+    delete?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['StockPortfolioEventScalarWhereInput'][] | null; // [StockPortfolioEventScalarWhereInput!]
+    disconnect?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    set?: NexusGenInputs['StockPortfolioEventWhereUniqueInput'][] | null; // [StockPortfolioEventWhereUniqueInput!]
+    update?: NexusGenInputs['StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+    updateMany?: NexusGenInputs['StockPortfolioEventUpdateManyWithWhereNestedInput'][] | null; // [StockPortfolioEventUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+  }
+  StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput: { // input type
+    data: NexusGenInputs['StockPortfolioEventUpdateWithoutScheduledEventDataInput']; // StockPortfolioEventUpdateWithoutScheduledEventDataInput!
+    where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
+  }
+  StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    data: NexusGenInputs['StockPortfolioEventUpdateWithoutStockPortfolioDataInput']; // StockPortfolioEventUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
+  }
+  StockPortfolioEventUpdateWithoutScheduledEventDataInput: { // input type
+    stockPortfolio?: NexusGenInputs['StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput'] | null; // StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput
+    type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventUpdateWithoutStockPortfolioDataInput: { // input type
+    scheduledEvent?: NexusGenInputs['ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput'] | null; // ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput
+    type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput: { // input type
+    create: NexusGenInputs['StockPortfolioEventCreateWithoutScheduledEventInput']; // StockPortfolioEventCreateWithoutScheduledEventInput!
+    update: NexusGenInputs['StockPortfolioEventUpdateWithoutScheduledEventDataInput']; // StockPortfolioEventUpdateWithoutScheduledEventDataInput!
+    where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
+  }
+  StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['StockPortfolioEventCreateWithoutStockPortfolioInput']; // StockPortfolioEventCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['StockPortfolioEventUpdateWithoutStockPortfolioDataInput']; // StockPortfolioEventUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
   }
   StockPortfolioEventWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioEventWhereInput'][] | null; // [StockPortfolioEventWhereInput!]
@@ -173,6 +527,10 @@ export interface NexusGenInputs {
     stockPortfolio?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
     stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
+  }
+  StockPortfolioEventWhereUniqueInput: { // input type
+    scheduledEventId?: string | null; // String
+    stockPortfolioId_type?: NexusGenInputs['StockPortfolioIdTypeCompoundUniqueInput'] | null; // StockPortfolioIdTypeCompoundUniqueInput
   }
   StockPortfolioFilter: { // input type
     every?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
@@ -190,6 +548,10 @@ export interface NexusGenInputs {
     name: string; // String!
     stockPortfolioId: string; // String!
   }
+  StockPortfolioIdTypeCompoundUniqueInput: { // input type
+    stockPortfolioId: string; // String!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
+  }
   StockPortfolioOrderByInput: { // input type
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
@@ -197,9 +559,44 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     userId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
+  StockPortfolioScalarWhereInput: { // input type
+    AND?: NexusGenInputs['StockPortfolioScalarWhereInput'][] | null; // [StockPortfolioScalarWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['StockPortfolioScalarWhereInput'][] | null; // [StockPortfolioScalarWhereInput!]
+    OR?: NexusGenInputs['StockPortfolioScalarWhereInput'][] | null; // [StockPortfolioScalarWhereInput!]
+    snapshot?: NexusGenInputs['SnapshotFilter'] | null; // SnapshotFilter
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    webhook?: NexusGenInputs['WebhookFilter'] | null; // WebhookFilter
+  }
+  StockPortfolioSettingsCreateOneWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioSettingsWhereUniqueInput'] | null; // StockPortfolioSettingsWhereUniqueInput
+    create?: NexusGenInputs['StockPortfolioSettingsCreateWithoutStockPortfolioInput'] | null; // StockPortfolioSettingsCreateWithoutStockPortfolioInput
+  }
+  StockPortfolioSettingsCreateWithoutStockPortfolioInput: { // input type
+    enableSnapshots?: boolean | null; // Boolean
+    pollInterval?: number | null; // Int
+  }
   StockPortfolioSettingsUpdateInput: { // input type
     enableSnapshots?: boolean | null; // Boolean
     pollInterval?: number | null; // Int
+  }
+  StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioSettingsWhereUniqueInput'] | null; // StockPortfolioSettingsWhereUniqueInput
+    create?: NexusGenInputs['StockPortfolioSettingsCreateWithoutStockPortfolioInput'] | null; // StockPortfolioSettingsCreateWithoutStockPortfolioInput
+    update?: NexusGenInputs['StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput'] | null; // StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput
+    upsert?: NexusGenInputs['StockPortfolioSettingsUpsertWithoutStockPortfolioInput'] | null; // StockPortfolioSettingsUpsertWithoutStockPortfolioInput
+  }
+  StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput: { // input type
+    enableSnapshots?: boolean | null; // Boolean
+    pollInterval?: number | null; // Int
+  }
+  StockPortfolioSettingsUpsertWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['StockPortfolioSettingsCreateWithoutStockPortfolioInput']; // StockPortfolioSettingsCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput']; // StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput!
   }
   StockPortfolioSettingsWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioSettingsWhereInput'][] | null; // [StockPortfolioSettingsWhereInput!]
@@ -217,6 +614,78 @@ export interface NexusGenInputs {
     headers?: NexusGenInputs['StockPortfolioHeaderInput'][] | null; // [StockPortfolioHeaderInput!]
     name?: string | null; // String
     tickers?: string[] | null; // [String!]
+  }
+  StockPortfolioUpdateManyDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    headers?: NexusGenInputs['StockPortfolioUpdateheadersInput'] | null; // StockPortfolioUpdateheadersInput
+    id?: string | null; // String
+    name?: string | null; // String
+    tickers?: NexusGenInputs['StockPortfolioUpdatetickersInput'] | null; // StockPortfolioUpdatetickersInput
+    updatedAt?: any | null; // DateTime
+  }
+  StockPortfolioUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['StockPortfolioUpdateManyDataInput']; // StockPortfolioUpdateManyDataInput!
+    where: NexusGenInputs['StockPortfolioScalarWhereInput']; // StockPortfolioScalarWhereInput!
+  }
+  StockPortfolioUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioWhereUniqueInput'][] | null; // [StockPortfolioWhereUniqueInput!]
+    create?: NexusGenInputs['StockPortfolioCreateWithoutUserInput'][] | null; // [StockPortfolioCreateWithoutUserInput!]
+    delete?: NexusGenInputs['StockPortfolioWhereUniqueInput'][] | null; // [StockPortfolioWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['StockPortfolioScalarWhereInput'][] | null; // [StockPortfolioScalarWhereInput!]
+    disconnect?: NexusGenInputs['StockPortfolioWhereUniqueInput'][] | null; // [StockPortfolioWhereUniqueInput!]
+    set?: NexusGenInputs['StockPortfolioWhereUniqueInput'][] | null; // [StockPortfolioWhereUniqueInput!]
+    update?: NexusGenInputs['StockPortfolioUpdateWithWhereUniqueWithoutUserInput'][] | null; // [StockPortfolioUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['StockPortfolioUpdateManyWithWhereNestedInput'][] | null; // [StockPortfolioUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['StockPortfolioUpsertWithWhereUniqueWithoutUserInput'][] | null; // [StockPortfolioUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput: { // input type
+    connect?: NexusGenInputs['StockPortfolioWhereUniqueInput'] | null; // StockPortfolioWhereUniqueInput
+    create?: NexusGenInputs['StockPortfolioCreateWithoutStockPortfolioEventInput'] | null; // StockPortfolioCreateWithoutStockPortfolioEventInput
+    update?: NexusGenInputs['StockPortfolioUpdateWithoutStockPortfolioEventDataInput'] | null; // StockPortfolioUpdateWithoutStockPortfolioEventDataInput
+    upsert?: NexusGenInputs['StockPortfolioUpsertWithoutStockPortfolioEventInput'] | null; // StockPortfolioUpsertWithoutStockPortfolioEventInput
+  }
+  StockPortfolioUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['StockPortfolioUpdateWithoutUserDataInput']; // StockPortfolioUpdateWithoutUserDataInput!
+    where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+  }
+  StockPortfolioUpdateWithoutStockPortfolioEventDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    headers?: NexusGenInputs['StockPortfolioUpdateheadersInput'] | null; // StockPortfolioUpdateheadersInput
+    id?: string | null; // String
+    name?: string | null; // String
+    settings?: NexusGenInputs['StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput'] | null; // StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput
+    snapshot?: NexusGenInputs['SnapshotUpdateManyWithoutStockPortfolioInput'] | null; // SnapshotUpdateManyWithoutStockPortfolioInput
+    tickers?: NexusGenInputs['StockPortfolioUpdatetickersInput'] | null; // StockPortfolioUpdatetickersInput
+    updatedAt?: any | null; // DateTime
+    user?: NexusGenInputs['UserUpdateOneRequiredWithoutStockPortfolioInput'] | null; // UserUpdateOneRequiredWithoutStockPortfolioInput
+    webhook?: NexusGenInputs['WebhookUpdateManyWithoutStockPortfolioInput'] | null; // WebhookUpdateManyWithoutStockPortfolioInput
+  }
+  StockPortfolioUpdateWithoutUserDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    headers?: NexusGenInputs['StockPortfolioUpdateheadersInput'] | null; // StockPortfolioUpdateheadersInput
+    id?: string | null; // String
+    name?: string | null; // String
+    settings?: NexusGenInputs['StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput'] | null; // StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput
+    snapshot?: NexusGenInputs['SnapshotUpdateManyWithoutStockPortfolioInput'] | null; // SnapshotUpdateManyWithoutStockPortfolioInput
+    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventUpdateManyWithoutStockPortfolioInput'] | null; // StockPortfolioEventUpdateManyWithoutStockPortfolioInput
+    tickers?: NexusGenInputs['StockPortfolioUpdatetickersInput'] | null; // StockPortfolioUpdatetickersInput
+    updatedAt?: any | null; // DateTime
+    webhook?: NexusGenInputs['WebhookUpdateManyWithoutStockPortfolioInput'] | null; // WebhookUpdateManyWithoutStockPortfolioInput
+  }
+  StockPortfolioUpdateheadersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  StockPortfolioUpdatetickersInput: { // input type
+    set?: string[] | null; // [String!]
+  }
+  StockPortfolioUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['StockPortfolioCreateWithoutUserInput']; // StockPortfolioCreateWithoutUserInput!
+    update: NexusGenInputs['StockPortfolioUpdateWithoutUserDataInput']; // StockPortfolioUpdateWithoutUserDataInput!
+    where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+  }
+  StockPortfolioUpsertWithoutStockPortfolioEventInput: { // input type
+    create: NexusGenInputs['StockPortfolioCreateWithoutStockPortfolioEventInput']; // StockPortfolioCreateWithoutStockPortfolioEventInput!
+    update: NexusGenInputs['StockPortfolioUpdateWithoutStockPortfolioEventDataInput']; // StockPortfolioUpdateWithoutStockPortfolioEventDataInput!
   }
   StockPortfolioWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
@@ -260,10 +729,54 @@ export interface NexusGenInputs {
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
   }
+  StripeDetailsCreateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['StripeDetailsWhereUniqueInput'][] | null; // [StripeDetailsWhereUniqueInput!]
+    create?: NexusGenInputs['StripeDetailsCreateWithoutUserInput'][] | null; // [StripeDetailsCreateWithoutUserInput!]
+  }
+  StripeDetailsCreateWithoutUserInput: { // input type
+    customerId: string; // String!
+  }
   StripeDetailsFilter: { // input type
     every?: NexusGenInputs['StripeDetailsWhereInput'] | null; // StripeDetailsWhereInput
     none?: NexusGenInputs['StripeDetailsWhereInput'] | null; // StripeDetailsWhereInput
     some?: NexusGenInputs['StripeDetailsWhereInput'] | null; // StripeDetailsWhereInput
+  }
+  StripeDetailsScalarWhereInput: { // input type
+    AND?: NexusGenInputs['StripeDetailsScalarWhereInput'][] | null; // [StripeDetailsScalarWhereInput!]
+    customerId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['StripeDetailsScalarWhereInput'][] | null; // [StripeDetailsScalarWhereInput!]
+    OR?: NexusGenInputs['StripeDetailsScalarWhereInput'][] | null; // [StripeDetailsScalarWhereInput!]
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  StripeDetailsUpdateManyDataInput: { // input type
+    customerId?: string | null; // String
+  }
+  StripeDetailsUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['StripeDetailsUpdateManyDataInput']; // StripeDetailsUpdateManyDataInput!
+    where: NexusGenInputs['StripeDetailsScalarWhereInput']; // StripeDetailsScalarWhereInput!
+  }
+  StripeDetailsUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['StripeDetailsWhereUniqueInput'][] | null; // [StripeDetailsWhereUniqueInput!]
+    create?: NexusGenInputs['StripeDetailsCreateWithoutUserInput'][] | null; // [StripeDetailsCreateWithoutUserInput!]
+    delete?: NexusGenInputs['StripeDetailsWhereUniqueInput'][] | null; // [StripeDetailsWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['StripeDetailsScalarWhereInput'][] | null; // [StripeDetailsScalarWhereInput!]
+    disconnect?: NexusGenInputs['StripeDetailsWhereUniqueInput'][] | null; // [StripeDetailsWhereUniqueInput!]
+    set?: NexusGenInputs['StripeDetailsWhereUniqueInput'][] | null; // [StripeDetailsWhereUniqueInput!]
+    update?: NexusGenInputs['StripeDetailsUpdateWithWhereUniqueWithoutUserInput'][] | null; // [StripeDetailsUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['StripeDetailsUpdateManyWithWhereNestedInput'][] | null; // [StripeDetailsUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['StripeDetailsUpsertWithWhereUniqueWithoutUserInput'][] | null; // [StripeDetailsUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  StripeDetailsUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['StripeDetailsUpdateWithoutUserDataInput']; // StripeDetailsUpdateWithoutUserDataInput!
+    where: NexusGenInputs['StripeDetailsWhereUniqueInput']; // StripeDetailsWhereUniqueInput!
+  }
+  StripeDetailsUpdateWithoutUserDataInput: { // input type
+    customerId?: string | null; // String
+  }
+  StripeDetailsUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['StripeDetailsCreateWithoutUserInput']; // StripeDetailsCreateWithoutUserInput!
+    update: NexusGenInputs['StripeDetailsUpdateWithoutUserDataInput']; // StripeDetailsUpdateWithoutUserDataInput!
+    where: NexusGenInputs['StripeDetailsWhereUniqueInput']; // StripeDetailsWhereUniqueInput!
   }
   StripeDetailsWhereInput: { // input type
     AND?: NexusGenInputs['StripeDetailsWhereInput'][] | null; // [StripeDetailsWhereInput!]
@@ -272,6 +785,22 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['StripeDetailsWhereInput'][] | null; // [StripeDetailsWhereInput!]
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  StripeDetailsWhereUniqueInput: { // input type
+    customerId?: string | null; // String
+    userId?: string | null; // String
+  }
+  TransactionCreateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['TransactionWhereUniqueInput'][] | null; // [TransactionWhereUniqueInput!]
+    create?: NexusGenInputs['TransactionCreateWithoutUserInput'][] | null; // [TransactionCreateWithoutUserInput!]
+  }
+  TransactionCreateWithoutUserInput: { // input type
+    createdAt?: any | null; // DateTime
+    creditsBefore: number; // Int!
+    creditsTransacted: number; // Int!
+    id?: string | null; // String
+    paymentIntentId?: string | null; // String
+    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
   }
   TransactionFilter: { // input type
     every?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
@@ -282,6 +811,58 @@ export interface NexusGenInputs {
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     creditsBefore?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     creditsTransacted?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+  }
+  TransactionScalarWhereInput: { // input type
+    AND?: NexusGenInputs['TransactionScalarWhereInput'][] | null; // [TransactionScalarWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['TransactionScalarWhereInput'][] | null; // [TransactionScalarWhereInput!]
+    OR?: NexusGenInputs['TransactionScalarWhereInput'][] | null; // [TransactionScalarWhereInput!]
+    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
+    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  TransactionUpdateManyDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    creditsBefore?: number | null; // Int
+    creditsTransacted?: number | null; // Int
+    id?: string | null; // String
+    paymentIntentId?: string | null; // String
+    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
+  }
+  TransactionUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['TransactionUpdateManyDataInput']; // TransactionUpdateManyDataInput!
+    where: NexusGenInputs['TransactionScalarWhereInput']; // TransactionScalarWhereInput!
+  }
+  TransactionUpdateManyWithoutUserInput: { // input type
+    connect?: NexusGenInputs['TransactionWhereUniqueInput'][] | null; // [TransactionWhereUniqueInput!]
+    create?: NexusGenInputs['TransactionCreateWithoutUserInput'][] | null; // [TransactionCreateWithoutUserInput!]
+    delete?: NexusGenInputs['TransactionWhereUniqueInput'][] | null; // [TransactionWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['TransactionScalarWhereInput'][] | null; // [TransactionScalarWhereInput!]
+    disconnect?: NexusGenInputs['TransactionWhereUniqueInput'][] | null; // [TransactionWhereUniqueInput!]
+    set?: NexusGenInputs['TransactionWhereUniqueInput'][] | null; // [TransactionWhereUniqueInput!]
+    update?: NexusGenInputs['TransactionUpdateWithWhereUniqueWithoutUserInput'][] | null; // [TransactionUpdateWithWhereUniqueWithoutUserInput!]
+    updateMany?: NexusGenInputs['TransactionUpdateManyWithWhereNestedInput'][] | null; // [TransactionUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['TransactionUpsertWithWhereUniqueWithoutUserInput'][] | null; // [TransactionUpsertWithWhereUniqueWithoutUserInput!]
+  }
+  TransactionUpdateWithWhereUniqueWithoutUserInput: { // input type
+    data: NexusGenInputs['TransactionUpdateWithoutUserDataInput']; // TransactionUpdateWithoutUserDataInput!
+    where: NexusGenInputs['TransactionWhereUniqueInput']; // TransactionWhereUniqueInput!
+  }
+  TransactionUpdateWithoutUserDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    creditsBefore?: number | null; // Int
+    creditsTransacted?: number | null; // Int
+    id?: string | null; // String
+    paymentIntentId?: string | null; // String
+    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
+  }
+  TransactionUpsertWithWhereUniqueWithoutUserInput: { // input type
+    create: NexusGenInputs['TransactionCreateWithoutUserInput']; // TransactionCreateWithoutUserInput!
+    update: NexusGenInputs['TransactionUpdateWithoutUserDataInput']; // TransactionUpdateWithoutUserDataInput!
+    where: NexusGenInputs['TransactionWhereUniqueInput']; // TransactionWhereUniqueInput!
   }
   TransactionWhereInput: { // input type
     AND?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
@@ -311,9 +892,85 @@ export interface NexusGenInputs {
     paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
     status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
   }
+  UserCreateOneWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    create?: NexusGenInputs['UserCreateWithoutStockPortfolioInput'] | null; // UserCreateWithoutStockPortfolioInput
+  }
+  UserCreateWithoutScheduledEventInput: { // input type
+    balance?: NexusGenInputs['BalanceCreateManyWithoutUserInput'] | null; // BalanceCreateManyWithoutUserInput
+    createdAt?: any | null; // DateTime
+    email: string; // String!
+    emailVerified?: boolean | null; // Boolean
+    id?: string | null; // String
+    password: string; // String!
+    stockPortfolio?: NexusGenInputs['StockPortfolioCreateManyWithoutUserInput'] | null; // StockPortfolioCreateManyWithoutUserInput
+    stripeDetails?: NexusGenInputs['StripeDetailsCreateManyWithoutUserInput'] | null; // StripeDetailsCreateManyWithoutUserInput
+    transaction?: NexusGenInputs['TransactionCreateManyWithoutUserInput'] | null; // TransactionCreateManyWithoutUserInput
+    updatedAt?: any | null; // DateTime
+    username: string; // String!
+  }
+  UserCreateWithoutStockPortfolioInput: { // input type
+    balance?: NexusGenInputs['BalanceCreateManyWithoutUserInput'] | null; // BalanceCreateManyWithoutUserInput
+    createdAt?: any | null; // DateTime
+    email: string; // String!
+    emailVerified?: boolean | null; // Boolean
+    id?: string | null; // String
+    password: string; // String!
+    scheduledEvent?: NexusGenInputs['ScheduledEventCreateManyWithoutUserInput'] | null; // ScheduledEventCreateManyWithoutUserInput
+    stripeDetails?: NexusGenInputs['StripeDetailsCreateManyWithoutUserInput'] | null; // StripeDetailsCreateManyWithoutUserInput
+    transaction?: NexusGenInputs['TransactionCreateManyWithoutUserInput'] | null; // TransactionCreateManyWithoutUserInput
+    updatedAt?: any | null; // DateTime
+    username: string; // String!
+  }
   UserIdNameCompoundUniqueInput: { // input type
     name: string; // String!
     userId: string; // String!
+  }
+  UserUpdateOneRequiredWithoutScheduledEventInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    create?: NexusGenInputs['UserCreateWithoutScheduledEventInput'] | null; // UserCreateWithoutScheduledEventInput
+    update?: NexusGenInputs['UserUpdateWithoutScheduledEventDataInput'] | null; // UserUpdateWithoutScheduledEventDataInput
+    upsert?: NexusGenInputs['UserUpsertWithoutScheduledEventInput'] | null; // UserUpsertWithoutScheduledEventInput
+  }
+  UserUpdateOneRequiredWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+    create?: NexusGenInputs['UserCreateWithoutStockPortfolioInput'] | null; // UserCreateWithoutStockPortfolioInput
+    update?: NexusGenInputs['UserUpdateWithoutStockPortfolioDataInput'] | null; // UserUpdateWithoutStockPortfolioDataInput
+    upsert?: NexusGenInputs['UserUpsertWithoutStockPortfolioInput'] | null; // UserUpsertWithoutStockPortfolioInput
+  }
+  UserUpdateWithoutScheduledEventDataInput: { // input type
+    balance?: NexusGenInputs['BalanceUpdateManyWithoutUserInput'] | null; // BalanceUpdateManyWithoutUserInput
+    createdAt?: any | null; // DateTime
+    email?: string | null; // String
+    emailVerified?: boolean | null; // Boolean
+    id?: string | null; // String
+    password?: string | null; // String
+    stockPortfolio?: NexusGenInputs['StockPortfolioUpdateManyWithoutUserInput'] | null; // StockPortfolioUpdateManyWithoutUserInput
+    stripeDetails?: NexusGenInputs['StripeDetailsUpdateManyWithoutUserInput'] | null; // StripeDetailsUpdateManyWithoutUserInput
+    transaction?: NexusGenInputs['TransactionUpdateManyWithoutUserInput'] | null; // TransactionUpdateManyWithoutUserInput
+    updatedAt?: any | null; // DateTime
+    username?: string | null; // String
+  }
+  UserUpdateWithoutStockPortfolioDataInput: { // input type
+    balance?: NexusGenInputs['BalanceUpdateManyWithoutUserInput'] | null; // BalanceUpdateManyWithoutUserInput
+    createdAt?: any | null; // DateTime
+    email?: string | null; // String
+    emailVerified?: boolean | null; // Boolean
+    id?: string | null; // String
+    password?: string | null; // String
+    scheduledEvent?: NexusGenInputs['ScheduledEventUpdateManyWithoutUserInput'] | null; // ScheduledEventUpdateManyWithoutUserInput
+    stripeDetails?: NexusGenInputs['StripeDetailsUpdateManyWithoutUserInput'] | null; // StripeDetailsUpdateManyWithoutUserInput
+    transaction?: NexusGenInputs['TransactionUpdateManyWithoutUserInput'] | null; // TransactionUpdateManyWithoutUserInput
+    updatedAt?: any | null; // DateTime
+    username?: string | null; // String
+  }
+  UserUpsertWithoutScheduledEventInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutScheduledEventInput']; // UserCreateWithoutScheduledEventInput!
+    update: NexusGenInputs['UserUpdateWithoutScheduledEventDataInput']; // UserUpdateWithoutScheduledEventDataInput!
+  }
+  UserUpsertWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['UserCreateWithoutStockPortfolioInput']; // UserCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['UserUpdateWithoutStockPortfolioDataInput']; // UserUpdateWithoutStockPortfolioDataInput!
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
@@ -332,9 +989,26 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
+  UserWhereUniqueInput: { // input type
+    email?: string | null; // String
+    id?: string | null; // String
+    username?: string | null; // String
+  }
   WebhookCreateInput: { // input type
     name: string; // String!
     stockPortfolio: NexusGenInputs['StockPortfolioCreateOneWithoutWebhookInput']; // StockPortfolioCreateOneWithoutWebhookInput!
+    timeout?: number | null; // Int
+    type: NexusGenEnums['WebhookType']; // WebhookType!
+    url: string; // String!
+  }
+  WebhookCreateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['WebhookWhereUniqueInput'][] | null; // [WebhookWhereUniqueInput!]
+    create?: NexusGenInputs['WebhookCreateWithoutStockPortfolioInput'][] | null; // [WebhookCreateWithoutStockPortfolioInput!]
+  }
+  WebhookCreateWithoutStockPortfolioInput: { // input type
+    createdAt?: any | null; // DateTime
+    id?: string | null; // String
+    name: string; // String!
     timeout?: number | null; // Int
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
@@ -348,11 +1022,63 @@ export interface NexusGenInputs {
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
+  WebhookScalarWhereInput: { // input type
+    AND?: NexusGenInputs['WebhookScalarWhereInput'][] | null; // [WebhookScalarWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['WebhookScalarWhereInput'][] | null; // [WebhookScalarWhereInput!]
+    OR?: NexusGenInputs['WebhookScalarWhereInput'][] | null; // [WebhookScalarWhereInput!]
+    stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    timeout?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    type?: NexusGenEnums['WebhookType'] | null; // WebhookType
+    url?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
   WebhookUpdateInput: { // input type
     name?: string | null; // String
     timeout?: number | null; // Int
     type?: NexusGenEnums['WebhookType'] | null; // WebhookType
     url?: string | null; // String
+  }
+  WebhookUpdateManyDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    id?: string | null; // String
+    name?: string | null; // String
+    timeout?: number | null; // Int
+    type?: NexusGenEnums['WebhookType'] | null; // WebhookType
+    url?: string | null; // String
+  }
+  WebhookUpdateManyWithWhereNestedInput: { // input type
+    data: NexusGenInputs['WebhookUpdateManyDataInput']; // WebhookUpdateManyDataInput!
+    where: NexusGenInputs['WebhookScalarWhereInput']; // WebhookScalarWhereInput!
+  }
+  WebhookUpdateManyWithoutStockPortfolioInput: { // input type
+    connect?: NexusGenInputs['WebhookWhereUniqueInput'][] | null; // [WebhookWhereUniqueInput!]
+    create?: NexusGenInputs['WebhookCreateWithoutStockPortfolioInput'][] | null; // [WebhookCreateWithoutStockPortfolioInput!]
+    delete?: NexusGenInputs['WebhookWhereUniqueInput'][] | null; // [WebhookWhereUniqueInput!]
+    deleteMany?: NexusGenInputs['WebhookScalarWhereInput'][] | null; // [WebhookScalarWhereInput!]
+    disconnect?: NexusGenInputs['WebhookWhereUniqueInput'][] | null; // [WebhookWhereUniqueInput!]
+    set?: NexusGenInputs['WebhookWhereUniqueInput'][] | null; // [WebhookWhereUniqueInput!]
+    update?: NexusGenInputs['WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+    updateMany?: NexusGenInputs['WebhookUpdateManyWithWhereNestedInput'][] | null; // [WebhookUpdateManyWithWhereNestedInput!]
+    upsert?: NexusGenInputs['WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput'][] | null; // [WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+  }
+  WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    data: NexusGenInputs['WebhookUpdateWithoutStockPortfolioDataInput']; // WebhookUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
+  }
+  WebhookUpdateWithoutStockPortfolioDataInput: { // input type
+    createdAt?: any | null; // DateTime
+    id?: string | null; // String
+    name?: string | null; // String
+    timeout?: number | null; // Int
+    type?: NexusGenEnums['WebhookType'] | null; // WebhookType
+    url?: string | null; // String
+  }
+  WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput: { // input type
+    create: NexusGenInputs['WebhookCreateWithoutStockPortfolioInput']; // WebhookCreateWithoutStockPortfolioInput!
+    update: NexusGenInputs['WebhookUpdateWithoutStockPortfolioDataInput']; // WebhookUpdateWithoutStockPortfolioDataInput!
+    where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
   }
   WebhookWhereInput: { // input type
     AND?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
@@ -375,6 +1101,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   DataKey_Provider: "IEX_CLOUD"
+  Day: "Fri" | "Mon" | "Sat" | "Sun" | "Thurs" | "Tues" | "Wed"
   OrderByArg: "asc" | "desc"
   OrderDetailType: "PriceBundle"
   StockPortfolioEventType: "DataRetrieved"
@@ -410,6 +1137,15 @@ export interface NexusGenRootTypes {
   ResendVerifyEmailPayload: { // root type
     success: boolean; // Boolean!
   }
+  ScheduledEvent: { // root type
+    days: NexusGenEnums['Day'][]; // [Day!]!
+    hour?: number | null; // Int
+    id: string; // String!
+    interval?: number | null; // Int
+    minute?: number | null; // Int
+    next: any; // DateTime!
+    timezone: string; // String!
+  }
   Snapshot: { // root type
     id: string; // String!
     tickers: string[]; // [String!]!
@@ -434,6 +1170,10 @@ export interface NexusGenRootTypes {
     name: string; // String!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
+  }
+  StockPortfolioEvent: { // root type
+    scheduledEventId: string; // String!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
   }
   StockPortfolioHeader: { // root type
     dataKey: string; // String!
@@ -511,7 +1251,16 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   AddressInput: NexusGenInputs['AddressInput'];
+  BalanceCreateManyWithoutUserInput: NexusGenInputs['BalanceCreateManyWithoutUserInput'];
+  BalanceCreateWithoutUserInput: NexusGenInputs['BalanceCreateWithoutUserInput'];
   BalanceFilter: NexusGenInputs['BalanceFilter'];
+  BalanceScalarWhereInput: NexusGenInputs['BalanceScalarWhereInput'];
+  BalanceUpdateManyDataInput: NexusGenInputs['BalanceUpdateManyDataInput'];
+  BalanceUpdateManyWithWhereNestedInput: NexusGenInputs['BalanceUpdateManyWithWhereNestedInput'];
+  BalanceUpdateManyWithoutUserInput: NexusGenInputs['BalanceUpdateManyWithoutUserInput'];
+  BalanceUpdateWithWhereUniqueWithoutUserInput: NexusGenInputs['BalanceUpdateWithWhereUniqueWithoutUserInput'];
+  BalanceUpdateWithoutUserDataInput: NexusGenInputs['BalanceUpdateWithoutUserDataInput'];
+  BalanceUpsertWithWhereUniqueWithoutUserInput: NexusGenInputs['BalanceUpsertWithWhereUniqueWithoutUserInput'];
   BalanceWhereInput: NexusGenInputs['BalanceWhereInput'];
   BalanceWhereUniqueInput: NexusGenInputs['BalanceWhereUniqueInput'];
   BooleanFilter: NexusGenInputs['BooleanFilter'];
@@ -523,45 +1272,158 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   OrderDetailInput: NexusGenInputs['OrderDetailInput'];
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
   RegisterLocalUserInput: NexusGenInputs['RegisterLocalUserInput'];
+  ScheduledEventCreateManyWithoutUserInput: NexusGenInputs['ScheduledEventCreateManyWithoutUserInput'];
+  ScheduledEventCreateOneWithoutStockPortfolioEventInput: NexusGenInputs['ScheduledEventCreateOneWithoutStockPortfolioEventInput'];
+  ScheduledEventCreateWithoutStockPortfolioEventInput: NexusGenInputs['ScheduledEventCreateWithoutStockPortfolioEventInput'];
+  ScheduledEventCreateWithoutUserInput: NexusGenInputs['ScheduledEventCreateWithoutUserInput'];
+  ScheduledEventCreatedaysInput: NexusGenInputs['ScheduledEventCreatedaysInput'];
   ScheduledEventFilter: NexusGenInputs['ScheduledEventFilter'];
+  ScheduledEventScalarWhereInput: NexusGenInputs['ScheduledEventScalarWhereInput'];
+  ScheduledEventUpdateManyDataInput: NexusGenInputs['ScheduledEventUpdateManyDataInput'];
+  ScheduledEventUpdateManyWithWhereNestedInput: NexusGenInputs['ScheduledEventUpdateManyWithWhereNestedInput'];
+  ScheduledEventUpdateManyWithoutUserInput: NexusGenInputs['ScheduledEventUpdateManyWithoutUserInput'];
+  ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput: NexusGenInputs['ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput'];
+  ScheduledEventUpdateWithWhereUniqueWithoutUserInput: NexusGenInputs['ScheduledEventUpdateWithWhereUniqueWithoutUserInput'];
+  ScheduledEventUpdateWithoutStockPortfolioEventDataInput: NexusGenInputs['ScheduledEventUpdateWithoutStockPortfolioEventDataInput'];
+  ScheduledEventUpdateWithoutUserDataInput: NexusGenInputs['ScheduledEventUpdateWithoutUserDataInput'];
+  ScheduledEventUpdatedaysInput: NexusGenInputs['ScheduledEventUpdatedaysInput'];
+  ScheduledEventUpsertWithWhereUniqueWithoutUserInput: NexusGenInputs['ScheduledEventUpsertWithWhereUniqueWithoutUserInput'];
+  ScheduledEventUpsertWithoutStockPortfolioEventInput: NexusGenInputs['ScheduledEventUpsertWithoutStockPortfolioEventInput'];
   ScheduledEventWhereInput: NexusGenInputs['ScheduledEventWhereInput'];
+  ScheduledEventWhereUniqueInput: NexusGenInputs['ScheduledEventWhereUniqueInput'];
+  SnapshotCreateManyWithoutStockPortfolioInput: NexusGenInputs['SnapshotCreateManyWithoutStockPortfolioInput'];
+  SnapshotCreateWithoutStockPortfolioInput: NexusGenInputs['SnapshotCreateWithoutStockPortfolioInput'];
+  SnapshotCreatedataInput: NexusGenInputs['SnapshotCreatedataInput'];
+  SnapshotCreateheadersInput: NexusGenInputs['SnapshotCreateheadersInput'];
+  SnapshotCreatetickersInput: NexusGenInputs['SnapshotCreatetickersInput'];
   SnapshotFilter: NexusGenInputs['SnapshotFilter'];
   SnapshotOrderByInput: NexusGenInputs['SnapshotOrderByInput'];
+  SnapshotScalarWhereInput: NexusGenInputs['SnapshotScalarWhereInput'];
+  SnapshotUpdateManyDataInput: NexusGenInputs['SnapshotUpdateManyDataInput'];
+  SnapshotUpdateManyWithWhereNestedInput: NexusGenInputs['SnapshotUpdateManyWithWhereNestedInput'];
+  SnapshotUpdateManyWithoutStockPortfolioInput: NexusGenInputs['SnapshotUpdateManyWithoutStockPortfolioInput'];
+  SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput'];
+  SnapshotUpdateWithoutStockPortfolioDataInput: NexusGenInputs['SnapshotUpdateWithoutStockPortfolioDataInput'];
+  SnapshotUpdatedataInput: NexusGenInputs['SnapshotUpdatedataInput'];
+  SnapshotUpdateheadersInput: NexusGenInputs['SnapshotUpdateheadersInput'];
+  SnapshotUpdatetickersInput: NexusGenInputs['SnapshotUpdatetickersInput'];
+  SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput'];
   SnapshotWhereInput: NexusGenInputs['SnapshotWhereInput'];
   SnapshotWhereUniqueInput: NexusGenInputs['SnapshotWhereUniqueInput'];
   StockDataWhereUniqueInput: NexusGenInputs['StockDataWhereUniqueInput'];
   StockPortfolioCreateInput: NexusGenInputs['StockPortfolioCreateInput'];
+  StockPortfolioCreateManyWithoutUserInput: NexusGenInputs['StockPortfolioCreateManyWithoutUserInput'];
+  StockPortfolioCreateOneWithoutStockPortfolioEventInput: NexusGenInputs['StockPortfolioCreateOneWithoutStockPortfolioEventInput'];
   StockPortfolioCreateOneWithoutWebhookInput: NexusGenInputs['StockPortfolioCreateOneWithoutWebhookInput'];
+  StockPortfolioCreateWithoutStockPortfolioEventInput: NexusGenInputs['StockPortfolioCreateWithoutStockPortfolioEventInput'];
+  StockPortfolioCreateWithoutUserInput: NexusGenInputs['StockPortfolioCreateWithoutUserInput'];
+  StockPortfolioCreateheadersInput: NexusGenInputs['StockPortfolioCreateheadersInput'];
+  StockPortfolioCreatetickersInput: NexusGenInputs['StockPortfolioCreatetickersInput'];
+  StockPortfolioEventCreateInput: NexusGenInputs['StockPortfolioEventCreateInput'];
+  StockPortfolioEventCreateManyWithoutScheduledEventInput: NexusGenInputs['StockPortfolioEventCreateManyWithoutScheduledEventInput'];
+  StockPortfolioEventCreateManyWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioEventCreateManyWithoutStockPortfolioInput'];
+  StockPortfolioEventCreateWithoutScheduledEventInput: NexusGenInputs['StockPortfolioEventCreateWithoutScheduledEventInput'];
+  StockPortfolioEventCreateWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioEventCreateWithoutStockPortfolioInput'];
   StockPortfolioEventFilter: NexusGenInputs['StockPortfolioEventFilter'];
+  StockPortfolioEventScalarWhereInput: NexusGenInputs['StockPortfolioEventScalarWhereInput'];
+  StockPortfolioEventUpdateInput: NexusGenInputs['StockPortfolioEventUpdateInput'];
+  StockPortfolioEventUpdateManyDataInput: NexusGenInputs['StockPortfolioEventUpdateManyDataInput'];
+  StockPortfolioEventUpdateManyWithWhereNestedInput: NexusGenInputs['StockPortfolioEventUpdateManyWithWhereNestedInput'];
+  StockPortfolioEventUpdateManyWithoutScheduledEventInput: NexusGenInputs['StockPortfolioEventUpdateManyWithoutScheduledEventInput'];
+  StockPortfolioEventUpdateManyWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioEventUpdateManyWithoutStockPortfolioInput'];
+  StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput: NexusGenInputs['StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput'];
+  StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput'];
+  StockPortfolioEventUpdateWithoutScheduledEventDataInput: NexusGenInputs['StockPortfolioEventUpdateWithoutScheduledEventDataInput'];
+  StockPortfolioEventUpdateWithoutStockPortfolioDataInput: NexusGenInputs['StockPortfolioEventUpdateWithoutStockPortfolioDataInput'];
+  StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput: NexusGenInputs['StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput'];
+  StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput'];
   StockPortfolioEventWhereInput: NexusGenInputs['StockPortfolioEventWhereInput'];
+  StockPortfolioEventWhereUniqueInput: NexusGenInputs['StockPortfolioEventWhereUniqueInput'];
   StockPortfolioFilter: NexusGenInputs['StockPortfolioFilter'];
   StockPortfolioHeaderInput: NexusGenInputs['StockPortfolioHeaderInput'];
   StockPortfolioIdNameCompoundUniqueInput: NexusGenInputs['StockPortfolioIdNameCompoundUniqueInput'];
+  StockPortfolioIdTypeCompoundUniqueInput: NexusGenInputs['StockPortfolioIdTypeCompoundUniqueInput'];
   StockPortfolioOrderByInput: NexusGenInputs['StockPortfolioOrderByInput'];
+  StockPortfolioScalarWhereInput: NexusGenInputs['StockPortfolioScalarWhereInput'];
+  StockPortfolioSettingsCreateOneWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioSettingsCreateOneWithoutStockPortfolioInput'];
+  StockPortfolioSettingsCreateWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioSettingsCreateWithoutStockPortfolioInput'];
   StockPortfolioSettingsUpdateInput: NexusGenInputs['StockPortfolioSettingsUpdateInput'];
+  StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput'];
+  StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput: NexusGenInputs['StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput'];
+  StockPortfolioSettingsUpsertWithoutStockPortfolioInput: NexusGenInputs['StockPortfolioSettingsUpsertWithoutStockPortfolioInput'];
   StockPortfolioSettingsWhereInput: NexusGenInputs['StockPortfolioSettingsWhereInput'];
   StockPortfolioSettingsWhereUniqueInput: NexusGenInputs['StockPortfolioSettingsWhereUniqueInput'];
   StockPortfolioUpdateInput: NexusGenInputs['StockPortfolioUpdateInput'];
+  StockPortfolioUpdateManyDataInput: NexusGenInputs['StockPortfolioUpdateManyDataInput'];
+  StockPortfolioUpdateManyWithWhereNestedInput: NexusGenInputs['StockPortfolioUpdateManyWithWhereNestedInput'];
+  StockPortfolioUpdateManyWithoutUserInput: NexusGenInputs['StockPortfolioUpdateManyWithoutUserInput'];
+  StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput: NexusGenInputs['StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput'];
+  StockPortfolioUpdateWithWhereUniqueWithoutUserInput: NexusGenInputs['StockPortfolioUpdateWithWhereUniqueWithoutUserInput'];
+  StockPortfolioUpdateWithoutStockPortfolioEventDataInput: NexusGenInputs['StockPortfolioUpdateWithoutStockPortfolioEventDataInput'];
+  StockPortfolioUpdateWithoutUserDataInput: NexusGenInputs['StockPortfolioUpdateWithoutUserDataInput'];
+  StockPortfolioUpdateheadersInput: NexusGenInputs['StockPortfolioUpdateheadersInput'];
+  StockPortfolioUpdatetickersInput: NexusGenInputs['StockPortfolioUpdatetickersInput'];
+  StockPortfolioUpsertWithWhereUniqueWithoutUserInput: NexusGenInputs['StockPortfolioUpsertWithWhereUniqueWithoutUserInput'];
+  StockPortfolioUpsertWithoutStockPortfolioEventInput: NexusGenInputs['StockPortfolioUpsertWithoutStockPortfolioEventInput'];
   StockPortfolioWhereInput: NexusGenInputs['StockPortfolioWhereInput'];
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
   StockPortfolioWhereWithoutUserInput: NexusGenInputs['StockPortfolioWhereWithoutUserInput'];
   StringFilter: NexusGenInputs['StringFilter'];
+  StripeDetailsCreateManyWithoutUserInput: NexusGenInputs['StripeDetailsCreateManyWithoutUserInput'];
+  StripeDetailsCreateWithoutUserInput: NexusGenInputs['StripeDetailsCreateWithoutUserInput'];
   StripeDetailsFilter: NexusGenInputs['StripeDetailsFilter'];
+  StripeDetailsScalarWhereInput: NexusGenInputs['StripeDetailsScalarWhereInput'];
+  StripeDetailsUpdateManyDataInput: NexusGenInputs['StripeDetailsUpdateManyDataInput'];
+  StripeDetailsUpdateManyWithWhereNestedInput: NexusGenInputs['StripeDetailsUpdateManyWithWhereNestedInput'];
+  StripeDetailsUpdateManyWithoutUserInput: NexusGenInputs['StripeDetailsUpdateManyWithoutUserInput'];
+  StripeDetailsUpdateWithWhereUniqueWithoutUserInput: NexusGenInputs['StripeDetailsUpdateWithWhereUniqueWithoutUserInput'];
+  StripeDetailsUpdateWithoutUserDataInput: NexusGenInputs['StripeDetailsUpdateWithoutUserDataInput'];
+  StripeDetailsUpsertWithWhereUniqueWithoutUserInput: NexusGenInputs['StripeDetailsUpsertWithWhereUniqueWithoutUserInput'];
   StripeDetailsWhereInput: NexusGenInputs['StripeDetailsWhereInput'];
+  StripeDetailsWhereUniqueInput: NexusGenInputs['StripeDetailsWhereUniqueInput'];
+  TransactionCreateManyWithoutUserInput: NexusGenInputs['TransactionCreateManyWithoutUserInput'];
+  TransactionCreateWithoutUserInput: NexusGenInputs['TransactionCreateWithoutUserInput'];
   TransactionFilter: NexusGenInputs['TransactionFilter'];
   TransactionOrderByInput: NexusGenInputs['TransactionOrderByInput'];
+  TransactionScalarWhereInput: NexusGenInputs['TransactionScalarWhereInput'];
+  TransactionUpdateManyDataInput: NexusGenInputs['TransactionUpdateManyDataInput'];
+  TransactionUpdateManyWithWhereNestedInput: NexusGenInputs['TransactionUpdateManyWithWhereNestedInput'];
+  TransactionUpdateManyWithoutUserInput: NexusGenInputs['TransactionUpdateManyWithoutUserInput'];
+  TransactionUpdateWithWhereUniqueWithoutUserInput: NexusGenInputs['TransactionUpdateWithWhereUniqueWithoutUserInput'];
+  TransactionUpdateWithoutUserDataInput: NexusGenInputs['TransactionUpdateWithoutUserDataInput'];
+  TransactionUpsertWithWhereUniqueWithoutUserInput: NexusGenInputs['TransactionUpsertWithWhereUniqueWithoutUserInput'];
   TransactionWhereInput: NexusGenInputs['TransactionWhereInput'];
   TransactionWhereUniqueInput: NexusGenInputs['TransactionWhereUniqueInput'];
   TransactionWhereWithoutUserInput: NexusGenInputs['TransactionWhereWithoutUserInput'];
+  UserCreateOneWithoutStockPortfolioInput: NexusGenInputs['UserCreateOneWithoutStockPortfolioInput'];
+  UserCreateWithoutScheduledEventInput: NexusGenInputs['UserCreateWithoutScheduledEventInput'];
+  UserCreateWithoutStockPortfolioInput: NexusGenInputs['UserCreateWithoutStockPortfolioInput'];
   UserIdNameCompoundUniqueInput: NexusGenInputs['UserIdNameCompoundUniqueInput'];
+  UserUpdateOneRequiredWithoutScheduledEventInput: NexusGenInputs['UserUpdateOneRequiredWithoutScheduledEventInput'];
+  UserUpdateOneRequiredWithoutStockPortfolioInput: NexusGenInputs['UserUpdateOneRequiredWithoutStockPortfolioInput'];
+  UserUpdateWithoutScheduledEventDataInput: NexusGenInputs['UserUpdateWithoutScheduledEventDataInput'];
+  UserUpdateWithoutStockPortfolioDataInput: NexusGenInputs['UserUpdateWithoutStockPortfolioDataInput'];
+  UserUpsertWithoutScheduledEventInput: NexusGenInputs['UserUpsertWithoutScheduledEventInput'];
+  UserUpsertWithoutStockPortfolioInput: NexusGenInputs['UserUpsertWithoutStockPortfolioInput'];
   UserWhereInput: NexusGenInputs['UserWhereInput'];
+  UserWhereUniqueInput: NexusGenInputs['UserWhereUniqueInput'];
   WebhookCreateInput: NexusGenInputs['WebhookCreateInput'];
+  WebhookCreateManyWithoutStockPortfolioInput: NexusGenInputs['WebhookCreateManyWithoutStockPortfolioInput'];
+  WebhookCreateWithoutStockPortfolioInput: NexusGenInputs['WebhookCreateWithoutStockPortfolioInput'];
   WebhookFilter: NexusGenInputs['WebhookFilter'];
   WebhookOrderByInput: NexusGenInputs['WebhookOrderByInput'];
+  WebhookScalarWhereInput: NexusGenInputs['WebhookScalarWhereInput'];
   WebhookUpdateInput: NexusGenInputs['WebhookUpdateInput'];
+  WebhookUpdateManyDataInput: NexusGenInputs['WebhookUpdateManyDataInput'];
+  WebhookUpdateManyWithWhereNestedInput: NexusGenInputs['WebhookUpdateManyWithWhereNestedInput'];
+  WebhookUpdateManyWithoutStockPortfolioInput: NexusGenInputs['WebhookUpdateManyWithoutStockPortfolioInput'];
+  WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput'];
+  WebhookUpdateWithoutStockPortfolioDataInput: NexusGenInputs['WebhookUpdateWithoutStockPortfolioDataInput'];
+  WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput: NexusGenInputs['WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput'];
   WebhookWhereInput: NexusGenInputs['WebhookWhereInput'];
   WebhookWhereUniqueInput: NexusGenInputs['WebhookWhereUniqueInput'];
   DataKey_Provider: NexusGenEnums['DataKey_Provider'];
+  Day: NexusGenEnums['Day'];
   OrderByArg: NexusGenEnums['OrderByArg'];
   OrderDetailType: NexusGenEnums['OrderDetailType'];
   StockPortfolioEventType: NexusGenEnums['StockPortfolioEventType'];
@@ -590,6 +1452,7 @@ export interface NexusGenFieldTypes {
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    createOneStockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent']; // StockPortfolioEvent!
     createOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
     createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
     createStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
@@ -600,6 +1463,7 @@ export interface NexusGenFieldTypes {
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
     resendVerifyEmail: NexusGenRootTypes['ResendVerifyEmailPayload'] | null; // ResendVerifyEmailPayload
     updateOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
+    updateOneStockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
     updateOneStockPortfolioSettings: NexusGenRootTypes['StockPortfolioSettings'] | null; // StockPortfolioSettings
     updateOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     viewer: NexusGenRootTypes['User'] | null; // User
@@ -636,6 +1500,17 @@ export interface NexusGenFieldTypes {
   ResendVerifyEmailPayload: { // field return type
     success: boolean; // Boolean!
   }
+  ScheduledEvent: { // field return type
+    days: NexusGenEnums['Day'][]; // [Day!]!
+    hour: number | null; // Int
+    id: string; // String!
+    interval: number | null; // Int
+    minute: number | null; // Int
+    next: any; // DateTime!
+    stockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
+    timezone: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Snapshot: { // field return type
     data: any[]; // [JSONObject!]!
     headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
@@ -670,6 +1545,12 @@ export interface NexusGenFieldTypes {
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
     user: NexusGenRootTypes['User']; // User!
+  }
+  StockPortfolioEvent: { // field return type
+    scheduledEvent: NexusGenRootTypes['ScheduledEvent']; // ScheduledEvent!
+    scheduledEventId: string; // String!
+    stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
   }
   StockPortfolioHeader: { // field return type
     dataKey: string; // String!
@@ -762,6 +1643,9 @@ export interface NexusGenArgTypes {
     createOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioCreateInput']; // StockPortfolioCreateInput!
     }
+    createOneStockPortfolioEvent: { // args
+      data: NexusGenInputs['StockPortfolioEventCreateInput']; // StockPortfolioEventCreateInput!
+    }
     createOneWebhook: { // args
       data: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
     }
@@ -787,6 +1671,10 @@ export interface NexusGenArgTypes {
     updateOneStockPortfolio: { // args
       data: NexusGenInputs['StockPortfolioUpdateInput']; // StockPortfolioUpdateInput!
       where: NexusGenInputs['StockPortfolioWhereUniqueInput']; // StockPortfolioWhereUniqueInput!
+    }
+    updateOneStockPortfolioEvent: { // args
+      data: NexusGenInputs['StockPortfolioEventUpdateInput']; // StockPortfolioEventUpdateInput!
+      where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
     }
     updateOneStockPortfolioSettings: { // args
       data: NexusGenInputs['StockPortfolioSettingsUpdateInput']; // StockPortfolioSettingsUpdateInput!
@@ -882,11 +1770,11 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "ScheduledEvent" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioEvent" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventFilter" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventFilter" | "StockPortfolioEventWhereInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceCreateManyWithoutUserInput" | "BalanceCreateWithoutUserInput" | "BalanceFilter" | "BalanceScalarWhereInput" | "BalanceUpdateManyDataInput" | "BalanceUpdateManyWithWhereNestedInput" | "BalanceUpdateManyWithoutUserInput" | "BalanceUpdateWithWhereUniqueWithoutUserInput" | "BalanceUpdateWithoutUserDataInput" | "BalanceUpsertWithWhereUniqueWithoutUserInput" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateManyWithoutUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutUserInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventScalarWhereInput" | "ScheduledEventUpdateManyDataInput" | "ScheduledEventUpdateManyWithWhereNestedInput" | "ScheduledEventUpdateManyWithoutUserInput" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithWhereUniqueWithoutUserInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdateWithoutUserDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventUpsertWithWhereUniqueWithoutUserInput" | "ScheduledEventUpsertWithoutStockPortfolioEventInput" | "ScheduledEventWhereInput" | "ScheduledEventWhereUniqueInput" | "SnapshotCreateManyWithoutStockPortfolioInput" | "SnapshotCreateWithoutStockPortfolioInput" | "SnapshotCreatedataInput" | "SnapshotCreateheadersInput" | "SnapshotCreatetickersInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotScalarWhereInput" | "SnapshotUpdateManyDataInput" | "SnapshotUpdateManyWithWhereNestedInput" | "SnapshotUpdateManyWithoutStockPortfolioInput" | "SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput" | "SnapshotUpdateWithoutStockPortfolioDataInput" | "SnapshotUpdatedataInput" | "SnapshotUpdateheadersInput" | "SnapshotUpdatetickersInput" | "SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateManyWithoutUserInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioCreateWithoutStockPortfolioEventInput" | "StockPortfolioCreateWithoutUserInput" | "StockPortfolioCreateheadersInput" | "StockPortfolioCreatetickersInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventCreateManyWithoutScheduledEventInput" | "StockPortfolioEventCreateManyWithoutStockPortfolioInput" | "StockPortfolioEventCreateWithoutScheduledEventInput" | "StockPortfolioEventCreateWithoutStockPortfolioInput" | "StockPortfolioEventFilter" | "StockPortfolioEventScalarWhereInput" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventUpdateManyDataInput" | "StockPortfolioEventUpdateManyWithWhereNestedInput" | "StockPortfolioEventUpdateManyWithoutScheduledEventInput" | "StockPortfolioEventUpdateManyWithoutStockPortfolioInput" | "StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput" | "StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioEventUpdateWithoutScheduledEventDataInput" | "StockPortfolioEventUpdateWithoutStockPortfolioDataInput" | "StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput" | "StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioScalarWhereInput" | "StockPortfolioSettingsCreateOneWithoutStockPortfolioInput" | "StockPortfolioSettingsCreateWithoutStockPortfolioInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput" | "StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput" | "StockPortfolioSettingsUpsertWithoutStockPortfolioInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioUpdateManyDataInput" | "StockPortfolioUpdateManyWithWhereNestedInput" | "StockPortfolioUpdateManyWithoutUserInput" | "StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput" | "StockPortfolioUpdateWithWhereUniqueWithoutUserInput" | "StockPortfolioUpdateWithoutStockPortfolioEventDataInput" | "StockPortfolioUpdateWithoutUserDataInput" | "StockPortfolioUpdateheadersInput" | "StockPortfolioUpdatetickersInput" | "StockPortfolioUpsertWithWhereUniqueWithoutUserInput" | "StockPortfolioUpsertWithoutStockPortfolioEventInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsCreateManyWithoutUserInput" | "StripeDetailsCreateWithoutUserInput" | "StripeDetailsFilter" | "StripeDetailsScalarWhereInput" | "StripeDetailsUpdateManyDataInput" | "StripeDetailsUpdateManyWithWhereNestedInput" | "StripeDetailsUpdateManyWithoutUserInput" | "StripeDetailsUpdateWithWhereUniqueWithoutUserInput" | "StripeDetailsUpdateWithoutUserDataInput" | "StripeDetailsUpsertWithWhereUniqueWithoutUserInput" | "StripeDetailsWhereInput" | "StripeDetailsWhereUniqueInput" | "TransactionCreateManyWithoutUserInput" | "TransactionCreateWithoutUserInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionScalarWhereInput" | "TransactionUpdateManyDataInput" | "TransactionUpdateManyWithWhereNestedInput" | "TransactionUpdateManyWithoutUserInput" | "TransactionUpdateWithWhereUniqueWithoutUserInput" | "TransactionUpdateWithoutUserDataInput" | "TransactionUpsertWithWhereUniqueWithoutUserInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserCreateOneWithoutStockPortfolioInput" | "UserCreateWithoutScheduledEventInput" | "UserCreateWithoutStockPortfolioInput" | "UserIdNameCompoundUniqueInput" | "UserUpdateOneRequiredWithoutScheduledEventInput" | "UserUpdateOneRequiredWithoutStockPortfolioInput" | "UserUpdateWithoutScheduledEventDataInput" | "UserUpdateWithoutStockPortfolioDataInput" | "UserUpsertWithoutScheduledEventInput" | "UserUpsertWithoutStockPortfolioInput" | "UserWhereInput" | "UserWhereUniqueInput" | "WebhookCreateInput" | "WebhookCreateManyWithoutStockPortfolioInput" | "WebhookCreateWithoutStockPortfolioInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookScalarWhereInput" | "WebhookUpdateInput" | "WebhookUpdateManyDataInput" | "WebhookUpdateManyWithWhereNestedInput" | "WebhookUpdateManyWithoutStockPortfolioInput" | "WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput" | "WebhookUpdateWithoutStockPortfolioDataInput" | "WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
-export type NexusGenEnumNames = "DataKey_Provider" | "OrderByArg" | "OrderDetailType" | "StockPortfolioEventType" | "TransactionStatus" | "WebhookType";
+export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "OrderDetailType" | "StockPortfolioEventType" | "TransactionStatus" | "WebhookType";
 
 export type NexusGenInterfaceNames = "RequestRoot" | "StockPortfolioDataHeader";
 

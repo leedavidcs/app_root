@@ -15,10 +15,63 @@ type Balance {
   user: User!
 }
 
+input BalanceCreateManyWithoutUserInput {
+  connect: [BalanceWhereUniqueInput!]
+  create: [BalanceCreateWithoutUserInput!]
+}
+
+input BalanceCreateWithoutUserInput {
+  credits: Int
+}
+
 input BalanceFilter {
   every: BalanceWhereInput
   none: BalanceWhereInput
   some: BalanceWhereInput
+}
+
+input BalanceScalarWhereInput {
+  AND: [BalanceScalarWhereInput!]
+  credits: IntFilter
+  NOT: [BalanceScalarWhereInput!]
+  OR: [BalanceScalarWhereInput!]
+  userId: StringFilter
+}
+
+input BalanceUpdateManyDataInput {
+  credits: Int
+}
+
+input BalanceUpdateManyWithoutUserInput {
+  connect: [BalanceWhereUniqueInput!]
+  create: [BalanceCreateWithoutUserInput!]
+  delete: [BalanceWhereUniqueInput!]
+  deleteMany: [BalanceScalarWhereInput!]
+  disconnect: [BalanceWhereUniqueInput!]
+  set: [BalanceWhereUniqueInput!]
+  update: [BalanceUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [BalanceUpdateManyWithWhereNestedInput!]
+  upsert: [BalanceUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input BalanceUpdateManyWithWhereNestedInput {
+  data: BalanceUpdateManyDataInput!
+  where: BalanceScalarWhereInput!
+}
+
+input BalanceUpdateWithoutUserDataInput {
+  credits: Int
+}
+
+input BalanceUpdateWithWhereUniqueWithoutUserInput {
+  data: BalanceUpdateWithoutUserDataInput!
+  where: BalanceWhereUniqueInput!
+}
+
+input BalanceUpsertWithWhereUniqueWithoutUserInput {
+  create: BalanceCreateWithoutUserInput!
+  update: BalanceUpdateWithoutUserDataInput!
+  where: BalanceWhereUniqueInput!
 }
 
 input BalanceWhereInput {
@@ -72,6 +125,16 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+enum Day {
+  Fri
+  Mon
+  Sat
+  Sun
+  Thurs
+  Tues
+  Wed
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
@@ -115,6 +178,7 @@ type Mutation implements RequestRoot {
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
+  createOneStockPortfolioEvent(data: StockPortfolioEventCreateInput!): StockPortfolioEvent!
   createOneWebhook(data: WebhookCreateInput!): Webhook!
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
@@ -133,6 +197,7 @@ type Mutation implements RequestRoot {
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
+  updateOneStockPortfolioEvent(data: StockPortfolioEventUpdateInput!, where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent
   updateOneStockPortfolioSettings(data: StockPortfolioSettingsUpdateInput!, where: StockPortfolioSettingsWhereUniqueInput!): StockPortfolioSettings
   updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
 
@@ -262,10 +327,144 @@ type ResendVerifyEmailPayload {
   success: Boolean!
 }
 
+type ScheduledEvent {
+  days: [Day!]!
+  hour: Int
+  id: String!
+  interval: Int
+  minute: Int
+  next: DateTime!
+  stockPortfolioEvent: StockPortfolioEvent
+  timezone: String!
+  user: User!
+}
+
+input ScheduledEventCreatedaysInput {
+  set: [Day!]
+}
+
+input ScheduledEventCreateManyWithoutUserInput {
+  connect: [ScheduledEventWhereUniqueInput!]
+  create: [ScheduledEventCreateWithoutUserInput!]
+}
+
+input ScheduledEventCreateOneWithoutStockPortfolioEventInput {
+  create: ScheduledEventCreateWithoutStockPortfolioEventInput!
+}
+
+input ScheduledEventCreateWithoutStockPortfolioEventInput {
+  days: ScheduledEventCreatedaysInput
+  hour: Int
+  interval: Int
+  minute: Int
+  timezone: String
+}
+
+input ScheduledEventCreateWithoutUserInput {
+  days: ScheduledEventCreatedaysInput
+  hour: Int
+  id: String
+  interval: Int
+  minute: Int
+  next: DateTime
+  stockPortfolioEvent: StockPortfolioEventCreateManyWithoutScheduledEventInput
+  timezone: String
+}
+
 input ScheduledEventFilter {
   every: ScheduledEventWhereInput
   none: ScheduledEventWhereInput
   some: ScheduledEventWhereInput
+}
+
+input ScheduledEventScalarWhereInput {
+  AND: [ScheduledEventScalarWhereInput!]
+  hour: NullableIntFilter
+  id: StringFilter
+  interval: NullableIntFilter
+  minute: NullableIntFilter
+  next: DateTimeFilter
+  NOT: [ScheduledEventScalarWhereInput!]
+  OR: [ScheduledEventScalarWhereInput!]
+  stockPortfolioEvent: StockPortfolioEventFilter
+  timezone: StringFilter
+  userId: StringFilter
+}
+
+input ScheduledEventUpdatedaysInput {
+  set: [Day!]
+}
+
+input ScheduledEventUpdateManyDataInput {
+  days: ScheduledEventUpdatedaysInput
+  hour: Int
+  id: String
+  interval: Int
+  minute: Int
+  next: DateTime
+  timezone: String
+}
+
+input ScheduledEventUpdateManyWithoutUserInput {
+  connect: [ScheduledEventWhereUniqueInput!]
+  create: [ScheduledEventCreateWithoutUserInput!]
+  delete: [ScheduledEventWhereUniqueInput!]
+  deleteMany: [ScheduledEventScalarWhereInput!]
+  disconnect: [ScheduledEventWhereUniqueInput!]
+  set: [ScheduledEventWhereUniqueInput!]
+  update: [ScheduledEventUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ScheduledEventUpdateManyWithWhereNestedInput!]
+  upsert: [ScheduledEventUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ScheduledEventUpdateManyWithWhereNestedInput {
+  data: ScheduledEventUpdateManyDataInput!
+  where: ScheduledEventScalarWhereInput!
+}
+
+input ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput {
+  connect: ScheduledEventWhereUniqueInput
+  create: ScheduledEventCreateWithoutStockPortfolioEventInput
+  update: ScheduledEventUpdateWithoutStockPortfolioEventDataInput
+  upsert: ScheduledEventUpsertWithoutStockPortfolioEventInput
+}
+
+input ScheduledEventUpdateWithoutStockPortfolioEventDataInput {
+  days: ScheduledEventUpdatedaysInput
+  hour: Int
+  id: String
+  interval: Int
+  minute: Int
+  next: DateTime
+  timezone: String
+  user: UserUpdateOneRequiredWithoutScheduledEventInput
+}
+
+input ScheduledEventUpdateWithoutUserDataInput {
+  days: ScheduledEventUpdatedaysInput
+  hour: Int
+  id: String
+  interval: Int
+  minute: Int
+  next: DateTime
+  stockPortfolioEvent: StockPortfolioEventUpdateManyWithoutScheduledEventInput
+  timezone: String
+}
+
+input ScheduledEventUpdateWithWhereUniqueWithoutUserInput {
+  data: ScheduledEventUpdateWithoutUserDataInput!
+  where: ScheduledEventWhereUniqueInput!
+}
+
+input ScheduledEventUpsertWithoutStockPortfolioEventInput {
+  create: ScheduledEventCreateWithoutStockPortfolioEventInput!
+  update: ScheduledEventUpdateWithoutStockPortfolioEventDataInput!
+}
+
+input ScheduledEventUpsertWithWhereUniqueWithoutUserInput {
+  create: ScheduledEventCreateWithoutUserInput!
+  update: ScheduledEventUpdateWithoutUserDataInput!
+  where: ScheduledEventWhereUniqueInput!
 }
 
 input ScheduledEventWhereInput {
@@ -283,12 +482,41 @@ input ScheduledEventWhereInput {
   userId: StringFilter
 }
 
+input ScheduledEventWhereUniqueInput {
+  id: String
+}
+
 type Snapshot {
   data: [JSONObject!]!
   headers: [SnapshotHeader!]!
   id: String!
   stockPortfolio: StockPortfolio!
   tickers: [String!]!
+}
+
+input SnapshotCreatedataInput {
+  set: [String!]
+}
+
+input SnapshotCreateheadersInput {
+  set: [String!]
+}
+
+input SnapshotCreateManyWithoutStockPortfolioInput {
+  connect: [SnapshotWhereUniqueInput!]
+  create: [SnapshotCreateWithoutStockPortfolioInput!]
+}
+
+input SnapshotCreatetickersInput {
+  set: [String!]
+}
+
+input SnapshotCreateWithoutStockPortfolioInput {
+  createdAt: DateTime
+  data: SnapshotCreatedataInput
+  headers: SnapshotCreateheadersInput
+  id: String
+  tickers: SnapshotCreatetickersInput
 }
 
 input SnapshotFilter {
@@ -306,6 +534,71 @@ input SnapshotOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
   stockPortfolioId: OrderByArg
+}
+
+input SnapshotScalarWhereInput {
+  AND: [SnapshotScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  NOT: [SnapshotScalarWhereInput!]
+  OR: [SnapshotScalarWhereInput!]
+  stockPortfolioId: StringFilter
+}
+
+input SnapshotUpdatedataInput {
+  set: [String!]
+}
+
+input SnapshotUpdateheadersInput {
+  set: [String!]
+}
+
+input SnapshotUpdateManyDataInput {
+  createdAt: DateTime
+  data: SnapshotUpdatedataInput
+  headers: SnapshotUpdateheadersInput
+  id: String
+  tickers: SnapshotUpdatetickersInput
+}
+
+input SnapshotUpdateManyWithoutStockPortfolioInput {
+  connect: [SnapshotWhereUniqueInput!]
+  create: [SnapshotCreateWithoutStockPortfolioInput!]
+  delete: [SnapshotWhereUniqueInput!]
+  deleteMany: [SnapshotScalarWhereInput!]
+  disconnect: [SnapshotWhereUniqueInput!]
+  set: [SnapshotWhereUniqueInput!]
+  update: [SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+  updateMany: [SnapshotUpdateManyWithWhereNestedInput!]
+  upsert: [SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+}
+
+input SnapshotUpdateManyWithWhereNestedInput {
+  data: SnapshotUpdateManyDataInput!
+  where: SnapshotScalarWhereInput!
+}
+
+input SnapshotUpdatetickersInput {
+  set: [String!]
+}
+
+input SnapshotUpdateWithoutStockPortfolioDataInput {
+  createdAt: DateTime
+  data: SnapshotUpdatedataInput
+  headers: SnapshotUpdateheadersInput
+  id: String
+  tickers: SnapshotUpdatetickersInput
+}
+
+input SnapshotUpdateWithWhereUniqueWithoutStockPortfolioInput {
+  data: SnapshotUpdateWithoutStockPortfolioDataInput!
+  where: SnapshotWhereUniqueInput!
+}
+
+input SnapshotUpsertWithWhereUniqueWithoutStockPortfolioInput {
+  create: SnapshotCreateWithoutStockPortfolioInput!
+  update: SnapshotUpdateWithoutStockPortfolioDataInput!
+  where: SnapshotWhereUniqueInput!
 }
 
 input SnapshotWhereInput {
@@ -368,17 +661,93 @@ type StockPortfolio {
   user: User!
 }
 
+input StockPortfolioCreateheadersInput {
+  set: [String!]
+}
+
 input StockPortfolioCreateInput {
   name: String!
+}
+
+input StockPortfolioCreateManyWithoutUserInput {
+  connect: [StockPortfolioWhereUniqueInput!]
+  create: [StockPortfolioCreateWithoutUserInput!]
+}
+
+input StockPortfolioCreateOneWithoutStockPortfolioEventInput {
+  connect: StockPortfolioWhereUniqueInput!
 }
 
 input StockPortfolioCreateOneWithoutWebhookInput {
   connect: StockPortfolioWhereUniqueInput!
 }
 
+input StockPortfolioCreatetickersInput {
+  set: [String!]
+}
+
+input StockPortfolioCreateWithoutStockPortfolioEventInput {
+  createdAt: DateTime
+  headers: StockPortfolioCreateheadersInput
+  id: String
+  name: String!
+  settings: StockPortfolioSettingsCreateOneWithoutStockPortfolioInput!
+  snapshot: SnapshotCreateManyWithoutStockPortfolioInput
+  tickers: StockPortfolioCreatetickersInput
+  updatedAt: DateTime
+  user: UserCreateOneWithoutStockPortfolioInput!
+  webhook: WebhookCreateManyWithoutStockPortfolioInput
+}
+
+input StockPortfolioCreateWithoutUserInput {
+  createdAt: DateTime
+  headers: StockPortfolioCreateheadersInput
+  id: String
+  name: String!
+  settings: StockPortfolioSettingsCreateOneWithoutStockPortfolioInput!
+  snapshot: SnapshotCreateManyWithoutStockPortfolioInput
+  stockPortfolioEvent: StockPortfolioEventCreateManyWithoutStockPortfolioInput
+  tickers: StockPortfolioCreatetickersInput
+  updatedAt: DateTime
+  webhook: WebhookCreateManyWithoutStockPortfolioInput
+}
+
 interface StockPortfolioDataHeader {
   dataKey: String!
   name: String!
+}
+
+type StockPortfolioEvent {
+  scheduledEvent: ScheduledEvent!
+  scheduledEventId: String!
+  stockPortfolio: StockPortfolio!
+  type: StockPortfolioEventType!
+}
+
+input StockPortfolioEventCreateInput {
+  scheduledEvent: ScheduledEventCreateOneWithoutStockPortfolioEventInput!
+  stockPortfolio: StockPortfolioCreateOneWithoutStockPortfolioEventInput!
+  type: StockPortfolioEventType!
+}
+
+input StockPortfolioEventCreateManyWithoutScheduledEventInput {
+  connect: [StockPortfolioEventWhereUniqueInput!]
+  create: [StockPortfolioEventCreateWithoutScheduledEventInput!]
+}
+
+input StockPortfolioEventCreateManyWithoutStockPortfolioInput {
+  connect: [StockPortfolioEventWhereUniqueInput!]
+  create: [StockPortfolioEventCreateWithoutStockPortfolioInput!]
+}
+
+input StockPortfolioEventCreateWithoutScheduledEventInput {
+  stockPortfolio: StockPortfolioCreateOneWithoutStockPortfolioEventInput!
+  type: StockPortfolioEventType!
+}
+
+input StockPortfolioEventCreateWithoutStockPortfolioInput {
+  scheduledEvent: ScheduledEventCreateOneWithoutStockPortfolioEventInput!
+  type: StockPortfolioEventType!
 }
 
 input StockPortfolioEventFilter {
@@ -387,8 +756,88 @@ input StockPortfolioEventFilter {
   some: StockPortfolioEventWhereInput
 }
 
+input StockPortfolioEventScalarWhereInput {
+  AND: [StockPortfolioEventScalarWhereInput!]
+  NOT: [StockPortfolioEventScalarWhereInput!]
+  OR: [StockPortfolioEventScalarWhereInput!]
+  scheduledEventId: StringFilter
+  stockPortfolioId: StringFilter
+  type: StockPortfolioEventType
+}
+
 enum StockPortfolioEventType {
   DataRetrieved
+}
+
+input StockPortfolioEventUpdateInput {
+  scheduledEvent: ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput
+  stockPortfolio: StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventUpdateManyDataInput {
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventUpdateManyWithoutScheduledEventInput {
+  connect: [StockPortfolioEventWhereUniqueInput!]
+  create: [StockPortfolioEventCreateWithoutScheduledEventInput!]
+  delete: [StockPortfolioEventWhereUniqueInput!]
+  deleteMany: [StockPortfolioEventScalarWhereInput!]
+  disconnect: [StockPortfolioEventWhereUniqueInput!]
+  set: [StockPortfolioEventWhereUniqueInput!]
+  update: [StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput!]
+  updateMany: [StockPortfolioEventUpdateManyWithWhereNestedInput!]
+  upsert: [StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput!]
+}
+
+input StockPortfolioEventUpdateManyWithoutStockPortfolioInput {
+  connect: [StockPortfolioEventWhereUniqueInput!]
+  create: [StockPortfolioEventCreateWithoutStockPortfolioInput!]
+  delete: [StockPortfolioEventWhereUniqueInput!]
+  deleteMany: [StockPortfolioEventScalarWhereInput!]
+  disconnect: [StockPortfolioEventWhereUniqueInput!]
+  set: [StockPortfolioEventWhereUniqueInput!]
+  update: [StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+  updateMany: [StockPortfolioEventUpdateManyWithWhereNestedInput!]
+  upsert: [StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+}
+
+input StockPortfolioEventUpdateManyWithWhereNestedInput {
+  data: StockPortfolioEventUpdateManyDataInput!
+  where: StockPortfolioEventScalarWhereInput!
+}
+
+input StockPortfolioEventUpdateWithoutScheduledEventDataInput {
+  stockPortfolio: StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventUpdateWithoutStockPortfolioDataInput {
+  scheduledEvent: ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventUpdateWithWhereUniqueWithoutScheduledEventInput {
+  data: StockPortfolioEventUpdateWithoutScheduledEventDataInput!
+  where: StockPortfolioEventWhereUniqueInput!
+}
+
+input StockPortfolioEventUpdateWithWhereUniqueWithoutStockPortfolioInput {
+  data: StockPortfolioEventUpdateWithoutStockPortfolioDataInput!
+  where: StockPortfolioEventWhereUniqueInput!
+}
+
+input StockPortfolioEventUpsertWithWhereUniqueWithoutScheduledEventInput {
+  create: StockPortfolioEventCreateWithoutScheduledEventInput!
+  update: StockPortfolioEventUpdateWithoutScheduledEventDataInput!
+  where: StockPortfolioEventWhereUniqueInput!
+}
+
+input StockPortfolioEventUpsertWithWhereUniqueWithoutStockPortfolioInput {
+  create: StockPortfolioEventCreateWithoutStockPortfolioInput!
+  update: StockPortfolioEventUpdateWithoutStockPortfolioDataInput!
+  where: StockPortfolioEventWhereUniqueInput!
 }
 
 input StockPortfolioEventWhereInput {
@@ -400,6 +849,11 @@ input StockPortfolioEventWhereInput {
   stockPortfolio: StockPortfolioWhereInput
   stockPortfolioId: StringFilter
   type: StockPortfolioEventType
+}
+
+input StockPortfolioEventWhereUniqueInput {
+  scheduledEventId: String
+  stockPortfolioId_type: StockPortfolioIdTypeCompoundUniqueInput
 }
 
 input StockPortfolioFilter {
@@ -429,6 +883,11 @@ input StockPortfolioIdNameCompoundUniqueInput {
   stockPortfolioId: String!
 }
 
+input StockPortfolioIdTypeCompoundUniqueInput {
+  stockPortfolioId: String!
+  type: StockPortfolioEventType!
+}
+
 input StockPortfolioOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
@@ -437,10 +896,34 @@ input StockPortfolioOrderByInput {
   userId: OrderByArg
 }
 
+input StockPortfolioScalarWhereInput {
+  AND: [StockPortfolioScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  name: StringFilter
+  NOT: [StockPortfolioScalarWhereInput!]
+  OR: [StockPortfolioScalarWhereInput!]
+  snapshot: SnapshotFilter
+  stockPortfolioEvent: StockPortfolioEventFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+  webhook: WebhookFilter
+}
+
 type StockPortfolioSettings {
   enableSnapshots: Boolean!
   pollInterval: Int!
   stockPortfolio: StockPortfolio!
+}
+
+input StockPortfolioSettingsCreateOneWithoutStockPortfolioInput {
+  connect: StockPortfolioSettingsWhereUniqueInput
+  create: StockPortfolioSettingsCreateWithoutStockPortfolioInput
+}
+
+input StockPortfolioSettingsCreateWithoutStockPortfolioInput {
+  enableSnapshots: Boolean
+  pollInterval: Int
 }
 
 input StockPortfolioSettingsUpdateInput {
@@ -453,6 +936,23 @@ input StockPortfolioSettingsUpdateInput {
   The time, in minutes, for when more data should be fetched for the stock-portfolio
   """
   pollInterval: Int
+}
+
+input StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput {
+  connect: StockPortfolioSettingsWhereUniqueInput
+  create: StockPortfolioSettingsCreateWithoutStockPortfolioInput
+  update: StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput
+  upsert: StockPortfolioSettingsUpsertWithoutStockPortfolioInput
+}
+
+input StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput {
+  enableSnapshots: Boolean
+  pollInterval: Int
+}
+
+input StockPortfolioSettingsUpsertWithoutStockPortfolioInput {
+  create: StockPortfolioSettingsCreateWithoutStockPortfolioInput!
+  update: StockPortfolioSettingsUpdateWithoutStockPortfolioDataInput!
 }
 
 input StockPortfolioSettingsWhereInput {
@@ -469,10 +969,93 @@ input StockPortfolioSettingsWhereUniqueInput {
   stockPortfolioId: String!
 }
 
+input StockPortfolioUpdateheadersInput {
+  set: [String!]
+}
+
 input StockPortfolioUpdateInput {
   headers: [StockPortfolioHeaderInput!]
   name: String
   tickers: [String!]
+}
+
+input StockPortfolioUpdateManyDataInput {
+  createdAt: DateTime
+  headers: StockPortfolioUpdateheadersInput
+  id: String
+  name: String
+  tickers: StockPortfolioUpdatetickersInput
+  updatedAt: DateTime
+}
+
+input StockPortfolioUpdateManyWithoutUserInput {
+  connect: [StockPortfolioWhereUniqueInput!]
+  create: [StockPortfolioCreateWithoutUserInput!]
+  delete: [StockPortfolioWhereUniqueInput!]
+  deleteMany: [StockPortfolioScalarWhereInput!]
+  disconnect: [StockPortfolioWhereUniqueInput!]
+  set: [StockPortfolioWhereUniqueInput!]
+  update: [StockPortfolioUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StockPortfolioUpdateManyWithWhereNestedInput!]
+  upsert: [StockPortfolioUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StockPortfolioUpdateManyWithWhereNestedInput {
+  data: StockPortfolioUpdateManyDataInput!
+  where: StockPortfolioScalarWhereInput!
+}
+
+input StockPortfolioUpdateOneRequiredWithoutStockPortfolioEventInput {
+  connect: StockPortfolioWhereUniqueInput
+  create: StockPortfolioCreateWithoutStockPortfolioEventInput
+  update: StockPortfolioUpdateWithoutStockPortfolioEventDataInput
+  upsert: StockPortfolioUpsertWithoutStockPortfolioEventInput
+}
+
+input StockPortfolioUpdatetickersInput {
+  set: [String!]
+}
+
+input StockPortfolioUpdateWithoutStockPortfolioEventDataInput {
+  createdAt: DateTime
+  headers: StockPortfolioUpdateheadersInput
+  id: String
+  name: String
+  settings: StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput
+  snapshot: SnapshotUpdateManyWithoutStockPortfolioInput
+  tickers: StockPortfolioUpdatetickersInput
+  updatedAt: DateTime
+  user: UserUpdateOneRequiredWithoutStockPortfolioInput
+  webhook: WebhookUpdateManyWithoutStockPortfolioInput
+}
+
+input StockPortfolioUpdateWithoutUserDataInput {
+  createdAt: DateTime
+  headers: StockPortfolioUpdateheadersInput
+  id: String
+  name: String
+  settings: StockPortfolioSettingsUpdateOneRequiredWithoutStockPortfolioInput
+  snapshot: SnapshotUpdateManyWithoutStockPortfolioInput
+  stockPortfolioEvent: StockPortfolioEventUpdateManyWithoutStockPortfolioInput
+  tickers: StockPortfolioUpdatetickersInput
+  updatedAt: DateTime
+  webhook: WebhookUpdateManyWithoutStockPortfolioInput
+}
+
+input StockPortfolioUpdateWithWhereUniqueWithoutUserInput {
+  data: StockPortfolioUpdateWithoutUserDataInput!
+  where: StockPortfolioWhereUniqueInput!
+}
+
+input StockPortfolioUpsertWithoutStockPortfolioEventInput {
+  create: StockPortfolioCreateWithoutStockPortfolioEventInput!
+  update: StockPortfolioUpdateWithoutStockPortfolioEventDataInput!
+}
+
+input StockPortfolioUpsertWithWhereUniqueWithoutUserInput {
+  create: StockPortfolioCreateWithoutUserInput!
+  update: StockPortfolioUpdateWithoutUserDataInput!
+  where: StockPortfolioWhereUniqueInput!
 }
 
 input StockPortfolioWhereInput {
@@ -529,10 +1112,63 @@ type StripeCard {
   last4: String!
 }
 
+input StripeDetailsCreateManyWithoutUserInput {
+  connect: [StripeDetailsWhereUniqueInput!]
+  create: [StripeDetailsCreateWithoutUserInput!]
+}
+
+input StripeDetailsCreateWithoutUserInput {
+  customerId: String!
+}
+
 input StripeDetailsFilter {
   every: StripeDetailsWhereInput
   none: StripeDetailsWhereInput
   some: StripeDetailsWhereInput
+}
+
+input StripeDetailsScalarWhereInput {
+  AND: [StripeDetailsScalarWhereInput!]
+  customerId: StringFilter
+  NOT: [StripeDetailsScalarWhereInput!]
+  OR: [StripeDetailsScalarWhereInput!]
+  userId: StringFilter
+}
+
+input StripeDetailsUpdateManyDataInput {
+  customerId: String
+}
+
+input StripeDetailsUpdateManyWithoutUserInput {
+  connect: [StripeDetailsWhereUniqueInput!]
+  create: [StripeDetailsCreateWithoutUserInput!]
+  delete: [StripeDetailsWhereUniqueInput!]
+  deleteMany: [StripeDetailsScalarWhereInput!]
+  disconnect: [StripeDetailsWhereUniqueInput!]
+  set: [StripeDetailsWhereUniqueInput!]
+  update: [StripeDetailsUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StripeDetailsUpdateManyWithWhereNestedInput!]
+  upsert: [StripeDetailsUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StripeDetailsUpdateManyWithWhereNestedInput {
+  data: StripeDetailsUpdateManyDataInput!
+  where: StripeDetailsScalarWhereInput!
+}
+
+input StripeDetailsUpdateWithoutUserDataInput {
+  customerId: String
+}
+
+input StripeDetailsUpdateWithWhereUniqueWithoutUserInput {
+  data: StripeDetailsUpdateWithoutUserDataInput!
+  where: StripeDetailsWhereUniqueInput!
+}
+
+input StripeDetailsUpsertWithWhereUniqueWithoutUserInput {
+  create: StripeDetailsCreateWithoutUserInput!
+  update: StripeDetailsUpdateWithoutUserDataInput!
+  where: StripeDetailsWhereUniqueInput!
 }
 
 input StripeDetailsWhereInput {
@@ -542,6 +1178,11 @@ input StripeDetailsWhereInput {
   OR: [StripeDetailsWhereInput!]
   user: UserWhereInput
   userId: StringFilter
+}
+
+input StripeDetailsWhereUniqueInput {
+  customerId: String
+  userId: String
 }
 
 type StripePaymentIntent {
@@ -584,6 +1225,20 @@ type Transaction {
   user: User!
 }
 
+input TransactionCreateManyWithoutUserInput {
+  connect: [TransactionWhereUniqueInput!]
+  create: [TransactionCreateWithoutUserInput!]
+}
+
+input TransactionCreateWithoutUserInput {
+  createdAt: DateTime
+  creditsBefore: Int!
+  creditsTransacted: Int!
+  id: String
+  paymentIntentId: String
+  status: TransactionStatus
+}
+
 input TransactionFilter {
   every: TransactionWhereInput
   none: TransactionWhereInput
@@ -596,10 +1251,69 @@ input TransactionOrderByInput {
   creditsTransacted: OrderByArg
 }
 
+input TransactionScalarWhereInput {
+  AND: [TransactionScalarWhereInput!]
+  createdAt: DateTimeFilter
+  creditsBefore: IntFilter
+  creditsTransacted: IntFilter
+  id: StringFilter
+  NOT: [TransactionScalarWhereInput!]
+  OR: [TransactionScalarWhereInput!]
+  paymentIntentId: NullableStringFilter
+  status: TransactionStatus
+  userId: StringFilter
+}
+
 enum TransactionStatus {
   FAILED
   PENDING
   SUCCEEDED
+}
+
+input TransactionUpdateManyDataInput {
+  createdAt: DateTime
+  creditsBefore: Int
+  creditsTransacted: Int
+  id: String
+  paymentIntentId: String
+  status: TransactionStatus
+}
+
+input TransactionUpdateManyWithoutUserInput {
+  connect: [TransactionWhereUniqueInput!]
+  create: [TransactionCreateWithoutUserInput!]
+  delete: [TransactionWhereUniqueInput!]
+  deleteMany: [TransactionScalarWhereInput!]
+  disconnect: [TransactionWhereUniqueInput!]
+  set: [TransactionWhereUniqueInput!]
+  update: [TransactionUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [TransactionUpdateManyWithWhereNestedInput!]
+  upsert: [TransactionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input TransactionUpdateManyWithWhereNestedInput {
+  data: TransactionUpdateManyDataInput!
+  where: TransactionScalarWhereInput!
+}
+
+input TransactionUpdateWithoutUserDataInput {
+  createdAt: DateTime
+  creditsBefore: Int
+  creditsTransacted: Int
+  id: String
+  paymentIntentId: String
+  status: TransactionStatus
+}
+
+input TransactionUpdateWithWhereUniqueWithoutUserInput {
+  data: TransactionUpdateWithoutUserDataInput!
+  where: TransactionWhereUniqueInput!
+}
+
+input TransactionUpsertWithWhereUniqueWithoutUserInput {
+  create: TransactionCreateWithoutUserInput!
+  update: TransactionUpdateWithoutUserDataInput!
+  where: TransactionWhereUniqueInput!
 }
 
 input TransactionWhereInput {
@@ -644,6 +1358,39 @@ type User {
   username: String!
 }
 
+input UserCreateOneWithoutStockPortfolioInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutStockPortfolioInput
+}
+
+input UserCreateWithoutScheduledEventInput {
+  balance: BalanceCreateManyWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  emailVerified: Boolean
+  id: String
+  password: String!
+  stockPortfolio: StockPortfolioCreateManyWithoutUserInput
+  stripeDetails: StripeDetailsCreateManyWithoutUserInput
+  transaction: TransactionCreateManyWithoutUserInput
+  updatedAt: DateTime
+  username: String!
+}
+
+input UserCreateWithoutStockPortfolioInput {
+  balance: BalanceCreateManyWithoutUserInput
+  createdAt: DateTime
+  email: String!
+  emailVerified: Boolean
+  id: String
+  password: String!
+  scheduledEvent: ScheduledEventCreateManyWithoutUserInput
+  stripeDetails: StripeDetailsCreateManyWithoutUserInput
+  transaction: TransactionCreateManyWithoutUserInput
+  updatedAt: DateTime
+  username: String!
+}
+
 input UserIdNameCompoundUniqueInput {
   name: String!
   userId: String!
@@ -651,6 +1398,58 @@ input UserIdNameCompoundUniqueInput {
 
 """The plain-text password of a user to be hashed"""
 scalar UserPassword
+
+input UserUpdateOneRequiredWithoutScheduledEventInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutScheduledEventInput
+  update: UserUpdateWithoutScheduledEventDataInput
+  upsert: UserUpsertWithoutScheduledEventInput
+}
+
+input UserUpdateOneRequiredWithoutStockPortfolioInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutStockPortfolioInput
+  update: UserUpdateWithoutStockPortfolioDataInput
+  upsert: UserUpsertWithoutStockPortfolioInput
+}
+
+input UserUpdateWithoutScheduledEventDataInput {
+  balance: BalanceUpdateManyWithoutUserInput
+  createdAt: DateTime
+  email: String
+  emailVerified: Boolean
+  id: String
+  password: String
+  stockPortfolio: StockPortfolioUpdateManyWithoutUserInput
+  stripeDetails: StripeDetailsUpdateManyWithoutUserInput
+  transaction: TransactionUpdateManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+}
+
+input UserUpdateWithoutStockPortfolioDataInput {
+  balance: BalanceUpdateManyWithoutUserInput
+  createdAt: DateTime
+  email: String
+  emailVerified: Boolean
+  id: String
+  password: String
+  scheduledEvent: ScheduledEventUpdateManyWithoutUserInput
+  stripeDetails: StripeDetailsUpdateManyWithoutUserInput
+  transaction: TransactionUpdateManyWithoutUserInput
+  updatedAt: DateTime
+  username: String
+}
+
+input UserUpsertWithoutScheduledEventInput {
+  create: UserCreateWithoutScheduledEventInput!
+  update: UserUpdateWithoutScheduledEventDataInput!
+}
+
+input UserUpsertWithoutStockPortfolioInput {
+  create: UserCreateWithoutStockPortfolioInput!
+  update: UserUpdateWithoutStockPortfolioDataInput!
+}
 
 input UserWhereInput {
   AND: [UserWhereInput!]
@@ -668,6 +1467,12 @@ input UserWhereInput {
   transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: String
+  username: String
 }
 
 type Webhook {
@@ -688,6 +1493,20 @@ input WebhookCreateInput {
   url: String!
 }
 
+input WebhookCreateManyWithoutStockPortfolioInput {
+  connect: [WebhookWhereUniqueInput!]
+  create: [WebhookCreateWithoutStockPortfolioInput!]
+}
+
+input WebhookCreateWithoutStockPortfolioInput {
+  createdAt: DateTime
+  id: String
+  name: String!
+  timeout: Int
+  type: WebhookType!
+  url: String!
+}
+
 input WebhookFilter {
   every: WebhookWhereInput
   none: WebhookWhereInput
@@ -699,6 +1518,19 @@ input WebhookOrderByInput {
   name: OrderByArg
 }
 
+input WebhookScalarWhereInput {
+  AND: [WebhookScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  name: StringFilter
+  NOT: [WebhookScalarWhereInput!]
+  OR: [WebhookScalarWhereInput!]
+  stockPortfolioId: StringFilter
+  timeout: IntFilter
+  type: WebhookType
+  url: StringFilter
+}
+
 enum WebhookType {
   StockDataRetrieved
 }
@@ -708,6 +1540,52 @@ input WebhookUpdateInput {
   timeout: Int
   type: WebhookType
   url: String
+}
+
+input WebhookUpdateManyDataInput {
+  createdAt: DateTime
+  id: String
+  name: String
+  timeout: Int
+  type: WebhookType
+  url: String
+}
+
+input WebhookUpdateManyWithoutStockPortfolioInput {
+  connect: [WebhookWhereUniqueInput!]
+  create: [WebhookCreateWithoutStockPortfolioInput!]
+  delete: [WebhookWhereUniqueInput!]
+  deleteMany: [WebhookScalarWhereInput!]
+  disconnect: [WebhookWhereUniqueInput!]
+  set: [WebhookWhereUniqueInput!]
+  update: [WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput!]
+  updateMany: [WebhookUpdateManyWithWhereNestedInput!]
+  upsert: [WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput!]
+}
+
+input WebhookUpdateManyWithWhereNestedInput {
+  data: WebhookUpdateManyDataInput!
+  where: WebhookScalarWhereInput!
+}
+
+input WebhookUpdateWithoutStockPortfolioDataInput {
+  createdAt: DateTime
+  id: String
+  name: String
+  timeout: Int
+  type: WebhookType
+  url: String
+}
+
+input WebhookUpdateWithWhereUniqueWithoutStockPortfolioInput {
+  data: WebhookUpdateWithoutStockPortfolioDataInput!
+  where: WebhookWhereUniqueInput!
+}
+
+input WebhookUpsertWithWhereUniqueWithoutStockPortfolioInput {
+  create: WebhookCreateWithoutStockPortfolioInput!
+  update: WebhookUpdateWithoutStockPortfolioDataInput!
+  where: WebhookWhereUniqueInput!
 }
 
 input WebhookWhereInput {
