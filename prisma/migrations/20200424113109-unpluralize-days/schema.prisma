@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -118,15 +118,15 @@ enum Day {
 }
 
 model ScheduledEvent {
-  id       String   @id @default(cuid())
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
-  days     Day[]
-  hour     Int?
-  minute   Int?
-  interval Int?
-  timezone String   @default("America/Los_Angeles")
-  next     DateTime @default(now())
+  id                  String               @id @default(cuid())
+  user                User                 @relation(fields: [userId], references: [id])
+  userId              String
+  days                Day[]
+  minute              Int?
+  hour                Int?
+  interval            Int?
+  timezone            String               @default("America/Los_Angeles")
+  next                DateTime
 }
 
 enum StockPortfolioEventType {
