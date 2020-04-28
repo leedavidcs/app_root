@@ -15,6 +15,7 @@ const config: readonly IconName[] = [
 	"chevron-up",
 	"cog",
 	"credit-card",
+	"cross",
 	"cube",
 	"drag-handle-vertical",
 	"edit",
