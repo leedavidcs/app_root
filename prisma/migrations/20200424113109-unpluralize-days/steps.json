@@ -1,0 +1,28 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "Day",
+      "values": [
+        "Mon",
+        "Tues",
+        "Wed",
+        "Thurs",
+        "Fri",
+        "Sat",
+        "Sun"
+      ]
+    },
+    {
+      "tag": "DeleteEnum",
+      "enum": "Days"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "ScheduledEvent",
+      "field": "days",
+      "type": "Day"
+    }
+  ]
+}

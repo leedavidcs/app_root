@@ -1,2 +1,3 @@
-export * from "./context";
 export * from "./apollo-server";
+export * from "./context";
+export { schema } from "./nexus";

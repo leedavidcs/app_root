@@ -1,0 +1,343 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "Days",
+      "values": [
+        "Mon",
+        "Tues",
+        "Wed",
+        "Thurs",
+        "Fri",
+        "Sat",
+        "Sun"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "StockPortfolioEventType",
+      "values": [
+        "DataRetrieved"
+      ]
+    },
+    {
+      "tag": "CreateModel",
+      "model": "ScheduledEvent"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "days",
+      "type": "Days",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "minute",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "hour",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "interval",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "timezone",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "timezone"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ScheduledEvent",
+          "field": "timezone"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "\"America/Los_Angeles\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "next",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ScheduledEvent",
+      "field": "stockPortfolioEvent",
+      "type": "StockPortfolioEvent",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "StockPortfolioEvent"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolioEvent",
+      "field": "scheduledEvent",
+      "type": "ScheduledEvent",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[scheduledEventId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolioEvent",
+      "field": "scheduledEventId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "scheduledEventId"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolioEvent",
+      "field": "type",
+      "type": "StockPortfolioEventType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolioEvent",
+      "field": "stockPortfolio",
+      "type": "StockPortfolio",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[stockPortfolioId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolioEvent",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolioEvent",
+      "field": "stockPortfolioId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "StockPortfolioEvent",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[stockPortfolioId, type]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

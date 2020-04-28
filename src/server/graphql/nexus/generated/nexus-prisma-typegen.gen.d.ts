@@ -256,16 +256,18 @@ interface ModelTypes {
   StripeDetails: prisma.StripeDetails
   Webhook: prisma.Webhook
   Snapshot: prisma.Snapshot
+  ScheduledEvent: prisma.ScheduledEvent
+  StockPortfolioEvent: prisma.StockPortfolioEvent
 }
   
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'AND' | 'OR' | 'NOT'
-  ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'scheduledEvent' | 'AND' | 'OR' | 'NOT'
+  ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     stockPortfolioSettings: {
@@ -292,11 +294,19 @@ interface NexusPrismaInputs {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
+    scheduledEvents: {
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
+}
+    stockPortfolioEvents: {
+  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
+  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
+}
 
   },
     User: {
     stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     balance: {
@@ -311,6 +321,10 @@ interface NexusPrismaInputs {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'userId' | 'customerId'
 }
+    scheduledEvent: {
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
+}
 
   },  StockPortfolio: {
     webhook: {
@@ -320,6 +334,10 @@ interface NexusPrismaInputs {
     snapshot: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
+}
+    stockPortfolioEvent: {
+  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
+  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
 }
 
   },  StockPortfolioSettings: {
@@ -338,6 +356,15 @@ interface NexusPrismaInputs {
 
 
   },  Snapshot: {
+
+
+  },  ScheduledEvent: {
+    stockPortfolioEvent: {
+  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
+  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
+}
+
+  },  StockPortfolioEvent: {
 
 
   }
@@ -361,6 +388,10 @@ interface NexusPrismaTypes {
     webhooks: 'Webhook'
     snapshot: 'Snapshot'
     snapshots: 'Snapshot'
+    scheduledEvent: 'ScheduledEvent'
+    scheduledEvents: 'ScheduledEvent'
+    stockPortfolioEvent: 'StockPortfolioEvent'
+    stockPortfolioEvents: 'StockPortfolioEvent'
 
   },
   Mutation: {
@@ -412,6 +443,18 @@ interface NexusPrismaTypes {
     deleteOneSnapshot: 'Snapshot'
     deleteManySnapshot: 'BatchPayload'
     upsertOneSnapshot: 'Snapshot'
+    createOneScheduledEvent: 'ScheduledEvent'
+    updateOneScheduledEvent: 'ScheduledEvent'
+    updateManyScheduledEvent: 'BatchPayload'
+    deleteOneScheduledEvent: 'ScheduledEvent'
+    deleteManyScheduledEvent: 'BatchPayload'
+    upsertOneScheduledEvent: 'ScheduledEvent'
+    createOneStockPortfolioEvent: 'StockPortfolioEvent'
+    updateOneStockPortfolioEvent: 'StockPortfolioEvent'
+    updateManyStockPortfolioEvent: 'BatchPayload'
+    deleteOneStockPortfolioEvent: 'StockPortfolioEvent'
+    deleteManyStockPortfolioEvent: 'BatchPayload'
+    upsertOneStockPortfolioEvent: 'StockPortfolioEvent'
 
   },
   User: {
@@ -420,12 +463,14 @@ interface NexusPrismaTypes {
     emailVerified: 'Boolean'
     password: 'String'
     username: 'String'
+    timezone: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     stockPortfolio: 'StockPortfolio'
     balance: 'Balance'
     transaction: 'Transaction'
     stripeDetails: 'StripeDetails'
+    scheduledEvent: 'ScheduledEvent'
 
 },  StockPortfolio: {
     id: 'String'
@@ -439,6 +484,7 @@ interface NexusPrismaTypes {
     updatedAt: 'DateTime'
     webhook: 'Webhook'
     snapshot: 'Snapshot'
+    stockPortfolioEvent: 'StockPortfolioEvent'
 
 },  StockPortfolioSettings: {
     stockPortfolio: 'StockPortfolio'
@@ -485,6 +531,25 @@ interface NexusPrismaTypes {
     data: 'String'
     createdAt: 'DateTime'
 
+},  ScheduledEvent: {
+    id: 'String'
+    user: 'User'
+    userId: 'String'
+    recurrence: 'Recurrence'
+    days: 'Day'
+    hour: 'Int'
+    minute: 'Int'
+    interval: 'Int'
+    next: 'DateTime'
+    stockPortfolioEvent: 'StockPortfolioEvent'
+
+},  StockPortfolioEvent: {
+    scheduledEvent: 'ScheduledEvent'
+    scheduledEventId: 'String'
+    type: 'StockPortfolioEventType'
+    stockPortfolio: 'StockPortfolio'
+    stockPortfolioId: 'String'
+
 }
 }
 
@@ -497,6 +562,8 @@ interface NexusPrismaMethods {
   StripeDetails: NexusPrismaFields<'StripeDetails'>
   Webhook: NexusPrismaFields<'Webhook'>
   Snapshot: NexusPrismaFields<'Snapshot'>
+  ScheduledEvent: NexusPrismaFields<'ScheduledEvent'>
+  StockPortfolioEvent: NexusPrismaFields<'StockPortfolioEvent'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }

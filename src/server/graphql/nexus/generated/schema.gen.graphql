@@ -72,6 +72,16 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+enum Day {
+  Fri
+  Mon
+  Sat
+  Sun
+  Thurs
+  Tues
+  Wed
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/.
 """
@@ -132,12 +142,29 @@ type Mutation implements RequestRoot {
 
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
+
+  """
+  StockData must be requested as part of the request for this to properly retrieve all data.
+  """
+  runScheduledStockPortfolioDataRetrieve: [StockPortfolioEvent!]!
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
   updateOneStockPortfolioSettings(data: StockPortfolioSettingsUpdateInput!, where: StockPortfolioSettingsWhereUniqueInput!): StockPortfolioSettings
   updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
+  upsertOneStockPortfolioEvent(create: StockPortfolioEventCreateInput!, update: StockPortfolioEventUpdateInput!, where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent!
 
   """The viewer of this request"""
   viewer: User
+}
+
+input NullableIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
 }
 
 input NullableStringFilter {
@@ -199,6 +226,7 @@ type Query implements RequestRoot {
   stockData(where: StockDataWhereUniqueInput!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
+  stockPortfolioEvent(where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent
   stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, orderBy: StockPortfolioOrderByInput, query: String, skip: Int, where: StockPortfolioWhereInput): [StockPortfolio!]!
   stockSymbols(text: String!): [StockDataSearch!]!
   transaction(where: TransactionWhereUniqueInput!): Transaction
@@ -209,6 +237,12 @@ type Query implements RequestRoot {
   webhook(where: WebhookWhereUniqueInput!): Webhook
   webhookCount(where: WebhookWhereInput): Int!
   webhooks(after: WebhookWhereUniqueInput, before: WebhookWhereUniqueInput, first: Int, last: Int, orderBy: WebhookOrderByInput, skip: Int, where: WebhookWhereInput): [Webhook!]!
+}
+
+enum Recurrence {
+  Daily
+  Once
+  Weekly
 }
 
 input RefreshAccessTokenInput {
@@ -249,6 +283,68 @@ interface RequestRoot {
 type ResendVerifyEmailPayload {
   """Status, on whether the email was successfully resent"""
   success: Boolean!
+}
+
+type ScheduledEvent {
+  days: [Day!]!
+  hour: Int
+  id: String!
+  interval: Int
+  minute: Int
+  next: DateTime!
+  stockPortfolioEvent: StockPortfolioEvent
+  user: User!
+}
+
+input ScheduledEventCreatedaysInput {
+  set: [Day!]
+}
+
+input ScheduledEventCreateOneWithoutStockPortfolioEventInput {
+  create: ScheduledEventCreateWithoutStockPortfolioEventInput!
+}
+
+input ScheduledEventCreateWithoutStockPortfolioEventInput {
+  days: ScheduledEventCreatedaysInput
+  hour: Int
+  interval: Int
+  minute: Int
+}
+
+input ScheduledEventFilter {
+  every: ScheduledEventWhereInput
+  none: ScheduledEventWhereInput
+  some: ScheduledEventWhereInput
+}
+
+input ScheduledEventUpdatedaysInput {
+  set: [Day!]!
+}
+
+input ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput {
+  update: ScheduledEventUpdateWithoutStockPortfolioEventDataInput!
+}
+
+input ScheduledEventUpdateWithoutStockPortfolioEventDataInput {
+  days: ScheduledEventUpdatedaysInput
+  hour: Int
+  interval: Int
+  minute: Int
+}
+
+input ScheduledEventWhereInput {
+  AND: [ScheduledEventWhereInput!]
+  hour: NullableIntFilter
+  id: StringFilter
+  interval: NullableIntFilter
+  minute: NullableIntFilter
+  next: DateTimeFilter
+  NOT: [ScheduledEventWhereInput!]
+  OR: [ScheduledEventWhereInput!]
+  recurrence: Recurrence
+  stockPortfolioEvent: StockPortfolioEventFilter
+  user: UserWhereInput
+  userId: StringFilter
 }
 
 type Snapshot {
@@ -340,6 +436,10 @@ input StockPortfolioCreateInput {
   name: String!
 }
 
+input StockPortfolioCreateOneWithoutStockPortfolioEventInput {
+  connect: StockPortfolioWhereUniqueInput!
+}
+
 input StockPortfolioCreateOneWithoutWebhookInput {
   connect: StockPortfolioWhereUniqueInput!
 }
@@ -347,6 +447,50 @@ input StockPortfolioCreateOneWithoutWebhookInput {
 interface StockPortfolioDataHeader {
   dataKey: String!
   name: String!
+}
+
+type StockPortfolioEvent {
+  scheduledEvent: ScheduledEvent!
+  scheduledEventId: String!
+  stockPortfolio: StockPortfolio!
+  type: StockPortfolioEventType!
+}
+
+input StockPortfolioEventCreateInput {
+  scheduledEvent: ScheduledEventCreateOneWithoutStockPortfolioEventInput!
+  stockPortfolio: StockPortfolioCreateOneWithoutStockPortfolioEventInput!
+  type: StockPortfolioEventType!
+}
+
+input StockPortfolioEventFilter {
+  every: StockPortfolioEventWhereInput
+  none: StockPortfolioEventWhereInput
+  some: StockPortfolioEventWhereInput
+}
+
+enum StockPortfolioEventType {
+  DataRetrieved
+}
+
+input StockPortfolioEventUpdateInput {
+  scheduledEvent: ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventWhereInput {
+  AND: [StockPortfolioEventWhereInput!]
+  NOT: [StockPortfolioEventWhereInput!]
+  OR: [StockPortfolioEventWhereInput!]
+  scheduledEvent: ScheduledEventWhereInput
+  scheduledEventId: StringFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  type: StockPortfolioEventType
+}
+
+input StockPortfolioEventWhereUniqueInput {
+  stockPortfolioId: String
+  stockPortfolioId_type: StockPortfolioIdTypeCompoundUniqueInput
 }
 
 input StockPortfolioFilter {
@@ -374,6 +518,11 @@ input StockPortfolioHeaderInput {
 input StockPortfolioIdNameCompoundUniqueInput {
   name: String!
   stockPortfolioId: String!
+}
+
+input StockPortfolioIdTypeCompoundUniqueInput {
+  stockPortfolioId: String!
+  type: StockPortfolioEventType!
 }
 
 input StockPortfolioOrderByInput {
@@ -431,6 +580,7 @@ input StockPortfolioWhereInput {
   OR: [StockPortfolioWhereInput!]
   settings: StockPortfolioSettingsWhereInput
   snapshot: SnapshotFilter
+  stockPortfolioEvent: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
@@ -586,6 +736,7 @@ type User {
   email: EmailAddress!
   emailVerified: Boolean!
   id: String!
+  timezone: String!
   updatedAt: DateTime!
   username: String!
 }
@@ -608,8 +759,10 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
+  scheduledEvent: ScheduledEventFilter
   stockPortfolio: StockPortfolioFilter
   stripeDetails: StripeDetailsFilter
+  timezone: StringFilter
   transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter

@@ -15,3 +15,9 @@
 20200422021403-snapshot-model
 20200422030903-stock-portfolio-settings-model
 20200422072046-1-1-stock-portfolio-settings
+20200424111357-stock-portfolio-event-model
+20200424112428-remove-fk-stock-portfolio-event
+20200424113109-unpluralize-days
+20200424122120-with-default-next
+20200425132909-move-timezone-to-user-model
+20200427103018-scheduled-recurrence
