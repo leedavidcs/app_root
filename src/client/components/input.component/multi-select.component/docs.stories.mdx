@@ -1,0 +1,68 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { MultiSelect } from ".";
+import { StandardStory } from "./stories";
+
+<Meta title="general/inputs/multi-select" component={MultiSelect} />
+
+# MultiSelect
+
+## Description
+A multi-select for forms. Acts as a limited feature set of
+[@blueprintjs/multi-select](https://blueprintjs.com/docs/#select/multi-select).
+
+## Props
+<Props of={MultiSelect} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { MultiSelect } from "@/client/components/input.component/multi-select.component";
+import { action } from "@storybook/addon-actions";
+import Faker from "faker";
+import { range } from "lodash";
+import React, { FC, useCallback, useState } from "react";
+
+const ITEMS_SIZE = 50;
+
+interface IMockItem {
+	key: string;
+}
+
+const MOCK_ITEMS: readonly IMockItem[] = range(ITEMS_SIZE).map(() => ({
+	key: `${Faker.name.firstName()} ${Faker.name.lastName()}`
+}));
+
+export const StandardStory: FC = () => {
+	const [selectedItems, setSelectedItems] = useState<readonly IMockItem[]>([]);
+
+	const onItemRemove = useCallback(
+		(newItems: readonly IMockItem[]) => setSelectedItems(newItems),
+		[]
+	);
+	const onItemsClear = useCallback(() => setSelectedItems([]), []);
+
+	const onItemSelect = useCallback(
+		(item: IMockItem, e) => {
+			setSelectedItems([...selectedItems, item]);
+			action("onItemSelect")(item, e);
+		},
+		[selectedItems]
+	);
+
+	return (
+		<MultiSelect
+			items={MOCK_ITEMS}
+			onItemRemove={onItemRemove}
+			onItemsClear={onItemsClear}
+			onItemSelect={onItemSelect}
+			selectedItems={selectedItems}
+		/>
+	);
+};
+```
