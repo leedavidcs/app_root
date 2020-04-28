@@ -9,7 +9,6 @@ export const ScheduledEvent = objectType({
 		t.model.hour();
 		t.model.minute();
 		t.model.interval();
-		t.model.timezone();
 		t.model.next();
 		t.field("stockPortfolioEvent", {
 			type: "StockPortfolioEvent",

@@ -14,6 +14,7 @@ export const User = objectType({
 				return prisma.balance.findOne({ where: { userId: id } });
 			}
 		});
+		t.model.timezone();
 		t.model.createdAt();
 		t.model.updatedAt();
 	}
