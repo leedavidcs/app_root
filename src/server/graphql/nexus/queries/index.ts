@@ -5,5 +5,6 @@ export * from "./price-bundle.queries";
 export * from "./snapshot.queries";
 export * from "./stock-data.queries";
 export * from "./stock-portfolio.queries";
+export * from "./stock-portfolio-event.queries";
 export * from "./transaction.queries";
 export * from "./webhook.queries";
