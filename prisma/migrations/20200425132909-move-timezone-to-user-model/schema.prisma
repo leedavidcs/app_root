@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -118,22 +118,15 @@ enum Day {
   Sun
 }
 
-enum Recurrence {
-  Once
-  Weekly
-  Daily
-}
-
 model ScheduledEvent {
-  id         String   @id @default(cuid())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  recurrence Recurrence?
-  days       Day[]
-  hour       Int?
-  minute     Int?
-  interval   Int?
-  next       DateTime @default(now())
+  id       String   @id @default(cuid())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  days     Day[]
+  hour     Int?
+  minute   Int?
+  interval Int?
+  next     DateTime @default(now())
 }
 
 enum StockPortfolioEventType {

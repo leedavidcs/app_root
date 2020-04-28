@@ -19,3 +19,5 @@
 20200424112428-remove-fk-stock-portfolio-event
 20200424113109-unpluralize-days
 20200424122120-with-default-next
+20200425132909-move-timezone-to-user-model
+20200427103018-scheduled-recurrence
