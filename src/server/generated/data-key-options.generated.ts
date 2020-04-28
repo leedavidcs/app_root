@@ -141,21 +141,6 @@ export const dataKeyOptions: { name: string; dataKey: string; provider: "IEX_CLO
     "provider": "IEX_CLOUD"
   },
   {
-    "name": "book.asks.price",
-    "dataKey": "book.asks[0].price",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.asks.size",
-    "dataKey": "book.asks[0].size",
-    "provider": "IEX_CLOUD"
-  },
-  {
-    "name": "book.asks.timestamp",
-    "dataKey": "book.asks[0].timestamp",
-    "provider": "IEX_CLOUD"
-  },
-  {
     "name": "book.quote.avgTotalVolume",
     "dataKey": "book.quote.avgTotalVolume",
     "provider": "IEX_CLOUD"

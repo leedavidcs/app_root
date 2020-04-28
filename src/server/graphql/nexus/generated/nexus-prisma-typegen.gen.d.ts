@@ -263,8 +263,8 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'scheduledEvent' | 'AND' | 'OR' | 'NOT'
-  ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'createdAt' | 'updatedAt'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'scheduledEvent' | 'AND' | 'OR' | 'NOT'
+  ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
   filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
@@ -295,8 +295,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
     scheduledEvents: {
-  filtering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next'
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
     stockPortfolioEvents: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
@@ -322,8 +322,8 @@ interface NexusPrismaInputs {
   ordering: 'userId' | 'customerId'
 }
     scheduledEvent: {
-  filtering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'id' | 'userId' | 'hour' | 'minute' | 'interval' | 'timezone' | 'next'
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
 
   },  StockPortfolio: {
@@ -463,6 +463,7 @@ interface NexusPrismaTypes {
     emailVerified: 'Boolean'
     password: 'String'
     username: 'String'
+    timezone: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     stockPortfolio: 'StockPortfolio'
@@ -534,11 +535,11 @@ interface NexusPrismaTypes {
     id: 'String'
     user: 'User'
     userId: 'String'
+    recurrence: 'Recurrence'
     days: 'Day'
     hour: 'Int'
     minute: 'Int'
     interval: 'Int'
-    timezone: 'String'
     next: 'DateTime'
     stockPortfolioEvent: 'StockPortfolioEvent'
 
