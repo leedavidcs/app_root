@@ -319,7 +319,7 @@ input ScheduledEventFilter {
 }
 
 input ScheduledEventUpdatedaysInput {
-  set: [Day!]!
+  set: [Day!]
 }
 
 input ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput {
@@ -490,7 +490,7 @@ input StockPortfolioEventWhereInput {
 }
 
 input StockPortfolioEventWhereUniqueInput {
-  stockPortfolioId: String
+  scheduledEventId: String
   stockPortfolioId_type: StockPortfolioIdTypeCompoundUniqueInput
 }
 

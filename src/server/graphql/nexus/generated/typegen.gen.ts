@@ -136,7 +136,7 @@ export interface NexusGenInputs {
     minute?: number | null; // Int
   }
   ScheduledEventUpdatedaysInput: { // input type
-    set: NexusGenEnums['Day'][]; // [Day!]!
+    set?: NexusGenEnums['Day'][] | null; // [Day!]
   }
   ScheduledEventWhereInput: { // input type
     AND?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
@@ -211,7 +211,7 @@ export interface NexusGenInputs {
     type?: NexusGenEnums['StockPortfolioEventType'] | null; // StockPortfolioEventType
   }
   StockPortfolioEventWhereUniqueInput: { // input type
-    stockPortfolioId?: string | null; // String
+    scheduledEventId?: string | null; // String
     stockPortfolioId_type?: NexusGenInputs['StockPortfolioIdTypeCompoundUniqueInput'] | null; // StockPortfolioIdTypeCompoundUniqueInput
   }
   StockPortfolioFilter: { // input type

@@ -3,7 +3,7 @@ import { inputObjectType } from "@nexus/schema";
 export const ScheduledEventUpdatedaysInput = inputObjectType({
 	name: "ScheduledEventUpdatedaysInput",
 	definition: (t) => {
-		t.list.field("set", { type: "Day", nullable: false });
+		t.list.field("set", { type: "Day" });
 	}
 });
 

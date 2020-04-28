@@ -17,6 +17,7 @@ const MOCK_CACHE_STATE: IClientState = {
 		username: Faker.name.firstName(),
 		createdAt: Faker.date.past(),
 		updatedAt: Faker.date.recent(),
+		timezone: "America/Los_Angeles",
 		__typename: "User"
 	}
 };
