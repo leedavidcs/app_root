@@ -7,10 +7,19 @@ interface IEasyCronIPs {
 	ipv6: readonly string[];
 }
 
-export const isEasyCronIP = async (req: NextApiRequest): Promise<boolean> => {
-	const easyCronIPs: IEasyCronIPs = await fetch(
-		"https://https://www.easycron.com/ips.json"
-	).then((response) => response.json());
+export const isEasyCron = async (req: NextApiRequest): Promise<boolean> => {
+	let easyCronIPs: IEasyCronIPs;
+	try {
+		easyCronIPs = await fetch("https://www.easycron.com/ips.json").then((response) =>
+			response.json()
+		);
+	} catch (err) {
+		/* eslint-disable no-console */
+		console.error(err);
+		/* eslint-enable no-console */
+
+		return false;
+	}
 
 	const clientIp: Maybe<string> = getClientIp(req);
 
@@ -18,6 +27,10 @@ export const isEasyCronIP = async (req: NextApiRequest): Promise<boolean> => {
 	const isEasyCronIPv6: boolean = easyCronIPs.ipv6.some((ipv6) => clientIp === ipv6);
 
 	if (!isEasyCronIPv4 && !isEasyCronIPv6) {
+		return false;
+	}
+
+	if (req.headers["X-EasyCron-Secret"] !== process.env.CRON_SECRET) {
 		return false;
 	}
 
