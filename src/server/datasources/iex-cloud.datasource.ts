@@ -1,7 +1,18 @@
-import { DataSource } from "apollo-datasource";
+import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
+import { IServerContextWithUser } from "@/server/graphql";
+import { Logger, NotFoundError } from "@/server/utils";
+import {
+	Snapshot,
+	StockPortfolio,
+	StockPortfolioSettings,
+	Transaction,
+	User
+} from "@prisma/client";
+import { DataSource, DataSourceConfig } from "apollo-datasource";
+import { ForbiddenError, UserInputError } from "apollo-server-micro";
 import { mapSeries } from "blend-promise-utils";
 import fetch from "isomorphic-unfetch";
-import { chunk, intersection } from "lodash";
+import { camelCase, chunk, get, intersection } from "lodash";
 import { IEXCloudClient } from "node-iex-cloud";
 import Batch from "node-iex-cloud/lib/batch";
 import { Last, Range } from "node-iex-cloud/lib/types";
@@ -38,7 +49,9 @@ const DEFAULT_SYMBOLS_OPTIONS: ISymbolsOptions = {
 	range: "1m"
 };
 
-export class IexCloudAPI extends DataSource {
+export class IexCloudAPI extends DataSource<IServerContextWithUser> {
+	private context!: IServerContextWithUser;
+
 	private _client = new IEXCloudClient(fetch, {
 		sandbox: isDevelopment,
 		publishable: isDevelopment ? sandboxPublishable : publishable,
@@ -110,6 +123,165 @@ export class IexCloudAPI extends DataSource {
 		return mergedResults;
 	}
 
+	public async getStockPortfolioData(
+		{ id, tickers }: Pick<StockPortfolio, "id" | "tickers">,
+		requester?: Pick<User, "id">
+	): Promise<Record<string, any>[]> {
+		const { prisma, user } = this.context;
+		const userToCharge: Pick<User, "id"> = requester ?? user;
+
+		const stockPortfolio = await prisma.stockPortfolio.findOne({
+			where: { id },
+			include: { settings: true }
+		});
+
+		if (!stockPortfolio) {
+			throw new NotFoundError();
+		}
+
+		const cost: number = this.computeCosts(stockPortfolio);
+
+		const dataKeys: readonly string[] = this.getDataKeys(stockPortfolio);
+		const types: Record<IexType, boolean> = this.getTypes(dataKeys);
+
+		let results: Record<string, Record<string, any>>;
+		try {
+			results = await this.symbols(tickers, types);
+		} catch (err) {
+			const message: string = err instanceof Error ? err.message : err;
+
+			Logger.error(message);
+
+			throw new UserInputError("Could not get data. Inputs may be invalid", {
+				invalidArgs: []
+			});
+		}
+
+		await this.createTransaction(cost, userToCharge);
+
+		const mapped: Record<string, any>[] = this.mapToStockPortfolio(results, stockPortfolio);
+
+		if (stockPortfolio.settings.enableSnapshots) {
+			await this.createSnapshot(stockPortfolio, mapped);
+		}
+
+		return mapped;
+	}
+
+	public computeCosts = (
+		stockPortfolio: StockPortfolio & { settings: StockPortfolioSettings }
+	): number => {
+		const { headers, tickers } = stockPortfolio;
+
+		const dataKeys: readonly string[] = headers.map((header) => {
+			const { dataKey } = JSON.parse(header);
+
+			return dataKey;
+		});
+
+		const multiplier: number = tickers.length;
+
+		const types: readonly IexType[] = Object.keys(this.getTypes(dataKeys)) as IexType[];
+
+		const snapshotCost: number = stockPortfolio.settings.enableSnapshots
+			? SnapshotConfig.price
+			: 0;
+		const dataCost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
+
+		const totalCost: number = snapshotCost + dataCost;
+
+		return multiplier * totalCost;
+	};
+
+	private getTypes = (dataKeys: readonly string[]): Record<IexType, boolean> => {
+		const types: Record<IexType, boolean> = dataKeys
+			.map((dataKey) => camelCase(dataKey.split(".")[0]))
+			.reduce((acc, key) => ({ ...acc, [key]: true }), {} as Record<IexType, boolean>);
+
+		return types;
+	};
+
+	private getDataKeys = (stockPortfolio: StockPortfolio): readonly string[] => {
+		const dataKeys: readonly string[] = stockPortfolio.headers.map((header) => {
+			const { dataKey } = JSON.parse(header);
+
+			return dataKey;
+		});
+
+		return dataKeys;
+	};
+
+	private createTransaction = async (
+		cost: number,
+		userToCharge: Pick<User, "id">
+	): Promise<Maybe<Transaction>> => {
+		const { prisma } = this.context;
+
+		if (cost <= 0) {
+			return null;
+		}
+
+		const balance = await prisma.balance.findOne({ where: { userId: userToCharge.id } });
+
+		if (!balance || balance.credits < cost) {
+			throw new ForbiddenError("You have insufficient funds for this request");
+		}
+
+		await prisma.balance.update({
+			where: { userId: userToCharge.id },
+			data: { credits: balance.credits - cost }
+		});
+
+		return prisma.transaction.create({
+			data: {
+				creditsBefore: balance.credits,
+				creditsTransacted: -cost,
+				user: { connect: { id: userToCharge.id } }
+			}
+		});
+	};
+
+	private limitResultToDataKeys = (
+		result: Record<string, any>,
+		dataKeys: readonly string[]
+	): Record<string, any> => {
+		return dataKeys.reduce((acc, dataKey) => ({ ...acc, [dataKey]: get(result, dataKey) }), {});
+	};
+
+	private mapToStockPortfolio = (
+		data: Record<string, Record<string, any>>,
+		stockPortfolio: StockPortfolio
+	): Record<string, any>[] => {
+		const { tickers } = stockPortfolio;
+		const dataKeys: readonly string[] = this.getDataKeys(stockPortfolio);
+
+		return tickers.map((ticker) => {
+			return { ticker, ...this.limitResultToDataKeys(data[ticker], dataKeys) };
+		});
+	};
+
+	private createSnapshot = async (
+		stockPortfolio: StockPortfolio,
+		data: readonly Record<string, any>[]
+	): Promise<Snapshot> => {
+		const { prisma } = this.context;
+
+		return prisma.snapshot.create({
+			data: {
+				stockPortfolio: { connect: { id: stockPortfolio.id } },
+				tickers: { set: stockPortfolio.tickers },
+				headers: {
+					set: stockPortfolio.headers.map((header) => {
+						const { name, dataKey } = JSON.parse(header);
+
+						return JSON.stringify({ name, dataKey });
+					})
+				},
+				data: { set: data.map((datum) => JSON.stringify(datum)) }
+			}
+		});
+	};
+
 	/** Merge results from multiple calls from `resolveTypes` */
 	private mergeResults = (results: readonly Record<string, IexStockResult>[]) => {
 		const final = results.reduce((source, nextResult) => {
@@ -132,5 +304,9 @@ export class IexCloudAPI extends DataSource {
 		});
 
 		return final;
+	};
+
+	public initialize = (config: DataSourceConfig<IServerContextWithUser>) => {
+		this.context = config.context;
 	};
 }
