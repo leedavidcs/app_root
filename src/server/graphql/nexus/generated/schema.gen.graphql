@@ -129,6 +129,7 @@ type Mutation implements RequestRoot {
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
   createStripeSetupIntent: StripeSetupIntent
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
+  deleteOneStockPortfolioEvent(where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent
   deleteOneWebhook(where: WebhookWhereUniqueInput!): Webhook
 
   """Logins in the user, and returns an expiring access token"""
