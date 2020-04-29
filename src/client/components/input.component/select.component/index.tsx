@@ -95,15 +95,13 @@ const ofType = <T extends any, TOriginal = T>() => {
 		}) => {
 			useStyles();
 
-			const itemRenderer: ItemRenderer<ISelectItemType<TOriginal>> = useCallback(
-				(item: ISelectItemType<TOriginal>, rendererProps) => {
+			const itemRenderer: ItemRenderer<InternalItem> = useCallback(
+				(item: InternalItem, rendererProps) => {
 					const Item = _itemRenderer;
 
-					const key = itemMap.from(item.value);
-
-					return <Item key={key} item={item} rendererProps={rendererProps} />;
+					return <Item key={item.key} item={item} rendererProps={rendererProps} />;
 				},
-				[_itemRenderer, itemMap]
+				[_itemRenderer]
 			);
 
 			const toInternalItem = useCallback(

@@ -90,15 +90,32 @@ const ofType = <T extends any, TOriginal = T>() => {
 
 			const itemDisabled = useCallback(() => disabled, [disabled]);
 
-			const itemRenderer: ItemRenderer<IMultiSelectItemType<TOriginal>> = useCallback(
-				(item: IMultiSelectItemType<TOriginal>, rendererProps) => {
+			const itemsEqual = useCallback(
+				(itemA: InternalItem, itemB: InternalItem) => itemA.key === itemB.key,
+				[]
+			);
+
+			const itemRenderer: ItemRenderer<InternalItem> = useCallback(
+				(item: InternalItem, rendererProps) => {
 					const Item = _itemRenderer;
 
-					const key = itemMap?.from(item.value);
+					const isSelected: boolean =
+						(_selectedItems ?? [])
+							.map((selectedItem) => {
+								return itemKey(itemMap.to(selectedItem));
+							})
+							.findIndex((key) => key === item.key) !== -1;
 
-					return <Item key={key} item={item} rendererProps={rendererProps} />;
+					return (
+						<Item
+							key={item.key}
+							isSelected={isSelected}
+							item={item}
+							rendererProps={rendererProps}
+						/>
+					);
 				},
-				[_itemRenderer, itemMap]
+				[_itemRenderer, _selectedItems, itemKey, itemMap]
 			);
 
 			const toInternalItem = useCallback(
@@ -120,11 +137,6 @@ const ofType = <T extends any, TOriginal = T>() => {
 			const selectedItems: InternalItem[] | undefined = useMemo(
 				() => _selectedItems?.map((item) => toInternalItem(itemMap.to(item))),
 				[_selectedItems, itemMap, toInternalItem]
-			);
-
-			const itemsEqual = useCallback(
-				(itemA: InternalItem, itemB: InternalItem) => itemA.key === itemB.key,
-				[]
 			);
 
 			const onItemRemove = useCallback(
@@ -171,6 +183,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 			return (
 				<TypedMultiSelect
 					className={classnames(classes.root, Classes.DARK, className)}
+					activeItem={null}
 					itemDisabled={itemDisabled}
 					itemPredicate={itemPredicate}
 					itemRenderer={itemRenderer}

@@ -6,11 +6,13 @@ import Highlighter from "react-highlight-words";
 import { useStyles } from "./styles";
 
 export interface IItemProps<T> {
+	isSelected?: boolean;
 	item: ISelectItemType<T>;
 	rendererProps: IItemRendererProps;
 }
 
 export const DefaultItemRenderer = <T extends any>({
+	isSelected,
 	item,
 	rendererProps
 }: IItemProps<T>): ReactElement => {
@@ -23,6 +25,7 @@ export const DefaultItemRenderer = <T extends any>({
 			key={item.key}
 			active={modifiers.active}
 			disabled={modifiers.disabled}
+			icon={isSelected ? "tick" : "blank"}
 			onClick={handleClick}
 			text={
 				<div>
