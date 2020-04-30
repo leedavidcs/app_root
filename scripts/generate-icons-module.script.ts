@@ -5,7 +5,6 @@ import path from "path";
 
 const config: readonly IconName[] = [
 	"arrow-right",
-	"badge",
 	"blank",
 	"caret-down",
 	"caret-right",
