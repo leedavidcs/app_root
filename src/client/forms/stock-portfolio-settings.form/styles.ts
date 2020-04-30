@@ -15,7 +15,8 @@ const styles = (theme: CustomTheme) => ({
 		marginBottom: 32
 	},
 	costInfo: {
-		marginTop: 8
+		marginTop: 12,
+		fontWeight: 600
 	},
 	cost: {
 		color: colors.blue4

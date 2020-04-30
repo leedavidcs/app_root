@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 29th 2020 2:21:12 pm
+// This file was generated on: Apr 29th 2020 8:32:12 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -123,8 +123,6 @@ export type StockPortfolioSettingsWhereUniqueInput = {
 export type StockPortfolioSettingsUpdateInput = {
   /** Whether snapshots should be saved per-data-refresh of this stock-portfolio */
   readonly enableSnapshots?: Maybe<Scalars['Boolean']>;
-  /** The time, in minutes, for when more data should be fetched for the stock-portfolio */
-  readonly pollInterval?: Maybe<Scalars['Int']>;
 };
 
 export enum OrderDetailType {
@@ -700,7 +698,6 @@ export type StockPortfolioSettings = {
   readonly __typename?: 'StockPortfolioSettings';
   readonly stockPortfolio: StockPortfolio;
   readonly enableSnapshots: Scalars['Boolean'];
-  readonly pollInterval: Scalars['Int'];
 };
 
 export type StripeCard = {
@@ -920,7 +917,6 @@ export type UserWhereInput = {
 export type StockPortfolioSettingsWhereInput = {
   readonly stockPortfolioId?: Maybe<StringFilter>;
   readonly enableSnapshots?: Maybe<BooleanFilter>;
-  readonly pollInterval?: Maybe<IntFilter>;
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
@@ -973,17 +969,6 @@ export type ScheduledEventFilter = {
   readonly none?: Maybe<ScheduledEventWhereInput>;
 };
 
-export type IntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
-};
-
 export type ScheduledEventWhereInput = {
   readonly id?: Maybe<StringFilter>;
   readonly userId?: Maybe<StringFilter>;
@@ -1032,6 +1017,17 @@ export type StripeDetailsWhereInput = {
 };
 
 export type NullableIntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
+
+export type IntFilter = {
   readonly equals?: Maybe<Scalars['Int']>;
   readonly not?: Maybe<Scalars['Int']>;
   readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
@@ -1320,7 +1316,7 @@ export type UpdateStockPortfolioSettingsMutation = (
   { readonly __typename?: 'Mutation' }
   & { readonly updateOneStockPortfolioSettings?: Maybe<(
     { readonly __typename?: 'StockPortfolioSettings' }
-    & Pick<StockPortfolioSettings, 'enableSnapshots' | 'pollInterval'>
+    & Pick<StockPortfolioSettings, 'enableSnapshots'>
     & { readonly stockPortfolio: (
       { readonly __typename?: 'StockPortfolio' }
       & Pick<StockPortfolio, 'id' | 'name'>
@@ -1448,7 +1444,7 @@ export type GetOneStockPortfolioQuery = (
       & Pick<User, 'id' | 'username'>
     ), readonly settings: (
       { readonly __typename?: 'StockPortfolioSettings' }
-      & Pick<StockPortfolioSettings, 'enableSnapshots' | 'pollInterval'>
+      & Pick<StockPortfolioSettings, 'enableSnapshots'>
     ) }
   )> }
 );
@@ -2169,7 +2165,6 @@ export const UpdateStockPortfolioSettingsDocument = gql`
       name
     }
     enableSnapshots
-    pollInterval
   }
 }
     `;
@@ -2470,7 +2465,6 @@ export const GetOneStockPortfolioDocument = gql`
     }
     settings {
       enableSnapshots
-      pollInterval
     }
   }
 }

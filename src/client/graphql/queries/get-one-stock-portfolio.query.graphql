@@ -21,7 +21,6 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 		}
 		settings {
 			enableSnapshots
-			pollInterval
 		}
 	}
 }

@@ -60,8 +60,7 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 				settings: {
 					__typename: "StockPortfolioSettings",
 					id: Faker.random.uuid(),
-					enableSnapshots: Faker.random.boolean(),
-					pollInterval: 100
+					enableSnapshots: Faker.random.boolean()
 				},
 				__typename: "StockPortfolio"
 			}

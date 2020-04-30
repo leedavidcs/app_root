@@ -8,6 +8,5 @@ mutation UpdateStockPortfolioSettings(
 			name
 		}
 		enableSnapshots
-		pollInterval
 	}
 }
