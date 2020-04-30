@@ -345,7 +345,7 @@ input ScheduledEventWhereInput {
   NOT: [ScheduledEventWhereInput!]
   OR: [ScheduledEventWhereInput!]
   recurrence: Recurrence
-  stockPortfolioEvent: StockPortfolioEventFilter
+  StockPortfolioEvent: StockPortfolioEventFilter
   user: UserWhereInput
   userId: StringFilter
 }
@@ -575,12 +575,12 @@ input StockPortfolioWhereInput {
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
   settings: StockPortfolioSettingsWhereInput
-  snapshot: SnapshotFilter
-  stockPortfolioEvent: StockPortfolioEventFilter
+  Snapshot: SnapshotFilter
+  StockPortfolioEvent: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
-  webhook: WebhookFilter
+  Webhook: WebhookFilter
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -747,7 +747,7 @@ scalar UserPassword
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  balance: BalanceFilter
+  Balance: BalanceFilter
   createdAt: DateTimeFilter
   email: StringFilter
   emailVerified: BooleanFilter
@@ -755,11 +755,11 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
-  scheduledEvent: ScheduledEventFilter
-  stockPortfolio: StockPortfolioFilter
-  stripeDetails: StripeDetailsFilter
+  ScheduledEvent: ScheduledEventFilter
+  StockPortfolio: StockPortfolioFilter
+  StripeDetails: StripeDetailsFilter
   timezone: StringFilter
-  transaction: TransactionFilter
+  Transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }
