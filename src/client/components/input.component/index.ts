@@ -3,6 +3,7 @@ export * from "./country-select.component";
 export * from "./credit-card-input.component";
 export * from "./date-range-input.component";
 export * from "./editable-text.component";
+export * from "./form-multi-select.component";
 export * from "./form-select.component";
 export * from "./multi-select.component";
 export * from "./number-input.component";

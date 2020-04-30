@@ -14,7 +14,7 @@ type IBaseSelectProps<T extends any, TOriginal = T> = Omit<
 interface IFormMultiSelectProps<T extends any, TOriginal = T>
 	extends IBaseSelectProps<T, TOriginal> {
 	control?: Control<any>;
-	defaultValue?: T;
+	defaultValue?: readonly T[];
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
 	itemsEqual?: (itemA: T, itemB: T) => boolean;
@@ -61,13 +61,19 @@ const ofType = <T extends any, TOriginal = T>() => {
 
 		const onItemSelect = useCallback(
 			(item: T) => {
-				if (
-					(value ?? []).findIndex((selectedItem) => itemsEqual(selectedItem, item)) !== -1
-				) {
+				const oldList = value ?? [];
+
+				if (oldList.findIndex((selectedItem) => itemsEqual(selectedItem, item)) !== -1) {
+					const withRemoved = oldList.filter((selected) => !itemsEqual(selected, item));
+
+					onChange?.(transform(withRemoved));
+
 					return;
 				}
 
-				onChange?.(transform([...(value ?? []), item]));
+				const withNew = [...oldList, item];
+
+				onChange?.(transform(withNew));
 			},
 			[itemsEqual, onChange, transform, value]
 		);
