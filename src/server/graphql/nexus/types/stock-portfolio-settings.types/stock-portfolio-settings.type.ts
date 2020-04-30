@@ -5,6 +5,5 @@ export const StockPortfolioSettings = objectType({
 	definition: (t) => {
 		t.model.stockPortfolio();
 		t.model.enableSnapshots();
-		t.model.pollInterval();
 	}
 });

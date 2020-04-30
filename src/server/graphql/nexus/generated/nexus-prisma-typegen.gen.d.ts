@@ -271,8 +271,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     stockPortfolioSettings: {
-  filtering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'stockPortfolioId' | 'enableSnapshots' | 'pollInterval'
+  filtering: 'stockPortfolioId' | 'enableSnapshots' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'stockPortfolioId' | 'enableSnapshots'
 }
     balances: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -490,7 +490,6 @@ interface NexusPrismaTypes {
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
     enableSnapshots: 'Boolean'
-    pollInterval: 'Int'
 
 },  Balance: {
     user: 'User'
