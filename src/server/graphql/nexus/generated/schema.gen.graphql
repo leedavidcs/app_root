@@ -293,6 +293,7 @@ type ScheduledEvent {
   interval: Int
   minute: Int
   next: DateTime!
+  recurrence: Recurrence
   stockPortfolioEvent: StockPortfolioEvent
   user: User!
 }
@@ -310,6 +311,7 @@ input ScheduledEventCreateWithoutStockPortfolioEventInput {
   hour: Int
   interval: Int
   minute: Int
+  recurrence: Recurrence
 }
 
 input ScheduledEventFilter {

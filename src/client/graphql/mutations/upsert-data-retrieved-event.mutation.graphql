@@ -1,6 +1,7 @@
 mutation UpsertDataRetrievedEvent(
 	$type: StockPortfolioEventType!
 	$interval: Int
+	$recurrence: Recurrence
 	$days: [Day!]
 	$hour: Int
 	$minute: Int
@@ -18,6 +19,7 @@ mutation UpsertDataRetrievedEvent(
 			type: $type
 			scheduledEvent: {
 				create: {
+					recurrence: $recurrence
 					days: {
 						set: $days
 					}

@@ -117,6 +117,7 @@ export interface NexusGenInputs {
     hour?: number | null; // Int
     interval?: number | null; // Int
     minute?: number | null; // Int
+    recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
   ScheduledEventCreatedaysInput: { // input type
     set?: NexusGenEnums['Day'][] | null; // [Day!]
@@ -464,6 +465,7 @@ export interface NexusGenRootTypes {
     interval?: number | null; // Int
     minute?: number | null; // Int
     next: any; // DateTime!
+    recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
   Snapshot: { // root type
     id: string; // String!
@@ -720,6 +722,7 @@ export interface NexusGenFieldTypes {
     interval: number | null; // Int
     minute: number | null; // Int
     next: any; // DateTime!
+    recurrence: NexusGenEnums['Recurrence'] | null; // Recurrence
     stockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
     user: NexusGenRootTypes['User']; // User!
   }

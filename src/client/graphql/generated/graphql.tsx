@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 28th 2020 9:59:16 am
+// This file was generated on: Apr 29th 2020 2:21:12 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -75,10 +75,11 @@ export type ScheduledEventCreatedaysInput = {
 };
 
 export type ScheduledEventCreateWithoutStockPortfolioEventInput = {
+  readonly interval?: Maybe<Scalars['Int']>;
+  readonly recurrence?: Maybe<Recurrence>;
+  readonly days?: Maybe<ScheduledEventCreatedaysInput>;
   readonly hour?: Maybe<Scalars['Int']>;
   readonly minute?: Maybe<Scalars['Int']>;
-  readonly interval?: Maybe<Scalars['Int']>;
-  readonly days?: Maybe<ScheduledEventCreatedaysInput>;
 };
 
 export type ScheduledEventCreateOneWithoutStockPortfolioEventInput = {
@@ -599,6 +600,7 @@ export type ScheduledEvent = {
   readonly __typename?: 'ScheduledEvent';
   readonly id: Scalars['String'];
   readonly user: User;
+  readonly recurrence?: Maybe<Recurrence>;
   readonly days: ReadonlyArray<Day>;
   readonly hour?: Maybe<Scalars['Int']>;
   readonly minute?: Maybe<Scalars['Int']>;
@@ -818,6 +820,12 @@ export type StockPortfolioOrderByInput = {
   readonly updatedAt?: Maybe<OrderByArg>;
 };
 
+export enum Recurrence {
+  Once = 'Once',
+  Weekly = 'Weekly',
+  Daily = 'Daily'
+}
+
 export enum Day {
   Mon = 'Mon',
   Tues = 'Tues',
@@ -1023,12 +1031,6 @@ export type StripeDetailsWhereInput = {
   readonly user?: Maybe<UserWhereInput>;
 };
 
-export enum Recurrence {
-  Once = 'Once',
-  Weekly = 'Weekly',
-  Daily = 'Daily'
-}
-
 export type NullableIntFilter = {
   readonly equals?: Maybe<Scalars['Int']>;
   readonly not?: Maybe<Scalars['Int']>;
@@ -1159,6 +1161,19 @@ export type CreateWebhookMutation = (
     { readonly __typename?: 'Webhook' }
     & Pick<Webhook, 'id' | 'name'>
   ) }
+);
+
+export type DeleteDataRetrievedEventMutationVariables = {
+  where: StockPortfolioEventWhereUniqueInput;
+};
+
+
+export type DeleteDataRetrievedEventMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly deleteOneStockPortfolioEvent?: Maybe<(
+    { readonly __typename?: 'StockPortfolioEvent' }
+    & Pick<StockPortfolioEvent, 'scheduledEventId'>
+  )> }
 );
 
 export type DeleteStockPortfolioMutationVariables = {
@@ -1330,6 +1345,7 @@ export type UpdateWebhookMutation = (
 export type UpsertDataRetrievedEventMutationVariables = {
   type: StockPortfolioEventType;
   interval?: Maybe<Scalars['Int']>;
+  recurrence?: Maybe<Recurrence>;
   days?: Maybe<ReadonlyArray<Day>>;
   hour?: Maybe<Scalars['Int']>;
   minute?: Maybe<Scalars['Int']>;
@@ -1458,6 +1474,26 @@ export type GetStockDataQuery = (
   & { readonly stockData?: Maybe<(
     { readonly __typename?: 'StockData' }
     & Pick<StockData, 'data'>
+  )> }
+);
+
+export type GetStockPortfolioEventQueryVariables = {
+  where: StockPortfolioEventWhereUniqueInput;
+};
+
+
+export type GetStockPortfolioEventQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly stockPortfolioEvent?: Maybe<(
+    { readonly __typename?: 'StockPortfolioEvent' }
+    & Pick<StockPortfolioEvent, 'scheduledEventId' | 'type'>
+    & { readonly scheduledEvent: (
+      { readonly __typename?: 'ScheduledEvent' }
+      & Pick<ScheduledEvent, 'id' | 'interval' | 'recurrence' | 'days' | 'hour' | 'minute'>
+    ), readonly stockPortfolio: (
+      { readonly __typename?: 'StockPortfolio' }
+      & Pick<StockPortfolio, 'id'>
+    ) }
   )> }
 );
 
@@ -1756,6 +1792,38 @@ export function useCreateWebhookMutation(baseOptions?: ApolloReactHooks.Mutation
 export type CreateWebhookMutationHookResult = ReturnType<typeof useCreateWebhookMutation>;
 export type CreateWebhookMutationResult = ApolloReactCommon.MutationResult<CreateWebhookMutation>;
 export type CreateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateWebhookMutation, CreateWebhookMutationVariables>;
+export const DeleteDataRetrievedEventDocument = gql`
+    mutation DeleteDataRetrievedEvent($where: StockPortfolioEventWhereUniqueInput!) {
+  deleteOneStockPortfolioEvent(where: $where) {
+    scheduledEventId
+  }
+}
+    `;
+export type DeleteDataRetrievedEventMutationFn = ApolloReactCommon.MutationFunction<DeleteDataRetrievedEventMutation, DeleteDataRetrievedEventMutationVariables>;
+
+/**
+ * __useDeleteDataRetrievedEventMutation__
+ *
+ * To run a mutation, you first call `useDeleteDataRetrievedEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDataRetrievedEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDataRetrievedEventMutation, { data, loading, error }] = useDeleteDataRetrievedEventMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useDeleteDataRetrievedEventMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDataRetrievedEventMutation, DeleteDataRetrievedEventMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteDataRetrievedEventMutation, DeleteDataRetrievedEventMutationVariables>(DeleteDataRetrievedEventDocument, baseOptions);
+      }
+export type DeleteDataRetrievedEventMutationHookResult = ReturnType<typeof useDeleteDataRetrievedEventMutation>;
+export type DeleteDataRetrievedEventMutationResult = ApolloReactCommon.MutationResult<DeleteDataRetrievedEventMutation>;
+export type DeleteDataRetrievedEventMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDataRetrievedEventMutation, DeleteDataRetrievedEventMutationVariables>;
 export const DeleteStockPortfolioDocument = gql`
     mutation DeleteStockPortfolio($id: String!) {
   deleteOneStockPortfolio(where: {id: $id}) {
@@ -2166,8 +2234,8 @@ export type UpdateWebhookMutationHookResult = ReturnType<typeof useUpdateWebhook
 export type UpdateWebhookMutationResult = ApolloReactCommon.MutationResult<UpdateWebhookMutation>;
 export type UpdateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateWebhookMutation, UpdateWebhookMutationVariables>;
 export const UpsertDataRetrievedEventDocument = gql`
-    mutation UpsertDataRetrievedEvent($type: StockPortfolioEventType!, $interval: Int, $days: [Day!], $hour: Int, $minute: Int, $stockPortfolioId: String!) {
-  upsertOneStockPortfolioEvent(where: {stockPortfolioId_type: {stockPortfolioId: $stockPortfolioId, type: $type}}, create: {type: $type, scheduledEvent: {create: {days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}, stockPortfolio: {connect: {id: $stockPortfolioId}}}, update: {type: $type, scheduledEvent: {update: {days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}}) {
+    mutation UpsertDataRetrievedEvent($type: StockPortfolioEventType!, $interval: Int, $recurrence: Recurrence, $days: [Day!], $hour: Int, $minute: Int, $stockPortfolioId: String!) {
+  upsertOneStockPortfolioEvent(where: {stockPortfolioId_type: {stockPortfolioId: $stockPortfolioId, type: $type}}, create: {type: $type, scheduledEvent: {create: {recurrence: $recurrence, days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}, stockPortfolio: {connect: {id: $stockPortfolioId}}}, update: {type: $type, scheduledEvent: {update: {days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}}) {
     scheduledEventId
     type
   }
@@ -2190,6 +2258,7 @@ export type UpsertDataRetrievedEventMutationFn = ApolloReactCommon.MutationFunct
  *   variables: {
  *      type: // value for 'type'
  *      interval: // value for 'interval'
+ *      recurrence: // value for 'recurrence'
  *      days: // value for 'days'
  *      hour: // value for 'hour'
  *      minute: // value for 'minute'
@@ -2499,6 +2568,51 @@ export function useGetStockDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type GetStockDataQueryHookResult = ReturnType<typeof useGetStockDataQuery>;
 export type GetStockDataLazyQueryHookResult = ReturnType<typeof useGetStockDataLazyQuery>;
 export type GetStockDataQueryResult = ApolloReactCommon.QueryResult<GetStockDataQuery, GetStockDataQueryVariables>;
+export const GetStockPortfolioEventDocument = gql`
+    query GetStockPortfolioEvent($where: StockPortfolioEventWhereUniqueInput!) {
+  stockPortfolioEvent(where: $where) {
+    scheduledEventId
+    type
+    scheduledEvent {
+      id
+      interval
+      recurrence
+      days
+      hour
+      minute
+    }
+    stockPortfolio {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStockPortfolioEventQuery__
+ *
+ * To run a query within a React component, call `useGetStockPortfolioEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStockPortfolioEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStockPortfolioEventQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetStockPortfolioEventQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockPortfolioEventQuery, GetStockPortfolioEventQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetStockPortfolioEventQuery, GetStockPortfolioEventQueryVariables>(GetStockPortfolioEventDocument, baseOptions);
+      }
+export function useGetStockPortfolioEventLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockPortfolioEventQuery, GetStockPortfolioEventQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetStockPortfolioEventQuery, GetStockPortfolioEventQueryVariables>(GetStockPortfolioEventDocument, baseOptions);
+        }
+export type GetStockPortfolioEventQueryHookResult = ReturnType<typeof useGetStockPortfolioEventQuery>;
+export type GetStockPortfolioEventLazyQueryHookResult = ReturnType<typeof useGetStockPortfolioEventLazyQuery>;
+export type GetStockPortfolioEventQueryResult = ApolloReactCommon.QueryResult<GetStockPortfolioEventQuery, GetStockPortfolioEventQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser {
   user @client {
