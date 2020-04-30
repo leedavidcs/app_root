@@ -27,6 +27,10 @@ export const StockPortfolioSettings: FC<IProps> = ({ stockPortfolio }) => {
 					href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks`}
 					text="Webhooks"
 				/>
+				<List.Item
+					href={`/stock-portfolios/${stockPortfolio.id}/settings/polling`}
+					text="Data polling"
+				/>
 			</List>
 		</div>
 	);
