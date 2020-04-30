@@ -546,11 +546,6 @@ input StockPortfolioSettingsUpdateInput {
   Whether snapshots should be saved per-data-refresh of this stock-portfolio
   """
   enableSnapshots: Boolean
-
-  """
-  The time, in minutes, for when more data should be fetched for the stock-portfolio
-  """
-  pollInterval: Int
 }
 
 input StockPortfolioSettingsWhereInput {

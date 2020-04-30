@@ -244,7 +244,6 @@ export interface NexusGenInputs {
   }
   StockPortfolioSettingsUpdateInput: { // input type
     enableSnapshots?: boolean | null; // Boolean
-    pollInterval?: number | null; // Int
   }
   StockPortfolioSettingsWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioSettingsWhereInput'][] | null; // [StockPortfolioSettingsWhereInput!]
