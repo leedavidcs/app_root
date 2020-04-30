@@ -538,7 +538,6 @@ input StockPortfolioOrderByInput {
 
 type StockPortfolioSettings {
   enableSnapshots: Boolean!
-  pollInterval: Int!
   stockPortfolio: StockPortfolio!
 }
 
@@ -559,7 +558,6 @@ input StockPortfolioSettingsWhereInput {
   enableSnapshots: BooleanFilter
   NOT: [StockPortfolioSettingsWhereInput!]
   OR: [StockPortfolioSettingsWhereInput!]
-  pollInterval: IntFilter
   stockPortfolio: StockPortfolioWhereInput
   stockPortfolioId: StringFilter
 }

@@ -251,7 +251,6 @@ export interface NexusGenInputs {
     enableSnapshots?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
     NOT?: NexusGenInputs['StockPortfolioSettingsWhereInput'][] | null; // [StockPortfolioSettingsWhereInput!]
     OR?: NexusGenInputs['StockPortfolioSettingsWhereInput'][] | null; // [StockPortfolioSettingsWhereInput!]
-    pollInterval?: NexusGenInputs['IntFilter'] | null; // IntFilter
     stockPortfolio?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
     stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -505,7 +504,6 @@ export interface NexusGenRootTypes {
   }
   StockPortfolioSettings: { // root type
     enableSnapshots: boolean; // Boolean!
-    pollInterval: number; // Int!
   }
   StripeCard: { // root type
     brand: string; // String!
@@ -776,7 +774,6 @@ export interface NexusGenFieldTypes {
   }
   StockPortfolioSettings: { // field return type
     enableSnapshots: boolean; // Boolean!
-    pollInterval: number; // Int!
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
   }
   StripeCard: { // field return type

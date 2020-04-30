@@ -21,3 +21,4 @@
 20200424122120-with-default-next
 20200425132909-move-timezone-to-user-model
 20200427103018-scheduled-recurrence
+20200429191803-remove-poll-interval-from-settings
