@@ -1,5 +1,6 @@
 import { FormGroup, Intent } from "@blueprintjs/core";
 import { TimePicker as BpTimePicker, TimePrecision } from "@blueprintjs/datetime";
+import { set } from "date-fns";
 import React, { CSSProperties, FC, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
@@ -63,7 +64,7 @@ const BaseTimePicker: FC<IProps> = ({
 				selectAllOnFocus={true}
 				showArrowButtons={showArrowButtons}
 				useAmPm={false}
-				value={value}
+				value={value ?? set(Date.now(), { hours: 0, minutes: 0 })}
 			/>
 		</FormGroup>
 	);
