@@ -12,7 +12,7 @@ export const StockPortfolioIdTypeCompoundUniqueInput = inputObjectType({
 export const StockPortfolioEventWhereUniqueInput = inputObjectType({
 	name: "StockPortfolioEventWhereUniqueInput",
 	definition: (t) => {
-		t.string("stockPortfolioId");
+		t.string("scheduledEventId");
 		t.field("stockPortfolioId_type", { type: "StockPortfolioIdTypeCompoundUniqueInput" });
 	}
 });

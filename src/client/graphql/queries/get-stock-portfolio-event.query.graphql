@@ -1,0 +1,17 @@
+query GetStockPortfolioEvent($where: StockPortfolioEventWhereUniqueInput!) {
+	stockPortfolioEvent(where: $where) {
+		scheduledEventId
+		type
+		scheduledEvent {
+			id
+			interval
+			recurrence
+			days
+			hour
+			minute
+		}
+		stockPortfolio {
+			id
+		}
+	}
+}

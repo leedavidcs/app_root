@@ -10,10 +10,11 @@ export const ScheduledEventCreatedaysInput = inputObjectType({
 export const ScheduledEventCreateWithoutStockPortfolioEventInput = inputObjectType({
 	name: "ScheduledEventCreateWithoutStockPortfolioEventInput",
 	definition: (t) => {
+		t.int("interval");
+		t.field("recurrence", { type: "Recurrence" });
+		t.field("days", { type: "ScheduledEventCreatedaysInput" });
 		t.int("hour");
 		t.int("minute");
-		t.int("interval");
-		t.field("days", { type: "ScheduledEventCreatedaysInput" });
 	}
 });
 

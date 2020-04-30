@@ -5,6 +5,7 @@ export const ScheduledEvent = objectType({
 	definition: (t) => {
 		t.model.id();
 		t.model.user();
+		t.model.recurrence();
 		t.model.days();
 		t.model.hour();
 		t.model.minute();

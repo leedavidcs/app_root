@@ -85,14 +85,7 @@ const BaseNumberInput: FC<IProps> = ({
 };
 
 export const NumberInput: FC<IProps> = (props) => {
-	const {
-		control,
-		defaultValue = Math.min(Math.max(0, props.min ?? 0), props.max ?? Infinity),
-		name,
-		value,
-		onValueChange,
-		...restProps
-	} = props;
+	const { control, defaultValue, name, value, onValueChange, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
