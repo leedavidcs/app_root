@@ -31,6 +31,7 @@ const config: readonly IconName[] = [
 	"saved",
 	"search",
 	"small-tick",
+	"tick",
 	"trash",
 	"user"
 ];
