@@ -57,7 +57,7 @@ const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(
 const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 	const classes = useStyles();
 
-	const { data } = useGetStockPortfolioEventQuery({
+	const { called, data, loading } = useGetStockPortfolioEventQuery({
 		variables: {
 			where: {
 				stockPortfolioId_type: {
@@ -69,6 +69,10 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 	});
 
 	const scheduledEvent = data?.stockPortfolioEvent;
+
+	if (!called || loading) {
+		return null;
+	}
 
 	return (
 		<main className={classes.root}>
