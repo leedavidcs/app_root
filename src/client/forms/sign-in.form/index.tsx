@@ -63,6 +63,10 @@ export const SignInForm: FC<IProps> = ({ onComplete }) => {
 	const validationResolver = useValidationResolver();
 
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({
+		defaultValues: {
+			userIdentifier: "",
+			password: ""
+		},
 		validateCriteriaMode: "all",
 		validationResolver
 	});
