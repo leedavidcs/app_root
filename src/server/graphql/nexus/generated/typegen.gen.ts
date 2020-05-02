@@ -135,21 +135,22 @@ export interface NexusGenInputs {
     hour?: number | null; // Int
     interval?: number | null; // Int
     minute?: number | null; // Int
+    recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
   ScheduledEventUpdatedaysInput: { // input type
     set?: NexusGenEnums['Day'][] | null; // [Day!]
   }
   ScheduledEventWhereInput: { // input type
     AND?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
-    hour?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    hour?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     interval?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
-    minute?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    minute?: NexusGenInputs['IntFilter'] | null; // IntFilter
     next?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     NOT?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
     OR?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
     recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
-    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
+    StockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -269,12 +270,12 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     settings?: NexusGenInputs['StockPortfolioSettingsWhereInput'] | null; // StockPortfolioSettingsWhereInput
-    snapshot?: NexusGenInputs['SnapshotFilter'] | null; // SnapshotFilter
-    stockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
+    Snapshot?: NexusGenInputs['SnapshotFilter'] | null; // SnapshotFilter
+    StockPortfolioEvent?: NexusGenInputs['StockPortfolioEventFilter'] | null; // StockPortfolioEventFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    webhook?: NexusGenInputs['WebhookFilter'] | null; // WebhookFilter
+    Webhook?: NexusGenInputs['WebhookFilter'] | null; // WebhookFilter
   }
   StockPortfolioWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -360,7 +361,7 @@ export interface NexusGenInputs {
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
-    balance?: NexusGenInputs['BalanceFilter'] | null; // BalanceFilter
+    Balance?: NexusGenInputs['BalanceFilter'] | null; // BalanceFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     emailVerified?: NexusGenInputs['BooleanFilter'] | null; // BooleanFilter
@@ -368,11 +369,11 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    scheduledEvent?: NexusGenInputs['ScheduledEventFilter'] | null; // ScheduledEventFilter
-    stockPortfolio?: NexusGenInputs['StockPortfolioFilter'] | null; // StockPortfolioFilter
-    stripeDetails?: NexusGenInputs['StripeDetailsFilter'] | null; // StripeDetailsFilter
+    ScheduledEvent?: NexusGenInputs['ScheduledEventFilter'] | null; // ScheduledEventFilter
+    StockPortfolio?: NexusGenInputs['StockPortfolioFilter'] | null; // StockPortfolioFilter
+    StripeDetails?: NexusGenInputs['StripeDetailsFilter'] | null; // StripeDetailsFilter
     timezone?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    transaction?: NexusGenInputs['TransactionFilter'] | null; // TransactionFilter
+    Transaction?: NexusGenInputs['TransactionFilter'] | null; // TransactionFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -458,10 +459,10 @@ export interface NexusGenRootTypes {
   }
   ScheduledEvent: { // root type
     days: NexusGenEnums['Day'][]; // [Day!]!
-    hour?: number | null; // Int
+    hour: number; // Int!
     id: string; // String!
     interval?: number | null; // Int
-    minute?: number | null; // Int
+    minute: number; // Int!
     next: any; // DateTime!
     recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
@@ -714,10 +715,10 @@ export interface NexusGenFieldTypes {
   }
   ScheduledEvent: { // field return type
     days: NexusGenEnums['Day'][]; // [Day!]!
-    hour: number | null; // Int
+    hour: number; // Int!
     id: string; // String!
     interval: number | null; // Int
-    minute: number | null; // Int
+    minute: number; // Int!
     next: any; // DateTime!
     recurrence: NexusGenEnums['Recurrence'] | null; // Recurrence
     stockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent

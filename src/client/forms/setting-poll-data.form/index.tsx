@@ -108,8 +108,12 @@ export const SettingPollDataForm: FC<IProps> = ({
 
 	const watched = watch();
 
-	const [deleteEvent] = useDeleteDataRetrievedEventMutation();
-	const [upsertEvent] = useUpsertDataRetrievedEventMutation();
+	const [deleteEvent] = useDeleteDataRetrievedEventMutation({
+		onCompleted: () => toaster.show({ intent: "success", message: "Update successful" })
+	});
+	const [upsertEvent] = useUpsertDataRetrievedEventMutation({
+		onCompleted: () => toaster.show({ intent: "success", message: "Update successful" })
+	});
 
 	const onSubmit = useCallback(
 		(formData: IFormData) => {
@@ -118,12 +122,7 @@ export const SettingPollDataForm: FC<IProps> = ({
 			const hour = formData.dateTime && getHours(formData.dateTime);
 			const minute = formData.dateTime && getMinutes(formData.dateTime);
 
-			if (
-				!formData.interval &&
-				!formData.recurrence &&
-				!formData.days &&
-				!formData.dateTime
-			) {
+			if (!formData.interval && !formData.recurrence) {
 				try {
 					deleteEvent({
 						variables: {
@@ -138,6 +137,8 @@ export const SettingPollDataForm: FC<IProps> = ({
 				} catch {
 					toaster.show({ intent: "danger", message: "Update unsuccessful" });
 				}
+
+				return;
 			}
 
 			try {
@@ -145,6 +146,7 @@ export const SettingPollDataForm: FC<IProps> = ({
 					variables: {
 						type,
 						interval: formData.interval,
+						recurrence: formData.recurrence,
 						days: formData.days,
 						hour,
 						minute,
@@ -175,7 +177,7 @@ export const SettingPollDataForm: FC<IProps> = ({
 				<div className={classes.section}>
 					<NumberInput
 						control={control}
-						disabled={Boolean((watched.days ?? []).length > 0 || watched.dateTime)}
+						disabled={Boolean((watched.days ?? []).length > 0)}
 						error={errors.interval?.message}
 						label="Poll interval"
 						name="interval"
@@ -195,7 +197,10 @@ export const SettingPollDataForm: FC<IProps> = ({
 					/>
 					<DaysMultiSelect
 						control={control}
-						disabled={typeof watched.interval === "number"}
+						disabled={
+							typeof watched.interval === "number" ||
+							watched.recurrence !== Recurrence.Weekly
+						}
 						error={(errors.days as any)?.message}
 						label="On days"
 						queryPlaceholder="Search..."

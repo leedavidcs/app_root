@@ -42,6 +42,7 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 	result: {
 		data: {
 			stockPortfolio: {
+				__typename: "StockPortfolio",
 				id: Faker.random.uuid(),
 				name: Faker.name.findName(),
 				headers: uniqueMockHeaders,
@@ -49,20 +50,19 @@ export const GetOneStockPortfolioMock: MockedResponse = {
 				createdAt: Faker.date.past().toDateString(),
 				updatedAt: Faker.date.recent().toDateString(),
 				stockData: {
-					refreshCost: Faker.random.number(),
-					__typename: "StockData"
+					__typename: "StockData",
+					refreshCost: Faker.random.number()
 				},
 				user: {
+					__typename: "User",
 					id: mockUser.id,
-					username: mockUser.username,
-					__typename: "User"
+					username: mockUser.username
 				},
 				settings: {
 					__typename: "StockPortfolioSettings",
 					id: Faker.random.uuid(),
 					enableSnapshots: Faker.random.boolean()
-				},
-				__typename: "StockPortfolio"
+				}
 			}
 		}
 	}

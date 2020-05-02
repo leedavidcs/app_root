@@ -288,10 +288,10 @@ type ResendVerifyEmailPayload {
 
 type ScheduledEvent {
   days: [Day!]!
-  hour: Int
+  hour: Int!
   id: String!
   interval: Int
-  minute: Int
+  minute: Int!
   next: DateTime!
   recurrence: Recurrence
   stockPortfolioEvent: StockPortfolioEvent
@@ -308,9 +308,9 @@ input ScheduledEventCreateOneWithoutStockPortfolioEventInput {
 
 input ScheduledEventCreateWithoutStockPortfolioEventInput {
   days: ScheduledEventCreatedaysInput
-  hour: Int
+  hour: Int = 0
   interval: Int
-  minute: Int
+  minute: Int = 0
   recurrence: Recurrence
 }
 
@@ -333,19 +333,20 @@ input ScheduledEventUpdateWithoutStockPortfolioEventDataInput {
   hour: Int
   interval: Int
   minute: Int
+  recurrence: Recurrence
 }
 
 input ScheduledEventWhereInput {
   AND: [ScheduledEventWhereInput!]
-  hour: NullableIntFilter
+  hour: IntFilter
   id: StringFilter
   interval: NullableIntFilter
-  minute: NullableIntFilter
+  minute: IntFilter
   next: DateTimeFilter
   NOT: [ScheduledEventWhereInput!]
   OR: [ScheduledEventWhereInput!]
   recurrence: Recurrence
-  stockPortfolioEvent: StockPortfolioEventFilter
+  StockPortfolioEvent: StockPortfolioEventFilter
   user: UserWhereInput
   userId: StringFilter
 }
@@ -575,12 +576,12 @@ input StockPortfolioWhereInput {
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
   settings: StockPortfolioSettingsWhereInput
-  snapshot: SnapshotFilter
-  stockPortfolioEvent: StockPortfolioEventFilter
+  Snapshot: SnapshotFilter
+  StockPortfolioEvent: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
-  webhook: WebhookFilter
+  Webhook: WebhookFilter
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -747,7 +748,7 @@ scalar UserPassword
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  balance: BalanceFilter
+  Balance: BalanceFilter
   createdAt: DateTimeFilter
   email: StringFilter
   emailVerified: BooleanFilter
@@ -755,11 +756,11 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   password: StringFilter
-  scheduledEvent: ScheduledEventFilter
-  stockPortfolio: StockPortfolioFilter
-  stripeDetails: StripeDetailsFilter
+  ScheduledEvent: ScheduledEventFilter
+  StockPortfolio: StockPortfolioFilter
+  StripeDetails: StripeDetailsFilter
   timezone: StringFilter
-  transaction: TransactionFilter
+  Transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }

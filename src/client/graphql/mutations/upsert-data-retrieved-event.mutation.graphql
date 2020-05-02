@@ -19,13 +19,13 @@ mutation UpsertDataRetrievedEvent(
 			type: $type
 			scheduledEvent: {
 				create: {
+					interval: $interval
 					recurrence: $recurrence
 					days: {
 						set: $days
 					}
 					hour: $hour
 					minute: $minute
-					interval: $interval
 				}
 			}
 			stockPortfolio: {
@@ -38,12 +38,13 @@ mutation UpsertDataRetrievedEvent(
 			type: $type
 			scheduledEvent: {
 				update: {
+					interval: $interval
+					recurrence: $recurrence
 					days: {
 						set: $days
 					}
 					hour: $hour
 					minute: $minute
-					interval: $interval
 				}
 			}
 		}

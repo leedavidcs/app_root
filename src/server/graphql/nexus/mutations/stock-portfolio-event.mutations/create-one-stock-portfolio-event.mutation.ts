@@ -13,8 +13,8 @@ export const ScheduledEventCreateWithoutStockPortfolioEventInput = inputObjectTy
 		t.int("interval");
 		t.field("recurrence", { type: "Recurrence" });
 		t.field("days", { type: "ScheduledEventCreatedaysInput" });
-		t.int("hour");
-		t.int("minute");
+		t.int("hour", { default: 0 });
+		t.int("minute", { default: 0 });
 	}
 });
 

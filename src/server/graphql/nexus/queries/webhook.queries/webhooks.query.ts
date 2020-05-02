@@ -17,9 +17,9 @@ export const StockPortfolioWhereWithoutUserInput = inputObjectType({
 		t.field("createdAt", { type: "DateTimeFilter" });
 		t.field("updatedAt", { type: "DateTimeFilter" });
 		t.field("webhook", { type: "WebhookFilter" });
-		t.field("AND", { type: "StockPortfolioWhereWithoutUserInput", list: true });
-		t.field("OR", { type: "StockPortfolioWhereWithoutUserInput", list: true });
-		t.field("NOT", { type: "StockPortfolioWhereWithoutUserInput", list: true });
+		t.list.field("AND", { type: "StockPortfolioWhereWithoutUserInput" });
+		t.list.field("OR", { type: "StockPortfolioWhereWithoutUserInput" });
+		t.list.field("NOT", { type: "StockPortfolioWhereWithoutUserInput" });
 	}
 });
 
@@ -33,9 +33,9 @@ export const WebhookWhereInput = inputObjectType({
 		t.field("url", { type: "StringFilter" });
 		t.field("timeout", { type: "IntFilter" });
 		t.field("createdAt", { type: "DateTimeFilter" });
-		t.field("AND", { type: "WebhookWhereInput", list: true });
-		t.field("OR", { type: "WebhookWhereInput", list: true });
-		t.field("NOT", { type: "WebhookWhereInput", list: true });
+		t.list.field("AND", { type: "WebhookWhereInput" });
+		t.list.field("OR", { type: "WebhookWhereInput" });
+		t.list.field("NOT", { type: "WebhookWhereInput" });
 		t.field("stockPortfolio", { type: "StockPortfolioWhereWithoutUserInput" });
 	}
 });

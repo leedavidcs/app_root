@@ -19,9 +19,9 @@ export const TransactionWhereWithoutUserInput = inputObjectType({
 		t.field("createdAt", { type: "DateTimeFilter" });
 		t.field("paymentIntentId", { type: "NullableStringFilter" });
 		t.field("status", { type: "TransactionStatus" });
-		t.field("AND", { type: "TransactionWhereWithoutUserInput", list: true });
-		t.field("OR", { type: "TransactionWhereWithoutUserInput", list: true });
-		t.field("NOT", { type: "TransactionWhereWithoutUserInput", list: true });
+		t.list.field("AND", { type: "TransactionWhereWithoutUserInput" });
+		t.list.field("OR", { type: "TransactionWhereWithoutUserInput" });
+		t.list.field("NOT", { type: "TransactionWhereWithoutUserInput" });
 	}
 });
 

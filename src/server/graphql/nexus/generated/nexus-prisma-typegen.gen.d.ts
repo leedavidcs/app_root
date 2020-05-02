@@ -263,11 +263,11 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt' | 'stockPortfolio' | 'balance' | 'transaction' | 'stripeDetails' | 'scheduledEvent' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt' | 'StockPortfolio' | 'Balance' | 'Transaction' | 'StripeDetails' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     stockPortfolioSettings: {
@@ -295,7 +295,7 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
     scheduledEvents: {
-  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
     stockPortfolioEvents: {
@@ -305,37 +305,37 @@ interface NexusPrismaInputs {
 
   },
     User: {
-    stockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'webhook' | 'snapshot' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+    StockPortfolio: {
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
-    balance: {
+    Balance: {
   filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'userId' | 'credits'
 }
-    transaction: {
+    Transaction: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
-    stripeDetails: {
+    StripeDetails: {
   filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'userId' | 'customerId'
 }
-    scheduledEvent: {
-  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'stockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+    ScheduledEvent: {
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
 
   },  StockPortfolio: {
-    webhook: {
+    Webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
-    snapshot: {
+    Snapshot: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
-    stockPortfolioEvent: {
+    StockPortfolioEvent: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
   ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
 }
@@ -359,7 +359,7 @@ interface NexusPrismaInputs {
 
 
   },  ScheduledEvent: {
-    stockPortfolioEvent: {
+    StockPortfolioEvent: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
   ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
 }
@@ -466,11 +466,11 @@ interface NexusPrismaTypes {
     timezone: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    stockPortfolio: 'StockPortfolio'
-    balance: 'Balance'
-    transaction: 'Transaction'
-    stripeDetails: 'StripeDetails'
-    scheduledEvent: 'ScheduledEvent'
+    StockPortfolio: 'StockPortfolio'
+    Balance: 'Balance'
+    Transaction: 'Transaction'
+    StripeDetails: 'StripeDetails'
+    ScheduledEvent: 'ScheduledEvent'
 
 },  StockPortfolio: {
     id: 'String'
@@ -482,9 +482,9 @@ interface NexusPrismaTypes {
     settings: 'StockPortfolioSettings'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    webhook: 'Webhook'
-    snapshot: 'Snapshot'
-    stockPortfolioEvent: 'StockPortfolioEvent'
+    Webhook: 'Webhook'
+    Snapshot: 'Snapshot'
+    StockPortfolioEvent: 'StockPortfolioEvent'
 
 },  StockPortfolioSettings: {
     stockPortfolio: 'StockPortfolio'
@@ -540,7 +540,7 @@ interface NexusPrismaTypes {
     minute: 'Int'
     interval: 'Int'
     next: 'DateTime'
-    stockPortfolioEvent: 'StockPortfolioEvent'
+    StockPortfolioEvent: 'StockPortfolioEvent'
 
 },  StockPortfolioEvent: {
     scheduledEvent: 'ScheduledEvent'
