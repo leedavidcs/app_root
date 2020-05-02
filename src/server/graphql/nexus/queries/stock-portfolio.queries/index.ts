@@ -6,9 +6,8 @@ export const stockPortfolioQueries = extendType({
 	definition: (t) => {
 		t.crud.stockPortfolio();
 		t.crud.stockPortfolios({ filtering: true, ordering: true });
-		t.field("stockPortfolios", {
+		t.list.field("stockPortfolios", {
 			type: "StockPortfolio",
-			list: true,
 			nullable: false,
 			rateLimit: () => ({ window: "1m", max: 30 }),
 			args: {

@@ -85,8 +85,10 @@ export const yupValidationPlugin = () => {
 
 				let values: typeof args;
 
+				const yupSchema = object().shape(objectSchemaDef);
+
 				try {
-					values = await object().shape(objectSchemaDef).validate(args, {
+					values = await yupSchema.validate(args, {
 						abortEarly: false
 					});
 				} catch (errors) {
@@ -102,7 +104,7 @@ export const yupValidationPlugin = () => {
 					 * @date April 21, 2020
 					 */
 					const invalidArgs = errors.inner.reduce(
-						(fieldErrors, { message, path: name, type = "validation", value }) => [
+						(fieldErrors, { message, path: name, type = "validation" }) => [
 							...fieldErrors,
 							{ message, name, type }
 						],
@@ -112,7 +114,9 @@ export const yupValidationPlugin = () => {
 					throw new UserInputError("Invalid user input", { invalidArgs });
 				}
 
-				return next(parent, values, context, info);
+				const casted = yupSchema.cast(values);
+
+				return next(parent, casted, context, info);
 			};
 		}
 	});

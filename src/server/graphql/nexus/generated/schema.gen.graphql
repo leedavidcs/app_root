@@ -288,10 +288,10 @@ type ResendVerifyEmailPayload {
 
 type ScheduledEvent {
   days: [Day!]!
-  hour: Int
+  hour: Int!
   id: String!
   interval: Int
-  minute: Int
+  minute: Int!
   next: DateTime!
   recurrence: Recurrence
   stockPortfolioEvent: StockPortfolioEvent
@@ -308,9 +308,9 @@ input ScheduledEventCreateOneWithoutStockPortfolioEventInput {
 
 input ScheduledEventCreateWithoutStockPortfolioEventInput {
   days: ScheduledEventCreatedaysInput
-  hour: Int
+  hour: Int = 0
   interval: Int
-  minute: Int
+  minute: Int = 0
   recurrence: Recurrence
 }
 
@@ -333,14 +333,15 @@ input ScheduledEventUpdateWithoutStockPortfolioEventDataInput {
   hour: Int
   interval: Int
   minute: Int
+  recurrence: Recurrence
 }
 
 input ScheduledEventWhereInput {
   AND: [ScheduledEventWhereInput!]
-  hour: NullableIntFilter
+  hour: IntFilter
   id: StringFilter
   interval: NullableIntFilter
-  minute: NullableIntFilter
+  minute: IntFilter
   next: DateTimeFilter
   NOT: [ScheduledEventWhereInput!]
   OR: [ScheduledEventWhereInput!]

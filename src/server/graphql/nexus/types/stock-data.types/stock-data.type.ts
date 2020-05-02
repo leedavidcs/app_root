@@ -42,7 +42,6 @@ export const StockData = objectType({
 		});
 		t.list.field("data", {
 			type: "JSONObject",
-			list: true,
 			description: oneLine`
 				The data for this stock-portfolio. Accessing this property incurs a transaction for
 				the viewer of this request

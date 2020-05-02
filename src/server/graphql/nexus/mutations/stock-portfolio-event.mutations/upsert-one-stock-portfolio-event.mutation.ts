@@ -1,8 +1,8 @@
 import { NotFoundError } from "@/server/utils";
 import { arg, mutationField } from "@nexus/schema";
+import { Day, Recurrence } from "@prisma/client";
 import { ForbiddenError } from "apollo-server-micro";
-import { isNil } from "lodash";
-import { object } from "yup";
+import { array, lazy, number, object, string } from "yup";
 
 export const upsertOneStockPortfolioEvent = mutationField("upsertOneStockPortfolioEvent", {
 	type: "StockPortfolioEvent",
@@ -46,36 +46,75 @@ export const upsertOneStockPortfolioEvent = mutationField("upsertOneStockPortfol
 	},
 	yupValidation: () => ({
 		create: object().shape({
-			scheduledEvent: object().test({
-				message: "ScheduledEvent must either have interval, or explicit scheduling",
-				test: (value) => {
-					if (!isNil(value.interval)) {
-						return true;
-					}
+			scheduledEvent: object()
+				.required()
+				.shape({
+					create: lazy<any>((value) => {
+						if (typeof value.interval === "number") {
+							return object()
+								.shape({
+									interval: number().required()
+								})
+								.noUnknown();
+						}
 
-					if (!isNil(value.hour) && !isNil(value.minute) && value.days?.length > 0) {
-						return true;
-					}
-
-					return false;
-				}
-			})
+						return object()
+							.shape({
+								recurrence: string<Recurrence>().required(),
+								days: object().when("recurrence", {
+									is: Recurrence.Weekly,
+									then: object()
+										.shape({
+											set: array<Day>().of(string<Day>()).required().min(1)
+										})
+										.required()
+								}),
+								hour: number(),
+								minute: number()
+							})
+							.noUnknown();
+					})
+				})
 		}),
 		update: object().shape({
-			scheduledEvent: object().test({
-				message: "ScheduledEvent must either have interval, or explicit scheduling",
-				test: (value) => {
-					if (!isNil(value.interval)) {
-						return true;
-					}
+			scheduledEvent: object()
+				.required()
+				.shape({
+					update: lazy<any>((value) => {
+						if (typeof value.interval === "number") {
+							return object()
+								.shape({
+									interval: number().required()
+								})
+								.transform((scheduledEvent) => ({
+									...scheduledEvent,
+									recurrence: null,
+									days: { set: [] },
+									hour: 0,
+									minute: 0
+								}));
+						}
 
-					if (!isNil(value.hour) && !isNil(value.minute) && value.days?.length > 0) {
-						return true;
-					}
-
-					return false;
-				}
-			})
+						return object()
+							.shape({
+								recurrence: string<Recurrence>().required(),
+								days: object().when("recurrence", {
+									is: Recurrence.Weekly,
+									then: object()
+										.shape({
+											set: array<Day>().of(string<Day>()).required().min(1)
+										})
+										.required()
+								}),
+								hour: number(),
+								minute: number()
+							})
+							.transform((scheduledEvent) => ({
+								...scheduledEvent,
+								interval: null
+							}));
+					})
+				})
 		})
 	}),
 	resolve: (parent, { where, create, update }, { prisma, user }) => {

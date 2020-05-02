@@ -135,16 +135,17 @@ export interface NexusGenInputs {
     hour?: number | null; // Int
     interval?: number | null; // Int
     minute?: number | null; // Int
+    recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
   ScheduledEventUpdatedaysInput: { // input type
     set?: NexusGenEnums['Day'][] | null; // [Day!]
   }
   ScheduledEventWhereInput: { // input type
     AND?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
-    hour?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    hour?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     interval?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
-    minute?: NexusGenInputs['NullableIntFilter'] | null; // NullableIntFilter
+    minute?: NexusGenInputs['IntFilter'] | null; // IntFilter
     next?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     NOT?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
     OR?: NexusGenInputs['ScheduledEventWhereInput'][] | null; // [ScheduledEventWhereInput!]
@@ -458,10 +459,10 @@ export interface NexusGenRootTypes {
   }
   ScheduledEvent: { // root type
     days: NexusGenEnums['Day'][]; // [Day!]!
-    hour?: number | null; // Int
+    hour: number; // Int!
     id: string; // String!
     interval?: number | null; // Int
-    minute?: number | null; // Int
+    minute: number; // Int!
     next: any; // DateTime!
     recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
@@ -714,10 +715,10 @@ export interface NexusGenFieldTypes {
   }
   ScheduledEvent: { // field return type
     days: NexusGenEnums['Day'][]; // [Day!]!
-    hour: number | null; // Int
+    hour: number; // Int!
     id: string; // String!
     interval: number | null; // Int
-    minute: number | null; // Int
+    minute: number; // Int!
     next: any; // DateTime!
     recurrence: NexusGenEnums['Recurrence'] | null; // Recurrence
     stockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent

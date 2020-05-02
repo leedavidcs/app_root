@@ -8,8 +8,8 @@ export const StockPortfolioUpdateInput = inputObjectType({
 	name: "StockPortfolioUpdateInput",
 	definition: (t) => {
 		t.string("name");
-		t.field("headers", { type: "StockPortfolioHeaderInput", list: true });
-		t.string("tickers", { list: true });
+		t.list.field("headers", { type: "StockPortfolioHeaderInput" });
+		t.list.string("tickers");
 	}
 });
 

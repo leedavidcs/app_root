@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: Apr 29th 2020 8:32:12 pm
+// This file was generated on: May 1st 2020 6:45:56 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -101,10 +101,11 @@ export type ScheduledEventUpdatedaysInput = {
 };
 
 export type ScheduledEventUpdateWithoutStockPortfolioEventDataInput = {
+  readonly interval?: Maybe<Scalars['Int']>;
+  readonly recurrence?: Maybe<Recurrence>;
+  readonly days?: Maybe<ScheduledEventUpdatedaysInput>;
   readonly hour?: Maybe<Scalars['Int']>;
   readonly minute?: Maybe<Scalars['Int']>;
-  readonly interval?: Maybe<Scalars['Int']>;
-  readonly days?: Maybe<ScheduledEventUpdatedaysInput>;
 };
 
 export type ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput = {
@@ -600,8 +601,8 @@ export type ScheduledEvent = {
   readonly user: User;
   readonly recurrence?: Maybe<Recurrence>;
   readonly days: ReadonlyArray<Day>;
-  readonly hour?: Maybe<Scalars['Int']>;
-  readonly minute?: Maybe<Scalars['Int']>;
+  readonly hour: Scalars['Int'];
+  readonly minute: Scalars['Int'];
   readonly interval?: Maybe<Scalars['Int']>;
   readonly next: Scalars['DateTime'];
   readonly stockPortfolioEvent?: Maybe<StockPortfolioEvent>;
@@ -799,9 +800,9 @@ export type StockPortfolioWhereInput = {
   readonly name?: Maybe<StringFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly webhook?: Maybe<WebhookFilter>;
-  readonly snapshot?: Maybe<SnapshotFilter>;
-  readonly stockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
+  readonly Webhook?: Maybe<WebhookFilter>;
+  readonly Snapshot?: Maybe<SnapshotFilter>;
+  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
@@ -904,11 +905,11 @@ export type UserWhereInput = {
   readonly timezone?: Maybe<StringFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly stockPortfolio?: Maybe<StockPortfolioFilter>;
-  readonly balance?: Maybe<BalanceFilter>;
-  readonly transaction?: Maybe<TransactionFilter>;
-  readonly stripeDetails?: Maybe<StripeDetailsFilter>;
-  readonly scheduledEvent?: Maybe<ScheduledEventFilter>;
+  readonly StockPortfolio?: Maybe<StockPortfolioFilter>;
+  readonly Balance?: Maybe<BalanceFilter>;
+  readonly Transaction?: Maybe<TransactionFilter>;
+  readonly StripeDetails?: Maybe<StripeDetailsFilter>;
+  readonly ScheduledEvent?: Maybe<ScheduledEventFilter>;
   readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
@@ -973,11 +974,11 @@ export type ScheduledEventWhereInput = {
   readonly id?: Maybe<StringFilter>;
   readonly userId?: Maybe<StringFilter>;
   readonly recurrence?: Maybe<Recurrence>;
-  readonly hour?: Maybe<NullableIntFilter>;
-  readonly minute?: Maybe<NullableIntFilter>;
+  readonly hour?: Maybe<IntFilter>;
+  readonly minute?: Maybe<IntFilter>;
   readonly interval?: Maybe<NullableIntFilter>;
   readonly next?: Maybe<DateTimeFilter>;
-  readonly stockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
+  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
   readonly AND?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
@@ -1016,7 +1017,7 @@ export type StripeDetailsWhereInput = {
   readonly user?: Maybe<UserWhereInput>;
 };
 
-export type NullableIntFilter = {
+export type IntFilter = {
   readonly equals?: Maybe<Scalars['Int']>;
   readonly not?: Maybe<Scalars['Int']>;
   readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
@@ -1027,7 +1028,7 @@ export type NullableIntFilter = {
   readonly gte?: Maybe<Scalars['Int']>;
 };
 
-export type IntFilter = {
+export type NullableIntFilter = {
   readonly equals?: Maybe<Scalars['Int']>;
   readonly not?: Maybe<Scalars['Int']>;
   readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
@@ -2230,7 +2231,7 @@ export type UpdateWebhookMutationResult = ApolloReactCommon.MutationResult<Updat
 export type UpdateWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateWebhookMutation, UpdateWebhookMutationVariables>;
 export const UpsertDataRetrievedEventDocument = gql`
     mutation UpsertDataRetrievedEvent($type: StockPortfolioEventType!, $interval: Int, $recurrence: Recurrence, $days: [Day!], $hour: Int, $minute: Int, $stockPortfolioId: String!) {
-  upsertOneStockPortfolioEvent(where: {stockPortfolioId_type: {stockPortfolioId: $stockPortfolioId, type: $type}}, create: {type: $type, scheduledEvent: {create: {recurrence: $recurrence, days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}, stockPortfolio: {connect: {id: $stockPortfolioId}}}, update: {type: $type, scheduledEvent: {update: {days: {set: $days}, hour: $hour, minute: $minute, interval: $interval}}}) {
+  upsertOneStockPortfolioEvent(where: {stockPortfolioId_type: {stockPortfolioId: $stockPortfolioId, type: $type}}, create: {type: $type, scheduledEvent: {create: {interval: $interval, recurrence: $recurrence, days: {set: $days}, hour: $hour, minute: $minute}}, stockPortfolio: {connect: {id: $stockPortfolioId}}}, update: {type: $type, scheduledEvent: {update: {interval: $interval, recurrence: $recurrence, days: {set: $days}, hour: $hour, minute: $minute}}}) {
     scheduledEventId
     type
   }

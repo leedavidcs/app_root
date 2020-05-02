@@ -23,11 +23,12 @@ export const deleteOneStockPortfolioEvent = mutationField("deleteOneStockPortfol
 			return false;
 		}
 
-		return false;
+		return true;
 	},
 	resolve: async (parent, { where }, { prisma }) => {
 		const stockPortfolioEvent = await prisma.stockPortfolioEvent.findOne({ where });
 
+		await prisma.stockPortfolioEvent.delete({ where });
 		await prisma.scheduledEvent.delete({
 			where: { id: stockPortfolioEvent?.scheduledEventId }
 		});

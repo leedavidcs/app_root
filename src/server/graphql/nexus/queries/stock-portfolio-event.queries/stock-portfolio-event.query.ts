@@ -31,7 +31,7 @@ export const stockPortfolioEvent = queryField("stockPortfolioEvent", {
 			}
 		});
 
-		if (result?.stockPortfolio.userId === user.id) {
+		if (result?.stockPortfolio.userId !== user.id) {
 			throw new ForbiddenError(
 				"Cannot retrieve stock-portfolio-event belonging to a different user"
 			);
