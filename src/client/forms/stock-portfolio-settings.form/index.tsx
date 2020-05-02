@@ -7,7 +7,7 @@ import {
 	useGetFeaturePricingQuery,
 	useUpdateStockPortfolioSettingsMutation
 } from "@/client/graphql";
-import { useOnFormSubmitError } from "@/client/hooks";
+import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@blueprintjs/core";
 import classnames from "classnames";
@@ -61,6 +61,8 @@ const computeNewCost = (
 export const StockPortfolioSettingsForm: FC<IProps> = ({ className, stockPortfolio, style }) => {
 	const classes = useStyles();
 
+	const toaster = useToast();
+
 	const featurePricingResult = useGetFeaturePricingQuery();
 
 	const featurePricing = featurePricingResult.data?.featurePricing;
@@ -76,7 +78,9 @@ export const StockPortfolioSettingsForm: FC<IProps> = ({ className, stockPortfol
 
 	const formFields = watch({ nest: true });
 
-	const [updateSettings] = useUpdateStockPortfolioSettingsMutation();
+	const [updateSettings] = useUpdateStockPortfolioSettingsMutation({
+		onCompleted: () => toaster.show({ intent: "success", message: "Update successful" })
+	});
 
 	const onFormSubmitError = useOnFormSubmitError<IFormData>({
 		onBadUserInput: (invalidArgs) => setError(invalidArgs)
