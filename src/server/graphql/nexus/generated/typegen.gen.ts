@@ -174,7 +174,7 @@ export interface NexusGenInputs {
     stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   SnapshotWhereUniqueInput: { // input type
-    id: string; // String!
+    id?: string | null; // String
   }
   StockDataWhereUniqueInput: { // input type
     stockPortfolioId: string; // String!

@@ -393,7 +393,7 @@ input SnapshotWhereInput {
 }
 
 input SnapshotWhereUniqueInput {
-  id: String!
+  id: String
 }
 
 """
