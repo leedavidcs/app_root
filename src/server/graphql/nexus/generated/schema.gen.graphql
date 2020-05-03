@@ -143,11 +143,7 @@ type Mutation implements RequestRoot {
 
   """Resends the account verification email to the logged-in user"""
   resendVerifyEmail: ResendVerifyEmailPayload
-
-  """
-  StockData must be requested as part of the request for this to properly retrieve all data.
-  """
-  runScheduledStockPortfolioDataRetrieve: [StockPortfolioEvent!]!
+  runScheduledEvent: RunScheduledEvent
   updateOneStockPortfolio(data: StockPortfolioUpdateInput!, where: StockPortfolioWhereUniqueInput!): StockPortfolio
   updateOneStockPortfolioSettings(data: StockPortfolioSettingsUpdateInput!, where: StockPortfolioSettingsWhereUniqueInput!): StockPortfolioSettings
   updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
@@ -284,6 +280,16 @@ interface RequestRoot {
 type ResendVerifyEmailPayload {
   """Status, on whether the email was successfully resent"""
   success: Boolean!
+}
+
+type RunScheduledEvent {
+  scheduledEvents: [ScheduledEvent!]!
+  startTime: DateTime!
+
+  """
+  Retrieves stock-data for stock-portfolios that have polling configured, and generates snapshots for each one.
+  """
+  stockDataRetrieved: [StockPortfolioEvent!]!
 }
 
 type ScheduledEvent {

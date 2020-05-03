@@ -4,16 +4,16 @@ import { dataSources } from "@/server/datasources";
 import { prisma } from "@/server/prisma";
 import { isEasyCron } from "@/server/utils";
 import { PrismaClient, User } from "@prisma/client";
-import { DataSource } from "apollo-datasource";
-import { RedisCache } from "apollo-server-cache-redis";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
+import { AfterwareQueue } from "./plugins";
 
-const cacheHost: string = process.env.REDIS_GRAPHQL_HOST || "";
-const cachePort = Number(process.env.REDIS_GRAPHQL_PORT);
+const isDevelopment: boolean = process.env.NODE_ENV === "development";
 
 export interface IServerContext {
+	afterwares: AfterwareQueue;
 	dataSources: ReturnType<typeof dataSources>;
+	/** `isEasyCron` is `true` by default in development mode */
 	isEasyCron: boolean;
 	prisma: PrismaClient;
 	req: NextApiRequest;
@@ -39,7 +39,8 @@ export const createContext = async ({
 	const user: User | null = userId ? await prisma.user.findOne({ where: { id: userId } }) : null;
 
 	const apolloContext: Omit<IServerContext, "dataSources"> = {
-		isEasyCron: await isEasyCron(req),
+		afterwares: new AfterwareQueue(),
+		isEasyCron: (await isEasyCron(req)) || isDevelopment,
 		prisma,
 		req,
 		res,
@@ -48,25 +49,4 @@ export const createContext = async ({
 	};
 
 	return apolloContext;
-};
-
-export const createNonApolloContext = async ({
-	req,
-	res
-}: IServerCreateContextArgs): Promise<IServerContext> => {
-	const context = await createContext({ req, res });
-	const cache = new RedisCache({
-		host: cacheHost,
-		port: cachePort
-	});
-
-	const contextDataSources = dataSources();
-
-	for (const key of Object.keys(contextDataSources)) {
-		const dataSource: DataSource = contextDataSources[key];
-
-		await dataSource.initialize?.({ cache, context });
-	}
-
-	return { ...context, dataSources: contextDataSources };
 };

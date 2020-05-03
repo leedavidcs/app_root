@@ -1,1 +1,1 @@
-export * from "./run-scheduled-stock-portfolio-data-retrieve.mutation";
+export * from "./run-scheduled-event.mutation";
