@@ -1,25 +1,37 @@
 import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
 import {
-	GetOneStockPortfolioQuery,
 	GetStockDataQueryVariables,
 	GetUserDocument,
+	Snapshot,
+	StockData,
+	StockPortfolio as _StockPortfolio,
 	useGetStockDataLazyQuery,
 	useGetUserQuery,
+	User,
 	useSetUserMutation
 } from "@/client/graphql";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
-import { format } from "date-fns";
+import { format, isAfter } from "date-fns";
+import { minTime } from "date-fns/constants";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { CreatorActions } from "./creator-actions.component";
 import { PublicActions } from "./public-actions.component";
 import { useStyles } from "./styles";
 
+const MIN_DATE: Date = new Date(minTime);
+
+type StockPortfolio = Pick<_StockPortfolio, "id" | "headers" | "name" | "tickers" | "updatedAt"> & {
+	latestSnapshot?: Maybe<Pick<Snapshot, "createdAt" | "data">>;
+	stockData: Pick<StockData, "refreshCost">;
+	user: Pick<User, "id" | "username">;
+};
+
 interface IProps {
 	className?: string;
 	onDelete?: () => void;
 	onEdit?: () => void;
-	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
+	stockPortfolio: StockPortfolio;
 }
 
 type UseDataResult = [
@@ -68,8 +80,9 @@ const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 	return isCreator;
 };
 
-const useData = (): UseDataResult => {
+const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
+	const [lastRefresh, setLastRefresh] = useState<Date>(MIN_DATE);
 	const [setUser] = useSetUserMutation({
 		awaitRefetchQueries: true,
 		refetchQueries: [{ query: GetUserDocument }]
@@ -77,7 +90,10 @@ const useData = (): UseDataResult => {
 
 	const [getStockData, result] = useGetStockDataLazyQuery({
 		fetchPolicy: "no-cache",
-		onCompleted: () => setUser()
+		onCompleted: () => {
+			setLastRefresh(new Date());
+			setUser();
+		}
 	});
 
 	const refresh = useCallback(
@@ -88,12 +104,26 @@ const useData = (): UseDataResult => {
 	);
 
 	useEffect(() => {
+		const { latestSnapshot } = stockPortfolio;
+
 		const stockData = result.data?.stockData?.data;
 
-		if (stockData) {
-			setData(stockData);
+		if (!latestSnapshot !== !stockData) {
+			setData((latestSnapshot?.data ?? stockData) as readonly Record<string, any>[]);
+
+			return;
 		}
-	}, [result.data]);
+
+		const isRefreshRecent = isAfter(
+			lastRefresh,
+			new Date(latestSnapshot?.createdAt) ?? MIN_DATE
+		);
+		const latestData = isRefreshRecent ? stockData : latestSnapshot?.data;
+
+		if (latestData) {
+			setData(latestData);
+		}
+	}, [lastRefresh, result.data, stockPortfolio]);
 
 	const { called, loading } = result;
 
@@ -111,7 +141,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	const { tickers, updatedAt, user } = stockPortfolio;
 
 	const [headers, setHeaders] = useStockPortfolioHeaders(props);
-	const [dataStates, dataActions] = useData();
+	const [dataStates, dataActions] = useData(props);
 
 	const isCreator: boolean = useIsCreator(props);
 
@@ -131,7 +161,14 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
 			</div>
 			<Paper className={classes.portfolioContainer}>
-				{!dataStates.called ? (
+				{!noDataAvailable ? (
+					<DataGrid
+						data={data}
+						headers={headers}
+						onDataChange={dataActions.setData}
+						onHeadersChange={setHeaders}
+					/>
+				) : !dataStates.called ? (
 					<NonIdealState
 						icon="search"
 						title="Data not yet requested"
@@ -147,7 +184,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 						title="Loading..."
 						description={<p>Your data should be loaded shortly.</p>}
 					/>
-				) : noDataAvailable ? (
+				) : (
 					<NonIdealState
 						icon="search"
 						title="No data available"
@@ -157,13 +194,6 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 								<p>Tickers or headers may not be configured for this portfolio.</p>
 							</>
 						}
-					/>
-				) : (
-					<DataGrid
-						data={data}
-						headers={headers}
-						onDataChange={dataActions.setData}
-						onHeadersChange={setHeaders}
 					/>
 				)}
 			</Paper>

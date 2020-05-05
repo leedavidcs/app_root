@@ -174,7 +174,7 @@ export interface NexusGenInputs {
     stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   SnapshotWhereUniqueInput: { // input type
-    id: string; // String!
+    id?: string | null; // String
   }
   StockDataWhereUniqueInput: { // input type
     stockPortfolioId: string; // String!
@@ -471,6 +471,7 @@ export interface NexusGenRootTypes {
     recurrence?: NexusGenEnums['Recurrence'] | null; // Recurrence
   }
   Snapshot: { // root type
+    createdAt: any; // DateTime!
     id: string; // String!
     tickers: string[]; // [String!]!
   }
@@ -734,6 +735,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Snapshot: { // field return type
+    createdAt: any; // DateTime!
     data: any[]; // [JSONObject!]!
     headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
     id: string; // String!
@@ -760,6 +762,7 @@ export interface NexusGenFieldTypes {
     createdAt: any; // DateTime!
     headers: NexusGenRootTypes['StockPortfolioHeader'][]; // [StockPortfolioHeader!]!
     id: string; // String!
+    latestSnapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
     name: string; // String!
     settings: NexusGenRootTypes['StockPortfolioSettings']; // StockPortfolioSettings!
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
@@ -985,6 +988,17 @@ export interface NexusGenArgTypes {
   StockData: {
     refreshCost: { // args
       enableSnapshots?: boolean | null; // Boolean
+    }
+  }
+  StockPortfolio: {
+    snapshots: { // args
+      after?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput
+      before?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['SnapshotOrderByInput'] | null; // SnapshotOrderByInput
+      skip?: number | null; // Int
+      where?: NexusGenInputs['SnapshotWhereInput'] | null; // SnapshotWhereInput
     }
   }
 }

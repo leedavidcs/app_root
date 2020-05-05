@@ -1,9 +1,10 @@
-import { GetOneStockPortfolioQuery } from "@/client/graphql";
+import { GetOneStockPortfolioQuery, useGetOneStockPortfolioQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioDisplay, StockPortfolioHead } from "@/client/page-parts";
 import { breakpoints, colors, CustomTheme } from "@/client/themes";
 import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
+import ms from "ms";
 import { NextPage } from "next";
 import React from "react";
 import { createUseStyles } from "react-jss";
@@ -40,8 +41,20 @@ const styles = (theme: CustomTheme) => ({
 
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
-const Page: NextPage<IProps> = ({ stockPortfolio }) => {
+const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 	const classes = useStyles();
+
+	const { data } = useGetOneStockPortfolioQuery({
+		fetchPolicy: "no-cache",
+		pollInterval: ms("2m"),
+		variables: {
+			where: { id: propsStockPortfolio.id }
+		}
+	});
+
+	const polled = data?.stockPortfolio;
+
+	const stockPortfolio = polled ?? propsStockPortfolio;
 
 	return (
 		<main className={classnames(Classes.DARK, classes.root)}>

@@ -12,6 +12,10 @@ query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
 		tickers
 		createdAt
 		updatedAt
+		latestSnapshot {
+			data
+			createdAt
+		}
 		stockData {
 			refreshCost
 		}

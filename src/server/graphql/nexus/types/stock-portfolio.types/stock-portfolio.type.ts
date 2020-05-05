@@ -1,5 +1,5 @@
 import { NotFoundError } from "@/server/utils";
-import { objectType } from "@nexus/schema";
+import { arg, intArg, objectType } from "@nexus/schema";
 
 export const StockPortfolioHeader = objectType({
 	name: "StockPortfolioHeader",
@@ -47,12 +47,50 @@ export const StockPortfolio = objectType({
 				return { stockPortfolio };
 			}
 		});
+		t.field("latestSnapshot", {
+			type: "Snapshot",
+			resolve: async ({ id }, args, { prisma }) => {
+				const snapshots = await prisma.snapshot.findMany({
+					where: {
+						stockPortfolioId: id
+					},
+					first: 1,
+					orderBy: {
+						createdAt: "desc"
+					}
+				});
+
+				return snapshots.length > 0 ? snapshots[0] : null;
+			}
+		});
 		t.list.field("snapshots", {
 			type: "Snapshot",
 			nullable: false,
-			resolve: async ({ id }, args, { prisma }) => {
+			args: {
+				where: arg({ type: "SnapshotWhereInput" }),
+				orderBy: arg({ type: "SnapshotOrderByInput" }),
+				skip: intArg(),
+				after: arg({ type: "SnapshotWhereUniqueInput" }),
+				before: arg({ type: "SnapshotWhereUniqueInput" }),
+				first: intArg(),
+				last: intArg()
+			},
+			resolve: async (
+				{ id },
+				{ where, orderBy, skip, after, before, first, last },
+				{ prisma }
+			) => {
 				const snapshots = await prisma.snapshot.findMany({
-					where: { stockPortfolioId: id }
+					where: {
+						...where,
+						stockPortfolioId: id
+					},
+					orderBy,
+					skip,
+					after,
+					before,
+					first,
+					last
 				});
 
 				return snapshots;

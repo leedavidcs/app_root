@@ -1,16 +1,8 @@
-import { arg, inputObjectType, queryField } from "@nexus/schema";
+import { extendType } from "@nexus/schema";
 
-export const SnapshotWhereUniqueInput = inputObjectType({
-	name: "SnapshotWhereUniqueInput",
+export const snapshot = extendType({
+	type: "Query",
 	definition: (t) => {
-		t.string("id", { nullable: false });
+		t.crud.snapshot();
 	}
-});
-
-export const snapshot = queryField("snapshot", {
-	type: "Snapshot",
-	args: {
-		where: arg({ type: "SnapshotWhereUniqueInput", nullable: false })
-	},
-	resolve: (parent, args, { prisma }) => prisma.snapshot.findOne(args)
 });

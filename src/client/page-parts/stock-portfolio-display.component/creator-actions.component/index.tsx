@@ -1,17 +1,22 @@
 import { Alert } from "@/client/components";
 import {
 	DeleteStockPortfolioMutation,
-	GetOneStockPortfolioQuery,
-	useDeleteStockPortfolioMutation
+	StockPortfolio as _StockPortfolio,
+	useDeleteStockPortfolioMutation,
+	User
 } from "@/client/graphql";
 import { AnchorButton, Button, ButtonGroup } from "@blueprintjs/core";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 
+type StockPortfolio = Pick<_StockPortfolio, "id" | "name"> & {
+	user: Pick<User, "id">;
+};
+
 interface IProps {
 	className?: string;
-	stockPortfolio: GetOneStockPortfolioQuery["stockPortfolio"];
+	stockPortfolio: StockPortfolio;
 }
 
 const useOnDelete = ({ stockPortfolio }: IProps) => {

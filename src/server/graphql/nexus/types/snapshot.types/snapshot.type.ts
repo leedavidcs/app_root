@@ -13,6 +13,7 @@ export const Snapshot = objectType({
 		t.model.id();
 		t.model.stockPortfolio();
 		t.model.tickers();
+		t.model.createdAt();
 		t.list.field("headers", {
 			type: "SnapshotHeader",
 			nullable: false,
