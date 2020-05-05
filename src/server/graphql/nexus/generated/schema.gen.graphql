@@ -358,6 +358,7 @@ input ScheduledEventWhereInput {
 }
 
 type Snapshot {
+  createdAt: DateTime!
   data: [JSONObject!]!
   headers: [SnapshotHeader!]!
   id: String!
@@ -431,9 +432,10 @@ type StockPortfolio {
   createdAt: DateTime!
   headers: [StockPortfolioHeader!]!
   id: String!
+  latestSnapshot: Snapshot
   name: String!
   settings: StockPortfolioSettings!
-  snapshots: [Snapshot!]!
+  snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
 
   """The data that gets resolved based on headers and tickers"""
   stockData: StockData!

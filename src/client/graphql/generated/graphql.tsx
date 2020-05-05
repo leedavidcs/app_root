@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: May 1st 2020 6:45:56 pm
+// This file was generated on: May 3rd 2020 7:03:29 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -58,6 +58,14 @@ export type ResendVerifyEmailPayload = {
   readonly __typename?: 'ResendVerifyEmailPayload';
   /** Status, on whether the email was successfully resent */
   readonly success: Scalars['Boolean'];
+};
+
+export type RunScheduledEvent = {
+  readonly __typename?: 'RunScheduledEvent';
+  readonly scheduledEvents: ReadonlyArray<ScheduledEvent>;
+  readonly startTime: Scalars['DateTime'];
+  /** Retrieves stock-data for stock-portfolios that have polling configured, and generates snapshots for each one. */
+  readonly stockDataRetrieved: ReadonlyArray<StockPortfolioEvent>;
 };
 
 export type StockPortfolioCreateInput = {
@@ -153,10 +161,6 @@ export type WebhookUpdateInput = {
   readonly type?: Maybe<WebhookType>;
   readonly url?: Maybe<Scalars['String']>;
   readonly timeout?: Maybe<Scalars['Int']>;
-};
-
-export type SnapshotWhereUniqueInput = {
-  readonly id: Scalars['String'];
 };
 
 export type StockDataWhereUniqueInput = {
@@ -314,8 +318,7 @@ export type Mutation = RequestRoot & {
   readonly registerLocalUser?: Maybe<RegisterLocalUserPayload>;
   /** Resends the account verification email to the logged-in user */
   readonly resendVerifyEmail?: Maybe<ResendVerifyEmailPayload>;
-  /** StockData must be requested as part of the request for this to properly retrieve all data. */
-  readonly runScheduledStockPortfolioDataRetrieve: ReadonlyArray<StockPortfolioEvent>;
+  readonly runScheduledEvent?: Maybe<RunScheduledEvent>;
   readonly setToasts: ReadonlyArray<Toast>;
   readonly setUser?: Maybe<User>;
   readonly toggleModal: Scalars['Boolean'];
@@ -619,6 +622,7 @@ export type Snapshot = {
   readonly id: Scalars['String'];
   readonly stockPortfolio: StockPortfolio;
   readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly createdAt: Scalars['DateTime'];
   readonly headers: ReadonlyArray<SnapshotHeader>;
   readonly data: ReadonlyArray<Scalars['JSONObject']>;
 };
@@ -677,9 +681,22 @@ export type StockPortfolio = {
   readonly settings: StockPortfolioSettings;
   /** The data that gets resolved based on headers and tickers */
   readonly stockData: StockData;
+  readonly latestSnapshot?: Maybe<Snapshot>;
   readonly snapshots: ReadonlyArray<Snapshot>;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
+};
+
+
+/** StockPortfolio entity. This is what gets shown on the data grid */
+export type StockPortfolioSnapshotsArgs = {
+  where?: Maybe<SnapshotWhereInput>;
+  orderBy?: Maybe<SnapshotOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<SnapshotWhereUniqueInput>;
+  before?: Maybe<SnapshotWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 export type StockPortfolioDataHeader = {
@@ -771,6 +788,10 @@ export type Webhook = {
 
 export type BalanceWhereUniqueInput = {
   readonly userId?: Maybe<Scalars['String']>;
+};
+
+export type SnapshotWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
 };
 
 export type SnapshotWhereInput = {
@@ -1437,6 +1458,9 @@ export type GetOneStockPortfolioQuery = (
     & { readonly headers: ReadonlyArray<(
       { readonly __typename?: 'StockPortfolioHeader' }
       & Pick<StockPortfolioHeader, 'name' | 'dataKey' | 'frozen' | 'resizable' | 'width'>
+    )>, readonly latestSnapshot?: Maybe<(
+      { readonly __typename?: 'Snapshot' }
+      & Pick<Snapshot, 'data' | 'createdAt'>
     )>, readonly stockData: (
       { readonly __typename?: 'StockData' }
       & Pick<StockData, 'refreshCost'>
@@ -2457,6 +2481,10 @@ export const GetOneStockPortfolioDocument = gql`
     tickers
     createdAt
     updatedAt
+    latestSnapshot {
+      data
+      createdAt
+    }
     stockData {
       refreshCost
     }
