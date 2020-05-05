@@ -1,14 +1,16 @@
-import { Classes, FormGroup, Intent } from "@blueprintjs/core";
+import { Classes, FormGroup, Intent, IPopoverProps } from "@blueprintjs/core";
 import { DateRange, DateRangeInput as BpDateRangeInput } from "@blueprintjs/datetime";
 import classnames from "classnames";
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties, FC, useMemo } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
+	allowSingleDayRange?: boolean;
 	className?: string;
 	disabled?: boolean;
 	error?: string;
 	inline?: boolean;
+	inlineInputs?: boolean;
 	label?: string;
 	labelInfo?: string;
 	maxDate?: Date;
@@ -23,10 +25,12 @@ const formatDate = (date: Date) => date.toLocaleDateString();
 const parseDate = (str: string) => new Date(str);
 
 export const DateRangeInput: FC<IProps> = ({
+	allowSingleDayRange,
 	className,
 	disabled,
 	error,
 	inline,
+	inlineInputs = false,
 	label,
 	labelInfo,
 	maxDate,
@@ -40,9 +44,22 @@ export const DateRangeInput: FC<IProps> = ({
 
 	const intent: Intent = error ? "danger" : "none";
 
+	const popoverProps: Partial<IPopoverProps> = useMemo(
+		() => ({
+			popoverClassName: classes.popover
+		}),
+		[classes.popover]
+	);
+
 	return (
 		<FormGroup
-			className={classnames(Classes.DARK, className)}
+			className={classnames(
+				Classes.DARK,
+				{
+					[classes.inlineInputs]: inlineInputs
+				},
+				className
+			)}
 			disabled={disabled}
 			helperText={error}
 			inline={inline}
@@ -53,12 +70,14 @@ export const DateRangeInput: FC<IProps> = ({
 		>
 			<BpDateRangeInput
 				className={classnames(Classes.DARK, classes.input)}
+				allowSingleDayRange={allowSingleDayRange}
 				disabled={disabled}
 				formatDate={formatDate}
 				maxDate={maxDate}
 				minDate={minDate}
 				onChange={onChange}
 				parseDate={parseDate}
+				popoverProps={popoverProps}
 				shortcuts={shortcuts}
 				singleMonthOnly={true}
 				value={value}
