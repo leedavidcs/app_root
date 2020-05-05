@@ -1,12 +1,20 @@
 import { Tooltip } from "@/client/components";
-import { GetOneStockPortfolioQuery, GetStockDataQueryVariables } from "@/client/graphql";
+import {
+	GetStockDataQueryVariables,
+	StockData,
+	StockPortfolio as _StockPortfolio
+} from "@/client/graphql";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import React, { FC, useCallback, useMemo } from "react";
+
+type StockPortfolio = Pick<_StockPortfolio, "id"> & {
+	stockData: Pick<StockData, "refreshCost">;
+};
 
 interface IProps {
 	className?: string;
 	onRefresh: (variables: GetStockDataQueryVariables) => void;
-	stockPortfolio: NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
+	stockPortfolio: StockPortfolio;
 }
 
 const useOnRefresh = ({ onRefresh: _onRefresh, stockPortfolio }: IProps) => {
