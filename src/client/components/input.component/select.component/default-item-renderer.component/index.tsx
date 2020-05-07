@@ -1,18 +1,20 @@
 import { ISelectItemType } from "@/client/components/input.component/select.component";
-import { Menu } from "@blueprintjs/core";
+import { Menu } from "@/client/components/menu.component";
 import { IItemRendererProps } from "@blueprintjs/select";
-import React, { ReactElement } from "react";
+import React, { CSSProperties, ReactElement } from "react";
 import Highlighter from "react-highlight-words";
 import { useStyles } from "./styles";
 
 export interface IItemProps<T> {
 	item: ISelectItemType<T>;
 	rendererProps: IItemRendererProps;
+	style?: CSSProperties;
 }
 
 export const DefaultItemRenderer = <T extends any>({
 	item,
-	rendererProps
+	rendererProps,
+	style
 }: IItemProps<T>): ReactElement => {
 	const classes = useStyles();
 
@@ -24,6 +26,7 @@ export const DefaultItemRenderer = <T extends any>({
 			active={modifiers.active}
 			disabled={modifiers.disabled}
 			onClick={handleClick}
+			style={style}
 			text={
 				<div>
 					<Highlighter

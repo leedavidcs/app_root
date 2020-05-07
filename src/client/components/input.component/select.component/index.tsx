@@ -1,4 +1,5 @@
-import { Classes, IInputGroupProps, IPopoverProps, Menu } from "@blueprintjs/core";
+import { Menu } from "@/client/components/menu.component";
+import { Classes, IInputGroupProps, IPopoverProps } from "@blueprintjs/core";
 import {
 	ItemListRenderer,
 	ItemPredicate,
