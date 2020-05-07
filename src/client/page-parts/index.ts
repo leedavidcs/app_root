@@ -1,5 +1,6 @@
 export * from "./layout.component";
 export * from "./order-summary.component";
+export * from "./snapshot-lookup.component";
 export * from "./stock-portfolio-display.component";
 export * from "./stock-portfolio-edit.component";
 export * from "./stock-portfolio-head.component";

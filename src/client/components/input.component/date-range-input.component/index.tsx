@@ -15,6 +15,7 @@ interface IProps {
 	labelInfo?: string;
 	maxDate?: Date;
 	minDate?: Date;
+	minimal?: boolean;
 	onChange?: (selectedRange: DateRange) => void;
 	shortcuts?: boolean;
 	style?: CSSProperties;
@@ -30,11 +31,12 @@ export const DateRangeInput: FC<IProps> = ({
 	disabled,
 	error,
 	inline,
-	inlineInputs = false,
+	inlineInputs = true,
 	label,
 	labelInfo,
 	maxDate,
 	minDate,
+	minimal,
 	onChange,
 	shortcuts,
 	style,
@@ -46,9 +48,10 @@ export const DateRangeInput: FC<IProps> = ({
 
 	const popoverProps: Partial<IPopoverProps> = useMemo(
 		() => ({
+			minimal,
 			popoverClassName: classes.popover
 		}),
-		[classes.popover]
+		[classes.popover, minimal]
 	);
 
 	return (
@@ -56,7 +59,7 @@ export const DateRangeInput: FC<IProps> = ({
 			className={classnames(
 				Classes.DARK,
 				{
-					[classes.inlineInputs]: inlineInputs
+					[classes.verticalInputs]: !inlineInputs
 				},
 				className
 			)}

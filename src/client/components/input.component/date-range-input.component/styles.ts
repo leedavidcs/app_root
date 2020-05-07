@@ -5,6 +5,14 @@ const styles = (theme: CustomTheme) => ({
 	input: {
 		backgroundColor: theme.code,
 
+		"& > .bp3-popover-target": {
+			display: "flex",
+
+			"& > .bp3-control-group": {
+				flexGrow: 1
+			}
+		},
+
 		"& input.bp3-input": {
 			backgroundColor: theme.code,
 			color: theme.onSurface
@@ -22,7 +30,7 @@ const styles = (theme: CustomTheme) => ({
 			}
 		}
 	},
-	inlineInputs: {
+	verticalInputs: {
 		"& .bp3-control-group": {
 			flexDirection: "column"
 		}

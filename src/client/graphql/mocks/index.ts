@@ -7,6 +7,8 @@ import { GetFeaturePricingMock } from "./get-feature-pricing.mock";
 import { GetManyStockPortfoliosMock } from "./get-many-stock-portfolios.mock";
 import { GetOneStockPortfolioMocks } from "./get-one-stock-portfolio.mock";
 import { GetPriceBundlesMock } from "./get-price-bundles.mock";
+import { GetSnapshotMock } from "./get-snapshot.mock";
+import { GetSnapshotsMock } from "./get-snapshots.mock";
 import { GetStockPortfolioEventMock } from "./get-stock-portfolio-event.mock";
 import { GetUserMock } from "./get-user.mock";
 import { SearchStockSymbolsMock } from "./search-stock-symbols.mock";
@@ -32,6 +34,8 @@ export const mocks: readonly MockedResponse[] = [
 	GetManyStockPortfoliosMock,
 	...GetOneStockPortfolioMocks,
 	GetPriceBundlesMock,
+	GetSnapshotMock,
+	GetSnapshotsMock,
 	GetStockPortfolioEventMock,
 	GetUserMock,
 	SearchStockSymbolsMock
