@@ -696,6 +696,7 @@ export interface NexusGenFieldTypes {
     featurePricing: NexusGenRootTypes['FeaturePricing']; // FeaturePricing!
     priceBundles: NexusGenRootTypes['PriceBundle'][]; // [PriceBundle!]!
     snapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
+    snapshotCount: number; // Int!
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
     stockData: NexusGenRootTypes['StockData'] | null; // StockData
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
@@ -922,6 +923,9 @@ export interface NexusGenArgTypes {
     }
     snapshot: { // args
       where: NexusGenInputs['SnapshotWhereUniqueInput']; // SnapshotWhereUniqueInput!
+    }
+    snapshotCount: { // args
+      where?: NexusGenInputs['SnapshotWhereInput'] | null; // SnapshotWhereInput
     }
     snapshots: { // args
       after?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput

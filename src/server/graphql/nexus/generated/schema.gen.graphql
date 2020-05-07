@@ -219,6 +219,7 @@ type Query implements RequestRoot {
   featurePricing: FeaturePricing!
   priceBundles: [PriceBundle!]!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
+  snapshotCount(where: SnapshotWhereInput): Int!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
   stockData(where: StockDataWhereUniqueInput!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
