@@ -10,12 +10,22 @@ const styles = (theme: CustomTheme) => ({
 
 		"& > .bp3-popover-target": {
 			flexGrow: 1
+		},
+
+		"& .bp3-popover-content": {
+			boxSizing: "borderBox",
+			width: 200
 		}
 	},
 	dateInputs: {
 		"&.bp3-form-group": {
 			marginBottom: 4
 		}
+	},
+	list: {
+		width: "100%",
+		minHeight: 30,
+		maxHeight: 200
 	},
 	btn: {
 		width: "100%"
