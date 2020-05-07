@@ -1,5 +1,6 @@
 import { IClientContext } from "@/client/graphql";
 import {
+	GetUserDocument,
 	GetViewerDocument,
 	GetViewerQuery,
 	SetUserMutationVariables
@@ -17,9 +18,10 @@ const setUser: LocalResolver<any, IClientContext, SetUserMutationVariables> = as
 
 	const user = viewerResult.data.viewer ?? null;
 
+	const query = GetUserDocument;
 	const data = { user };
 
-	cache.writeData({ data });
+	cache.writeQuery({ query, data });
 
 	return user;
 };
