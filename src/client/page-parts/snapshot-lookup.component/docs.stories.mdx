@@ -1,0 +1,57 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { SnapshotLookup } from ".";
+import { StandardStory } from "./stories";
+
+<Meta title="page-parts/snapshot-lookup" component={SnapshotLookup} />
+
+# SnapshotLookup
+
+## Description
+A lookup for stock-portfolio snapshots, that provides some filtering based on date-rate of
+created-time.
+
+## Props
+<Props of={SnapshotLookup} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Snapshot as _Snapshot } from "@/client/graphql/generated";
+import { SnapshotLookup } from "@/client/page-parts/snapshot-lookup.component";
+import { DateRange } from "@blueprintjs/datetime";
+import { action } from "@storybook/addon-actions";
+import React, { FC, useCallback, useState } from "react";
+
+type Snapshot = Pick<_Snapshot, "id" | "tickers" | "headers" | "data" | "createdAt">;
+
+export const StandardStory: FC = () => {
+	const [dateRange, setDateRange] = useState<DateRange>([null, null]);
+	const [snapshot, setSnapshot] = useState<Snapshot>();
+
+	const onDateRangeChange = useCallback((newDateRange: DateRange) => {
+		action("onDateRangechange")(newDateRange);
+		setDateRange(newDateRange);
+	}, []);
+
+	const onChange = useCallback((selected: Snapshot) => {
+		action("onChange")(selected);
+		setSnapshot(selected);
+	}, []);
+
+	return (
+		<SnapshotLookup
+			dateRange={dateRange}
+			onChange={onChange}
+			onDateRangeChange={onDateRangeChange}
+			selected={snapshot}
+			stockPortfolioId=""
+		/>
+	);
+};
+```

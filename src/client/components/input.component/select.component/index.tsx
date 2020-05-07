@@ -1,5 +1,10 @@
 import { Classes, IInputGroupProps, IPopoverProps, Menu } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer, Select as BpSelect } from "@blueprintjs/select";
+import {
+	ItemListRenderer,
+	ItemPredicate,
+	ItemRenderer,
+	Select as BpSelect
+} from "@blueprintjs/select";
 import classnames from "classnames";
 import { get, toString } from "lodash";
 import React, {
@@ -32,6 +37,7 @@ export interface ISelectProps<T, TOriginal = T> {
 	filterable?: boolean;
 	itemInfo?: (item: TOriginal) => ReactNode;
 	itemKey?: (item: TOriginal) => ReactText;
+	itemListRenderer?: ItemListRenderer<ISelectItemType<TOriginal>>;
 	itemMap?: {
 		from: (original: TOriginal) => T;
 		to: (to: T) => TOriginal;
@@ -72,6 +78,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 			filterable,
 			itemInfo,
 			itemKey = (value: TOriginal) => get(value, "key") ?? toString(value),
+			itemListRenderer,
 			itemMap = {
 				from: (value: any) => value,
 				to: (value: any) => value
@@ -156,6 +163,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 					disabled={disabled}
 					filterable={filterable}
 					inputProps={inputProps}
+					itemListRenderer={itemListRenderer}
 					itemPredicate={itemPredicate}
 					itemRenderer={itemRenderer}
 					items={items}

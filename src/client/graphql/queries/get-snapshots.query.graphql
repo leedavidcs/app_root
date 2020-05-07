@@ -1,0 +1,14 @@
+query GetSnapshots(
+	$where: SnapshotWhereInput!
+	$orderBy: SnapshotOrderByInput
+	$first: Int
+) {
+	snapshots(
+		where: $where
+		orderBy: $orderBy
+		first: $first
+	) {
+		id
+		createdAt
+	}
+}

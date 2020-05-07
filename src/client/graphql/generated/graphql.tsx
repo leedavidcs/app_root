@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: May 3rd 2020 7:03:29 pm
+// This file was generated on: May 6th 2020 7:37:05 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1485,6 +1485,38 @@ export type GetPriceBundlesQuery = (
   )> }
 );
 
+export type GetSnapshotQueryVariables = {
+  where: SnapshotWhereUniqueInput;
+};
+
+
+export type GetSnapshotQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly snapshot?: Maybe<(
+    { readonly __typename?: 'Snapshot' }
+    & Pick<Snapshot, 'id' | 'tickers' | 'data' | 'createdAt'>
+    & { readonly headers: ReadonlyArray<(
+      { readonly __typename?: 'SnapshotHeader' }
+      & Pick<SnapshotHeader, 'dataKey' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetSnapshotsQueryVariables = {
+  where: SnapshotWhereInput;
+  orderBy?: Maybe<SnapshotOrderByInput>;
+  first?: Maybe<Scalars['Int']>;
+};
+
+
+export type GetSnapshotsQuery = (
+  { readonly __typename?: 'Query' }
+  & { readonly snapshots: ReadonlyArray<(
+    { readonly __typename?: 'Snapshot' }
+    & Pick<Snapshot, 'id' | 'createdAt'>
+  )> }
+);
+
 export type GetStockDataQueryVariables = {
   where: StockDataWhereUniqueInput;
 };
@@ -1596,6 +1628,17 @@ export type SearchStockSymbolsQuery = (
   & { readonly stockSymbols: ReadonlyArray<(
     { readonly __typename?: 'StockDataSearch' }
     & Pick<StockDataSearch, 'symbol' | 'securityName'>
+  )> }
+);
+
+export type Unnamed_1_QueryVariables = {};
+
+
+export type Unnamed_1_Query = (
+  { readonly __typename?: 'Query' }
+  & { readonly toasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'intent' | 'message'>
   )> }
 );
 
@@ -2558,6 +2601,82 @@ export function useGetPriceBundlesLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type GetPriceBundlesQueryHookResult = ReturnType<typeof useGetPriceBundlesQuery>;
 export type GetPriceBundlesLazyQueryHookResult = ReturnType<typeof useGetPriceBundlesLazyQuery>;
 export type GetPriceBundlesQueryResult = ApolloReactCommon.QueryResult<GetPriceBundlesQuery, GetPriceBundlesQueryVariables>;
+export const GetSnapshotDocument = gql`
+    query GetSnapshot($where: SnapshotWhereUniqueInput!) {
+  snapshot(where: $where) {
+    id
+    headers {
+      dataKey
+      name
+    }
+    tickers
+    data
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetSnapshotQuery__
+ *
+ * To run a query within a React component, call `useGetSnapshotQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSnapshotQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSnapshotQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetSnapshotQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSnapshotQuery, GetSnapshotQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSnapshotQuery, GetSnapshotQueryVariables>(GetSnapshotDocument, baseOptions);
+      }
+export function useGetSnapshotLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSnapshotQuery, GetSnapshotQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSnapshotQuery, GetSnapshotQueryVariables>(GetSnapshotDocument, baseOptions);
+        }
+export type GetSnapshotQueryHookResult = ReturnType<typeof useGetSnapshotQuery>;
+export type GetSnapshotLazyQueryHookResult = ReturnType<typeof useGetSnapshotLazyQuery>;
+export type GetSnapshotQueryResult = ApolloReactCommon.QueryResult<GetSnapshotQuery, GetSnapshotQueryVariables>;
+export const GetSnapshotsDocument = gql`
+    query GetSnapshots($where: SnapshotWhereInput!, $orderBy: SnapshotOrderByInput, $first: Int) {
+  snapshots(where: $where, orderBy: $orderBy, first: $first) {
+    id
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetSnapshotsQuery__
+ *
+ * To run a query within a React component, call `useGetSnapshotsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSnapshotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSnapshotsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useGetSnapshotsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSnapshotsQuery, GetSnapshotsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSnapshotsQuery, GetSnapshotsQueryVariables>(GetSnapshotsDocument, baseOptions);
+      }
+export function useGetSnapshotsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSnapshotsQuery, GetSnapshotsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSnapshotsQuery, GetSnapshotsQueryVariables>(GetSnapshotsDocument, baseOptions);
+        }
+export type GetSnapshotsQueryHookResult = ReturnType<typeof useGetSnapshotsQuery>;
+export type GetSnapshotsLazyQueryHookResult = ReturnType<typeof useGetSnapshotsLazyQuery>;
+export type GetSnapshotsQueryResult = ApolloReactCommon.QueryResult<GetSnapshotsQuery, GetSnapshotsQueryVariables>;
 export const GetStockDataDocument = gql`
     query GetStockData($where: StockDataWhereUniqueInput!) {
   stockData(where: $where) {

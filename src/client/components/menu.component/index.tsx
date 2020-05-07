@@ -10,6 +10,7 @@ interface IProps {
 	children?: ReactNodeArray;
 	className?: string;
 	activeItem?: ReactText;
+	ulRef?: (ref: HTMLUListElement | null) => void;
 }
 
 interface IWithStaticProps {
@@ -17,14 +18,16 @@ interface IWithStaticProps {
 	Item: FC<IMenuItemProps>;
 }
 
-const _Menu: FC<IProps> = memo(({ activeItem, children, className }) => {
+const _Menu: FC<IProps> = memo(({ activeItem, children, className, ulRef }) => {
 	const classes = useStyles();
 
 	const value = useMemo(() => ({ activeItem }), [activeItem]);
 
 	return (
 		<MenuContext.Provider value={value}>
-			<BpMenu className={classnames(classes.root, className)}>{children}</BpMenu>
+			<BpMenu className={classnames(classes.root, className)} ulRef={ulRef}>
+				{children}
+			</BpMenu>
 		</MenuContext.Provider>
 	);
 });

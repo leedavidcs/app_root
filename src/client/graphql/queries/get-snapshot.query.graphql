@@ -1,0 +1,12 @@
+query GetSnapshot($where: SnapshotWhereUniqueInput!) {
+	snapshot(where: $where) {
+		id
+		headers {
+			dataKey
+			name
+		}
+		tickers
+		data
+		createdAt
+	}
+}

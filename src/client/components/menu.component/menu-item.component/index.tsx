@@ -7,6 +7,7 @@ import { useStyles } from "./styles";
 
 export interface IMenuItemProps {
 	className?: string;
+	disabled?: boolean;
 	href?: string;
 	icon?: IconName;
 	id?: ReactText;
@@ -14,7 +15,7 @@ export interface IMenuItemProps {
 }
 
 export const MenuItem: FC<IMenuItemProps> = memo(
-	({ className, href, icon, id = href ?? "", text }) => {
+	({ className, disabled, href, icon, id = href ?? "", text }) => {
 		const classes = useStyles();
 
 		const { activeItem } = useContext(MenuContext);
@@ -27,6 +28,7 @@ export const MenuItem: FC<IMenuItemProps> = memo(
 			<BpMenuItem
 				className={classnames({ [classes.href]: Boolean(href) }, className)}
 				active={isActive}
+				disabled={disabled}
 				icon={icon}
 				text={text}
 			/>

@@ -120,7 +120,7 @@ export const TextInput: FC<IProps> = (props) => {
 				control={control}
 				name={name}
 				{...restProps}
-				defaultValue={defaultValue}
+				defaultValue={defaultValue ?? ""}
 				onChange={([event]) => event.target.value || ""}
 			/>
 		);

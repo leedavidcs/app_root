@@ -1,6 +1,7 @@
 import { IClientContext } from "@/client/graphql";
 import { Toast, ToastInput } from "@/client/graphql/generated";
 import { IClientState } from "@/client/graphql/state";
+import gql from "graphql-tag";
 
 const setToasts: LocalResolver<any, IClientContext, { toasts: readonly ToastInput[] }> = (
 	parent,
@@ -11,7 +12,16 @@ const setToasts: LocalResolver<any, IClientContext, { toasts: readonly ToastInpu
 
 	const data: Partial<IClientState> = { toasts };
 
-	cache.writeData({ data });
+	const query = gql`
+		query {
+			toasts {
+				intent
+				message
+			}
+		}
+	`;
+
+	cache.writeQuery({ query, data });
 
 	return toasts;
 };
