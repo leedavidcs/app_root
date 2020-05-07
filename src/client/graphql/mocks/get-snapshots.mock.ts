@@ -31,7 +31,8 @@ export const GetSnapshotsMock: MockedResponse = {
 					FAKER_YEAR,
 					new Date(FAKER_YEAR, FAKER_MONTH, FAKER_DATE)
 				)
-			}))
+			})),
+			count: DATA_SIZE
 		}
 	}
 };

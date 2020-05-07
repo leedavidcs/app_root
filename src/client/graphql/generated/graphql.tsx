@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: May 6th 2020 7:37:05 pm
+// This file was generated on: May 7th 2020 1:00:10 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -454,6 +454,7 @@ export type Query = RequestRoot & {
   readonly modal: Scalars['Boolean'];
   readonly priceBundles: ReadonlyArray<PriceBundle>;
   readonly snapshot?: Maybe<Snapshot>;
+  readonly snapshotCount: Scalars['Int'];
   readonly snapshots: ReadonlyArray<Snapshot>;
   readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
@@ -490,6 +491,12 @@ export type QueryDataKeyOptionsArgs = {
 /** Root query type */
 export type QuerySnapshotArgs = {
   where: SnapshotWhereUniqueInput;
+};
+
+
+/** Root query type */
+export type QuerySnapshotCountArgs = {
+  where?: Maybe<SnapshotWhereInput>;
 };
 
 
@@ -1506,11 +1513,14 @@ export type GetSnapshotsQueryVariables = {
   where: SnapshotWhereInput;
   orderBy?: Maybe<SnapshotOrderByInput>;
   first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
 };
 
 
 export type GetSnapshotsQuery = (
   { readonly __typename?: 'Query' }
+  & { count: Query['snapshotCount'] }
   & { readonly snapshots: ReadonlyArray<(
     { readonly __typename?: 'Snapshot' }
     & Pick<Snapshot, 'id' | 'createdAt'>
@@ -2642,11 +2652,12 @@ export type GetSnapshotQueryHookResult = ReturnType<typeof useGetSnapshotQuery>;
 export type GetSnapshotLazyQueryHookResult = ReturnType<typeof useGetSnapshotLazyQuery>;
 export type GetSnapshotQueryResult = ApolloReactCommon.QueryResult<GetSnapshotQuery, GetSnapshotQueryVariables>;
 export const GetSnapshotsDocument = gql`
-    query GetSnapshots($where: SnapshotWhereInput!, $orderBy: SnapshotOrderByInput, $first: Int) {
-  snapshots(where: $where, orderBy: $orderBy, first: $first) {
+    query GetSnapshots($where: SnapshotWhereInput!, $orderBy: SnapshotOrderByInput, $first: Int, $last: Int, $skip: Int) {
+  snapshots(where: $where, orderBy: $orderBy, first: $first, last: $last, skip: $skip) {
     id
     createdAt
   }
+  count: snapshotCount(where: $where)
 }
     `;
 
@@ -2665,6 +2676,8 @@ export const GetSnapshotsDocument = gql`
  *      where: // value for 'where'
  *      orderBy: // value for 'orderBy'
  *      first: // value for 'first'
+ *      last: // value for 'last'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
