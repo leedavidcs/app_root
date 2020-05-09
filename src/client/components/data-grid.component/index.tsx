@@ -41,6 +41,7 @@ export interface IHeaderConfig extends IHeaderOption {
 }
 
 export interface IDataGridProps<T extends Record<string, any>> {
+	className?: string;
 	/** Entities array */
 	data: readonly T[];
 	/** Column data is: `data[headers[i].value]` */
@@ -75,9 +76,10 @@ interface IWithStaticExports {
 const ofType = <T extends Record<string, any>>() => {
 	const component: FC<IDataGridProps<T>> = memo(
 		({
+			className,
 			data,
 			headers,
-			itemCount: _itemCount,
+			itemCount = data.length,
 			itemKey = (index: number) => index.toString(),
 			onDataChange,
 			onHeadersChange,
@@ -85,8 +87,6 @@ const ofType = <T extends Record<string, any>>() => {
 			onItemsRendered,
 			onRowContextMenu
 		}) => {
-			const itemCount = typeof _itemCount === "number" ? _itemCount : data.length;
-
 			return (
 				<DataGridProvider
 					data={data}
@@ -98,6 +98,7 @@ const ofType = <T extends Record<string, any>>() => {
 				>
 					{({ height, width }) => (
 						<FixedSizeList
+							className={className}
 							height={height}
 							width={width}
 							itemCount={itemCount}
