@@ -1,8 +1,7 @@
-import { DataGrid, IHeaderConfig, Paper } from "@/client/components";
+import { InlineLink, Paper } from "@/client/components";
 import {
-	GetStockDataQueryVariables,
 	GetUserDocument,
-	Snapshot,
+	Snapshot as _Snapshot,
 	StockData,
 	StockPortfolio as _StockPortfolio,
 	useGetStockDataLazyQuery,
@@ -15,13 +14,17 @@ import classnames from "classnames";
 import { format, isAfter } from "date-fns";
 import { minTime } from "date-fns/constants";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
+import { StockPortfolioDisplayContext } from "./context";
 import { CreatorActions } from "./creator-actions.component";
+import { LatestDataGrid } from "./latest-data-grid.component";
 import { PublicActions } from "./public-actions.component";
+import { SnapshotDataGrid } from "./snapshot-data-grid.component";
 import { useStyles } from "./styles";
 
 const MIN_DATE: Date = new Date(minTime);
 
-type StockPortfolio = Pick<_StockPortfolio, "id" | "headers" | "name" | "tickers" | "updatedAt"> & {
+type Snapshot = Pick<_Snapshot, "id" | "createdAt" | "data" | "headers" | "tickers">;
+type StockPortfolio = Pick<_StockPortfolio, "id" | "headers" | "name" | "updatedAt"> & {
 	latestSnapshot?: Maybe<Pick<Snapshot, "createdAt" | "data">>;
 	stockData: Pick<StockData, "refreshCost">;
 	user: Pick<User, "id" | "username">;
@@ -34,55 +37,26 @@ interface IProps {
 	stockPortfolio: StockPortfolio;
 }
 
-type UseDataResult = [
+type UseLatestDataResult = [
 	{ called: boolean; data: readonly Record<string, any>[]; loading: boolean },
 	{
-		refresh: (variables: GetStockDataQueryVariables) => void;
+		refresh: () => void;
 		setData: (data: readonly Record<string, any>[]) => void;
 	}
 ];
 
-const tickerHeader: IHeaderConfig = {
-	label: "ticker",
-	value: "ticker",
-	options: null,
-	editable: false,
-	frozen: true,
-	resizable: true,
-	width: 100
-};
-
-const useStockPortfolioHeaders = ({
-	stockPortfolio
-}: IProps): readonly [readonly IHeaderConfig[], (headers: readonly IHeaderConfig[]) => void] => {
-	const [headers, setHeaders] = useState<readonly IHeaderConfig[]>(() => [
-		tickerHeader,
-		...stockPortfolio.headers.map(({ name, dataKey, frozen, resizable, width }) => ({
-			label: name,
-			value: dataKey,
-			options: null,
-			editable: false,
-			frozen,
-			resizable,
-			width
-		}))
-	]);
-
-	return [headers, setHeaders];
-};
-
 const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
-	const getUserResult = useGetUserQuery();
-	const user = getUserResult.data?.user ?? null;
+	const { data } = useGetUserQuery();
 
-	const isCreator = user?.id === stockPortfolio.user.id;
+	const isCreator: boolean = data?.user?.id === stockPortfolio.user.id;
 
 	return isCreator;
 };
 
-const useData = ({ stockPortfolio }: IProps): UseDataResult => {
+const useLatestData = ({ stockPortfolio }: IProps): UseLatestDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
 	const [lastRefresh, setLastRefresh] = useState<Date>(MIN_DATE);
+
 	const [setUser] = useSetUserMutation({
 		awaitRefetchQueries: true,
 		refetchQueries: [{ query: GetUserDocument }]
@@ -96,29 +70,22 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 		}
 	});
 
-	const refresh = useCallback(
-		(variables: GetStockDataQueryVariables) => {
-			getStockData({ variables });
-		},
-		[getStockData]
-	);
+	const refresh = useCallback(() => {
+		getStockData({
+			variables: {
+				where: { stockPortfolioId: stockPortfolio.id }
+			}
+		});
+	}, [getStockData, stockPortfolio.id]);
 
 	useEffect(() => {
 		const { latestSnapshot } = stockPortfolio;
+		const snapshotCreatedDate = new Date(latestSnapshot?.createdAt);
 
 		const stockData = result.data?.stockData?.data;
 
-		if (!latestSnapshot !== !stockData) {
-			setData((latestSnapshot?.data ?? stockData) as readonly Record<string, any>[]);
-
-			return;
-		}
-
-		const isRefreshRecent = isAfter(
-			lastRefresh,
-			new Date(latestSnapshot?.createdAt) ?? MIN_DATE
-		);
-		const latestData = isRefreshRecent ? stockData : latestSnapshot?.data;
+		const isRefreshRecent = isAfter(lastRefresh, snapshotCreatedDate ?? MIN_DATE);
+		const latestData = isRefreshRecent ? stockData : stockPortfolio.latestSnapshot?.data;
 
 		if (latestData) {
 			setData(latestData);
@@ -127,10 +94,19 @@ const useData = ({ stockPortfolio }: IProps): UseDataResult => {
 
 	const { called, loading } = result;
 
-	const states = useMemo(() => ({ called, data, loading }), [called, data, loading]);
+	const states = useMemo(
+		() => ({
+			// Assume called is true, if there is data available
+			called: called || data.length > 0,
+			data,
+			// Assume loading is false, if there is data available
+			loading: loading && data.length === 0
+		}),
+		[called, data, loading]
+	);
 	const actions = useMemo(() => ({ refresh, setData }), [refresh]);
 
-	return useMemo((): UseDataResult => [states, actions], [actions, states]);
+	return useMemo((): UseLatestDataResult => [states, actions], [actions, states]);
 };
 
 export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
@@ -138,72 +114,79 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 
 	const classes = useStyles();
 
-	const { tickers, updatedAt, user } = stockPortfolio;
+	const { updatedAt, user } = stockPortfolio;
 
-	const [headers, setHeaders] = useStockPortfolioHeaders(props);
-	const [dataStates, dataActions] = useData(props);
+	const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
+
+	const [dataStates, dataActions] = useLatestData(props);
 
 	const isCreator: boolean = useIsCreator(props);
 
-	const data = dataStates.data;
 	const createdBy: string = user.username;
 
-	const noDataAvailable: boolean = !tickers.length || !headers.length || !data.length;
+	const contextValue = useMemo(() => ({ snapshot, setSnapshot }), [snapshot]);
 
 	return (
-		<div className={classnames(Classes.DARK, classes.root, className)}>
-			<div className={classes.btnContainer}>
-				<PublicActions
-					className={classes.publicActions}
-					onRefresh={dataActions.refresh}
-					stockPortfolio={stockPortfolio}
-				/>
-				{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
-			</div>
-			<Paper className={classes.portfolioContainer}>
-				{!noDataAvailable ? (
-					<DataGrid
-						data={data}
-						headers={headers}
-						onDataChange={dataActions.setData}
-						onHeadersChange={setHeaders}
+		<StockPortfolioDisplayContext.Provider value={contextValue}>
+			<div className={classnames(Classes.DARK, classes.root, className)}>
+				<div className={classes.btnContainer}>
+					<PublicActions
+						className={classes.publicActions}
+						onRefresh={dataActions.refresh}
+						stockPortfolio={stockPortfolio}
 					/>
-				) : !dataStates.called ? (
-					<NonIdealState
-						icon="search"
-						title="Data not yet requested"
-						description={
+					{isCreator && <CreatorActions stockPortfolio={stockPortfolio} />}
+				</div>
+				{snapshot ? (
+					<>
+						<div className={classes.snapshotInfo}>
 							<p>
-								To load new data, press the <strong>Refresh</strong> button above.
+								You are now in <InlineLink href="" text="Snapshot Mode" />.
 							</p>
-						}
-					/>
-				) : dataStates.loading ? (
-					<NonIdealState
-						icon={<Spinner />}
-						title="Loading..."
-						description={<p>Your data should be loaded shortly.</p>}
-					/>
+							<p>
+								* Tickers and headers may be configured differently than your
+								current stock-portfolio.
+							</p>
+						</div>
+						<Paper className={classes.portfolioContainer}>
+							<SnapshotDataGrid snapshot={snapshot} />
+						</Paper>
+					</>
 				) : (
-					<NonIdealState
-						icon="search"
-						title="No data available"
-						description={
-							<>
-								<p>This portfolio has no data to display.</p>
-								<p>Tickers or headers may not be configured for this portfolio.</p>
-							</>
-						}
-					/>
+					<Paper className={classes.portfolioContainer}>
+						{!dataStates.called ? (
+							<NonIdealState
+								icon="search"
+								title="Data not yet requested"
+								description={
+									<p>
+										To load new data, press the <strong>Refresh</strong>
+										button above.
+									</p>
+								}
+							/>
+						) : dataStates.loading ? (
+							<NonIdealState
+								icon={<Spinner />}
+								title="Loading..."
+								description={<p>Your data should be loaded shortly.</p>}
+							/>
+						) : (
+							<LatestDataGrid
+								data={dataStates.data}
+								stockPortfolio={stockPortfolio}
+							/>
+						)}
+					</Paper>
 				)}
-			</Paper>
-			<div className={classes.portfolioFooter}>
-				<p className={classes.createdBy}>Created By: {createdBy}</p>
-				<p className={classes.lastUpdated}>
-					Last updated: {format(new Date(updatedAt), "PPPppp")}
-				</p>
+				<div className={classes.portfolioFooter}>
+					<p className={classes.createdBy}>Created By: {createdBy}</p>
+					<p className={classes.lastUpdated}>
+						Last updated: {format(new Date(updatedAt), "PPPppp")}
+					</p>
+				</div>
 			</div>
-		</div>
+		</StockPortfolioDisplayContext.Provider>
 	);
 });
 

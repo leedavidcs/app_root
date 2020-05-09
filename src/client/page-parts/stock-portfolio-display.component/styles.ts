@@ -16,6 +16,10 @@ const styles = (theme: CustomTheme) => ({
 	portfolioName: {
 		textAlign: "center"
 	},
+	snapshotInfo: {
+		marginTop: 20,
+		paddingLeft: 20
+	},
 	portfolioContainer: {
 		width: "100%",
 		height: 500
