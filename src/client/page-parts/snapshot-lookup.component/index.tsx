@@ -6,6 +6,7 @@ import {
 	GetSnapshotQueryVariables,
 	OrderByArg,
 	Snapshot as _Snapshot,
+	SnapshotWhereInput,
 	useGetSnapshotsQuery
 } from "@/client/graphql";
 import { Button, Spinner } from "@blueprintjs/core";
@@ -14,7 +15,7 @@ import { ItemListRenderer } from "@blueprintjs/select";
 import classnames from "classnames";
 import { format } from "date-fns";
 import ms from "ms";
-import React, { FC, ReactNodeArray, useCallback, useState } from "react";
+import React, { FC, ReactNodeArray, useCallback, useMemo, useState } from "react";
 import { useApolloClient } from "react-apollo";
 import { useStyles } from "./styles";
 
@@ -25,9 +26,7 @@ type ResultSnapshot = Pick<_Snapshot, "id" | "tickers" | "headers" | "data" | "c
 
 interface IProps {
 	className?: string;
-	dateRange?: DateRange;
 	onChange?: (snapshot: ResultSnapshot) => void;
-	onDateRangeChange?: (dateRange: DateRange) => void;
 	selected?: Snapshot | null;
 	stockPortfolioId: string;
 }
@@ -37,34 +36,36 @@ const SnapshotSelect = Select.ofType<Snapshot>();
 const TypedLoaderList = InfiniteLoaderList.ofType<ISelectItemType<Snapshot>>();
 
 const itemKey = ({ id }: Snapshot) => id;
-const itemName = ({ createdAt }: Snapshot) => format(createdAt, "PPp");
+const itemName = ({ createdAt }: Snapshot) => format(new Date(createdAt), "PPp");
 
 export const SnapshotLookup: FC<IProps> = ({
 	className,
-	dateRange = [null, null],
 	onChange = () => undefined,
-	onDateRangeChange,
 	selected = null,
 	stockPortfolioId
 }) => {
 	const classes = useStyles();
 
 	const [snapshots, setSnapshots] = useState<readonly Snapshot[]>([]);
+	const [dateRange, setDateRange] = useState<DateRange>([null, null]);
+
+	const where: SnapshotWhereInput = useMemo(
+		() => ({
+			stockPortfolioId: { equals: stockPortfolioId },
+			createdAt: { gte: dateRange[0] ?? undefined, lte: dateRange[1] ?? undefined }
+		}),
+		[dateRange, stockPortfolioId]
+	);
 
 	const apolloClient = useApolloClient();
 	const { called, data, loading, refetch } = useGetSnapshotsQuery({
 		variables: {
-			where: {
-				stockPortfolioId: { equals: stockPortfolioId },
-				createdAt: { gte: dateRange[0], lte: dateRange[1] }
-			},
+			where,
 			orderBy: { createdAt: OrderByArg.Desc },
 			first: 50
 		},
 		pollInterval: ms("2m"),
-		onCompleted: (result) => {
-			setSnapshots(result.snapshots);
-		}
+		onCompleted: (result) => setSnapshots(result.snapshots)
 	});
 
 	const count: number = data?.count ?? 0;
@@ -72,10 +73,7 @@ export const SnapshotLookup: FC<IProps> = ({
 	const onLoadMore = useCallback(
 		async (skip: number, first: number) => {
 			const result = await refetch({
-				where: {
-					stockPortfolioId: { equals: stockPortfolioId },
-					createdAt: { gte: dateRange[0], lte: dateRange[1] }
-				},
+				where,
 				orderBy: { createdAt: OrderByArg.Desc },
 				first,
 				skip
@@ -83,7 +81,7 @@ export const SnapshotLookup: FC<IProps> = ({
 
 			setSnapshots([...snapshots.slice(0, skip), ...result.data.snapshots]);
 		},
-		[dateRange, refetch, snapshots, stockPortfolioId]
+		[refetch, snapshots, where]
 	);
 
 	const itemListRenderer: ItemListRenderer<ISelectItemType<Snapshot>> = useCallback(
@@ -93,7 +91,7 @@ export const SnapshotLookup: FC<IProps> = ({
 					className={classes.dateInputs}
 					inlineInputs={false}
 					minimal={true}
-					onChange={onDateRangeChange}
+					onChange={setDateRange}
 					value={dateRange}
 				/>
 				<TypedLoaderList
@@ -110,7 +108,7 @@ export const SnapshotLookup: FC<IProps> = ({
 				/>
 			</>
 		),
-		[classes.dateInputs, classes.list, count, dateRange, onDateRangeChange, onLoadMore]
+		[classes.dateInputs, classes.list, count, dateRange, onLoadMore]
 	);
 
 	const onItemSelect = useCallback(

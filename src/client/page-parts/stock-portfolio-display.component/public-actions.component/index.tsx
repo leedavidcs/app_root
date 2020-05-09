@@ -1,11 +1,10 @@
 import { Tooltip } from "@/client/components";
-import {
-	GetStockDataQueryVariables,
-	StockData,
-	StockPortfolio as _StockPortfolio
-} from "@/client/graphql";
+import { StockData, StockPortfolio as _StockPortfolio } from "@/client/graphql";
+import { SnapshotLookup } from "@/client/page-parts/snapshot-lookup.component";
+import { StockPortfolioDisplayContext } from "@/client/page-parts/stock-portfolio-display.component/context";
 import { Button, ButtonGroup } from "@blueprintjs/core";
-import React, { FC, useCallback, useMemo } from "react";
+import React, { FC, useCallback, useContext } from "react";
+import { useStyles } from "./styles";
 
 type StockPortfolio = Pick<_StockPortfolio, "id"> & {
 	stockData: Pick<StockData, "refreshCost">;
@@ -13,35 +12,37 @@ type StockPortfolio = Pick<_StockPortfolio, "id"> & {
 
 interface IProps {
 	className?: string;
-	onRefresh: (variables: GetStockDataQueryVariables) => void;
+	onRefresh: () => void;
 	stockPortfolio: StockPortfolio;
 }
 
-const useOnRefresh = ({ onRefresh: _onRefresh, stockPortfolio }: IProps) => {
-	const variables: GetStockDataQueryVariables = useMemo(
-		() => ({ where: { stockPortfolioId: stockPortfolio.id } }),
-		[stockPortfolio.id]
-	);
+export const PublicActions: FC<IProps> = ({ className, onRefresh, stockPortfolio }) => {
+	const classes = useStyles();
 
-	const onRefresh = useCallback(() => _onRefresh(variables), [_onRefresh, variables]);
-
-	return onRefresh;
-};
-
-export const PublicActions: FC<IProps> = (props) => {
-	const { className, stockPortfolio } = props;
+	const { snapshot, setSnapshot } = useContext(StockPortfolioDisplayContext);
 
 	const refreshCost: number = stockPortfolio.stockData.refreshCost;
 
-	const onRefresh = useOnRefresh(props);
+	const onReturn = useCallback(() => setSnapshot?.(null), [setSnapshot]);
 
 	return (
-		<div className={className}>
-			<ButtonGroup>
-				<Tooltip content={`Costs: ${refreshCost} credits`} position="bottom-left">
+		<ButtonGroup className={className}>
+			{snapshot ? (
+				<Button icon="arrow-left" onClick={onReturn} text="Return" />
+			) : (
+				<Tooltip
+					className={classes.tooltip}
+					content={`Costs: ${refreshCost} credits`}
+					position="bottom-left"
+				>
 					<Button icon="refresh" onClick={onRefresh} text="Refresh" />
 				</Tooltip>
-			</ButtonGroup>
-		</div>
+			)}
+			<SnapshotLookup
+				onChange={setSnapshot}
+				selected={snapshot}
+				stockPortfolioId={stockPortfolio.id}
+			/>
+		</ButtonGroup>
 	);
 };
