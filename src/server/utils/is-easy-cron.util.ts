@@ -1,6 +1,9 @@
+import { timeout } from "blend-promise-utils";
 import fetch from "isomorphic-unfetch";
 import { NextApiRequest } from "next";
 import { getClientIp } from "request-ip";
+
+const REQUEST_TIMEOUT = 500;
 
 interface IEasyCronIPs {
 	ipv4: readonly string[];
@@ -10,7 +13,13 @@ interface IEasyCronIPs {
 export const isEasyCron = async (req: NextApiRequest): Promise<boolean> => {
 	let easyCronIPs: IEasyCronIPs;
 	try {
-		easyCronIPs = await fetch("https://www.easycron.com/ips.json").then((response) =>
+		const timeoutFetch = timeout(
+			fetch,
+			REQUEST_TIMEOUT,
+			"Could not resolve isEasyCron within 500ms"
+		);
+
+		easyCronIPs = await timeoutFetch("https://www.easycron.com/ips.json").then((response) =>
 			response.json()
 		);
 	} catch (err) {
