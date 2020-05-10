@@ -165,6 +165,8 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 			await this.createSnapshot(stockPortfolio, mapped);
 		}
 
+		await this.upsertLatestSnapshot(stockPortfolio, mapped);
+
 		return mapped;
 	}
 
@@ -258,6 +260,56 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 		return tickers.map((ticker) => {
 			return { ticker, ...this.limitResultToDataKeys(data[ticker], dataKeys) };
 		});
+	};
+
+	private upsertLatestSnapshot = async (
+		{ headers, id, tickers }: StockPortfolio,
+		data: readonly Record<string, any>[]
+	): Promise<Snapshot> => {
+		const { prisma } = this.context;
+
+		const newHeaders: string[] = headers.map((header) => {
+			const { name, dataKey } = JSON.parse(header);
+
+			return JSON.stringify({ name, dataKey });
+		});
+		const newData: string[] = data.map((datum) => JSON.stringify(datum));
+
+		const latest = await prisma.latestSnapshot.upsert({
+			where: { stockPortfolioId: id },
+			create: {
+				stockPortfolio: { connect: { id } },
+				snapshot: {
+					create: {
+						stockPortfolio: { connect: { id } },
+						tickers: { set: tickers },
+						headers: { set: newHeaders },
+						data: { set: newData }
+					}
+				}
+			},
+			update: {
+				snapshot: {
+					upsert: {
+						create: {
+							stockPortfolio: { connect: { id } },
+							tickers: { set: tickers },
+							headers: { set: newHeaders },
+							data: { set: newData }
+						},
+						update: {
+							tickers: { set: tickers },
+							headers: { set: newHeaders },
+							data: { set: newData },
+							createdAt: new Date()
+						}
+					}
+				}
+			},
+			include: { snapshot: true }
+		});
+
+		return latest.snapshot;
 	};
 
 	private createSnapshot = async (
