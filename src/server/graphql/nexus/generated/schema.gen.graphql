@@ -111,6 +111,23 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
+input LatestSnapshotFilter {
+  every: LatestSnapshotWhereInput
+  none: LatestSnapshotWhereInput
+  some: LatestSnapshotWhereInput
+}
+
+input LatestSnapshotWhereInput {
+  AND: [LatestSnapshotWhereInput!]
+  NOT: [LatestSnapshotWhereInput!]
+  OR: [LatestSnapshotWhereInput!]
+  snapshot: SnapshotWhereInput
+  snapshotId: StringFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
 input LoginLocalUserInput {
   """The user's decrypted password"""
   password: String!
@@ -388,6 +405,7 @@ input SnapshotWhereInput {
   AND: [SnapshotWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
+  LatestSnapshot: LatestSnapshotFilter
   NOT: [SnapshotWhereInput!]
   OR: [SnapshotWhereInput!]
   stockPortfolio: StockPortfolioWhereInput
@@ -581,6 +599,7 @@ input StockPortfolioWhereInput {
   AND: [StockPortfolioWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
+  LatestSnapshot: LatestSnapshotFilter
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]

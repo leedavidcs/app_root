@@ -256,6 +256,7 @@ interface ModelTypes {
   StripeDetails: prisma.StripeDetails
   Webhook: prisma.Webhook
   Snapshot: prisma.Snapshot
+  LatestSnapshot: prisma.LatestSnapshot
   ScheduledEvent: prisma.ScheduledEvent
   StockPortfolioEvent: prisma.StockPortfolioEvent
 }
@@ -267,7 +268,7 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'LatestSnapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     stockPortfolioSettings: {
@@ -287,12 +288,16 @@ interface NexusPrismaInputs {
   ordering: 'userId' | 'customerId'
 }
     webhooks: {
-  filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'stockPortfolioId' | 'name' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'name' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
     snapshots: {
-  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
+}
+    latestSnapshots: {
+  filtering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'snapshot' | 'stockPortfolio'
+  ordering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt'
 }
     scheduledEvents: {
   filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -306,7 +311,7 @@ interface NexusPrismaInputs {
   },
     User: {
     StockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt' | 'Webhook' | 'Snapshot' | 'LatestSnapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
   ordering: 'id' | 'userId' | 'name' | 'createdAt' | 'updatedAt'
 }
     Balance: {
@@ -328,12 +333,16 @@ interface NexusPrismaInputs {
 
   },  StockPortfolio: {
     Webhook: {
-  filtering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'name' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'stockPortfolioId' | 'name' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'name' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
     Snapshot: {
-  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
+}
+    LatestSnapshot: {
+  filtering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'snapshot' | 'stockPortfolio'
+  ordering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt'
 }
     StockPortfolioEvent: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
@@ -356,6 +365,12 @@ interface NexusPrismaInputs {
 
 
   },  Snapshot: {
+    LatestSnapshot: {
+  filtering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'snapshot' | 'stockPortfolio'
+  ordering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt'
+}
+
+  },  LatestSnapshot: {
 
 
   },  ScheduledEvent: {
@@ -388,6 +403,8 @@ interface NexusPrismaTypes {
     webhooks: 'Webhook'
     snapshot: 'Snapshot'
     snapshots: 'Snapshot'
+    latestSnapshot: 'LatestSnapshot'
+    latestSnapshots: 'LatestSnapshot'
     scheduledEvent: 'ScheduledEvent'
     scheduledEvents: 'ScheduledEvent'
     stockPortfolioEvent: 'StockPortfolioEvent'
@@ -443,6 +460,12 @@ interface NexusPrismaTypes {
     deleteOneSnapshot: 'Snapshot'
     deleteManySnapshot: 'BatchPayload'
     upsertOneSnapshot: 'Snapshot'
+    createOneLatestSnapshot: 'LatestSnapshot'
+    updateOneLatestSnapshot: 'LatestSnapshot'
+    updateManyLatestSnapshot: 'BatchPayload'
+    deleteOneLatestSnapshot: 'LatestSnapshot'
+    deleteManyLatestSnapshot: 'BatchPayload'
+    upsertOneLatestSnapshot: 'LatestSnapshot'
     createOneScheduledEvent: 'ScheduledEvent'
     updateOneScheduledEvent: 'ScheduledEvent'
     updateManyScheduledEvent: 'BatchPayload'
@@ -484,6 +507,7 @@ interface NexusPrismaTypes {
     updatedAt: 'DateTime'
     Webhook: 'Webhook'
     Snapshot: 'Snapshot'
+    LatestSnapshot: 'LatestSnapshot'
     StockPortfolioEvent: 'StockPortfolioEvent'
 
 },  StockPortfolioSettings: {
@@ -516,6 +540,7 @@ interface NexusPrismaTypes {
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
     name: 'String'
+    secret: 'String'
     type: 'WebhookType'
     url: 'String'
     timeout: 'Int'
@@ -529,6 +554,14 @@ interface NexusPrismaTypes {
     stockPortfolioId: 'String'
     data: 'String'
     createdAt: 'DateTime'
+    LatestSnapshot: 'LatestSnapshot'
+
+},  LatestSnapshot: {
+    snapshot: 'Snapshot'
+    snapshotId: 'String'
+    stockPortfolio: 'StockPortfolio'
+    stockPortfolioId: 'String'
+    updatedAt: 'DateTime'
 
 },  ScheduledEvent: {
     id: 'String'
@@ -561,6 +594,7 @@ interface NexusPrismaMethods {
   StripeDetails: NexusPrismaFields<'StripeDetails'>
   Webhook: NexusPrismaFields<'Webhook'>
   Snapshot: NexusPrismaFields<'Snapshot'>
+  LatestSnapshot: NexusPrismaFields<'LatestSnapshot'>
   ScheduledEvent: NexusPrismaFields<'ScheduledEvent'>
   StockPortfolioEvent: NexusPrismaFields<'StockPortfolioEvent'>
   Query: NexusPrismaFields<'Query'>
