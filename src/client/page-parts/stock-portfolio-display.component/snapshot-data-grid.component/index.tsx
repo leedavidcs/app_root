@@ -1,6 +1,9 @@
 import { DataGrid, IHeaderConfig } from "@/client/components";
 import { Snapshot as _Snapshot } from "@/client/graphql";
+import classnames from "classnames";
+import { format } from "date-fns";
 import React, { FC, memo, useEffect, useMemo, useState } from "react";
+import { useStyles } from "./styles";
 
 type Snapshot = Pick<_Snapshot, "id" | "createdAt" | "data" | "headers">;
 
@@ -20,7 +23,9 @@ const tickerHeader: IHeaderConfig = {
 };
 
 export const SnapshotDataGrid: FC<IProps> = memo(({ className, snapshot }) => {
-	const { headers } = snapshot;
+	const { createdAt, headers } = snapshot;
+
+	const classes = useStyles();
 
 	const transformed: readonly IHeaderConfig[] = useMemo(
 		() => [
@@ -41,17 +46,24 @@ export const SnapshotDataGrid: FC<IProps> = memo(({ className, snapshot }) => {
 	const [dataHeaders, setDataHeaders] = useState<readonly IHeaderConfig[]>(transformed);
 	const [data, setData] = useState<readonly Record<string, any>[]>(snapshot.data);
 
+	const formattedCreatedAt: string = useMemo(() => format(new Date(createdAt), "Ppp O"), [
+		createdAt
+	]);
+
 	useEffect(() => setDataHeaders(transformed), [transformed]);
 	useEffect(() => setData(snapshot.data), [snapshot.data]);
 
 	return (
-		<DataGrid
-			className={className}
-			data={data}
-			headers={dataHeaders}
-			onDataChange={setData}
-			onHeadersChange={setDataHeaders}
-		/>
+		<div className={classnames(classes.root, className)}>
+			<p>Data from {formattedCreatedAt}</p>
+			<DataGrid
+				className={classes.dataGrid}
+				data={data}
+				headers={dataHeaders}
+				onDataChange={setData}
+				onHeadersChange={setDataHeaders}
+			/>
+		</div>
 	);
 });
 

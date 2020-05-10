@@ -1,5 +1,6 @@
 import { InlineLink, Paper } from "@/client/components";
 import {
+	GetOneStockPortfolioQuery,
 	GetUserDocument,
 	Snapshot as _Snapshot,
 	StockData,
@@ -10,9 +11,9 @@ import {
 	useSetUserMutation
 } from "@/client/graphql";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { ApolloQueryResult } from "apollo-boost";
 import classnames from "classnames";
-import { format, isAfter } from "date-fns";
-import { minTime } from "date-fns/constants";
+import { format } from "date-fns";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { StockPortfolioDisplayContext } from "./context";
 import { CreatorActions } from "./creator-actions.component";
@@ -20,8 +21,6 @@ import { LatestDataGrid } from "./latest-data-grid.component";
 import { PublicActions } from "./public-actions.component";
 import { SnapshotDataGrid } from "./snapshot-data-grid.component";
 import { useStyles } from "./styles";
-
-const MIN_DATE: Date = new Date(minTime);
 
 type Snapshot = Pick<_Snapshot, "id" | "createdAt" | "data" | "headers" | "tickers">;
 type StockPortfolio = Pick<_StockPortfolio, "id" | "headers" | "name" | "updatedAt"> & {
@@ -34,11 +33,17 @@ interface IProps {
 	className?: string;
 	onDelete?: () => void;
 	onEdit?: () => void;
+	refetch?: () => Promise<ApolloQueryResult<GetOneStockPortfolioQuery>>;
 	stockPortfolio: StockPortfolio;
 }
 
 type UseLatestDataResult = [
-	{ called: boolean; data: readonly Record<string, any>[]; loading: boolean },
+	{
+		called: boolean;
+		data: readonly Record<string, any>[];
+		date: Date | null;
+		loading: boolean;
+	},
 	{
 		refresh: () => void;
 		setData: (data: readonly Record<string, any>[]) => void;
@@ -53,9 +58,9 @@ const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 	return isCreator;
 };
 
-const useLatestData = ({ stockPortfolio }: IProps): UseLatestDataResult => {
+const useLatestData = ({ refetch, stockPortfolio }: IProps): UseLatestDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
-	const [lastRefresh, setLastRefresh] = useState<Date>(MIN_DATE);
+	const [date, setDate] = useState<Date | null>(null);
 
 	const [setUser] = useSetUserMutation({
 		awaitRefetchQueries: true,
@@ -65,8 +70,8 @@ const useLatestData = ({ stockPortfolio }: IProps): UseLatestDataResult => {
 	const [getStockData, result] = useGetStockDataLazyQuery({
 		fetchPolicy: "no-cache",
 		onCompleted: () => {
-			setLastRefresh(new Date());
 			setUser();
+			refetch?.();
 		}
 	});
 
@@ -80,29 +85,24 @@ const useLatestData = ({ stockPortfolio }: IProps): UseLatestDataResult => {
 
 	useEffect(() => {
 		const { latestSnapshot } = stockPortfolio;
-		const snapshotCreatedDate = new Date(latestSnapshot?.createdAt);
 
-		const stockData = result.data?.stockData?.data;
-
-		const isRefreshRecent = isAfter(lastRefresh, snapshotCreatedDate ?? MIN_DATE);
-		const latestData = isRefreshRecent ? stockData : stockPortfolio.latestSnapshot?.data;
-
-		if (latestData) {
-			setData(latestData);
+		if (latestSnapshot) {
+			setData(latestSnapshot.data);
+			setDate(new Date(latestSnapshot.createdAt));
 		}
-	}, [lastRefresh, result.data, stockPortfolio]);
+	}, [stockPortfolio]);
 
 	const { called, loading } = result;
 
 	const states = useMemo(
 		() => ({
-			// Assume called is true, if there is data available
+			/** If data, was called historically. Set to true */
 			called: called || data.length > 0,
 			data,
-			// Assume loading is false, if there is data available
-			loading: loading && data.length === 0
+			date,
+			loading
 		}),
-		[called, data, loading]
+		[called, data, date, loading]
 	);
 	const actions = useMemo(() => ({ refresh, setData }), [refresh]);
 
@@ -172,10 +172,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 								description={<p>Your data should be loaded shortly.</p>}
 							/>
 						) : (
-							<LatestDataGrid
-								data={dataStates.data}
-								stockPortfolio={stockPortfolio}
-							/>
+							<LatestDataGrid stockPortfolio={stockPortfolio} />
 						)}
 					</Paper>
 				)}

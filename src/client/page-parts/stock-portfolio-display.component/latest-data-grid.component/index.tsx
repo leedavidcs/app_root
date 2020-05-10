@@ -1,9 +1,14 @@
 import { DataGrid, IHeaderConfig } from "@/client/components";
-import { StockPortfolio as _StockPortfolio } from "@/client/graphql";
+import { Snapshot, StockPortfolio as _StockPortfolio } from "@/client/graphql";
 import { NonIdealState } from "@blueprintjs/core";
-import React, { FC, useEffect, useState } from "react";
+import classnames from "classnames";
+import { format } from "date-fns";
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { useStyles } from "./styles";
 
-type StockPortfolio = Pick<_StockPortfolio, "headers">;
+type StockPortfolio = Pick<_StockPortfolio, "headers"> & {
+	latestSnapshot?: Maybe<Pick<Snapshot, "createdAt" | "data">>;
+};
 
 const tickerHeader: IHeaderConfig = {
 	label: "ticker",
@@ -17,7 +22,6 @@ const tickerHeader: IHeaderConfig = {
 
 interface IProps {
 	className?: string;
-	data: readonly Record<string, any>[];
 	stockPortfolio: StockPortfolio;
 }
 
@@ -41,13 +45,24 @@ const useCurrentHeaders = ({
 };
 
 export const LatestDataGrid: FC<IProps> = (props) => {
-	const { className, data: _data } = props;
+	const { className, stockPortfolio } = props;
 
-	const [data, setData] = useState<readonly Record<string, any>[]>(_data);
+	const classes = useStyles();
 
-	useEffect(() => setData(_data), [_data]);
+	const [data, setData] = useState<readonly Record<string, any>[]>(
+		stockPortfolio.latestSnapshot?.data ?? []
+	);
+
+	useEffect(() => setData(stockPortfolio.latestSnapshot?.data ?? []), [
+		stockPortfolio.latestSnapshot
+	]);
 
 	const [headers, setHeaders] = useCurrentHeaders(props);
+
+	const createdAt: string = useMemo(
+		() => format(new Date(stockPortfolio.latestSnapshot?.createdAt), "Ppp O"),
+		[stockPortfolio.latestSnapshot]
+	);
 
 	if (!headers.length || !data.length) {
 		return (
@@ -65,12 +80,15 @@ export const LatestDataGrid: FC<IProps> = (props) => {
 	}
 
 	return (
-		<DataGrid
-			className={className}
-			data={data}
-			headers={headers}
-			onDataChange={setData}
-			onHeadersChange={setHeaders}
-		/>
+		<div className={classnames(classes.root, className)}>
+			<p>Data from {createdAt}:</p>
+			<DataGrid
+				className={classes.dataGrid}
+				data={data}
+				headers={headers}
+				onDataChange={setData}
+				onHeadersChange={setHeaders}
+			/>
+		</div>
 	);
 };
