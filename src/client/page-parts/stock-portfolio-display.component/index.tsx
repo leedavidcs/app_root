@@ -115,14 +115,13 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 	const classes = useStyles();
 
 	const { updatedAt, user } = stockPortfolio;
+	const createdBy: string = user.username;
 
-	const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
+	const [snapshot, setSnapshot] = useState<Maybe<Pick<_Snapshot, "id" | "createdAt">>>();
 
 	const [dataStates, dataActions] = useLatestData(props);
 
 	const isCreator: boolean = useIsCreator(props);
-
-	const createdBy: string = user.username;
 
 	const contextValue = useMemo(() => ({ snapshot, setSnapshot }), [snapshot]);
 
