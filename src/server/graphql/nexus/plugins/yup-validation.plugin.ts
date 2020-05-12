@@ -8,6 +8,7 @@ import {
 	RootValue
 } from "@nexus/schema/dist/core";
 import { UserInputError } from "apollo-server-micro";
+import { oneLine } from "common-tags";
 import { GraphQLResolveInfo } from "graphql";
 import { ManualFieldError } from "react-hook-form";
 import { object, ObjectSchemaDefinition, ValidationError } from "yup";
@@ -22,7 +23,7 @@ const fieldYupValidationResolverImport = printedGenTypingImport({
 const fieldDefTypes = printedGenTyping({
 	optional: true,
 	name: "yupValidation",
-	description: `
+	description: oneLine`
 		\`yup\` validation plugin for an individual field. Requires that an object schema
 		definition be defined for the input args.
 	`,

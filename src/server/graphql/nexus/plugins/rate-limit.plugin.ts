@@ -8,6 +8,7 @@ import {
 	printedGenTypingImport,
 	RootValue
 } from "@nexus/schema/dist/core";
+import { oneLine } from "common-tags";
 import { GraphQLResolveInfo } from "graphql";
 import { getGraphQLRateLimiter } from "graphql-rate-limit";
 import {
@@ -25,7 +26,7 @@ const fieldRateLimitResolverImport = printedGenTypingImport({
 const fieldDefTypes = printedGenTyping({
 	optional: true,
 	name: "rateLimit",
-	description: `
+	description: oneLine`
 		Rate limit plugin for an individual field. Uses the same directive args as
 		\`graphql-rate-limit\`.
 	`,
