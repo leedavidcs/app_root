@@ -1,5 +1,0 @@
-query GetStockData($where: StockDataWhereUniqueInput!) {
-	stockData(where: $where) {
-		data
-	}
-}

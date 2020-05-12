@@ -693,6 +693,7 @@ export interface NexusGenFieldTypes {
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     deleteOneStockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
     deleteOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
+    getStockData: NexusGenRootTypes['StockData'] | null; // StockData
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
@@ -903,6 +904,9 @@ export interface NexusGenArgTypes {
     }
     deleteOneWebhook: { // args
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
+    }
+    getStockData: { // args
+      where: NexusGenInputs['StockDataWhereUniqueInput']; // StockDataWhereUniqueInput!
     }
     loginLocalUser: { // args
       input: NexusGenInputs['LoginLocalUserInput']; // LoginLocalUserInput!

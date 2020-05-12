@@ -1,0 +1,5 @@
+mutation GetStockData($where: StockDataWhereUniqueInput!) {
+	getStockData(where: $where) {
+		data
+	}
+}

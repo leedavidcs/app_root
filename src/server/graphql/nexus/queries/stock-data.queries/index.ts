@@ -1,5 +1,6 @@
 import { NotFoundError } from "@/server/utils";
 import { arg, inputObjectType, queryField, stringArg } from "@nexus/schema";
+import { oneLine } from "common-tags";
 
 export const StockDataWhereUniqueInput = inputObjectType({
 	name: "StockDataWhereUniqueInput",
@@ -10,6 +11,10 @@ export const StockDataWhereUniqueInput = inputObjectType({
 
 export const stockData = queryField("stockData", {
 	type: "StockData",
+	description: oneLine`
+		Query version of the mutation \`getStockData\`. The \`StockData\` type inherently results
+		in data mutations. As a result, this operation exists both as a query and mutation.
+	`,
 	args: {
 		where: arg({ type: "StockDataWhereUniqueInput", nullable: false })
 	},

@@ -149,6 +149,11 @@ type Mutation implements RequestRoot {
   deleteOneStockPortfolioEvent(where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent
   deleteOneWebhook(where: WebhookWhereUniqueInput!): Webhook
 
+  """
+  Mutation version of the query `stockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation.
+  """
+  getStockData(where: StockDataWhereUniqueInput!): StockData
+
   """Logins in the user, and returns an expiring access token"""
   loginLocalUser(input: LoginLocalUserInput!): TokenPayload
 
@@ -238,6 +243,10 @@ type Query implements RequestRoot {
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshotCount(where: SnapshotWhereInput): Int!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
+
+  """
+  Query version of the mutation `getStockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation.
+  """
   stockData(where: StockDataWhereUniqueInput!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int

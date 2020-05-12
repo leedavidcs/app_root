@@ -44,8 +44,7 @@ const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(
 const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 	const classes = useStyles();
 
-	const { data, refetch } = useGetOneStockPortfolioQuery({
-		fetchPolicy: "no-cache",
+	const { data } = useGetOneStockPortfolioQuery({
 		pollInterval: ms("2m"),
 		variables: {
 			where: { id: propsStockPortfolio.id }
@@ -61,11 +60,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 			<div className={classes.head}>
 				<StockPortfolioHead selectedTab="data" stockPortfolio={stockPortfolio} />
 			</div>
-			<StockPortfolioDisplay
-				className={classes.display}
-				refetch={refetch}
-				stockPortfolio={stockPortfolio}
-			/>
+			<StockPortfolioDisplay className={classes.display} stockPortfolio={stockPortfolio} />
 		</main>
 	);
 };

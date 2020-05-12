@@ -1,17 +1,16 @@
 import { InlineLink, Paper } from "@/client/components";
 import {
-	GetOneStockPortfolioQuery,
+	GetOneStockPortfolioDocument,
 	GetUserDocument,
 	Snapshot as _Snapshot,
 	StockData,
 	StockPortfolio as _StockPortfolio,
-	useGetStockDataLazyQuery,
+	useGetStockDataMutation,
 	useGetUserQuery,
 	User,
 	useSetUserMutation
 } from "@/client/graphql";
 import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
-import { ApolloQueryResult } from "apollo-boost";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -33,7 +32,6 @@ interface IProps {
 	className?: string;
 	onDelete?: () => void;
 	onEdit?: () => void;
-	refetch?: () => Promise<ApolloQueryResult<GetOneStockPortfolioQuery>>;
 	stockPortfolio: StockPortfolio;
 }
 
@@ -58,7 +56,7 @@ const useIsCreator = ({ stockPortfolio }: IProps): boolean => {
 	return isCreator;
 };
 
-const useLatestData = ({ refetch, stockPortfolio }: IProps): UseLatestDataResult => {
+const useLatestData = ({ stockPortfolio }: IProps): UseLatestDataResult => {
 	const [data, setData] = useState<readonly Record<string, any>[]>([]);
 	const [date, setDate] = useState<Date | null>(null);
 
@@ -67,12 +65,19 @@ const useLatestData = ({ refetch, stockPortfolio }: IProps): UseLatestDataResult
 		refetchQueries: [{ query: GetUserDocument }]
 	});
 
-	const [getStockData, result] = useGetStockDataLazyQuery({
-		fetchPolicy: "no-cache",
+	const [getStockData, result] = useGetStockDataMutation({
+		awaitRefetchQueries: true,
 		onCompleted: () => {
 			setUser();
-			refetch?.();
-		}
+		},
+		refetchQueries: [
+			{
+				query: GetOneStockPortfolioDocument,
+				variables: {
+					where: { id: stockPortfolio.id }
+				}
+			}
+		]
 	});
 
 	const refresh = useCallback(() => {

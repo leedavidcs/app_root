@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-// This file was generated on: May 7th 2020 1:00:10 pm
+// This file was generated on: May 11th 2020 6:37:38 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -310,6 +310,8 @@ export type Mutation = RequestRoot & {
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
   readonly deleteOneStockPortfolioEvent?: Maybe<StockPortfolioEvent>;
   readonly deleteOneWebhook?: Maybe<Webhook>;
+  /** Mutation version of the query `stockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation. */
+  readonly getStockData?: Maybe<StockData>;
   /** Logins in the user, and returns an expiring access token */
   readonly loginLocalUser?: Maybe<TokenPayload>;
   /** Refreshes the currently logged-in user's access token */
@@ -387,6 +389,12 @@ export type MutationDeleteOneWebhookArgs = {
 
 
 /** Root mutation type */
+export type MutationGetStockDataArgs = {
+  where: StockDataWhereUniqueInput;
+};
+
+
+/** Root mutation type */
 export type MutationLoginLocalUserArgs = {
   input: LoginLocalUserInput;
 };
@@ -456,6 +464,7 @@ export type Query = RequestRoot & {
   readonly snapshot?: Maybe<Snapshot>;
   readonly snapshotCount: Scalars['Int'];
   readonly snapshots: ReadonlyArray<Snapshot>;
+  /** Query version of the mutation `getStockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation. */
   readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
@@ -805,6 +814,7 @@ export type SnapshotWhereInput = {
   readonly id?: Maybe<StringFilter>;
   readonly stockPortfolioId?: Maybe<StringFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly LatestSnapshot?: Maybe<LatestSnapshotFilter>;
   readonly AND?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
@@ -830,6 +840,7 @@ export type StockPortfolioWhereInput = {
   readonly updatedAt?: Maybe<DateTimeFilter>;
   readonly Webhook?: Maybe<WebhookFilter>;
   readonly Snapshot?: Maybe<SnapshotFilter>;
+  readonly LatestSnapshot?: Maybe<LatestSnapshotFilter>;
   readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
@@ -896,6 +907,12 @@ export type DateTimeFilter = {
   readonly gte?: Maybe<Scalars['DateTime']>;
 };
 
+export type LatestSnapshotFilter = {
+  readonly every?: Maybe<LatestSnapshotWhereInput>;
+  readonly some?: Maybe<LatestSnapshotWhereInput>;
+  readonly none?: Maybe<LatestSnapshotWhereInput>;
+};
+
 export enum OrderByArg {
   Asc = 'asc',
   Desc = 'desc'
@@ -949,6 +966,17 @@ export type StockPortfolioSettingsWhereInput = {
   readonly AND?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
   readonly NOT?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type LatestSnapshotWhereInput = {
+  readonly snapshotId?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly snapshot?: Maybe<SnapshotWhereInput>;
   readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
 };
 
@@ -1224,6 +1252,19 @@ export type DeleteWebhookMutation = (
   & { readonly webhook?: Maybe<(
     { readonly __typename?: 'Webhook' }
     & Pick<Webhook, 'id' | 'name'>
+  )> }
+);
+
+export type GetStockDataMutationVariables = {
+  where: StockDataWhereUniqueInput;
+};
+
+
+export type GetStockDataMutation = (
+  { readonly __typename?: 'Mutation' }
+  & { readonly getStockData?: Maybe<(
+    { readonly __typename?: 'StockData' }
+    & Pick<StockData, 'data'>
   )> }
 );
 
@@ -1524,19 +1565,6 @@ export type GetSnapshotsQuery = (
   & { readonly snapshots: ReadonlyArray<(
     { readonly __typename?: 'Snapshot' }
     & Pick<Snapshot, 'id' | 'createdAt'>
-  )> }
-);
-
-export type GetStockDataQueryVariables = {
-  where: StockDataWhereUniqueInput;
-};
-
-
-export type GetStockDataQuery = (
-  { readonly __typename?: 'Query' }
-  & { readonly stockData?: Maybe<(
-    { readonly __typename?: 'StockData' }
-    & Pick<StockData, 'data'>
   )> }
 );
 
@@ -1964,6 +1992,38 @@ export function useDeleteWebhookMutation(baseOptions?: ApolloReactHooks.Mutation
 export type DeleteWebhookMutationHookResult = ReturnType<typeof useDeleteWebhookMutation>;
 export type DeleteWebhookMutationResult = ApolloReactCommon.MutationResult<DeleteWebhookMutation>;
 export type DeleteWebhookMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteWebhookMutation, DeleteWebhookMutationVariables>;
+export const GetStockDataDocument = gql`
+    mutation GetStockData($where: StockDataWhereUniqueInput!) {
+  getStockData(where: $where) {
+    data
+  }
+}
+    `;
+export type GetStockDataMutationFn = ApolloReactCommon.MutationFunction<GetStockDataMutation, GetStockDataMutationVariables>;
+
+/**
+ * __useGetStockDataMutation__
+ *
+ * To run a mutation, you first call `useGetStockDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetStockDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getStockDataMutation, { data, loading, error }] = useGetStockDataMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetStockDataMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GetStockDataMutation, GetStockDataMutationVariables>) {
+        return ApolloReactHooks.useMutation<GetStockDataMutation, GetStockDataMutationVariables>(GetStockDataDocument, baseOptions);
+      }
+export type GetStockDataMutationHookResult = ReturnType<typeof useGetStockDataMutation>;
+export type GetStockDataMutationResult = ApolloReactCommon.MutationResult<GetStockDataMutation>;
+export type GetStockDataMutationOptions = ApolloReactCommon.BaseMutationOptions<GetStockDataMutation, GetStockDataMutationVariables>;
 export const LoginLocalUserDocument = gql`
     mutation LoginLocalUser($input: LoginLocalUserInput!) {
   loginLocalUser(input: $input) {
@@ -2690,39 +2750,6 @@ export function useGetSnapshotsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type GetSnapshotsQueryHookResult = ReturnType<typeof useGetSnapshotsQuery>;
 export type GetSnapshotsLazyQueryHookResult = ReturnType<typeof useGetSnapshotsLazyQuery>;
 export type GetSnapshotsQueryResult = ApolloReactCommon.QueryResult<GetSnapshotsQuery, GetSnapshotsQueryVariables>;
-export const GetStockDataDocument = gql`
-    query GetStockData($where: StockDataWhereUniqueInput!) {
-  stockData(where: $where) {
-    data
-  }
-}
-    `;
-
-/**
- * __useGetStockDataQuery__
- *
- * To run a query within a React component, call `useGetStockDataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetStockDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetStockDataQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useGetStockDataQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
-      }
-export function useGetStockDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetStockDataQuery, GetStockDataQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetStockDataQuery, GetStockDataQueryVariables>(GetStockDataDocument, baseOptions);
-        }
-export type GetStockDataQueryHookResult = ReturnType<typeof useGetStockDataQuery>;
-export type GetStockDataLazyQueryHookResult = ReturnType<typeof useGetStockDataLazyQuery>;
-export type GetStockDataQueryResult = ApolloReactCommon.QueryResult<GetStockDataQuery, GetStockDataQueryVariables>;
 export const GetStockPortfolioEventDocument = gql`
     query GetStockPortfolioEvent($where: StockPortfolioEventWhereUniqueInput!) {
   stockPortfolioEvent(where: $where) {
