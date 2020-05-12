@@ -14,16 +14,11 @@ import {
 	GraphQLRateLimitConfig,
 	GraphQLRateLimitDirectiveArgs
 } from "graphql-rate-limit/build/main/lib/types";
-import path from "path";
 
 /* eslint-disable no-console */
 
-const dirname: string = process.env.PROJECT_DIRNAME
-	? path.join(process.env.PROJECT_DIRNAME, "src/server/graphql/nexus/plugins")
-	: __dirname;
-
 const fieldRateLimitResolverImport = printedGenTypingImport({
-	module: path.join(dirname, "rate-limit.plugin"),
+	module: "@/server/graphql/nexus/plugins/rate-limit.plugin",
 	bindings: ["IFieldRateLimitResolver"]
 });
 

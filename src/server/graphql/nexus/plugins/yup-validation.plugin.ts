@@ -9,18 +9,13 @@ import {
 } from "@nexus/schema/dist/core";
 import { UserInputError } from "apollo-server-micro";
 import { GraphQLResolveInfo } from "graphql";
-import path from "path";
 import { ManualFieldError } from "react-hook-form";
 import { object, ObjectSchemaDefinition, ValidationError } from "yup";
 
 /* eslint-disable no-console */
 
-const dirname: string = process.env.PROJECT_DIRNAME
-	? path.join(process.env.PROJECT_DIRNAME, "src/server/graphql/nexus/plugins")
-	: __dirname;
-
 const fieldYupValidationResolverImport = printedGenTypingImport({
-	module: path.join(dirname, "yup-validation.plugin"),
+	module: "@/server/graphql/nexus/plugins/yup-validation.plugin",
 	bindings: ["IFieldYupValidationResolver"]
 });
 

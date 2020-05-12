@@ -5,9 +5,9 @@
 
 import * as ctx from "@/server/graphql/context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
-import { IFieldRateLimitResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/rate-limit.plugin"
+import { IFieldRateLimitResolver } from "@/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
-import { IFieldYupValidationResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/yup-validation.plugin"
+import { IFieldYupValidationResolver } from "@/server/graphql/nexus/plugins/yup-validation.plugin"
 
 
 declare global {
