@@ -167,7 +167,7 @@ export const RunScheduledEvent = objectType({
 
 export const runScheduledEvent = mutationField("runScheduledEvent", {
 	type: "RunScheduledEvent",
-	authorize: (parent, args, { isEasyCron }) => isEasyCron,
+	authorize: (parent, args, { isEasyCron }) => isEasyCron(),
 	resolve: async (parent, args, { afterwares, prisma }) => {
 		const startTime = new Date();
 

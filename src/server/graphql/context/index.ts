@@ -1,12 +1,13 @@
 import { getAuthorizedUserId } from "@/server/authentication";
 import { stripe } from "@/server/configs";
 import { dataSources } from "@/server/datasources";
+import { AfterwareQueue } from "@/server/graphql/plugins";
 import { prisma } from "@/server/prisma";
-import { isEasyCron } from "@/server/utils";
 import { PrismaClient, User } from "@prisma/client";
+import { once } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import { AfterwareQueue } from "./plugins";
+import { isEasyCron } from "./is-easy-cron";
 
 const isDevelopment: boolean = process.env.NODE_ENV === "development";
 
@@ -14,7 +15,7 @@ export interface IServerContext {
 	afterwares: AfterwareQueue;
 	dataSources: ReturnType<typeof dataSources>;
 	/** `isEasyCron` is `true` by default in development mode */
-	isEasyCron: boolean;
+	isEasyCron: () => Promise<boolean>;
 	prisma: PrismaClient;
 	req: NextApiRequest;
 	res: NextApiResponse;
@@ -40,7 +41,7 @@ export const createContext = async ({
 
 	const apolloContext: Omit<IServerContext, "dataSources"> = {
 		afterwares: new AfterwareQueue(),
-		isEasyCron: (await isEasyCron(req)) || isDevelopment,
+		isEasyCron: once(() => Promise.resolve<boolean>(isDevelopment || isEasyCron(req))),
 		prisma,
 		req,
 		res,

@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "../../context"
+import * as ctx from "@/server/graphql/context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
 import { IFieldRateLimitResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"

@@ -57,7 +57,7 @@ export const schema = makeSchema({
 		yupValidationPlugin()
 	],
 	typegenAutoConfig: {
-		sources: [{ source: getPath("../context.ts"), alias: "ctx" }],
+		sources: [{ source: "@/server/graphql/context", alias: "ctx" }],
 		contextType: "ctx.IServerContextWithUser"
 	}
 });

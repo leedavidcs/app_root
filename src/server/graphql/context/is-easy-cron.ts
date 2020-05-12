@@ -3,7 +3,7 @@ import fetch from "isomorphic-unfetch";
 import { NextApiRequest } from "next";
 import { getClientIp } from "request-ip";
 
-const REQUEST_TIMEOUT = 500;
+const REQUEST_TIMEOUT = 5000;
 
 interface IEasyCronIPs {
 	ipv4: readonly string[];
