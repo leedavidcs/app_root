@@ -12,7 +12,7 @@
     "storybook:build": "build-storybook",
     "audit-ci": "audit-ci --moderate --report-type full --package-manager npm",
     "build-docker": "echo $(date +%s) && docker-compose build --build-arg CACHE_BUST_FILES_UPDATED=$(date +%s) --pull server",
-    "generate:backend": "npm-run-all generate:prisma generate:nexus generate:emails generate:options",
+    "generate:backend": "npm-run-all generate:prisma generate:nexus generate:webhooks generate:emails generate:options",
     "generate:emails": "npm run with-script -- src/server/emails/generate",
     "generate:icons": "npm run with-script -- scripts/generate-icons-module.script",
     "generate:nexus": "npm run with-script -- src/server/graphql/nexus/schema --nexus-exit",
