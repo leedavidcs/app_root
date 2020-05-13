@@ -6,7 +6,6 @@ import { onError } from "apollo-link-error";
 import { ServerError, ServerParseError } from "apollo-link-http-common";
 import { print } from "graphql/language";
 import HttpStatus from "http-status-codes";
-import fetch from "isomorphic-unfetch";
 
 /* eslint-disable no-console */
 

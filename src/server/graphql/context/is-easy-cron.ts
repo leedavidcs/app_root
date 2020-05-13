@@ -1,5 +1,4 @@
 import { timeout } from "blend-promise-utils";
-import fetch from "isomorphic-unfetch";
 import { NextApiRequest } from "next";
 import { getClientIp } from "request-ip";
 

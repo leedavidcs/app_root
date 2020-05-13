@@ -4,7 +4,6 @@ import classnames from "classnames";
 import { FetcherParams, FetcherResult } from "graphiql/dist/components/GraphiQL";
 import { GraphQLError, GraphQLSchema, parse, validate } from "graphql";
 import { introspectSchema } from "graphql-tools";
-import fetch from "isomorphic-unfetch";
 import React, { CSSProperties, FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 
