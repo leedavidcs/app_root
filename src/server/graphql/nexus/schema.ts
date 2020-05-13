@@ -14,9 +14,7 @@ const dirname: string = process.env.PROJECT_DIRNAME
 	? path.join(process.env.PROJECT_DIRNAME, "src/server/graphql/nexus")
 	: __dirname;
 
-const getPath = (fileName: string): string => {
-	return path.join(dirname, fileName);
-};
+const getPath = (fileName: string): string => path.join(dirname, fileName);
 
 const isGenerateScript: boolean = process.argv.includes("--nexus-exit");
 

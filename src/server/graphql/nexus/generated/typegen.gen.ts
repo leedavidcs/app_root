@@ -1082,8 +1082,7 @@ declare global {
      */
     complexity?: QueryComplexity<TypeName, FieldName>
     /**
-     * Rate limit plugin for an individual field. Uses the same directive args as
-     * `graphql-rate-limit`.
+     * Rate limit plugin for an individual field. Uses the same directive args as `graphql-rate-limit`.
      */
     rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
     /**
@@ -1096,8 +1095,7 @@ declare global {
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
     /**
-     * `yup` validation plugin for an individual field. Requires that an object schema
-     * definition be defined for the input args.
+     * `yup` validation plugin for an individual field. Requires that an object schema definition be defined for the input args.
      */
     yupValidation?: IFieldYupValidationResolver<TypeName, FieldName>
   }

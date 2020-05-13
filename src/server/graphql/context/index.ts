@@ -21,6 +21,7 @@ export interface IServerContext {
 	res: NextApiResponse;
 	stripe: Stripe;
 	user: User | null;
+	webhookOwner: User | null;
 }
 
 export type IServerContextWithUser = Omit<IServerContext, "user"> & {
@@ -30,14 +31,17 @@ export type IServerContextWithUser = Omit<IServerContext, "user"> & {
 export interface IServerCreateContextArgs {
 	req: NextApiRequest;
 	res: NextApiResponse;
+	webhookOwner?: Maybe<Pick<User, "id">>;
 }
 
 export const createContext = async ({
 	req,
-	res
+	res,
+	webhookOwner: _webhookOwner
 }: IServerCreateContextArgs): Promise<Omit<IServerContext, "dataSources">> => {
 	const userId: string | null = getAuthorizedUserId(req);
-	const user: User | null = userId ? await prisma.user.findOne({ where: { id: userId } }) : null;
+	const user = await prisma.user.findOne({ where: { id: userId ?? "" } });
+	const webhookOwner = await prisma.user.findOne({ where: { id: _webhookOwner?.id ?? "" } });
 
 	const apolloContext: Omit<IServerContext, "dataSources"> = {
 		afterwares: new AfterwareQueue(),
@@ -46,7 +50,8 @@ export const createContext = async ({
 		req,
 		res,
 		stripe,
-		user
+		user,
+		webhookOwner
 	};
 
 	return apolloContext;

@@ -1,10 +1,10 @@
-import { getExecutableApolloServer } from "@/server/graphql";
+import { getExecutableApolloServer, schema } from "@/server/graphql";
 import gql from "graphql-tag";
 import HttpStatus from "http-status-codes";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	const { mutate } = getExecutableApolloServer({ req, res });
+	const { mutate } = getExecutableApolloServer(schema, { req, res });
 
 	try {
 		const { errors } = await mutate({

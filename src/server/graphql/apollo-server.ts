@@ -1,9 +1,10 @@
 import { dataSources } from "@/server/datasources";
-import { schema } from "@/server/graphql/nexus";
 import { getPlugins } from "@/server/graphql/plugins";
+import { User } from "@prisma/client";
 import { RedisCache } from "apollo-server-cache-redis";
 import { ApolloServer } from "apollo-server-micro";
 import { createTestClient } from "apollo-server-testing";
+import { GraphQLSchema } from "graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createContext } from "./context";
 import { getValidationRules } from "./validation-rules";
@@ -16,22 +17,26 @@ const cachePort = Number(process.env.REDIS_GRAPHQL_PORT);
 export interface IGetApolloServerOptions {
 	maxComplexity?: number;
 	maxDepth?: number;
+	req?: NextApiRequest;
+	res?: NextApiResponse;
+	webhookOwner?: Maybe<Pick<User, "id">>;
 }
 
-export interface IGetExecutableApolloServerOptions extends IGetApolloServerOptions {
-	req: NextApiRequest;
-	res: NextApiResponse;
-}
-
-export const getApolloServer = (options?: IGetApolloServerOptions) => {
-	const { maxComplexity = Infinity, maxDepth = Infinity } = options ?? {};
+export const getApolloServer = (schema: GraphQLSchema, options: IGetApolloServerOptions) => {
+	const {
+		maxComplexity = Infinity,
+		maxDepth = Infinity,
+		req: nextReq,
+		res: nextRes,
+		webhookOwner
+	} = options;
 
 	const server: ApolloServer = new ApolloServer({
 		cache: new RedisCache({
 			host: cacheHost,
 			port: cachePort
 		}),
-		context: createContext,
+		context: ({ req = nextReq, res = nextRes }) => createContext({ req, res, webhookOwner }),
 		dataSources,
 		debug: isDebug,
 		extensions: [],
@@ -44,23 +49,7 @@ export const getApolloServer = (options?: IGetApolloServerOptions) => {
 	return server;
 };
 
-export const getExecutableApolloServer = (options: IGetExecutableApolloServerOptions) => {
-	const { maxComplexity = Infinity, maxDepth = Infinity, req, res } = options;
-
-	const server: ApolloServer = new ApolloServer({
-		cache: new RedisCache({
-			host: cacheHost,
-			port: cachePort
-		}),
-		context: () => createContext({ req, res }),
-		dataSources,
-		debug: isDebug,
-		extensions: [],
-		playground: isDebug,
-		plugins: getPlugins({ maxComplexity, schema }),
-		schema,
-		validationRules: getValidationRules({ maxDepth })
-	});
-
-	return createTestClient(server);
-};
+export const getExecutableApolloServer = (
+	schema: GraphQLSchema,
+	options: IGetApolloServerOptions
+) => createTestClient(getApolloServer(schema, options));
