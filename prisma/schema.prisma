@@ -89,6 +89,7 @@ model Webhook {
   stockPortfolio   StockPortfolio @relation(fields: [stockPortfolioId], references: [id])
   stockPortfolioId String
   name             String
+  query            String?
   secret           String?
   type             WebhookType
   url              String

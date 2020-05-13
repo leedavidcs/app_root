@@ -4,7 +4,7 @@
     {
       "tag": "CreateField",
       "model": "Webhook",
-      "field": "secret",
+      "field": "query",
       "type": "String",
       "arity": "Optional"
     }
