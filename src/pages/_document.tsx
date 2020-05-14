@@ -1,4 +1,3 @@
-import { oneLine } from "common-tags";
 import Document, {
 	DocumentContext,
 	DocumentInitialProps,
@@ -10,7 +9,7 @@ import Document, {
 import React, { Fragment } from "react";
 import { createGenerateId, JssProvider, SheetsRegistry } from "react-jss";
 
-const THEME_SCRIPT = oneLine`
+const THEME_SCRIPT = `
 (function() {
 	window.__onThemeChange = function() { }
 
