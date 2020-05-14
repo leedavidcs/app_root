@@ -3,11 +3,11 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "../../context"
+import * as ctx from "@/server/graphql/context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
-import { IFieldRateLimitResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/rate-limit.plugin"
+import { IFieldRateLimitResolver } from "@/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
-import { IFieldYupValidationResolver } from "/home/leedavidcs/projects/app_root/src/server/graphql/nexus/plugins/yup-validation.plugin"
+import { IFieldYupValidationResolver } from "@/server/graphql/nexus/plugins/yup-validation.plugin"
 
 
 declare global {
@@ -68,6 +68,21 @@ export interface NexusGenInputs {
     lte?: number | null; // Int
     not?: number | null; // Int
     notIn?: number[] | null; // [Int!]
+  }
+  LatestSnapshotFilter: { // input type
+    every?: NexusGenInputs['LatestSnapshotWhereInput'] | null; // LatestSnapshotWhereInput
+    none?: NexusGenInputs['LatestSnapshotWhereInput'] | null; // LatestSnapshotWhereInput
+    some?: NexusGenInputs['LatestSnapshotWhereInput'] | null; // LatestSnapshotWhereInput
+  }
+  LatestSnapshotWhereInput: { // input type
+    AND?: NexusGenInputs['LatestSnapshotWhereInput'][] | null; // [LatestSnapshotWhereInput!]
+    NOT?: NexusGenInputs['LatestSnapshotWhereInput'][] | null; // [LatestSnapshotWhereInput!]
+    OR?: NexusGenInputs['LatestSnapshotWhereInput'][] | null; // [LatestSnapshotWhereInput!]
+    snapshot?: NexusGenInputs['SnapshotWhereInput'] | null; // SnapshotWhereInput
+    snapshotId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    stockPortfolio?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
+    stockPortfolioId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   LoginLocalUserInput: { // input type
     password: string; // String!
@@ -168,6 +183,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['SnapshotWhereInput'][] | null; // [SnapshotWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    LatestSnapshot?: NexusGenInputs['LatestSnapshotFilter'] | null; // LatestSnapshotFilter
     NOT?: NexusGenInputs['SnapshotWhereInput'][] | null; // [SnapshotWhereInput!]
     OR?: NexusGenInputs['SnapshotWhereInput'][] | null; // [SnapshotWhereInput!]
     stockPortfolio?: NexusGenInputs['StockPortfolioWhereInput'] | null; // StockPortfolioWhereInput
@@ -266,6 +282,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    LatestSnapshot?: NexusGenInputs['LatestSnapshotFilter'] | null; // LatestSnapshotFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
@@ -582,6 +599,8 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   BooleanFilter: NexusGenInputs['BooleanFilter'];
   DateTimeFilter: NexusGenInputs['DateTimeFilter'];
   IntFilter: NexusGenInputs['IntFilter'];
+  LatestSnapshotFilter: NexusGenInputs['LatestSnapshotFilter'];
+  LatestSnapshotWhereInput: NexusGenInputs['LatestSnapshotWhereInput'];
   LoginLocalUserInput: NexusGenInputs['LoginLocalUserInput'];
   NullableIntFilter: NexusGenInputs['NullableIntFilter'];
   NullableStringFilter: NexusGenInputs['NullableStringFilter'];
@@ -674,6 +693,7 @@ export interface NexusGenFieldTypes {
     deleteOneStockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
     deleteOneStockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
     deleteOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
+    getStockData: NexusGenRootTypes['StockData'] | null; // StockData
     loginLocalUser: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     refreshAccessToken: NexusGenRootTypes['TokenPayload'] | null; // TokenPayload
     registerLocalUser: NexusGenRootTypes['RegisterLocalUserPayload'] | null; // RegisterLocalUserPayload
@@ -885,6 +905,9 @@ export interface NexusGenArgTypes {
     deleteOneWebhook: { // args
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
+    getStockData: { // args
+      where: NexusGenInputs['StockDataWhereUniqueInput']; // StockDataWhereUniqueInput!
+    }
     loginLocalUser: { // args
       input: NexusGenInputs['LoginLocalUserInput']; // LoginLocalUserInput!
     }
@@ -1016,7 +1039,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "RunScheduledEvent" | "ScheduledEvent" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioEvent" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LatestSnapshotFilter" | "LatestSnapshotWhereInput" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "OrderDetailType" | "Recurrence" | "StockPortfolioEventType" | "TransactionStatus" | "WebhookType";
 
@@ -1059,8 +1082,7 @@ declare global {
      */
     complexity?: QueryComplexity<TypeName, FieldName>
     /**
-     * Rate limit plugin for an individual field. Uses the same directive args as
-     * `graphql-rate-limit`.
+     * Rate limit plugin for an individual field. Uses the same directive args as `graphql-rate-limit`.
      */
     rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
     /**
@@ -1073,8 +1095,7 @@ declare global {
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
     /**
-     * `yup` validation plugin for an individual field. Requires that an object schema
-     * definition be defined for the input args.
+     * `yup` validation plugin for an individual field. Requires that an object schema definition be defined for the input args.
      */
     yupValidation?: IFieldYupValidationResolver<TypeName, FieldName>
   }

@@ -45,7 +45,6 @@ const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 	const classes = useStyles();
 
 	const { data } = useGetOneStockPortfolioQuery({
-		fetchPolicy: "no-cache",
 		pollInterval: ms("2m"),
 		variables: {
 			where: { id: propsStockPortfolio.id }

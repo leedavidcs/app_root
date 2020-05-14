@@ -4,6 +4,8 @@ import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import "codemirror/theme/material-darker.css";
+import "graphiql/graphiql.css";
 import { NextComponentType } from "next";
 import { AppInitialProps, AppProps } from "next/app";
 import { AppContext } from "next/dist/pages/_app";

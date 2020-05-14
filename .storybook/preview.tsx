@@ -1,10 +1,12 @@
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { addDecorator, addParameters, configure } from "@storybook/react";
 import { themes } from "@storybook/theming";
+import "codemirror/theme/material-darker.css";
+import "graphiql/graphiql.css";
 import { withRootProvider } from "../src/client/storybook";
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 const alphabeticSort = (a, b) => {
 	const isSameKind: boolean = a[1].kind === b[1].kind;

@@ -1,12 +1,16 @@
 import { DataGrid, IHeaderConfig } from "@/client/components";
-import { Snapshot as _Snapshot } from "@/client/graphql";
+import { Snapshot as _Snapshot, useGetSnapshotQuery } from "@/client/graphql";
+import { NonIdealState, Spinner } from "@blueprintjs/core";
+import classnames from "classnames";
+import { format } from "date-fns";
 import React, { FC, memo, useEffect, useMemo, useState } from "react";
+import { useStyles } from "./styles";
 
-type Snapshot = Pick<_Snapshot, "id" | "createdAt" | "data" | "headers">;
+type Snapshot = Pick<_Snapshot, "id">;
 
 interface IProps {
 	className?: string;
-	snapshot: Snapshot;
+	snapshot: Maybe<Snapshot>;
 }
 
 const tickerHeader: IHeaderConfig = {
@@ -20,12 +24,18 @@ const tickerHeader: IHeaderConfig = {
 };
 
 export const SnapshotDataGrid: FC<IProps> = memo(({ className, snapshot }) => {
-	const { headers } = snapshot;
+	const classes = useStyles();
+
+	const queryResult = useGetSnapshotQuery({
+		variables: { where: { id: snapshot?.id } }
+	});
+
+	const fullSnapshot = queryResult.data?.snapshot;
 
 	const transformed: readonly IHeaderConfig[] = useMemo(
 		() => [
 			tickerHeader,
-			...headers.map(({ dataKey, name }) => ({
+			...(fullSnapshot?.headers ?? []).map(({ dataKey, name }) => ({
 				label: name,
 				value: dataKey,
 				options: null,
@@ -35,23 +45,51 @@ export const SnapshotDataGrid: FC<IProps> = memo(({ className, snapshot }) => {
 				width: 100
 			}))
 		],
-		[headers]
+		[fullSnapshot]
 	);
 
 	const [dataHeaders, setDataHeaders] = useState<readonly IHeaderConfig[]>(transformed);
-	const [data, setData] = useState<readonly Record<string, any>[]>(snapshot.data);
+	const [data, setData] = useState<Maybe<readonly Record<string, any>[]>>(fullSnapshot?.data);
+
+	const formattedCreatedAt: string = useMemo(
+		() => (fullSnapshot ? format(new Date(fullSnapshot.createdAt), "Ppp O") : ""),
+		[fullSnapshot]
+	);
 
 	useEffect(() => setDataHeaders(transformed), [transformed]);
-	useEffect(() => setData(snapshot.data), [snapshot.data]);
+	useEffect(() => setData(fullSnapshot?.data), [fullSnapshot, snapshot]);
+
+	if (queryResult.loading) {
+		return (
+			<NonIdealState
+				icon={<Spinner />}
+				title="Loading..."
+				description={<p>Your data should be loaded shortly.</p>}
+			/>
+		);
+	}
+
+	if (!data || data.length === 0) {
+		return (
+			<NonIdealState
+				icon="search"
+				title="No data available"
+				description={<p>Could not load any data for this snapshot.</p>}
+			/>
+		);
+	}
 
 	return (
-		<DataGrid
-			className={className}
-			data={data}
-			headers={dataHeaders}
-			onDataChange={setData}
-			onHeadersChange={setDataHeaders}
-		/>
+		<div className={classnames(classes.root, className)}>
+			<p>Data from {formattedCreatedAt}</p>
+			<DataGrid
+				className={classes.dataGrid}
+				data={data}
+				headers={dataHeaders}
+				onDataChange={setData}
+				onHeadersChange={setDataHeaders}
+			/>
+		</div>
 	);
 });
 

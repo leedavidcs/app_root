@@ -89,6 +89,8 @@ model Webhook {
   stockPortfolio   StockPortfolio @relation(fields: [stockPortfolioId], references: [id])
   stockPortfolioId String
   name             String
+  query            String?
+  secret           String?
   type             WebhookType
   url              String
   timeout          Int            @default(30000)
@@ -105,6 +107,15 @@ model Snapshot {
   stockPortfolioId String
   data             String[]
   createdAt        DateTime       @default(now())
+}
+
+// Each stock-portfolio tracks its latest data-fetch
+model LatestSnapshot {
+  snapshot         Snapshot       @relation(fields: [snapshotId], references: [id])
+  snapshotId       String         @unique
+  stockPortfolio   StockPortfolio @relation(fields: [stockPortfolioId], references: [id])
+  stockPortfolioId String         @id
+  updatedAt        DateTime       @updatedAt
 }
 
 enum Day {

@@ -50,17 +50,16 @@ export const StockPortfolio = objectType({
 		t.field("latestSnapshot", {
 			type: "Snapshot",
 			resolve: async ({ id }, args, { prisma }) => {
-				const snapshots = await prisma.snapshot.findMany({
+				const latestSnapshot = await prisma.latestSnapshot.findOne({
 					where: {
 						stockPortfolioId: id
 					},
-					first: 1,
-					orderBy: {
-						createdAt: "desc"
+					include: {
+						snapshot: true
 					}
 				});
 
-				return snapshots.length > 0 ? snapshots[0] : null;
+				return latestSnapshot?.snapshot ?? null;
 			}
 		});
 		t.list.field("snapshots", {

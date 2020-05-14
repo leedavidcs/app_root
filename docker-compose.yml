@@ -52,21 +52,6 @@ services:
       - redis-graphql:/data
     logging:
       driver: none
-  server:
-    container_name: stock-app_server
-    env_file:
-      - ./server/.env.development
-    depends_on:
-      - redis-auth
-      - redis-graphql
-    build:
-      dockerfile: Dockerfile
-      context: ./server/.
-      network: host
-    ports:
-      - 3031:3031
-    networks:
-      - backend
   server-dependencies:
     image: alpine:latest
     depends_on:

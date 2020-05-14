@@ -33,7 +33,7 @@ const TypedFormMultiSelect = FormMultiSelect.ofType<IMockData>();
 const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	demo: array()
 		.of(
-			object().shape({
+			object().shape<IMockData>({
 				key: string(),
 				uuid: string()
 			})

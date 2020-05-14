@@ -1,9 +1,6 @@
 import { DateRangeInput, ISelectItemType, Menu, Select } from "@/client/components";
 import { InfiniteLoaderList } from "@/client/components/infinite-loader-list.component";
 import {
-	GetSnapshotDocument,
-	GetSnapshotQuery,
-	GetSnapshotQueryVariables,
 	OrderByArg,
 	Snapshot as _Snapshot,
 	SnapshotWhereInput,
@@ -16,17 +13,15 @@ import classnames from "classnames";
 import { format } from "date-fns";
 import ms from "ms";
 import React, { FC, ReactNodeArray, useCallback, useMemo, useState } from "react";
-import { useApolloClient } from "react-apollo";
 import { useStyles } from "./styles";
 
 const ITEM_HEIGHT = 30;
 
 type Snapshot = Pick<_Snapshot, "id" | "createdAt">;
-type ResultSnapshot = Pick<_Snapshot, "id" | "tickers" | "headers" | "data" | "createdAt">;
 
 interface IProps {
 	className?: string;
-	onChange?: (snapshot: ResultSnapshot) => void;
+	onChange?: (snapshot: Snapshot) => void;
 	selected?: Snapshot | null;
 	stockPortfolioId: string;
 }
@@ -57,7 +52,6 @@ export const SnapshotLookup: FC<IProps> = ({
 		[dateRange, stockPortfolioId]
 	);
 
-	const apolloClient = useApolloClient();
 	const { called, data, loading, refetch } = useGetSnapshotsQuery({
 		variables: {
 			where,
@@ -111,21 +105,9 @@ export const SnapshotLookup: FC<IProps> = ({
 		[classes.dateInputs, classes.list, count, dateRange, onLoadMore]
 	);
 
-	const onItemSelect = useCallback(
-		async ({ id }: Snapshot) => {
-			const results = await apolloClient.query<GetSnapshotQuery, GetSnapshotQueryVariables>({
-				query: GetSnapshotDocument,
-				variables: { where: { id } }
-			});
-
-			const snapshot: Maybe<ResultSnapshot> = results.data?.snapshot;
-
-			if (snapshot) {
-				onChange?.(snapshot);
-			}
-		},
-		[apolloClient, onChange]
-	);
+	const onItemSelect = useCallback((newSelected: Snapshot) => onChange?.(newSelected), [
+		onChange
+	]);
 
 	return (
 		<SnapshotSelect

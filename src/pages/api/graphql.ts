@@ -1,8 +1,10 @@
-import { getApolloServer } from "@/server/graphql";
+import { createContext, getApolloServer, schema } from "@/server/graphql";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const server: ApolloServer = getApolloServer({
+	schema,
+	context: createContext,
 	maxComplexity: 500,
 	maxDepth: 10
 });

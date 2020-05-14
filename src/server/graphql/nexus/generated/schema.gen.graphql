@@ -111,6 +111,23 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
+input LatestSnapshotFilter {
+  every: LatestSnapshotWhereInput
+  none: LatestSnapshotWhereInput
+  some: LatestSnapshotWhereInput
+}
+
+input LatestSnapshotWhereInput {
+  AND: [LatestSnapshotWhereInput!]
+  NOT: [LatestSnapshotWhereInput!]
+  OR: [LatestSnapshotWhereInput!]
+  snapshot: SnapshotWhereInput
+  snapshotId: StringFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  updatedAt: DateTimeFilter
+}
+
 input LoginLocalUserInput {
   """The user's decrypted password"""
   password: String!
@@ -131,6 +148,11 @@ type Mutation implements RequestRoot {
   deleteOneStockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   deleteOneStockPortfolioEvent(where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent
   deleteOneWebhook(where: WebhookWhereUniqueInput!): Webhook
+
+  """
+  Mutation version of the query `stockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation.
+  """
+  getStockData(where: StockDataWhereUniqueInput!): StockData
 
   """Logins in the user, and returns an expiring access token"""
   loginLocalUser(input: LoginLocalUserInput!): TokenPayload
@@ -221,6 +243,10 @@ type Query implements RequestRoot {
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshotCount(where: SnapshotWhereInput): Int!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
+
+  """
+  Query version of the mutation `getStockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation.
+  """
   stockData(where: StockDataWhereUniqueInput!): StockData
   stockPortfolio(where: StockPortfolioWhereUniqueInput!): StockPortfolio
   stockPortfolioCount(query: String, where: StockPortfolioWhereInput): Int
@@ -388,6 +414,7 @@ input SnapshotWhereInput {
   AND: [SnapshotWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
+  LatestSnapshot: LatestSnapshotFilter
   NOT: [SnapshotWhereInput!]
   OR: [SnapshotWhereInput!]
   stockPortfolio: StockPortfolioWhereInput
@@ -581,6 +608,7 @@ input StockPortfolioWhereInput {
   AND: [StockPortfolioWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
+  LatestSnapshot: LatestSnapshotFilter
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
