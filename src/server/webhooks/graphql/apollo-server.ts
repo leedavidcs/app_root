@@ -1,16 +1,13 @@
 import { getApolloServer } from "@/server/graphql";
-import { PrismaClient, User, Webhook, WebhookWhereUniqueInput } from "@prisma/client";
+import { WebhookWhereUniqueInput } from "@prisma/client";
 import { createTestClient } from "apollo-server-testing";
+import { timeout } from "blend-promise-utils";
+import { IWebhooksClientContext } from "./context";
 import { schema } from "./nexus";
 
-interface IWebhooksClientContext {
-	prisma: PrismaClient;
-}
+/* eslint-disable no-console */
 
-export interface IWebhooksContext extends IWebhooksClientContext {
-	webhook: Webhook;
-	webhookOwner: User;
-}
+const isDevelopment: boolean = process.env.NODE_ENV === "development";
 
 interface IWebhooksClientParams {
 	context: IWebhooksClientContext;
@@ -63,10 +60,18 @@ export class WebhooksClient {
 			body = result.data ?? {};
 		}
 
-		return fetch(webhook.url, {
-			method: "post",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(body)
-		});
+		const timeoutFetch = timeout(fetch, webhook.timeout);
+
+		try {
+			await timeoutFetch(webhook.url, {
+				method: "post",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body)
+			});
+		} catch (err) {
+			if (isDevelopment) {
+				console.error(err);
+			}
+		}
 	};
 }

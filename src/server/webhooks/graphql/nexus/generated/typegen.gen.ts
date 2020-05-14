@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "@/server/webhooks/graphql/apollo-server"
+import * as ctx from "@/server/webhooks/graphql/context"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
 import { IFieldRateLimitResolver } from "@/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"

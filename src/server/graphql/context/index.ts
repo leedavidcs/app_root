@@ -3,6 +3,7 @@ import { stripe } from "@/server/configs";
 import { dataSources } from "@/server/datasources";
 import { AfterwareQueue } from "@/server/graphql/plugins";
 import { prisma } from "@/server/prisma";
+import { WebhooksClient } from "@/server/webhooks";
 import { PrismaClient, User } from "@prisma/client";
 import { once } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -21,6 +22,7 @@ export interface IServerContext {
 	res: NextApiResponse;
 	stripe: Stripe;
 	user: User | null;
+	webhooks: WebhooksClient;
 }
 
 export type IServerContextWithUser = Omit<IServerContext, "user"> & {
@@ -46,7 +48,8 @@ export const createContext = async ({
 		req,
 		res,
 		stripe,
-		user
+		user,
+		webhooks: new WebhooksClient({ context: { prisma } })
 	};
 
 	return apolloContext;
