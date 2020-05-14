@@ -1,13 +1,13 @@
 import { getApolloServer } from "@/server/graphql";
-import { WebhookWhereUniqueInput } from "@prisma/client";
+import { Logger } from "@/server/utils";
+import { User, Webhook, WebhookWhereInput, WebhookWhereUniqueInput } from "@prisma/client";
+import { ApolloServer } from "apollo-server-micro";
 import { createTestClient } from "apollo-server-testing";
-import { timeout } from "blend-promise-utils";
+import { settleAll, timeout } from "blend-promise-utils";
 import { IWebhooksClientContext } from "./context";
 import { schema } from "./nexus";
 
 /* eslint-disable no-console */
-
-const isDevelopment: boolean = process.env.NODE_ENV === "development";
 
 interface IWebhooksClientParams {
 	context: IWebhooksClientContext;
@@ -20,7 +20,7 @@ export class WebhooksClient {
 		this.context = context;
 	}
 
-	public send = async (params: { where: WebhookWhereUniqueInput }) => {
+	public sendOne = async (params: { where: WebhookWhereUniqueInput }): Promise<void> => {
 		const { prisma } = this.context;
 		const { where } = params;
 
@@ -39,6 +39,40 @@ export class WebhooksClient {
 			return;
 		}
 
+		try {
+			await this.processWebhook(webhook);
+		} catch (err) {
+			Logger.error(err.message ?? err);
+		}
+	};
+
+	public sendMany = async (params: { where: WebhookWhereInput }): Promise<void> => {
+		const { prisma } = this.context;
+		const { where } = params;
+
+		const webhooks = await prisma.webhook.findMany({
+			where,
+			include: {
+				stockPortfolio: {
+					select: {
+						user: true
+					}
+				}
+			}
+		});
+
+		try {
+			await settleAll(webhooks.map(this.processWebhook), (err) => {
+				Logger.error(err.message ?? err);
+			});
+		} catch (err) {
+			Logger.error(err.message ?? err);
+		}
+	};
+
+	private processWebhook = async (
+		webhook: Webhook & { stockPortfolio: { user: User } }
+	): Promise<void> => {
 		let body: Record<string, any> = {};
 
 		if (webhook.query) {
@@ -46,7 +80,7 @@ export class WebhooksClient {
 
 			const context = { ...this.context, webhook, webhookOwner };
 
-			const server = getApolloServer({
+			const server: ApolloServer = getApolloServer({
 				schema,
 				context,
 				maxComplexity: 500,
@@ -69,9 +103,7 @@ export class WebhooksClient {
 				body: JSON.stringify(body)
 			});
 		} catch (err) {
-			if (isDevelopment) {
-				console.error(err);
-			}
+			Logger.error(err.message ?? err);
 		}
 	};
 }
