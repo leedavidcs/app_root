@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "@/server/graphql/context"
+import * as ctx from "@/server/webhooks/graphql/apollo-server"
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
 import { IFieldRateLimitResolver } from "@/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
@@ -225,7 +225,7 @@ export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int
 export type NexusGenUnionNames = never;
 
 export interface NexusGenTypes {
-  context: ctx.IServerContextWithUser;
+  context: ctx.IWebhooksContext;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   argTypes: NexusGenArgTypes;

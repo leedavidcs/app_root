@@ -1,17 +1,34 @@
-import { getApolloServer, IServerContext } from "@/server/graphql";
+import { getApolloServer } from "@/server/graphql";
+import { PrismaClient, User, Webhook, WebhookWhereUniqueInput } from "@prisma/client";
 import { createTestClient } from "apollo-server-testing";
 import { schema } from "./nexus";
 
-interface IWebhookParams {
-	id: string;
+interface IWebhooksClientContext {
+	prisma: PrismaClient;
 }
 
-export const getWebooksClient = (context: IServerContext) => {
-	const { prisma } = context;
+export interface IWebhooksContext extends IWebhooksClientContext {
+	webhook: Webhook;
+	webhookOwner: User;
+}
 
-	return async (params: IWebhookParams) => {
+interface IWebhooksClientParams {
+	context: IWebhooksClientContext;
+}
+
+export class WebhooksClient {
+	private context: IWebhooksClientContext;
+
+	constructor({ context }: IWebhooksClientParams) {
+		this.context = context;
+	}
+
+	public send = async (params: { where: WebhookWhereUniqueInput }) => {
+		const { prisma } = this.context;
+		const { where } = params;
+
 		const webhook = await prisma.webhook.findOne({
-			where: { id: params.id },
+			where,
 			include: {
 				stockPortfolio: {
 					select: {
@@ -21,30 +38,35 @@ export const getWebooksClient = (context: IServerContext) => {
 			}
 		});
 
-		if (!webhook?.query) {
+		if (!webhook) {
 			return;
 		}
 
-		const webhookOwner = webhook.stockPortfolio.user;
+		let body: Record<string, any> = {};
 
-		const server = getApolloServer(schema, {
-			context: { ...context, webhook, webhookOwner },
-			maxComplexity: 500,
-			maxDepth: 10
-		});
+		if (webhook.query) {
+			const webhookOwner = webhook.stockPortfolio.user;
 
-		const { query } = createTestClient(server);
+			const context = { ...this.context, webhook, webhookOwner };
 
-		const result = await query({ query: webhook.query });
+			const server = getApolloServer({
+				schema,
+				context,
+				maxComplexity: 500,
+				maxDepth: 10
+			});
 
-		if (!result.data) {
-			return;
+			const { query } = createTestClient(server);
+
+			const result = await query({ query: webhook.query });
+
+			body = result.data ?? {};
 		}
 
-		fetch(webhook.url, {
+		return fetch(webhook.url, {
 			method: "post",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify("body")
+			body: JSON.stringify(body)
 		});
 	};
-};
+}

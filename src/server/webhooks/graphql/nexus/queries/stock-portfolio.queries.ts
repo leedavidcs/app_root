@@ -1,4 +1,5 @@
 import { AuthorizationError } from "@/server/utils";
+import { castContext } from "@/server/webhooks/graphql/context";
 import { arg, inputObjectType, intArg, queryField } from "@nexus/schema";
 
 export const StockPortfolioWhereUniqueInput = inputObjectType({
@@ -35,8 +36,14 @@ export const stockPortfolio = queryField("stockPortfolio", {
 	args: {
 		where: arg({ type: "StockPortfolioWhereUniqueInput" })
 	},
-	authorize: (parent, args, { webhookOwner }) => Boolean(webhookOwner),
-	resolve: async (parent, args, { prisma, webhookOwner }) => {
+	authorize: (parent, args, ctx) => {
+		const { webhookOwner } = castContext(ctx);
+
+		return Boolean(webhookOwner);
+	},
+	resolve: async (parent, args, ctx) => {
+		const { prisma, webhookOwner } = castContext(ctx);
+
 		const where: any = args.where;
 
 		const result = await prisma.stockPortfolio.findOne({
@@ -72,8 +79,14 @@ export const stockPortfolios = queryField("stockPortfolios", {
 		before: arg({ type: "StockPortfolioWhereUniqueInput" }),
 		orderBy: arg({ type: "StockPortfolioOrderByInput" })
 	},
-	authorize: (parent, args, { webhookOwner }) => Boolean(webhookOwner),
-	resolve: async (parent, args, { prisma, webhookOwner }) => {
+	authorize: (parent, args, ctx) => {
+		const { webhookOwner } = castContext(ctx);
+
+		return Boolean(webhookOwner);
+	},
+	resolve: async (parent, args, ctx) => {
+		const { prisma, webhookOwner } = castContext(ctx);
+
 		const { where, ...restArgs } = args as any;
 
 		const result = await prisma.stockPortfolio.findMany({

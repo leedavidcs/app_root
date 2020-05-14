@@ -1,4 +1,5 @@
 import { AuthorizationError } from "@/server/utils";
+import { castContext } from "@/server/webhooks/graphql/context";
 import { arg, inputObjectType, intArg, queryField } from "@nexus/schema";
 
 export const SnapshotWhereUniqueInput = inputObjectType({
@@ -31,8 +32,14 @@ export const snapshot = queryField("snapshot", {
 	args: {
 		where: arg({ type: "SnapshotWhereUniqueInput", nullable: false })
 	},
-	authorize: (parent, args, { webhookOwner }) => Boolean(webhookOwner),
-	resolve: async (parent, args, { prisma, webhookOwner }) => {
+	authorize: (parent, args, ctx) => {
+		const { webhookOwner } = castContext(ctx);
+
+		return Boolean(webhookOwner);
+	},
+	resolve: async (parent, args, ctx) => {
+		const { prisma, webhookOwner } = castContext(ctx);
+
 		const where: any = args.where;
 
 		const result = await prisma.snapshot.findOne({
@@ -67,8 +74,14 @@ export const snapshots = queryField("snapshots", {
 		after: arg({ type: "SnapshotWhereUniqueInput" }),
 		before: arg({ type: "SnapshotWhereUniqueInput" })
 	},
-	authorize: (parent, args, { webhookOwner }) => Boolean(webhookOwner),
-	resolve: async (parent, args, { prisma, webhookOwner }) => {
+	authorize: (parent, args, ctx) => {
+		const { webhookOwner } = castContext(ctx);
+
+		return Boolean(webhookOwner);
+	},
+	resolve: async (parent, args, ctx) => {
+		const { prisma, webhookOwner } = castContext(ctx);
+
 		const { where, ...restArgs } = args as any;
 
 		const result = await prisma.snapshot.findMany({

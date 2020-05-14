@@ -54,7 +54,7 @@ export const schema = makeSchema({
 		yupValidationPlugin()
 	],
 	typegenAutoConfig: {
-		sources: [{ source: "@/server/graphql/context", alias: "ctx" }],
-		contextType: "ctx.IServerContextWithUser"
+		sources: [{ source: "@/server/webhooks/graphql/apollo-server", alias: "ctx" }],
+		contextType: "ctx.IWebhooksContext"
 	}
 });

@@ -1,10 +1,11 @@
-import { createContext, getApolloServer, schema } from "@/server/graphql";
-import { ApolloServer } from "apollo-server-micro";
+import { getApolloServer } from "@/server/graphql";
+import { prisma } from "@/server/prisma";
+import { schema } from "@/server/webhooks";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const server: ApolloServer = getApolloServer({
+const server = getApolloServer({
 	schema,
-	context: createContext,
+	context: () => ({ prisma }),
 	maxComplexity: 500,
 	maxDepth: 10
 });
@@ -14,7 +15,7 @@ export const config = {
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	const handler = server.createHandler({ path: "/api/graphql" });
+	const handler = server.createHandler({ path: "/api/webhooks" });
 
 	return await handler(req, res);
 };
