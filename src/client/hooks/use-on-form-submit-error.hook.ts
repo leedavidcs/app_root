@@ -1,4 +1,3 @@
-import { GraphQLError } from "graphql";
 import { useCallback } from "react";
 import { ManualFieldError } from "react-hook-form";
 import { useToast } from "./use-toast.hook";
@@ -14,7 +13,7 @@ export const useOnFormSubmitError = <T extends Record<string, any>>({
 
 	const onFormError = useCallback(
 		(err: any) => {
-			if (err instanceof GraphQLError) {
+			if (err?.extensions?.code) {
 				switch (err.extensions?.code) {
 					case "BAD_USER_INPUT": {
 						const invalidArgs: ManualFieldError<T>[] =
