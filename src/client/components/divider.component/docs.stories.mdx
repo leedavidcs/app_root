@@ -36,7 +36,7 @@ Divider (hr) that is typically used between list items.
 	<Story name="standard">
 		<List>
 			<ListItem text="Banana" />
-			<Divider list={true} />
+			<Divider tagName="li" />
 			<ListItem text="Apple" />
 		</List>
 	</Story>
@@ -50,7 +50,7 @@ Divider (hr) that is typically used between list items.
 	<Story name="middle">
 		<List>
 			<ListItem text="Banana" />
-			<Divider list={true} variant="middle" />
+			<Divider tagName="li" variant="middle" />
 			<ListItem text="Apple" />
 		</List>
 	</Story>
@@ -63,9 +63,9 @@ Divider (hr) that is typically used between list items.
 <Preview>
 	<Story name="inset">
 		<List>
-			<ListItem text="Banana" />
-			<Divider list={true} variant="inset" />
-			<ListItem text="Apple" />
+			<ListItem icon="cube" text="Banana" />
+			<Divider tagName="li" variant="inset" />
+			<ListItem icon="cube" text="Apple" />
 		</List>
 	</Story>
 </Preview>

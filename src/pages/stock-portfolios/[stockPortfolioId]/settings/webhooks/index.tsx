@@ -1,10 +1,9 @@
+import { AnchorButton } from "@/client/components";
 import { GetOneStockPortfolioQuery, GetWebhooksQuery, useGetWebhooksQuery } from "@/client/graphql";
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioHead, StockPortfolioSettings, WebhookList } from "@/client/page-parts";
 import { breakpoints, colors, CustomTheme } from "@/client/themes";
-import { AnchorButton } from "@blueprintjs/core";
 import { NextPage } from "next";
-import Link from "next/link";
 import React from "react";
 import { createUseStyles } from "react-jss";
 
@@ -82,12 +81,11 @@ const Page: NextPage<IProps> = ({ stockPortfolio }) => {
 				<div className={classes.content}>
 					<h2 className={classes.settingHeader}>Webhooks</h2>
 					<div className={classes.createNewWrapper}>
-						<Link
+						<AnchorButton
 							href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks/new`}
-							passHref={true}
-						>
-							<AnchorButton intent="primary" text="Add webhook" />
-						</Link>
+							intent="primary"
+							text="Add webhook"
+						/>
 					</div>
 					<WebhookList loading={loading} refetch={refetch} webhooks={webhooks} />
 				</div>

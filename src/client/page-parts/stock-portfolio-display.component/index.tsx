@@ -1,4 +1,4 @@
-import { InlineLink, Paper } from "@/client/components";
+import { InlineLink, NonIdealState, Paper, Spinner } from "@/client/components";
 import {
 	GetOneStockPortfolioDocument,
 	GetUserDocument,
@@ -10,7 +10,6 @@ import {
 	User,
 	useSetUserMutation
 } from "@/client/graphql";
-import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -132,7 +131,7 @@ export const StockPortfolioDisplay: FC<IProps> = memo((props) => {
 
 	return (
 		<StockPortfolioDisplayContext.Provider value={contextValue}>
-			<div className={classnames(Classes.DARK, classes.root, className)}>
+			<div className={classnames(classes.root, className)}>
 				<div className={classes.btnContainer}>
 					<PublicActions
 						className={classes.publicActions}

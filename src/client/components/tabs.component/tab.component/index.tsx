@@ -1,16 +1,9 @@
+import { AnchorButton } from "@/client/components/anchor-button.component";
+import { Button } from "@/client/components/button.component";
 import { TabsContext } from "@/client/components/tabs.component/context";
-import { AnchorButton, Button, IconName } from "@blueprintjs/core";
+import type { IconName } from "@blueprintjs/core";
 import classnames from "classnames";
-import Link from "next/link";
-import React, {
-	FC,
-	Fragment,
-	MouseEvent,
-	ReactNode,
-	ReactText,
-	useCallback,
-	useContext
-} from "react";
+import React, { FC, MouseEvent, ReactNode, ReactText, useCallback, useContext } from "react";
 import { useStyles } from "./styles";
 
 export interface ITabProps {
@@ -51,13 +44,12 @@ export const Tab: FC<ITabProps> = ({
 
 	const isSelected: boolean = active ?? selectedTab === id;
 
-	return React.createElement<any>(
-		href ? Link : Fragment,
-		{ ...(href ? { href, passHref: true } : {}) },
+	return (
 		<TabType
 			className={classnames(classes.root, { [classes.selected]: isSelected }, className)}
 			active={isSelected}
 			disabled={disabled}
+			href={href ?? ""}
 			icon={icon}
 			minimal={true}
 			onClick={onClick}

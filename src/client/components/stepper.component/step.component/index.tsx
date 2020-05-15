@@ -1,4 +1,5 @@
-import { Icon, Intent } from "@blueprintjs/core";
+import { Icon } from "@/client/components/icon.component";
+import type { Intent } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback } from "react";
 import { useStyles } from "./styles";

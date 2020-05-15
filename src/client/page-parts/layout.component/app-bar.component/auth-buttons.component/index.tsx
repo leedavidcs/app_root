@@ -1,5 +1,5 @@
+import { Button } from "@/client/components";
 import { useModal } from "@/client/hooks";
-import { Button } from "@blueprintjs/core";
 import classnames from "classnames";
 import dynamic from "next/dynamic";
 import React, { FC, useCallback } from "react";

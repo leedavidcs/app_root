@@ -1,6 +1,7 @@
 import { Overlay } from "@/client/components/overlay.component";
 import { useHover, usePressed, useRenderCount } from "@/client/hooks";
-import { Card as BpCard, Elevation } from "@blueprintjs/core";
+import type { Elevation } from "@blueprintjs/core";
+import { Card as BpCard } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactNode } from "react";
 import { useStyles } from "./styles";

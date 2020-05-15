@@ -1,5 +1,6 @@
+import { FormGroup } from "@/client/components/input.component/form-group.component";
 import { useTheme } from "@/client/hooks";
-import { FormGroup, Intent } from "@blueprintjs/core";
+import type { Intent } from "@blueprintjs/core";
 import { CardElement, useElements } from "@stripe/react-stripe-js";
 import {
 	StripeCardElement,

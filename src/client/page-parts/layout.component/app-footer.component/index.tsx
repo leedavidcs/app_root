@@ -1,4 +1,4 @@
-import { AnchorButton, ButtonGroup, Divider } from "@blueprintjs/core";
+import { AnchorButton, ButtonGroup, Divider } from "@/client/components";
 import classnames from "classnames";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export const AppFooter: FC<IProps> = ({ className, style }) => {
 				</div>
 				<ButtonGroup>
 					<AnchorButton href="/terms" minimal={true} text="Terms of Service" />
-					<Divider className={classes.divider} />
+					<Divider className={classes.divider} tagName="div" variant="spaced" />
 					<AnchorButton href="/privacy" minimal={true} text="Privacy Policy" />
 				</ButtonGroup>
 			</section>

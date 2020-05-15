@@ -1,6 +1,5 @@
+import { AnchorButton } from "@/client/components";
 import { useGetUserQuery } from "@/client/graphql";
-import { AnchorButton } from "@blueprintjs/core";
-import Link from "next/link";
 import React, { FC } from "react";
 import { useStyles } from "./styles";
 
@@ -15,13 +14,12 @@ export const CreditsDisplay: FC<IProps> = ({ className }) => {
 	const currentBalance: number = getUserQuery.data?.user?.balance?.credits ?? 0;
 
 	return (
-		<Link href="/pricing" passHref={true}>
-			<AnchorButton
-				className={className}
-				icon="cube"
-				minimal={true}
-				text={`${currentBalance} credits`}
-			/>
-		</Link>
+		<AnchorButton
+			className={className}
+			href="/pricing"
+			icon="cube"
+			minimal={true}
+			text={`${currentBalance} credits`}
+		/>
 	);
 };

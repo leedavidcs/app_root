@@ -1,4 +1,4 @@
-import { Switch } from "@/client/components";
+import { Button, Switch } from "@/client/components";
 import {
 	FeaturePricing as _FeaturePricing,
 	StockData,
@@ -9,7 +9,6 @@ import {
 } from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
 import React, { CSSProperties, FC, useCallback } from "react";

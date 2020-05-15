@@ -1,0 +1,27 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { Icon } from ".";
+
+<Meta title="general/icon" component={Icon} />
+
+# Icon
+
+## Description
+A wrapper around [@blueprintjs/icon](https://blueprintjs.com/docs/#core/components/icon) with
+custom styling and additional behaviors.
+
+## Props
+<Props of={Icon} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<div>
+			<Icon icon="badge" />
+			<Icon icon="cube" />
+			<Icon icon="refresh" />
+		</div>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

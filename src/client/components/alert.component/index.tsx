@@ -1,4 +1,5 @@
-import { Alert as BpAlert, Classes, IconName, Intent } from "@blueprintjs/core";
+import type { IconName, Intent } from "@blueprintjs/core";
+import { Alert as BpAlert } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { CSSProperties, FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
@@ -35,7 +36,7 @@ export const Alert: FC<IProps> = ({
 	return (
 		<BpAlert
 			cancelButtonText={cancelButtonText}
-			className={classnames(Classes.DARK, classes.root, className)}
+			className={classnames(classes.root, className)}
 			confirmButtonText={confirmButtonText}
 			icon={icon}
 			intent={intent}

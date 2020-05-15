@@ -1,5 +1,4 @@
-import { breakpoints, CustomTheme } from "@/client/themes";
-import { Colors } from "@blueprintjs/core";
+import { breakpoints, colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -9,7 +8,7 @@ const styles = (theme: CustomTheme) => ({
 		"& h3": {
 			padding: 10,
 			margin: 0,
-			borderBottom: `1px solid ${Colors.GRAY1}`
+			borderBottom: `1px solid ${colors.gray1}`
 		}
 	},
 	container: {

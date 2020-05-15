@@ -1,6 +1,5 @@
-import { Paper } from "@/client/components";
+import { Menu, Paper } from "@/client/components";
 import { useContextMenu } from "@/client/hooks";
-import { Classes, Menu } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC } from "react";
 import { useStyles } from "./styles";
@@ -20,7 +19,7 @@ export const StandardStory: FC = () => {
 
 	return (
 		<Paper
-			className={classnames(classes.root, Classes.CONTEXT_MENU_POPOVER_TARGET)}
+			className={classnames(classes.root, "bp3-context-menu-popover-target")}
 			onContextMenu={onContextMenu}
 		/>
 	);

@@ -1,4 +1,4 @@
-import { Anchor, TextInput } from "@/client/components";
+import { Anchor, Button, TextInput } from "@/client/components";
 import {
 	GetUserDocument,
 	RegisterLocalUserPayload,
@@ -7,7 +7,6 @@ import {
 } from "@/client/graphql";
 import { useLogin, useModal, useRegister } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import dynamic from "next/dynamic";
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

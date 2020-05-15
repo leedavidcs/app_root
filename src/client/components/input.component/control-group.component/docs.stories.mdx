@@ -1,0 +1,32 @@
+import { Button } from "@/client/components/button.component";
+import { Paper } from "@/client/components/paper.component";
+import { InputGroup } from "@blueprintjs/core";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { ControlGroup } from ".";
+
+<Meta title="general/inputs/control-group" component={ControlGroup} />
+
+# ControlGroup
+
+## Description
+A wrapper around
+[@blueprintjs/control-group](https://blueprintjs.com/docs/#core/components/control-group) with custom
+styling and additional behaviors.
+
+## Props
+<Props of={ControlGroup} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<ControlGroup>
+				<Button icon="search" text="Search" />
+				<InputGroup placeholder="Search items..." />
+			</ControlGroup>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

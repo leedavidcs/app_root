@@ -1,7 +1,6 @@
-import { DataGrid, EditableText, Paper } from "@/client/components";
+import { DataGrid, EditableText, NonIdealState, Paper, Spinner } from "@/client/components";
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
 import { getYupValidationResolver } from "@/client/utils";
-import { Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useMemo } from "react";
@@ -57,7 +56,7 @@ export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => 
 	const { name, updatedAt, user } = stockPortfolio;
 
 	return (
-		<div className={classnames(Classes.DARK, classes.root, className)}>
+		<div className={classnames(classes.root, className)}>
 			<form onSubmit={handleSubmit(onFormSubmit)}>
 				<div>
 					<Actions

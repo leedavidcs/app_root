@@ -1,0 +1,29 @@
+import { AnchorButton } from "@/client/components/anchor-button.component";
+import { Button } from "@/client/components/button.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { ButtonGroup } from ".";
+
+<Meta title="general/button-group" component={ButtonGroup} />
+
+# ButtonGroup
+
+## Description
+A wrapper around
+[@blueprintjs/button-group](https://blueprintjs.com/docs/#core/components/button-group) with custom
+styling and additional behaviors.
+
+## Props
+<Props of={ButtonGroup} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<ButtonGroup>
+			<AnchorButton href="https://google.com" text="Anchor" />
+			<Button text="Regular" />
+		</ButtonGroup>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

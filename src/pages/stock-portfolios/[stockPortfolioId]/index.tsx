@@ -2,7 +2,6 @@ import { GetOneStockPortfolioQuery, useGetOneStockPortfolioQuery } from "@/clien
 import { withStockPortfolioAuth } from "@/client/hocs";
 import { StockPortfolioDisplay, StockPortfolioHead } from "@/client/page-parts";
 import { breakpoints, colors, CustomTheme } from "@/client/themes";
-import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import ms from "ms";
 import { NextPage } from "next";
@@ -56,7 +55,7 @@ const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 	const stockPortfolio = polled ?? propsStockPortfolio;
 
 	return (
-		<main className={classnames(Classes.DARK, classes.root)}>
+		<main className={classnames(classes.root)}>
 			<div className={classes.head}>
 				<StockPortfolioHead selectedTab="data" stockPortfolio={stockPortfolio} />
 			</div>

@@ -1,6 +1,5 @@
-import { List } from "@/client/components";
+import { Button, ClassesSkeleton, List } from "@/client/components";
 import { GetWebhooksQuery, useDeleteWebhookMutation } from "@/client/graphql";
-import { Button, Classes } from "@blueprintjs/core";
 import { ApolloQueryResult } from "apollo-boost";
 import classnames from "classnames";
 import { range } from "lodash";
@@ -47,8 +46,8 @@ export const WebhookList: FC<IProps> = memo((props) => {
 				{range(LOADING_ELEMENTS).map((__, i) => (
 					<List.Item
 						key={i}
-						text={<div className={classnames(classes.loadName, Classes.SKELETON)} />}
-						info={<div className={classnames(classes.loadUrl, Classes.SKELETON)} />}
+						text={<div className={classnames(classes.loadName, ClassesSkeleton)} />}
+						info={<div className={classnames(classes.loadUrl, ClassesSkeleton)} />}
 					/>
 				))}
 			</List>

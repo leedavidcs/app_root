@@ -1,0 +1,69 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { boolean } from "@storybook/addon-knobs";
+import { Button } from ".";
+
+<Meta title="general/button" component={Button} />
+
+# Button
+
+## Description 
+A wrapper around [@blueprintjs/button](https://blueprintjs.com/docs/#core/components/button) with
+custom styling and additional behaviors.
+
+## Props
+<Props of={Button} />
+
+## StandardStory
+<Props of={Button} />
+
+<Preview>
+	<Story name="standard">
+		{() => {
+			const minimal = boolean("minimal");
+			const outlined = boolean("outlined");
+			const onClick = action("onClick");
+			return (
+				<div>
+					<Button
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="default"
+					/>
+					<Button
+						intent="primary"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="primary"
+					/>
+					<Button
+						intent="success"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="success"
+					/>
+					<Button
+						intent="warning"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="warning"
+					/>
+					<Button
+						intent="danger"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="danger"
+					/>
+				</div>
+			);
+		}}
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

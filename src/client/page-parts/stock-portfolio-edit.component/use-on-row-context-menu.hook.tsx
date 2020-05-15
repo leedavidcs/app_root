@@ -1,4 +1,4 @@
-import { Menu } from "@blueprintjs/core";
+import { Menu } from "@/client/components/menu.component";
 import React, { useCallback } from "react";
 import { IStockPortfolioEditData, UseDataResult } from "./use-data.hook.";
 
@@ -9,6 +9,7 @@ export const useOnRowContextMenu = ({ removeTicker }: UseDataResult[1]) => {
 		({ ticker }: IStockPortfolioEditData) => (
 			<Menu>
 				<Menu.Item onClick={onDelete(ticker)} text="Delete" />
+				{null}
 			</Menu>
 		),
 		[onDelete]

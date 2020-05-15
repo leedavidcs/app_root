@@ -1,6 +1,6 @@
+import { Button } from "@/client/components";
 import { GetUserDocument, useSetUserMutation } from "@/client/graphql";
 import { useInitialLoadActions } from "@/client/hooks";
-import { Button } from "@blueprintjs/core";
 import React, { FC, ReactElement, useCallback, useEffect, useState } from "react";
 import { AppBar } from "./app-bar.component";
 import { AppDrawer } from "./app-drawer.component";

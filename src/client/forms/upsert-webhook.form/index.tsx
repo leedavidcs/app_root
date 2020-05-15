@@ -1,4 +1,4 @@
-import { Alert, TextInput } from "@/client/components";
+import { Alert, Button, TextInput } from "@/client/components";
 import {
 	GetWebhookQuery,
 	useCreateWebhookMutation,
@@ -9,7 +9,6 @@ import {
 } from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";

@@ -1,8 +1,9 @@
+import { FormGroup } from "@/client/components/input.component/form-group.component";
 import {
 	IMultiSelectProps,
 	MultiSelect
 } from "@/client/components/input.component/multi-select.component";
-import { FormGroup, Intent } from "@blueprintjs/core";
+import type { Intent } from "@blueprintjs/core";
 import React, { CSSProperties, FC, memo, ReactElement, useCallback } from "react";
 import { Control, Controller } from "react-hook-form";
 

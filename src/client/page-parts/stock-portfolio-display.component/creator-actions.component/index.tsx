@@ -1,12 +1,10 @@
-import { Alert } from "@/client/components";
+import { Alert, AnchorButton, Button, ButtonGroup } from "@/client/components";
 import {
 	DeleteStockPortfolioMutation,
 	StockPortfolio as _StockPortfolio,
 	useDeleteStockPortfolioMutation,
 	User
 } from "@/client/graphql";
-import { AnchorButton, Button, ButtonGroup } from "@blueprintjs/core";
-import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 
@@ -67,9 +65,7 @@ export const CreatorActions: FC<IProps> = (props) => {
 	return (
 		<>
 			<ButtonGroup className={className}>
-				<Link href={`/stock-portfolios/${id}/edit`} passHref={true}>
-					<AnchorButton icon="edit" text="Edit" />
-				</Link>
+				<AnchorButton href={`/stock-portfolios/${id}/edit`} icon="edit" text="Edit" />
 				<Button icon="trash" intent="danger" onClick={onBtnDelete} text="Delete" />
 			</ButtonGroup>
 			<Alert

@@ -1,7 +1,6 @@
-import { Popover } from "@/client/components";
+import { Icon, Menu, Popover } from "@/client/components";
 import { useGetUserQuery } from "@/client/graphql";
 import { useLogout } from "@/client/hooks";
-import { Icon, Menu } from "@blueprintjs/core";
 import Link from "next/link";
 import React, { FC, useCallback, useState } from "react";
 import { useStyles } from "./styles";

@@ -1,6 +1,6 @@
+import { Button } from "@/client/components/button.component";
 import { Switch } from "@/client/components/input.component/switch.component";
 import { Paper } from "@/client/components/paper.component";
-import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";

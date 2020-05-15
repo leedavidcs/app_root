@@ -1,5 +1,6 @@
 import {
 	Anchor,
+	Button,
 	DateRangeInput,
 	ExpansionPanel,
 	SearchInput,
@@ -7,8 +8,7 @@ import {
 } from "@/client/components";
 import { GetManyStockPortfoliosQueryVariables } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
-import { DateRange } from "@blueprintjs/datetime";
+import type { DateRange } from "@blueprintjs/datetime";
 import { DateTimeFilter } from "@prisma/client";
 import { isNil } from "lodash";
 import React, { FC, FormEventHandler, useCallback, useMemo, useState } from "react";

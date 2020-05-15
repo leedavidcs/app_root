@@ -1,5 +1,4 @@
-import { CustomTheme } from "@/client/themes";
-import { Colors } from "@blueprintjs/core";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -19,7 +18,7 @@ const styles = (theme: CustomTheme) => ({
 		borderTop: `1px solid ${theme.disabled}`
 	},
 	connectorActive: {
-		borderTop: `3px solid ${Colors.BLUE5}`
+		borderTop: `3px solid ${colors.blue5}`
 	},
 	step: {
 		display: "flex",

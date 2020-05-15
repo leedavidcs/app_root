@@ -1,5 +1,7 @@
-import { Classes, FormGroup, Intent, IPopoverProps } from "@blueprintjs/core";
-import { DateRange, DateRangeInput as BpDateRangeInput } from "@blueprintjs/datetime";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { Intent, IPopoverProps } from "@blueprintjs/core";
+import type { DateRange } from "@blueprintjs/datetime";
+import { DateRangeInput as BpDateRangeInput } from "@blueprintjs/datetime";
 import classnames from "classnames";
 import React, { CSSProperties, FC, useMemo } from "react";
 import { useStyles } from "./styles";
@@ -56,13 +58,7 @@ export const DateRangeInput: FC<IProps> = ({
 
 	return (
 		<FormGroup
-			className={classnames(
-				Classes.DARK,
-				{
-					[classes.verticalInputs]: !inlineInputs
-				},
-				className
-			)}
+			className={classnames({ [classes.verticalInputs]: !inlineInputs }, className)}
 			disabled={disabled}
 			helperText={error}
 			inline={inline}
@@ -72,7 +68,7 @@ export const DateRangeInput: FC<IProps> = ({
 			style={style}
 		>
 			<BpDateRangeInput
-				className={classnames(Classes.DARK, classes.input)}
+				className={classes.input}
 				allowSingleDayRange={allowSingleDayRange}
 				disabled={disabled}
 				formatDate={formatDate}

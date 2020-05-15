@@ -3,8 +3,8 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	root: {
-		backgroundColor: theme.dialogBackground,
-		color: theme.onSurface,
+		backgroundColor: [theme.dialogBackground, "!important"],
+		color: [theme.onSurface, "!important"],
 
 		"& > .bp3-dialog-header": {
 			backgroundColor: theme.dialogHeader,

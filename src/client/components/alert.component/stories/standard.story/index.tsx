@@ -1,5 +1,5 @@
 import { Alert } from "@/client/components/alert.component";
-import { Button } from "@blueprintjs/core";
+import { Button } from "@/client/components/button.component";
 import React, { FC, useCallback, useState } from "react";
 
 export const StandardStory: FC = () => {

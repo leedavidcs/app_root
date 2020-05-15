@@ -1,12 +1,7 @@
 import { Menu } from "@/client/components/menu.component";
-import { Classes, IInputGroupProps, IPopoverProps } from "@blueprintjs/core";
-import {
-	ItemListRenderer,
-	ItemPredicate,
-	ItemRenderer,
-	Select as BpSelect
-} from "@blueprintjs/select";
-import classnames from "classnames";
+import type { IInputGroupProps, IPopoverProps } from "@blueprintjs/core";
+import type { ItemListRenderer, ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import { Select as BpSelect } from "@blueprintjs/select";
 import { get, toString } from "lodash";
 import React, {
 	ChangeEvent,
@@ -160,7 +155,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 			return (
 				<TypedSelect
 					activeItem={activeItem}
-					className={classnames(Classes.DARK, className)}
+					className={className}
 					disabled={disabled}
 					filterable={filterable}
 					inputProps={inputProps}

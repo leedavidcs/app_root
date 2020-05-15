@@ -1,4 +1,5 @@
-import { Icon, IconName } from "@blueprintjs/core";
+import { Icon } from "@/client/components/icon.component";
+import type { IconName } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { CSSProperties, FC, memo, ReactNodeArray, ReactText, useMemo } from "react";
 import { ResourcePathContext } from "./context";

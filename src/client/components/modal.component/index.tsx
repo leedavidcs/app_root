@@ -1,4 +1,4 @@
-import { Classes, Dialog } from "@blueprintjs/core";
+import { Dialog } from "@blueprintjs/core";
 import { isEmpty } from "lodash";
 import React, { FC, ReactElement, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
@@ -28,10 +28,10 @@ export const Modal: FC<IProps> = ({ children, footer, isOpen, onClose, title }) 
 			transitionDuration={500}
 			usePortal={true}
 		>
-			<div className={Classes.DIALOG_BODY}>{children}</div>
+			<div className="bp3-dialog-body">{children}</div>
 			{!isEmpty(footer) && (
-				<div className={Classes.DIALOG_FOOTER}>
-					<div className={Classes.DIALOG_FOOTER_ACTIONS}>{footer}</div>
+				<div className="bp3-dialog-footer">
+					<div className="bp3-dialog-footer-actions">{footer}</div>
 				</div>
 			)}
 		</Dialog>
