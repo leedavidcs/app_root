@@ -16,7 +16,7 @@ const setUser: LocalResolver<any, IClientContext, SetUserMutationVariables> = as
 		fetchPolicy: "no-cache"
 	});
 
-	const user = viewerResult.data.viewer ?? null;
+	const user = viewerResult.data?.viewer ?? null;
 
 	const query = GetUserDocument;
 	const data = { user };

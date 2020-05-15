@@ -1,5 +1,4 @@
-import { ApolloLink } from "apollo-boost";
-import { createHttpLink } from "apollo-link-http";
+import { ApolloLink, createHttpLink } from "@apollo/client";
 
 const BASE_GRAPHQL_URL = `${process.env.API_BASE_URL}/api/graphql`;
 

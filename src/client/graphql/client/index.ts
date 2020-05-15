@@ -3,9 +3,10 @@ import { defaultState, IClientState } from "@/client/graphql/state";
 import {
 	ApolloClient,
 	defaultDataIdFromObject,
+	gql,
 	InMemoryCache,
 	NormalizedCacheObject
-} from "apollo-boost";
+} from "@apollo/client";
 import { IncomingMessage } from "http";
 import { getLink } from "./links";
 
@@ -26,7 +27,21 @@ export const createCache = (options?: ICreateCacheOptions): InMemoryCache => {
 	}).restore(initialState || {});
 
 	if (!initialState?.data) {
-		cache.writeData<IClientState>({ data: defaultState });
+		cache.writeQuery<IClientState>({
+			query: gql`
+				query {
+					modal
+					toasts {
+						intent
+						message
+					}
+					user {
+						id
+					}
+				}
+			`,
+			data: defaultState
+		});
 	}
 
 	return cache;

@@ -4,8 +4,8 @@ import {
 	RegisterLocalUserMutationVariables,
 	useRegisterLocalUserMutation
 } from "@/client/graphql";
+import type { ExecutionResult } from "graphql-tools";
 import { useCallback } from "react";
-import { ExecutionResult } from "react-apollo";
 
 export const useRegister = (): [
 	(

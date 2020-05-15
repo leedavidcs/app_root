@@ -1,9 +1,16 @@
 import { RefreshAccessTokenMutationVariables, TokenPayload } from "@/client/graphql";
 import { RefreshAccessTokenDocument } from "@/client/graphql/generated";
 import { getRefreshToken, getToken, writeCookie } from "@/server/authentication/cookie-utils";
-import { ApolloLink, FetchResult, Observable, Operation } from "apollo-boost";
-import { onError } from "apollo-link-error";
-import { ServerError, ServerParseError } from "apollo-link-http-common";
+import {
+	ApolloLink,
+	FetchResult,
+	Observable,
+	Operation,
+	ServerError,
+	ServerParseError
+} from "@apollo/client";
+import { onError } from "@apollo/link-error";
+
 import { print } from "graphql/language";
 import HttpStatus from "http-status-codes";
 

@@ -4,7 +4,7 @@ import {
 	Recurrence,
 	StockPortfolioEventType
 } from "@/client/graphql/generated";
-import { MockedResponse } from "@apollo/react-testing";
+import { MockedResponse } from "@apollo/client/testing";
 import Faker from "faker";
 
 export const GetStockPortfolioEventMock: MockedResponse = {

@@ -57,7 +57,7 @@ export const withWebhookAuth = <P extends IPageProps, IP = any>(
 			}
 		});
 
-		const webhook: Maybe<Webhook> = data.webhook;
+		const webhook: Maybe<Webhook> = data?.webhook;
 
 		if (!webhook) {
 			return { errorCode: HttpStatus.NOT_FOUND, errorTitle: "Resource was not found" };

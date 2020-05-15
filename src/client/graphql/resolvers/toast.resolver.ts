@@ -1,7 +1,7 @@
 import { IClientContext } from "@/client/graphql";
 import { Toast, ToastInput } from "@/client/graphql/generated";
 import { IClientState } from "@/client/graphql/state";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 const setToasts: LocalResolver<any, IClientContext, { toasts: readonly ToastInput[] }> = (
 	parent,

@@ -28,7 +28,7 @@ export const withAuth = <P extends Record<string, any>>() => (PageComponent: Nex
 			.query<GetViewerQuery>({ query: GetViewerDocument })
 			.catch(() => ({ data: { viewer: null } }));
 
-		const user = data.viewer;
+		const user = data?.viewer;
 
 		if (!user) {
 			res?.writeHead(HttpStatus.UNAUTHORIZED, { Location: "/login" });

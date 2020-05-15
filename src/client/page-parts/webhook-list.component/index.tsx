@@ -1,6 +1,6 @@
 import { Button, ClassesSkeleton, List } from "@/client/components";
 import { GetWebhooksQuery, useDeleteWebhookMutation } from "@/client/graphql";
-import { ApolloQueryResult } from "apollo-boost";
+import { ApolloQueryResult } from "@apollo/client";
 import classnames from "classnames";
 import { range } from "lodash";
 import React, { FC, memo, MouseEvent, useCallback } from "react";

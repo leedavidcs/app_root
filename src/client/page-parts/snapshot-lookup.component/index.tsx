@@ -79,7 +79,9 @@ export const SnapshotLookup: FC<IProps> = ({
 				skip
 			});
 
-			setSnapshots([...snapshots.slice(0, skip), ...result.data.snapshots]);
+			const newSnapshots = result.data?.snapshots ?? [];
+
+			setSnapshots([...snapshots.slice(0, skip), ...newSnapshots]);
 		},
 		[refetch, snapshots, where]
 	);

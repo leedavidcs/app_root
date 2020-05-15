@@ -1,5 +1,5 @@
 import { GetSnapshotDocument } from "@/client/graphql/generated";
-import { MockedResponse } from "@apollo/react-testing";
+import { MockedResponse } from "@apollo/client/testing";
 import Faker from "faker";
 import { range } from "lodash";
 

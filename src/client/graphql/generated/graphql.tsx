@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as ApolloReactCommon from '@apollo/client';
+import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
-// This file was generated on: May 11th 2020 6:37:38 pm
+// This file was generated on: May 15th 2020 4:33:13 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1126,6 +1126,21 @@ export type ToastInput = {
   readonly message: Scalars['String'];
 };
 
+export type Unnamed_1_QueryVariables = {};
+
+
+export type Unnamed_1_Query = (
+  { readonly __typename?: 'Query' }
+  & Pick<Query, 'modal'>
+  & { readonly toasts: ReadonlyArray<(
+    { readonly __typename?: 'Toast' }
+    & Pick<Toast, 'intent' | 'message'>
+  )>, readonly user?: Maybe<(
+    { readonly __typename?: 'User' }
+    & Pick<User, 'id'>
+  )> }
+);
+
 export type ApplySucceededTransactionMutationVariables = {
   paymentIntentId: Scalars['String'];
 };
@@ -1669,10 +1684,10 @@ export type SearchStockSymbolsQuery = (
   )> }
 );
 
-export type Unnamed_1_QueryVariables = {};
+export type Unnamed_2_QueryVariables = {};
 
 
-export type Unnamed_1_Query = (
+export type Unnamed_2_Query = (
   { readonly __typename?: 'Query' }
   & { readonly toasts: ReadonlyArray<(
     { readonly __typename?: 'Toast' }

@@ -1,12 +1,11 @@
 import { ModalProvider } from "@/client/components";
 import { createApolloClient } from "@/client/graphql";
 import { Layout } from "@/client/page-parts";
-import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import { ApolloClient, ApolloProvider, NormalizedCacheObject } from "@apollo/client";
 import { IncomingMessage } from "http";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
-import { ApolloProvider } from "react-apollo";
 
 /* eslint-disable no-console */
 
