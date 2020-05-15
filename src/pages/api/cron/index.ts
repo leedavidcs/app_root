@@ -1,5 +1,5 @@
 import { createContext, getExecutableApolloServer, schema } from "@/server/graphql";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import HttpStatus from "http-status-codes";
 import { NextApiRequest, NextApiResponse } from "next";
 

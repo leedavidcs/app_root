@@ -2,7 +2,8 @@ import { IClientState } from "@/client/graphql";
 import { createCache } from "@/client/graphql/client";
 import { mocks } from "@/client/graphql/mocks";
 import { resolvers } from "@/client/graphql/resolvers";
-import { MockedProvider } from "@apollo/react-testing";
+import { gql } from "@apollo/client";
+import { MockedProvider } from "@apollo/client/testing";
 import Faker from "faker";
 import React, { FC, ReactElement, useMemo } from "react";
 
@@ -30,7 +31,19 @@ export const MockApollo: FC<IProps> = ({ children }) => {
 	const cache = useMemo(() => {
 		const mockClient = createCache();
 
-		mockClient.writeData<IClientState>({
+		mockClient.writeQuery<IClientState>({
+			query: gql`
+				query {
+					modal
+					toasts {
+						intent
+						message
+					}
+					user {
+						id
+					}
+				}
+			`,
 			data: { ...MOCK_CACHE_STATE }
 		});
 

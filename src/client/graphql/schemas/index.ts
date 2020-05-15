@@ -1,4 +1,4 @@
-import { DocumentNode } from "apollo-boost";
+import { DocumentNode } from "@apollo/client";
 import DirectivesSchema from "./directives.schema";
 import ModalSchema from "./modal.schema";
 import ToastSchema from "./toast.schema";

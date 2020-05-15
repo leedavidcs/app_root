@@ -64,7 +64,7 @@ export const withStockPortfolioAuth = <P extends IPageProps, IP = any>(
 			}
 		});
 
-		const stockPortfolio: Maybe<StockPortfolio> = data.stockPortfolio;
+		const stockPortfolio: Maybe<StockPortfolio> = data?.stockPortfolio;
 
 		if (!stockPortfolio) {
 			return { errorCode: HttpStatus.NOT_FOUND, errorTitle: "Resource was not found" };

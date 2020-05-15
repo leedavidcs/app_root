@@ -1,6 +1,6 @@
 import { getToken } from "@/server/authentication/cookie-utils";
-import { ApolloLink } from "apollo-boost";
-import { setContext } from "apollo-link-context";
+import { ApolloLink } from "@apollo/client";
+import { setContext } from "@apollo/link-context";
 import { IncomingHttpHeaders, IncomingMessage } from "http";
 
 interface IAuthLinkContext {

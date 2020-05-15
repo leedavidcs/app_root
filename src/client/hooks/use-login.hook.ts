@@ -9,8 +9,8 @@ import {
 	useSetUserMutation
 } from "@/client/graphql";
 import { writeCookie } from "@/server/authentication/cookie-utils";
+import type { ExecutionResult } from "graphql-tools";
 import { useCallback } from "react";
-import { ExecutionResult } from "react-apollo";
 import { useToast } from "./use-toast.hook";
 
 export const useLogin = (

@@ -1,5 +1,5 @@
 import { useModule } from "@/client/hooks";
-import { HttpLink } from "apollo-boost";
+import { HttpLink } from "@apollo/client";
 import classnames from "classnames";
 import { FetcherParams, FetcherResult } from "graphiql/dist/components/GraphiQL";
 import { GraphQLError, GraphQLSchema, parse, validate } from "graphql";
@@ -45,7 +45,7 @@ export const GraphQLExplorer: FC<IProps> = ({
 	const httpLink = useMemo(() => new HttpLink({ uri: url }), [url]);
 
 	useEffect(() => {
-		introspectSchema(httpLink).then((result) => setSchema(result));
+		introspectSchema(httpLink as any).then((result) => setSchema(result));
 	}, [httpLink]);
 
 	const validateQuery = useCallback(

@@ -1,5 +1,5 @@
 import { GetPriceBundlesDocument } from "@/client/graphql/generated";
-import { MockedResponse } from "@apollo/react-testing";
+import { MockedResponse } from "@apollo/client/testing";
 
 export const GetPriceBundlesMock: MockedResponse = {
 	request: {

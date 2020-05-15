@@ -1,4 +1,4 @@
-import { MockedResponse } from "@apollo/react-testing";
+import { MockedResponse } from "@apollo/client/testing";
 import { CreateStockPortfolioMock } from "./create-stock-portfolio.mock";
 import { CreateStripeSetupIntentMock } from "./create-stripe-setup-intent.mock";
 import { DeleteStockPortfolioMock } from "./delete-stock-portfolio.mock";

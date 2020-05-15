@@ -1,4 +1,4 @@
-import { ApolloLink } from "apollo-boost";
+import { ApolloLink } from "@apollo/client";
 import { IncomingMessage } from "http";
 import { getAuthLink } from "./auth.link";
 import { ErrorLink } from "./error.link";

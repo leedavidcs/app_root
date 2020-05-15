@@ -1,5 +1,5 @@
 import { GetViewerQuery } from "@/client/graphql";
-import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import "next";
 
 declare module "next" {

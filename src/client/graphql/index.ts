@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, NormalizedCacheObject } from "apollo-boost";
+import { ApolloClient, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
 import { User } from "./generated";
 
 export * from "./client";
