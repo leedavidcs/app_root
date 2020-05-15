@@ -1,9 +1,11 @@
 import { Divider } from "@/client/components/divider.component";
+import { Icon } from "@/client/components/icon.component";
 import { ListContext } from "@/client/components/list.component";
 import { Overlay } from "@/client/components/overlay.component";
 import { Ripple } from "@/client/components/ripple.component";
 import { useHover, useIsLastChild } from "@/client/hooks";
-import { Classes, Icon, IconName, Text } from "@blueprintjs/core";
+import type { IconName } from "@blueprintjs/core";
+import { Text } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
 import React, {
@@ -95,7 +97,7 @@ export const ListItem: FC<IListItemProps> = memo(
 					<TagType className={classes.link}>
 						{icon && <Icon icon={icon} />}
 						<div className={classes.textWrapper}>
-							<Text className={Classes.FILL} ellipsize={true}>
+							<Text className="bp3-fill" ellipsize={true}>
 								{text}
 							</Text>
 							{info && <div className={classes.info}>{info}</div>}

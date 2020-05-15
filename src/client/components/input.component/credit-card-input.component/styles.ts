@@ -1,5 +1,4 @@
-import { CustomTheme } from "@/client/themes";
-import { Colors } from "@blueprintjs/core";
+import { colors, CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
@@ -17,7 +16,7 @@ const styles = (theme: CustomTheme) => ({
 		color: theme.onSurface
 	},
 	cardElementFocused: {
-		boxShadow: `0 0 0 1px ${Colors.BLUE3}`
+		boxShadow: `0 0 0 1px ${colors.blue3}`
 	}
 });
 

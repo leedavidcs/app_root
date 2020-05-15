@@ -1,4 +1,11 @@
-import { DateRangeInput, ISelectItemType, Menu, Select } from "@/client/components";
+import {
+	Button,
+	DateRangeInput,
+	ISelectItemType,
+	Menu,
+	Select,
+	Spinner
+} from "@/client/components";
 import { InfiniteLoaderList } from "@/client/components/infinite-loader-list.component";
 import {
 	OrderByArg,
@@ -6,9 +13,8 @@ import {
 	SnapshotWhereInput,
 	useGetSnapshotsQuery
 } from "@/client/graphql";
-import { Button, Spinner } from "@blueprintjs/core";
-import { DateRange } from "@blueprintjs/datetime";
-import { ItemListRenderer } from "@blueprintjs/select";
+import type { DateRange } from "@blueprintjs/datetime";
+import type { ItemListRenderer } from "@blueprintjs/select";
 import classnames from "classnames";
 import { format } from "date-fns";
 import ms from "ms";
@@ -122,7 +128,7 @@ export const SnapshotLookup: FC<IProps> = ({
 			onItemSelect={onItemSelect}
 			noResults={
 				!called || loading ? (
-					<Spinner size={Spinner.SIZE_SMALL} />
+					<Spinner size={20} />
 				) : (
 					<Menu.Item disabled={true} text="No snapshots" />
 				)

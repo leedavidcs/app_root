@@ -1,4 +1,4 @@
-import { Icon } from "@blueprintjs/core";
+import { Icon } from "@/client/components/icon.component";
 import classnames from "classnames";
 import { range } from "lodash";
 import React, {

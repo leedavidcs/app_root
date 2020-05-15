@@ -1,4 +1,7 @@
-import { ControlGroup, FormGroup, IconName, InputGroup, Intent } from "@blueprintjs/core";
+import { ControlGroup } from "@/client/components/input.component/control-group.component";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { IconName, Intent } from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 import classnames from "classnames";
 import Keycode from "keycode";
 import React, {

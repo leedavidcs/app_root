@@ -1,6 +1,6 @@
 import { ISelectItemType } from "@/client/components/input.component/select.component";
 import { Menu } from "@/client/components/menu.component";
-import { IItemRendererProps } from "@blueprintjs/select";
+import type { IItemRendererProps } from "@blueprintjs/select";
 import React, { CSSProperties, ReactElement } from "react";
 import Highlighter from "react-highlight-words";
 import { useStyles } from "./styles";

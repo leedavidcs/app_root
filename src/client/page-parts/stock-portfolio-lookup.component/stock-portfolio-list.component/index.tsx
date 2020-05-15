@@ -1,7 +1,6 @@
-import { IKebabMenuOption, KebabMenu, List, ListItem } from "@/client/components";
+import { ClassesSkeleton, IKebabMenuOption, KebabMenu, List, ListItem } from "@/client/components";
 import { GetManyStockPortfoliosQuery, useDeleteStockPortfolioMutation } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
-import { Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
 import { range } from "lodash";
@@ -59,8 +58,8 @@ export const StockPortfolioList: FC<IProps> = memo((props) => {
 				{range(LOADING_ELEMENTS).map((__, i) => (
 					<ListItem
 						key={i}
-						text={<div className={classnames(classes.loadName, Classes.SKELETON)} />}
-						info={<div className={classnames(classes.loadDate, Classes.SKELETON)} />}
+						text={<div className={classnames(classes.loadName, ClassesSkeleton)} />}
+						info={<div className={classnames(classes.loadDate, ClassesSkeleton)} />}
 					/>
 				))}
 			</List>

@@ -3,7 +3,7 @@ import {
 	useGetInitialAppLoadQuery,
 	useSetToastsMutation
 } from "@/client/graphql";
-import { Intent } from "@blueprintjs/core";
+import type { Intent } from "@blueprintjs/core";
 import { useCallback, useRef } from "react";
 import { useToast } from "./use-toast.hook";
 

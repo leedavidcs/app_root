@@ -1,7 +1,8 @@
+import { Icon } from "@/client/components/icon.component";
+import { Menu } from "@/client/components/menu.component";
 import { Overlay } from "@/client/components/overlay.component";
 import { Popover } from "@/client/components/popover.component";
 import { useHover, useTheme } from "@/client/hooks";
-import { Icon, Menu } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, MouseEvent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";

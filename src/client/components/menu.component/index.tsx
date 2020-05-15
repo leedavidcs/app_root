@@ -1,4 +1,5 @@
-import { IMenuDividerProps, Menu as BpMenu } from "@blueprintjs/core";
+import type { IMenuDividerProps } from "@blueprintjs/core";
+import { Menu as BpMenu } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, HTMLAttributes, memo, ReactNodeArray, ReactText, useMemo } from "react";
 import { MenuContext } from "./context";

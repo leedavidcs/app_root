@@ -1,6 +1,5 @@
-import { DataGrid, IHeaderConfig } from "@/client/components";
+import { DataGrid, IHeaderConfig, NonIdealState, Spinner } from "@/client/components";
 import { Snapshot as _Snapshot, useGetSnapshotQuery } from "@/client/graphql";
-import { NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useEffect, useMemo, useState } from "react";

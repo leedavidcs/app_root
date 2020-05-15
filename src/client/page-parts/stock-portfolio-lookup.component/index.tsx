@@ -1,11 +1,10 @@
-import { IPaginationProps, Pagination } from "@/client/components";
+import { Button, IPaginationProps, Pagination } from "@/client/components";
 import {
 	CreateStockPortfolioMutation,
 	GetManyStockPortfoliosQueryVariables,
 	useCreateStockPortfolioMutation,
 	useGetManyStockPortfoliosQuery
 } from "@/client/graphql";
-import { Button, Classes } from "@blueprintjs/core";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
@@ -99,7 +98,7 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 	});
 
 	return (
-		<div className={classnames(Classes.DARK, classes.root, className)}>
+		<div className={classnames(classes.root, className)}>
 			<StockPortfolioFilter
 				variables={filters}
 				onChange={setFilters}

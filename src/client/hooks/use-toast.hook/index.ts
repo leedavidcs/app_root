@@ -1,12 +1,9 @@
-import { Classes, IToaster, Toaster } from "@blueprintjs/core";
+import type { IToaster } from "@blueprintjs/core";
+import { Toaster } from "@blueprintjs/core";
 
 const toaster: IToaster =
 	typeof window !== "undefined"
-		? Toaster.create({
-				className: Classes.DARK,
-				maxToasts: 5,
-				position: "bottom-left"
-		  })
+		? Toaster.create({ maxToasts: 5, position: "bottom-left" })
 		: {
 				show: () => "",
 				dismiss: () => undefined,

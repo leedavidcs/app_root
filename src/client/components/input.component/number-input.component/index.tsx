@@ -1,4 +1,6 @@
-import { FormGroup, IconName, Intent, NumericInput } from "@blueprintjs/core";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { IconName, Intent } from "@blueprintjs/core";
+import { NumericInput } from "@blueprintjs/core";
 import React, { CSSProperties, FC, KeyboardEventHandler, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";

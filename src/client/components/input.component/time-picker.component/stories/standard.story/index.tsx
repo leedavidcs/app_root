@@ -1,6 +1,6 @@
+import { Button } from "@/client/components/button.component";
 import { TimePicker } from "@/client/components/input.component/time-picker.component";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import { getHours } from "date-fns";
 import React, { FC } from "react";

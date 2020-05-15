@@ -1,4 +1,8 @@
-import { Button, Classes, ControlGroup, FormGroup, IconName, InputGroup } from "@blueprintjs/core";
+import { Button } from "@/client/components/button.component";
+import { ControlGroup } from "@/client/components/input.component/control-group.component";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { IconName } from "@blueprintjs/core";
+import { InputGroup } from "@blueprintjs/core";
 
 import classnames from "classnames";
 import KeyCode from "keycode";
@@ -59,7 +63,7 @@ export const SearchInput: FC<IProps> = ({
 
 	return (
 		<FormGroup
-			className={classnames(classes.root, Classes.DARK, className)}
+			className={classnames(classes.root, className)}
 			disabled={disabled}
 			label={label}
 			labelInfo={labelInfo}

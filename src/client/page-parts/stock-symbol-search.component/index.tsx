@@ -1,6 +1,5 @@
-import { Select } from "@/client/components";
+import { Menu, Select } from "@/client/components";
 import { SearchStockSymbolsQuery, useSearchStockSymbolsLazyQuery } from "@/client/graphql";
-import { Menu } from "@blueprintjs/core";
 import classnames from "classnames";
 import { debounce } from "lodash";
 import React, { FC, memo, ReactElement, useCallback } from "react";

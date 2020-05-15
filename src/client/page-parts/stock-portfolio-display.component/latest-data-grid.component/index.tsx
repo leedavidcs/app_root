@@ -1,6 +1,5 @@
-import { DataGrid, IHeaderConfig } from "@/client/components";
+import { DataGrid, IHeaderConfig, NonIdealState } from "@/client/components";
 import { Snapshot, StockPortfolio as _StockPortfolio } from "@/client/graphql";
-import { NonIdealState } from "@blueprintjs/core";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, useEffect, useMemo, useState } from "react";

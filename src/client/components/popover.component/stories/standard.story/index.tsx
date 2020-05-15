@@ -1,5 +1,6 @@
+import { Button } from "@/client/components/button.component";
+import { Menu } from "@/client/components/menu.component";
 import { Popover } from "@/client/components/popover.component";
-import { Button, Menu } from "@blueprintjs/core";
 import { boolean } from "@storybook/addon-knobs";
 import React, { FC, useCallback, useState } from "react";
 

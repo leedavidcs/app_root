@@ -1,5 +1,5 @@
+import { Button } from "@/client/components/button.component";
 import { Select } from "@/client/components/input.component/select.component";
-import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import Faker from "faker";
 import { range } from "lodash";

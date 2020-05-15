@@ -1,6 +1,6 @@
+import { Button } from "@/client/components/button.component";
 import { Slider } from "@/client/components/input.component/slider.component";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";

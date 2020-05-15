@@ -1,13 +1,10 @@
-import { IHeaderOption } from "@/client/components";
+import { AnchorButton, Button, ButtonGroup, IHeaderOption } from "@/client/components";
 import { Alert } from "@/client/components/alert.component";
 import {
 	DeleteStockPortfolioMutation,
 	GetOneStockPortfolioQuery,
 	useDeleteStockPortfolioMutation
 } from "@/client/graphql";
-import { AnchorButton, Button, ButtonGroup, Classes } from "@blueprintjs/core";
-import classnames from "classnames";
-import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 import { AddColumnSelect } from "./add-column-select.component";
@@ -73,10 +70,8 @@ export const Actions: FC<IProps> = (props) => {
 						onSelect={onAddColumn}
 					/>
 				</div>
-				<ButtonGroup className={classnames(Classes.DARK, className)}>
-					<Link href={`/stock-portfolios/${id}`} passHref={true}>
-						<AnchorButton text="View" />
-					</Link>
+				<ButtonGroup className={className}>
+					<AnchorButton href={`/stock-portfolios/${id}`} text="View" />
 					<Button icon="saved" text="Save" type="submit" />
 					<Button icon="trash" onClick={onBtnDelete} text="Delete" />
 				</ButtonGroup>

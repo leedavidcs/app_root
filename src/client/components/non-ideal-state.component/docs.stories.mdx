@@ -1,0 +1,31 @@
+import { Paper } from "@/client/components/paper.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { NonIdealState } from ".";
+
+<Meta title="general/non-ideal-state" component={NonIdealState} />
+
+# NonIdealState
+
+## Description 
+A wrapper around
+[@blueprintjs/non-ideal-state](https://blueprintjs.com/docs/#core/components/non-ideal-state) with
+custom styling and additional behaviors.
+
+## Props
+<Props of={NonIdealState} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper style={{ height: 500, width: "90%" }}>
+			<NonIdealState
+				icon="search"
+				description="Your search didn't match any files. Try searching for something else"
+				title="No search results"
+			/>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

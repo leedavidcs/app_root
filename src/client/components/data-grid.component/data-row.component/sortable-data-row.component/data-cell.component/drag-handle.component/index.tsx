@@ -1,4 +1,4 @@
-import { Icon } from "@blueprintjs/core";
+import { Icon } from "@/client/components/icon.component";
 import React, { ComponentClass } from "react";
 import { SortableHandle } from "react-sortable-hoc";
 import { useStyles } from "./styles";

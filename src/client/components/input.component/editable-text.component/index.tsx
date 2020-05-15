@@ -1,4 +1,6 @@
-import { EditableText as BpEditableText, FormGroup, Intent } from "@blueprintjs/core";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { Intent } from "@blueprintjs/core";
+import { EditableText as BpEditableText } from "@blueprintjs/core";
 import React, { CSSProperties, FC, ReactElement, useCallback, useMemo } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";

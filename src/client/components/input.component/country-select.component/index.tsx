@@ -1,4 +1,5 @@
-import { FormGroup, Intent } from "@blueprintjs/core";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { Intent } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { ChangeEvent, FC, memo, ReactElement } from "react";
 import { CountryDropdown } from "react-country-region-selector";

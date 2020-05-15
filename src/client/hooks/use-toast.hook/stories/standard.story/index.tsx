@@ -1,5 +1,5 @@
+import { Button } from "@/client/components";
 import { useToast } from "@/client/hooks/use-toast.hook";
-import { Button } from "@blueprintjs/core";
 import React, { FC, useCallback, useState } from "react";
 
 export const StandardStory: FC = () => {

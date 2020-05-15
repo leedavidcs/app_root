@@ -1,5 +1,7 @@
+import { Button } from "@/client/components/button.component";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
 import { ISelectProps, Select } from "@/client/components/input.component/select.component";
-import { Button, FormGroup, Intent } from "@blueprintjs/core";
+import type { Intent } from "@blueprintjs/core";
 import { get, toString } from "lodash";
 import React, { CSSProperties, FC, memo, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";

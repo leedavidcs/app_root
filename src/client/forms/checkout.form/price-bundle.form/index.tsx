@@ -1,4 +1,4 @@
-import { Paper } from "@/client/components";
+import { Button, NonIdealState, Paper, Spinner } from "@/client/components";
 import { Context } from "@/client/forms/checkout.form/provider.component";
 import {
 	GetPriceBundlesQuery,
@@ -7,7 +7,6 @@ import {
 	useGetPriceBundlesQuery
 } from "@/client/graphql";
 import { IOrderDetail } from "@/client/page-parts";
-import { Button, NonIdealState, Spinner } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, useCallback, useContext } from "react";
 import { useStyles } from "./styles";

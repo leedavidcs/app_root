@@ -1,5 +1,8 @@
-import { Button, Classes, IPopoverProps, ITagInputProps, Menu } from "@blueprintjs/core";
-import { ItemPredicate, ItemRenderer, MultiSelect as BpMultiSelect } from "@blueprintjs/select";
+import { Button } from "@/client/components/button.component";
+import { Menu } from "@/client/components/menu.component";
+import type { IPopoverProps, ITagInputProps } from "@blueprintjs/core";
+import type { ItemPredicate, ItemRenderer } from "@blueprintjs/select";
+import { MultiSelect as BpSelect } from "@blueprintjs/select";
 import classnames from "classnames";
 import { get, toString } from "lodash";
 import React, {
@@ -57,7 +60,7 @@ interface IWithStaticExports {
 const ofType = <T extends any, TOriginal = T>() => {
 	type InternalItem = IMultiSelectItemType<TOriginal>;
 
-	const TypedMultiSelect = BpMultiSelect.ofType<InternalItem>();
+	const TypedMultiSelect = BpSelect.ofType<InternalItem>();
 
 	const component: FC<IMultiSelectProps<T, TOriginal>> = memo(
 		({
@@ -182,7 +185,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 
 			return (
 				<TypedMultiSelect
-					className={classnames(classes.root, Classes.DARK, className)}
+					className={classnames(classes.root, className)}
 					activeItem={null}
 					itemDisabled={itemDisabled}
 					itemPredicate={itemPredicate}

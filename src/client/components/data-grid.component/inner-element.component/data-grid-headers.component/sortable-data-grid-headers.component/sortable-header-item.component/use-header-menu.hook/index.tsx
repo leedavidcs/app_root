@@ -1,6 +1,6 @@
 import { IBaseHeaderItemProps } from "@/client/components/data-grid.component";
+import { Menu } from "@/client/components/menu.component";
 import { useContextMenu } from "@/client/hooks";
-import { Menu } from "@blueprintjs/core";
 import React, { useCallback } from "react";
 import { useStyles } from "./styles";
 import { useFreezeActions } from "./use-freeze-actions.hook";

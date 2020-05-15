@@ -1,5 +1,6 @@
-import { FormGroup, Intent } from "@blueprintjs/core";
-import { TimePicker as BpTimePicker, TimePrecision } from "@blueprintjs/datetime";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { Intent } from "@blueprintjs/core";
+import { TimePicker as BpTimePicker } from "@blueprintjs/datetime";
 import { set } from "date-fns";
 import React, { CSSProperties, FC, ReactElement } from "react";
 import { Control, Controller } from "react-hook-form";
@@ -60,7 +61,7 @@ const BaseTimePicker: FC<IProps> = ({
 				maxTime={maxTime}
 				minTime={minTime}
 				onChange={onChange}
-				precision={TimePrecision.MINUTE}
+				precision="minute"
 				selectAllOnFocus={true}
 				showArrowButtons={showArrowButtons}
 				useAmPm={false}

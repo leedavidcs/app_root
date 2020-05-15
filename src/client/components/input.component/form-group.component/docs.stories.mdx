@@ -1,0 +1,33 @@
+import { Paper } from "@/client/components/paper.component";
+import { InputGroup } from "@blueprintjs/core";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { FormGroup } from ".";
+
+<Meta title="general/inputs/form-group" component={FormGroup} />
+
+# FormGroup
+
+## Description
+A wrapper around [@blueprintjs/form-group](https://blueprintjs.com/docs/#core/components/form-group)
+with custom styling and additional behaviors.
+
+## Props
+<Props of={FormGroup} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<FormGroup
+				helperText="Helper text with details..."
+				label="Label A"
+				labelInfo="(required)"
+			>
+				<InputGroup placeholder="Placeholder text" />
+			</FormGroup>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

@@ -1,5 +1,6 @@
 import { MenuContext } from "@/client/components/menu.component/context";
-import { IconName, MenuItem as BpMenuItem } from "@blueprintjs/core";
+import type { IconName } from "@blueprintjs/core";
+import { MenuItem as BpMenuItem } from "@blueprintjs/core";
 import classnames from "classnames";
 import Link from "next/link";
 import React, {

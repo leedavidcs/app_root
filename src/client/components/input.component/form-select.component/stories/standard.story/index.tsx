@@ -1,6 +1,6 @@
+import { Button } from "@/client/components/button.component";
 import { FormSelect } from "@/client/components/input.component/form-select.component";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button } from "@blueprintjs/core";
 import { action } from "@storybook/addon-actions";
 import Faker from "faker";
 import { range } from "lodash";

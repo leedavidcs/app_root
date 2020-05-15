@@ -1,9 +1,8 @@
-import { Paper } from "@/client/components";
+import { Button, FormGroup, Icon, Paper, Spinner } from "@/client/components";
 import { Context } from "@/client/forms/checkout.form/provider.component";
 import { useApplySucceededTransactionMutation, useSetToastsMutation } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
 import { OrderSummary } from "@/client/page-parts";
-import { Button, FormGroup, Icon, Spinner } from "@blueprintjs/core";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
@@ -127,9 +126,7 @@ export const ReviewOrderForm: FC<IProps> = ({ className, onBack }) => {
 							disabled={processing}
 							intent="primary"
 							onClick={onSubmit}
-							text={
-								processing ? <Spinner size={Spinner.SIZE_SMALL} /> : "Place Order"
-							}
+							text={processing ? <Spinner size={20} /> : "Place Order"}
 						/>
 					</div>
 				</OrderSummary>

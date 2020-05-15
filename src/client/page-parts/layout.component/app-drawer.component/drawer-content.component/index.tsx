@@ -1,5 +1,5 @@
-import { ITreeNode, Tree } from "@blueprintjs/core";
-
+import type { ITreeNode } from "@blueprintjs/core";
+import { Tree } from "@blueprintjs/core";
 import React, { FC, useCallback, useState } from "react";
 import { useStockPortfoliosNode } from "./use-stock-portfolio-node";
 

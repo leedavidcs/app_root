@@ -1,8 +1,7 @@
 import { Brand, SearchInput } from "@/client/components";
 import { useGetUserQuery } from "@/client/graphql";
 import { onInputValueChanged } from "@/client/utils";
-import { Alignment, Classes, Navbar } from "@blueprintjs/core";
-import classnames from "classnames";
+import { Navbar } from "@blueprintjs/core";
 import React, { FC, FormEventHandler, ReactElement, useCallback, useState } from "react";
 import { AuthButtons } from "./auth-buttons.component";
 import { CreditsDisplay } from "./credits-display.component";
@@ -40,10 +39,7 @@ export const AppBar: FC<IProps> = (props) => {
 
 	return (
 		<Navbar className={classes.root} fixedToTop={true}>
-			<Navbar.Group
-				className={classnames(classes.group, Classes.DARK)}
-				align={Alignment.LEFT}
-			>
+			<Navbar.Group className={classes.group} align="left">
 				{icon}
 				<Navbar.Heading className={classes.title}>
 					<Brand />

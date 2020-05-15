@@ -1,4 +1,5 @@
-import { Alignment, Switch as BpSwitch } from "@blueprintjs/core";
+import type { Alignment } from "@blueprintjs/core";
+import { Switch as BpSwitch } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { FC, FormEventHandler, ReactElement, ReactNode, useCallback } from "react";
 import { Control, Controller } from "react-hook-form";

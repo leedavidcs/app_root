@@ -1,5 +1,4 @@
-import { Classes, ContextMenu } from "@blueprintjs/core";
-import classnames from "classnames";
+import { ContextMenu } from "@blueprintjs/core";
 import React, {
 	MouseEvent,
 	MouseEventHandler,
@@ -40,7 +39,7 @@ export const useContextMenu = <T extends Element>(
 			}
 
 			ContextMenu.show(
-				<div className={classnames(Classes.DARK, classes.root)}>{content}</div>,
+				<div className={classes.root}>{content}</div>,
 				{ left: event.clientX, top: event.clientY },
 				() => {
 					onClose?.();

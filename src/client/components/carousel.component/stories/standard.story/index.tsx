@@ -1,6 +1,7 @@
+import { ButtonGroup } from "@/client/components/button-group.component";
+import { Button } from "@/client/components/button.component";
 import { Carousel } from "@/client/components/carousel.component";
 import { Paper } from "@/client/components/paper.component";
-import { Button, ButtonGroup } from "@blueprintjs/core";
 import { range } from "lodash";
 import React, { FC, useCallback, useState } from "react";
 

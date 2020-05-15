@@ -1,8 +1,10 @@
 import {
+	Button,
 	CountrySelect,
 	CreditCardInput,
 	Paper,
 	RegionSelect,
+	Spinner,
 	TextInput
 } from "@/client/components";
 import { Context } from "@/client/forms/checkout.form/provider.component";
@@ -14,7 +16,6 @@ import {
 import { useToast } from "@/client/hooks";
 import { OrderSummary } from "@/client/page-parts";
 import { getYupValidationResolver } from "@/client/utils";
-import { Button, Spinner } from "@blueprintjs/core";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement, StripeCardElementChangeEvent } from "@stripe/stripe-js";
 import classnames from "classnames";
@@ -266,9 +267,7 @@ export const BillingForm: FC<IProps> = (props) => {
 							className={classes.reviewOrderBtn}
 							disabled={processing}
 							intent="primary"
-							text={
-								processing ? <Spinner size={Spinner.SIZE_SMALL} /> : "Review Order"
-							}
+							text={processing ? <Spinner size={20} /> : "Review Order"}
 							type="submit"
 						/>
 					</div>

@@ -1,4 +1,5 @@
-import { Classes, Drawer, IconName, Position } from "@blueprintjs/core";
+import type { IconName, Position } from "@blueprintjs/core";
+import { Drawer } from "@blueprintjs/core";
 import classnames from "classnames";
 import React, { CSSProperties, FC, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useStyles } from "./styles";
@@ -28,7 +29,7 @@ export const WindowDrawer: FC<IProps> = ({
 }) => {
 	const classes = useStyles();
 
-	const drawerClassName: string = classnames(classes.root, Classes.DARK, className);
+	const drawerClassName: string = classnames(classes.root, className);
 
 	return (
 		<Drawer

@@ -1,5 +1,8 @@
-import { FormGroup, Intent, NumericInput, Slider as BpSlider } from "@blueprintjs/core";
-import { countDecimalPlaces } from "@blueprintjs/core/lib/cjs/common/utils";
+import { FormGroup } from "@/client/components/input.component/form-group.component";
+import type { Intent } from "@blueprintjs/core";
+import { NumericInput, Slider as BpSlider } from "@blueprintjs/core";
+import { countDecimalPlaces } from "@blueprintjs/core/lib/cjs/common/utils/jsUtils";
+
 import classnames from "classnames";
 import { round } from "lodash";
 import React, { CSSProperties, FC, KeyboardEvent, ReactElement, useCallback } from "react";
