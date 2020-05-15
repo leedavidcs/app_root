@@ -12,6 +12,7 @@ import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { ForbiddenError, UserInputError } from "apollo-server-micro";
 import { mapSeries } from "blend-promise-utils";
 import { camelCase, chunk, get, intersection } from "lodash";
+import fetch from "node-fetch";
 import { IEXCloudClient } from "node-iex-cloud";
 import Batch from "node-iex-cloud/lib/batch";
 import { Last, Range } from "node-iex-cloud/lib/types";
