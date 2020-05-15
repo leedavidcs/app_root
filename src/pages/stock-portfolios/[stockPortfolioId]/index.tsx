@@ -1,18 +1,13 @@
-import { GetOneStockPortfolioQuery, useGetOneStockPortfolioQuery } from "@/client/graphql";
-import { withStockPortfolioAuth } from "@/client/hocs";
+import { useGetOneStockPortfolioQuery } from "@/client/graphql";
+import { withApollo } from "@/client/hocs";
 import { StockPortfolioDisplay, StockPortfolioHead } from "@/client/page-parts";
 import { breakpoints, colors, CustomTheme } from "@/client/themes";
 import classnames from "classnames";
 import ms from "ms";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import React from "react";
 import { createUseStyles } from "react-jss";
-
-type StockPortfolio = NonNullable<GetOneStockPortfolioQuery["stockPortfolio"]>;
-
-interface IProps {
-	stockPortfolio: StockPortfolio;
-}
 
 const styles = (theme: CustomTheme) => ({
 	root: {
@@ -40,19 +35,25 @@ const styles = (theme: CustomTheme) => ({
 
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
-const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
+const Page: NextPage = () => {
 	const classes = useStyles();
+
+	const { query } = useRouter();
+
+	const { stockPortfolioId } = query;
 
 	const { data } = useGetOneStockPortfolioQuery({
 		pollInterval: ms("2m"),
 		variables: {
-			where: { id: propsStockPortfolio.id }
+			where: { id: stockPortfolioId as string }
 		}
 	});
 
-	const polled = data?.stockPortfolio;
+	const stockPortfolio = data?.stockPortfolio;
 
-	const stockPortfolio = polled ?? propsStockPortfolio;
+	if (!stockPortfolio) {
+		return null;
+	}
 
 	return (
 		<main className={classnames(classes.root)}>
@@ -64,4 +65,4 @@ const Page: NextPage<IProps> = ({ stockPortfolio: propsStockPortfolio }) => {
 	);
 };
 
-export default withStockPortfolioAuth({ requireOwner: false })(Page);
+export default withApollo({ ssr: false })(Page);
