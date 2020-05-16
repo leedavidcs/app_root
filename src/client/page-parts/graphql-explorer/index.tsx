@@ -9,18 +9,18 @@ import { useStyles } from "./styles";
 
 interface IProps {
 	className?: string;
-	onEditQuery?: (query?: string) => void;
+	defaultQuery?: string;
+	onEditQuery?: (query: Maybe<string>, isValid: boolean) => void;
 	onToggleDocs?: (isOpen: boolean) => void;
-	onValidQuery?: (query: string) => void;
 	url: string;
 	style?: CSSProperties;
 }
 
 export const GraphQLExplorer: FC<IProps> = ({
 	className,
+	defaultQuery = "",
 	onEditQuery,
 	onToggleDocs,
-	onValidQuery,
 	style,
 	url
 }) => {
@@ -59,13 +59,11 @@ export const GraphQLExplorer: FC<IProps> = ({
 
 	const onChangeQuery = useCallback(
 		(query?: string) => {
-			onEditQuery?.(query);
+			const isValid = Boolean(query && validateQuery(query));
 
-			if (query && validateQuery(query)) {
-				onValidQuery?.(query);
-			}
+			onEditQuery?.(query, isValid);
 		},
-		[onEditQuery, onValidQuery, validateQuery]
+		[onEditQuery, validateQuery]
 	);
 
 	if (!GraphiQL || !schema) {
@@ -75,13 +73,12 @@ export const GraphQLExplorer: FC<IProps> = ({
 	return (
 		<div className={classnames(classes.root, className)} style={style}>
 			<GraphiQL
-				defaultQuery=""
 				docExplorerOpen={false}
 				editorTheme="material-darker"
 				fetcher={fetcher}
 				onEditQuery={onChangeQuery}
 				onToggleDocs={onToggleDocs}
-				query=""
+				query={defaultQuery}
 			>
 				<GraphiQL.Logo>GraphQL Explorer</GraphiQL.Logo>
 				<GraphiQL.Toolbar />
