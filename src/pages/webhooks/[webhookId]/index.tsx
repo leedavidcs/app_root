@@ -75,7 +75,7 @@ const Page: NextPage<IProps> = ({ webhook }) => {
 							<ResourcePath.Part
 								active={true}
 								href={`/stock-portfolios/${stockPortfolio.id}/settings/webhooks/new`}
-								text={webhook.name}
+								text={webhook.url}
 							/>
 						</ResourcePath>
 					}

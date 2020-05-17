@@ -1,5 +1,6 @@
 import { useHover } from "@/client/hooks";
 import classnames from "classnames";
+import Link from "next/link";
 import React, { FC, MouseEvent, useRef } from "react";
 import { useStyles } from "./styles";
 
@@ -13,11 +14,13 @@ interface IProps {
 	href?: string;
 	/** HTMLAnchorElement or HTMLButtonElement onClick event */
 	onClick?: (event: MouseEvent<HTMLElement>) => void;
+	/** If href, should next/link be used */
+	useLink?: boolean;
 	/** The text to use for this anchor */
 	value: string;
 }
 
-export const Anchor: FC<IProps> = ({ className, href, onClick, value }) => {
+export const Anchor: FC<IProps> = ({ className, href, onClick, useLink = true, value }) => {
 	const classes = useStyles();
 
 	const ref = useRef(null);
@@ -25,14 +28,21 @@ export const Anchor: FC<IProps> = ({ className, href, onClick, value }) => {
 
 	const Wrapper = typeof href === "string" ? "a" : "button";
 
-	return (
+	const child = (
 		<Wrapper
 			ref={ref}
-			href={href}
 			className={classnames(classes.root, className, { [classes.focused]: isHovered })}
 			onClick={onClick}
 		>
 			{value}
 		</Wrapper>
+	);
+
+	return typeof href === "string" && useLink ? (
+		<Link href={href} passHref={true}>
+			{child}
+		</Link>
+	) : (
+		child
 	);
 };
