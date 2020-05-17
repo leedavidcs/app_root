@@ -2,12 +2,8 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	loadName: {
-		height: 16,
-		maxWidth: 160
-	},
 	loadUrl: {
-		height: 12,
+		height: 16,
 		maxWidth: 200
 	},
 	url: {
