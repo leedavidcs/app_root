@@ -35,11 +35,11 @@ interface IContextFunctionParams {
 	res: NextApiResponse;
 }
 
-type ContextFunction = (params: IContextFunctionParams) => Promise<Record<string, any>>;
+type ContextFunction = (params: IContextFunctionParams) => MaybePromise<Record<string, any>>;
 
 export interface IGetApolloServerConfig {
 	schema: GraphQLSchema;
-	context: Record<string, any> | ContextFunction;
+	context?: Record<string, any> | ContextFunction;
 	maxComplexity?: number;
 	maxDepth?: number;
 }
