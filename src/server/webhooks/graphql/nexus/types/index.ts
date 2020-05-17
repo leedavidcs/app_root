@@ -1,3 +1,4 @@
+export * from "./root.types";
 export * from "./scalars.types";
 export * from "./snapshot.types";
 export * from "./stock-portfolio.types";

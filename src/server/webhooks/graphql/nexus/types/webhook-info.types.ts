@@ -4,7 +4,6 @@ export const Webhook = objectType({
 	name: "Webhook",
 	definition: (t) => {
 		t.model.id();
-		t.model.name();
 		t.model.type();
 		t.model.query();
 		t.model.url();

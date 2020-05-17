@@ -288,8 +288,8 @@ interface NexusPrismaInputs {
   ordering: 'userId' | 'customerId'
 }
     webhooks: {
-  filtering: 'id' | 'stockPortfolioId' | 'name' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'name' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
     snapshots: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
@@ -333,8 +333,8 @@ interface NexusPrismaInputs {
 
   },  StockPortfolio: {
     Webhook: {
-  filtering: 'id' | 'stockPortfolioId' | 'name' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'name' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
+  filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
     Snapshot: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
@@ -539,7 +539,6 @@ interface NexusPrismaTypes {
     id: 'String'
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
-    name: 'String'
     query: 'String'
     secret: 'String'
     type: 'WebhookType'
