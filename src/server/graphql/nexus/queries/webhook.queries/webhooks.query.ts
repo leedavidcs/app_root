@@ -4,7 +4,6 @@ import { AuthenticationError } from "apollo-server-micro";
 export const WebhookOrderByInput = inputObjectType({
 	name: "WebhookOrderByInput",
 	definition: (t) => {
-		t.field("name", { type: "OrderByArg" });
 		t.field("createdAt", { type: "OrderByArg" });
 	}
 });
@@ -13,7 +12,6 @@ export const StockPortfolioWhereWithoutUserInput = inputObjectType({
 	name: "StockPortfolioWhereWithoutUserInput",
 	definition: (t) => {
 		t.field("id", { type: "StringFilter" });
-		t.field("name", { type: "StringFilter" });
 		t.field("createdAt", { type: "DateTimeFilter" });
 		t.field("updatedAt", { type: "DateTimeFilter" });
 		t.field("webhook", { type: "WebhookFilter" });
@@ -28,7 +26,6 @@ export const WebhookWhereInput = inputObjectType({
 	definition: (t) => {
 		t.field("id", { type: "StringFilter" });
 		t.field("stockPortfolioId", { type: "StringFilter" });
-		t.field("name", { type: "StringFilter" });
 		t.field("type", { type: "WebhookType" });
 		t.field("url", { type: "StringFilter" });
 		t.field("timeout", { type: "IntFilter" });

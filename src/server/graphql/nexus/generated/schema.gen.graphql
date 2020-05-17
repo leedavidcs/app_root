@@ -170,6 +170,7 @@ type Mutation implements RequestRoot {
   updateOneStockPortfolioSettings(data: StockPortfolioSettingsUpdateInput!, where: StockPortfolioSettingsWhereUniqueInput!): StockPortfolioSettings
   updateOneWebhook(data: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook
   upsertOneStockPortfolioEvent(create: StockPortfolioEventCreateInput!, update: StockPortfolioEventUpdateInput!, where: StockPortfolioEventWhereUniqueInput!): StockPortfolioEvent!
+  upsertOneWebhook(create: WebhookCreateInput!, update: WebhookUpdateInput!, where: WebhookWhereUniqueInput!): Webhook!
 
   """The viewer of this request"""
   viewer: User
@@ -555,11 +556,6 @@ input StockPortfolioHeaderInput {
   width: Int!
 }
 
-input StockPortfolioIdNameCompoundUniqueInput {
-  name: String!
-  stockPortfolioId: String!
-}
-
 input StockPortfolioIdTypeCompoundUniqueInput {
   stockPortfolioId: String!
   type: StockPortfolioEventType!
@@ -630,7 +626,6 @@ input StockPortfolioWhereWithoutUserInput {
   AND: [StockPortfolioWhereWithoutUserInput!]
   createdAt: DateTimeFilter
   id: StringFilter
-  name: StringFilter
   NOT: [StockPortfolioWhereWithoutUserInput!]
   OR: [StockPortfolioWhereWithoutUserInput!]
   updatedAt: DateTimeFilter
@@ -805,7 +800,8 @@ input UserWhereInput {
 type Webhook {
   createdAt: DateTime!
   id: String!
-  name: String!
+  query: String
+  secret: String
   stockPortfolio: StockPortfolio!
   timeout: Int!
   type: WebhookType!
@@ -813,7 +809,8 @@ type Webhook {
 }
 
 input WebhookCreateInput {
-  name: String!
+  query: String
+  secret: String
   stockPortfolio: StockPortfolioCreateOneWithoutWebhookInput!
   timeout: Int
   type: WebhookType!
@@ -828,7 +825,6 @@ input WebhookFilter {
 
 input WebhookOrderByInput {
   createdAt: OrderByArg
-  name: OrderByArg
 }
 
 enum WebhookType {
@@ -836,7 +832,8 @@ enum WebhookType {
 }
 
 input WebhookUpdateInput {
-  name: String
+  query: String
+  secret: String
   timeout: Int
   type: WebhookType
   url: String
@@ -846,7 +843,6 @@ input WebhookWhereInput {
   AND: [WebhookWhereInput!]
   createdAt: DateTimeFilter
   id: StringFilter
-  name: StringFilter
   NOT: [WebhookWhereInput!]
   OR: [WebhookWhereInput!]
   stockPortfolio: StockPortfolioWhereWithoutUserInput
@@ -858,5 +854,4 @@ input WebhookWhereInput {
 
 input WebhookWhereUniqueInput {
   id: String
-  stockPortfolioId_name: StockPortfolioIdNameCompoundUniqueInput
 }

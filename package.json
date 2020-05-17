@@ -8,7 +8,7 @@
     "dev": "dotenv -- next -p 3031",
     "build": "dotenv -- next build",
     "start": "next start",
-    "storybook": "dotenv -e .env.storybook -- start-storybook -p 6006",
+    "storybook": "dotenv -- start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "audit-ci": "audit-ci --moderate --report-type full --package-manager npm",
     "build-docker": "echo $(date +%s) && docker-compose build --build-arg CACHE_BUST_FILES_UPDATED=$(date +%s) --pull server",
@@ -100,7 +100,7 @@
     "mjml": "^4.6.3",
     "mjml-react": "^1.0.57",
     "ms": "^2.1.2",
-    "next": "^9.4.0",
+    "next": "^9.4.1",
     "nexus-prisma": "^0.13.0",
     "node-iex-cloud": "^2.0.1",
     "nodemailer": "^6.4.6",
@@ -133,7 +133,7 @@
     "@graphql-codegen/typescript": "^1.13.5",
     "@graphql-codegen/typescript-operations": "^1.13.5",
     "@graphql-codegen/typescript-react-apollo": "^1.13.5",
-    "@next/bundle-analyzer": "^9.4.0",
+    "@next/bundle-analyzer": "^9.4.1",
     "@prisma/cli": "^2.0.0-beta.5",
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-docs": "^5.3.18",
@@ -177,6 +177,7 @@
     "react-scripts": "^3.4.1",
     "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",
-    "tslint": "^6.1.2"
+    "tslint": "^6.1.2",
+    "webpack": "^4.43.0"
   }
 }

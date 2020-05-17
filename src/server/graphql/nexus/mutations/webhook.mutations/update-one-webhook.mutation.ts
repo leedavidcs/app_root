@@ -5,8 +5,9 @@ import { object, string } from "yup";
 export const WebhookUpdateInput = inputObjectType({
 	name: "WebhookUpdateInput",
 	definition: (t) => {
-		t.string("name");
 		t.field("type", { type: "WebhookType" });
+		t.string("query");
+		t.string("secret");
 		t.string("url");
 		t.int("timeout");
 	}
@@ -39,30 +40,6 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 	},
 	yupValidation: (parent, { data, where }, { prisma }) => ({
 		data: object().shape({
-			name: string().test({
-				message: `Webhook with name "${data.name}" already exists`,
-				test: async (value) => {
-					const toEdit = await prisma.webhook.findOne({
-						where,
-						include: { stockPortfolio: true }
-					});
-
-					const withSameName = await prisma.webhook.findOne({
-						where: {
-							stockPortfolioId_name: {
-								stockPortfolioId: toEdit!.stockPortfolioId,
-								name: value
-							}
-						}
-					});
-
-					if (toEdit!.id !== withSameName?.id) {
-						return false;
-					}
-
-					return true;
-				}
-			}),
 			url: string().url("Url is invalid")
 		})
 	}),

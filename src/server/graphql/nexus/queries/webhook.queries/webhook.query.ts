@@ -1,19 +1,10 @@
 import { NotFoundError } from "@/server/utils";
 import { arg, inputObjectType, queryField } from "@nexus/schema";
 
-export const StockPortfolioIdNameCompoundUniqueInput = inputObjectType({
-	name: "StockPortfolioIdNameCompoundUniqueInput",
-	definition: (t) => {
-		t.string("stockPortfolioId", { nullable: false });
-		t.string("name", { nullable: false });
-	}
-});
-
 export const WebhookWhereUniqueInput = inputObjectType({
 	name: "WebhookWhereUniqueInput",
 	definition: (t) => {
 		t.string("id");
-		t.field("stockPortfolioId_name", { type: "StockPortfolioIdNameCompoundUniqueInput" });
 	}
 });
 
