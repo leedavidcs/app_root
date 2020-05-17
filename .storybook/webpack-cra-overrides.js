@@ -1,5 +1,11 @@
-const { addWebpackAlias, addWebpackModuleRule, disableEsLint } = require("customize-cra");
+const {
+	addWebpackAlias,
+	addWebpackModuleRule,
+	addWebpackPlugin,
+	disableEsLint
+} = require("customize-cra");
 const path = require("path");
+const { EnvironmentPlugin } = require("webpack");
 
 module.exports = [
 	addWebpackAlias({
@@ -10,5 +16,8 @@ module.exports = [
 		test: /\.(graphql|gql)$/,
 		use: [{ loader: "graphql-tag/loader" }]
 	}),
+	addWebpackPlugin(new EnvironmentPlugin({
+		IS_STORYBOOK: "true"
+	})),
 	disableEsLint()
 ];
