@@ -4,10 +4,11 @@ import { User, Webhook, WebhookWhereInput, WebhookWhereUniqueInput } from "@pris
 import { ApolloServer } from "apollo-server-micro";
 import { createTestClient } from "apollo-server-testing";
 import { settleAll, timeout } from "blend-promise-utils";
+import crypto, { Hmac } from "crypto";
 import { IWebhooksClientContext } from "./context";
 import { schema } from "./nexus";
 
-/* eslint-disable no-console */
+const WEBHOOK_BASE_NAME: string = process.env.WEBHOOK_BASE_NAME ?? "";
 
 interface IWebhooksClientParams {
 	context: IWebhooksClientContext;
@@ -96,14 +97,31 @@ export class WebhooksClient {
 
 		const timeoutFetch = timeout(fetch, webhook.timeout);
 
+		const headers: Record<string, string> = {
+			"Content-Type": "application/json"
+		};
+
+		if (webhook.secret) {
+			const signature: string = this.createSignature(webhook.secret, body);
+
+			headers[`X-${WEBHOOK_BASE_NAME}-Signature`] = signature;
+		}
+
 		try {
 			await timeoutFetch(webhook.url, {
 				method: "post",
-				headers: { "Content-Type": "application/json" },
+				headers,
 				body: JSON.stringify(body)
 			});
 		} catch (err) {
 			Logger.error(err.message ?? err);
 		}
+	};
+
+	private createSignature = (secret: string, payload: Record<string, any>): string => {
+		const hmac: Hmac = crypto.createHmac("sha1", secret);
+		const signature: string = hmac.update(JSON.stringify(payload)).digest("hex");
+
+		return `sha1=${signature}`;
 	};
 }
