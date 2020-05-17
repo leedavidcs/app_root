@@ -15,6 +15,8 @@ import { string } from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
 
+export { webhookTypeToName } from "./webhook-type-select.component";
+
 type Webhook = Pick<_Webhook, "id" | "url" | "secret" | "type" | "query">;
 
 const WEBHOOKS_API_URL = `${process.env.API_BASE_URL ?? ""}/api/webhooks`;
