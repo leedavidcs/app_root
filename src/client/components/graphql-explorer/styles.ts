@@ -5,36 +5,99 @@ const styles = (theme: CustomTheme) => ({
 	root: {
 		height: 500,
 		width: 800,
+		border: `1px solid ${colors.darkGray4}`,
 		fontFamily: [theme.fontPrimary, "!important"],
 
 		"& .topBarWrap": {
-			backgroundColor: theme.primary,
-			color: theme.onPrimary,
-			fontWeight: 600,
+			height: 32,
+			borderBottom: `1px solid ${theme.onSurface}`,
+			backgroundColor: theme.code,
+			color: theme.onSurface,
 
 			"& > .topBar": {
-				height: 48,
 				borderBottom: "none",
-				background: "unset"
+				background: "unset",
+
+				"& .title": {
+					fontSize: 16
+				}
 			},
 
 			"& >.docExplorerShow": {
+				display: "flex",
+				alignItems: "center",
 				boxSizing: "border-box",
-				height: 30,
-				margin: "auto 8px"
+				border: "none",
+				borderLeft: `1px solid ${colors.darkGray2}`,
+				background: "unset",
+				color: theme.onSurface,
+
+				"&:hover": {
+					backgroundColor: "rgba(138, 155, 168, 0.15)"
+				},
+
+				"&:before": {
+					borderColor: theme.onSurface
+				}
 			}
 		},
 
+		"& .CodeMirror-gutters": {
+			zIndex: "unset"
+		},
+
 		"& .doc-explorer": {
-			backgroundColor: theme.primary,
-			color: theme.onPrimary,
+			display: "flex",
+			height: 32,
+			padding: 0,
+			borderLeft: `1px solid ${colors.darkGray2}`,
+			backgroundColor: theme.code,
+			color: theme.onSurface,
+			fontFamily: [theme.fontPrimary, "!important"],
+
+			"& .doc-explorer-back": {
+				paddingLeft: 12,
+				margin: 0,
+				borderRight: `1px solid ${colors.darkGray2}`,
+				color: theme.onSurface,
+				background: "unset",
+
+				"&:hover": {
+					backgroundColor: "rgba(138, 155, 168, 0.15)"
+				},
+
+				"&:before": {
+					borderColor: theme.onSurface
+				}
+			},
 
 			"& .doc-explorer-title-bar": {
-				height: 48
+				padding: 0,
+				flexGrow: 1,
+				height: 32
 			},
 
 			"& .doc-explorer-title": {
-				overflowX: "unset"
+				overflowX: "unset",
+				height: 32
+			},
+
+			"& .doc-explorer-rhs": {
+				display: "flex",
+
+				"& .docExplorerHide": {
+					width: 32,
+					padding: 0,
+					margin: 0,
+					borderLeft: `1px solid ${colors.darkGray2}`,
+					background: "unset",
+					backgroundColor: "unset",
+					color: theme.onSurface,
+
+					"&:hover": {
+						backgroundColor: "rgba(138, 155, 168, 0.15)"
+					}
+				}
 			}
 		},
 
@@ -47,7 +110,10 @@ const styles = (theme: CustomTheme) => ({
 		},
 
 		"& .doc-explorer-contents": {
-			backgroundColor: theme.surface,
+			top: 31,
+			borderTop: `1px solid ${theme.onSurface}`,
+			borderLeft: `1px solid ${colors.darkGray2}`,
+			backgroundColor: "#262626",
 
 			"& .search-box": {
 				marginTop: 8,
