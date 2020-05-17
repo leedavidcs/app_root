@@ -2,14 +2,18 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	"@global": {
-		"html, body, #__next": {
-			height: "100%",
-			margin: 0,
-			padding: 0,
-			backgroundColor: theme.background,
-			fontFamily: theme.fontPrimary
-		}
+	root: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%"
+	},
+	content: {
+		paddingTop: 72,
+		flex: "1 0 auto"
+	},
+	footer: {
+		marginTop: 32,
+		flexShrink: 0
 	}
 });
 
