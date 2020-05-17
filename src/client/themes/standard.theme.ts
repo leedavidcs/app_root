@@ -21,6 +21,7 @@ export const standardTheme = {
 	onWarning: "#000000",
 	success: "#A6E22E",
 	link: "#90CAF9",
+	textMuted: "#A7B6C2",
 	highEmphasis: 0.87,
 	mediumEmphasis: 0.6,
 	backdrop: "rgba(255, 255, 255, 0.08)",

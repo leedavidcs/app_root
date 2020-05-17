@@ -1,7 +1,7 @@
 query GetWebhook($where: WebhookWhereUniqueInput!) {
 	webhook(where: $where) {
 		id
-		name
+		query
 		timeout
 		type
 		url

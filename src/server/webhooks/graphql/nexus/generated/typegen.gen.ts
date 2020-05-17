@@ -102,7 +102,6 @@ export interface NexusGenRootTypes {
   }
   Webhook: { // root type
     id: string; // String!
-    name: string; // String!
     query?: string | null; // String
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
@@ -166,7 +165,6 @@ export interface NexusGenFieldTypes {
   }
   Webhook: { // field return type
     id: string; // String!
-    name: string; // String!
     query: string | null; // String
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
     type: NexusGenEnums['WebhookType']; // WebhookType!

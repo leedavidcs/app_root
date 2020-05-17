@@ -46,8 +46,7 @@ export const WebhookList: FC<IProps> = memo((props) => {
 				{range(LOADING_ELEMENTS).map((__, i) => (
 					<List.Item
 						key={i}
-						text={<div className={classnames(classes.loadName, ClassesSkeleton)} />}
-						info={<div className={classnames(classes.loadUrl, ClassesSkeleton)} />}
+						text={<div className={classnames(classes.loadUrl, ClassesSkeleton)} />}
 					/>
 				))}
 			</List>
@@ -57,14 +56,13 @@ export const WebhookList: FC<IProps> = memo((props) => {
 	return (
 		<List className={className} divider="full">
 			{webhooks.map((webhook) => {
-				const { id, name, url } = webhook;
+				const { id, url } = webhook;
 
 				return (
 					<List.Item
 						key={id}
 						href={`/webhooks/${id}`}
-						text={name}
-						info={<span className={classes.url}>{url}</span>}
+						text={<span className={classes.url}>{url}</span>}
 					>
 						<Button
 							icon="trash"

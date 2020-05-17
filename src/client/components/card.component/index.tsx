@@ -3,7 +3,7 @@ import { useHover, usePressed, useRenderCount } from "@/client/hooks";
 import type { Elevation } from "@blueprintjs/core";
 import { Card as BpCard } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, MouseEvent, ReactNode } from "react";
+import React, { CSSProperties, FC, MouseEvent, ReactNode } from "react";
 import { useStyles } from "./styles";
 
 interface IProps {
@@ -11,6 +11,7 @@ interface IProps {
 	className?: string;
 	elevation?: Elevation;
 	onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+	style?: CSSProperties;
 	title?: ReactNode;
 }
 
@@ -25,7 +26,7 @@ const elevationToOpacityMap: Record<Elevation, number> = {
 const HOVER_OPACITY = 0.04;
 const PRESS_OPACITY = 0.1;
 
-export const Card: FC<IProps> = ({ children, className, elevation = 0, onClick, title }) => {
+export const Card: FC<IProps> = ({ children, className, elevation = 0, onClick, style, title }) => {
 	const classes = useStyles();
 
 	const renderCount = useRenderCount();
@@ -51,6 +52,7 @@ export const Card: FC<IProps> = ({ children, className, elevation = 0, onClick, 
 			onClick={onClick}
 			{...pressedResult.handlers}
 			{...hoverResult.handlers}
+			style={style}
 		>
 			{title && <div className={classes.title}>{title}</div>}
 			{children}

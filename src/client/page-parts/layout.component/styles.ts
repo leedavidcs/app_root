@@ -2,12 +2,18 @@ import { CustomTheme } from "@/client/themes";
 import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
-	loadUrl: {
-		height: 16,
-		maxWidth: 200
+	root: {
+		display: "flex",
+		flexDirection: "column",
+		height: "100%"
 	},
-	url: {
-		color: theme.link
+	content: {
+		paddingTop: 72,
+		flex: "1 0 auto"
+	},
+	footer: {
+		marginTop: 32,
+		flexShrink: 0
 	}
 });
 

@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { cloneElement, CSSProperties, FC, ReactElement, useEffect } from "react";
 import { useStyles } from "./styles";
 
@@ -8,7 +7,7 @@ interface IProps {
 }
 
 export const GlobalStyles: FC<IProps> = ({ children, style }) => {
-	const classes = useStyles();
+	useStyles();
 
 	useEffect(() => {
 		/* Add .bp3-dark to body, because portals may render outside of style root */
@@ -20,7 +19,6 @@ export const GlobalStyles: FC<IProps> = ({ children, style }) => {
 	}, []);
 
 	return cloneElement(children, {
-		className: classnames(classes.root, children.props.className),
 		children: children.props.children,
 		style
 	});

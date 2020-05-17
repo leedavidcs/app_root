@@ -5,12 +5,15 @@ import React, { FC, ReactElement, useCallback, useEffect, useState } from "react
 import { AppBar } from "./app-bar.component";
 import { AppDrawer } from "./app-drawer.component";
 import { AppFooter } from "./app-footer.component";
+import { useStyles } from "./styles";
 
 interface IProps {
 	children: ReactElement;
 }
 
 export const Layout: FC<IProps> = ({ children }) => {
+	const classes = useStyles();
+
 	const [setUser, { called, loading }] = useSetUserMutation({
 		awaitRefetchQueries: true,
 		refetchQueries: [{ query: GetUserDocument }]
@@ -34,14 +37,14 @@ export const Layout: FC<IProps> = ({ children }) => {
 	}
 
 	return (
-		<>
-			<div>
+		<div className={classes.root}>
+			<div className={classes.content}>
 				<AppBar icon={<Button icon="menu" minimal={true} onClick={onClickMenu} />} />
 				<AppDrawer isOpen={isOpen} onClose={onClose} />
 				{children}
 			</div>
-			<AppFooter />
-		</>
+			<AppFooter className={classes.footer} />
+		</div>
 	);
 };
 

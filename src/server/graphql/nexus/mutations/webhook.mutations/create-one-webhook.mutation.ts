@@ -12,8 +12,9 @@ export const StockPortfolioCreateOneWithoutWebhookInput = inputObjectType({
 export const WebhookCreateInput = inputObjectType({
 	name: "WebhookCreateInput",
 	definition: (t) => {
-		t.string("name", { nullable: false });
 		t.field("type", { type: "WebhookType", nullable: false });
+		t.string("query");
+		t.string("secret");
 		t.string("url", { nullable: false });
 		t.int("timeout");
 		t.field("stockPortfolio", {
@@ -49,31 +50,6 @@ export const createOneWebhook = mutationField("createOneWebhook", {
 	},
 	yupValidation: (parent, { data }, { prisma }) => ({
 		data: object().shape({
-			name: string()
-				.required("Name is required")
-				.test({
-					message: `Webhook with name "${data.name}" already exists`,
-					test: async (value) => {
-						const stockPortfolio = await prisma.stockPortfolio.findOne({
-							where: data.stockPortfolio.connect
-						});
-
-						const webhook = await prisma.webhook.findOne({
-							where: {
-								stockPortfolioId_name: {
-									stockPortfolioId: stockPortfolio!.id,
-									name: value
-								}
-							}
-						});
-
-						if (webhook) {
-							return false;
-						}
-
-						return true;
-					}
-				}),
 			url: string().required("Url is required").url("Url is invalid")
 		})
 	}),

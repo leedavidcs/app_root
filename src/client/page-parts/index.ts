@@ -1,4 +1,3 @@
-export * from "./graphql-explorer";
 export * from "./layout.component";
 export * from "./order-summary.component";
 export * from "./snapshot-lookup.component";

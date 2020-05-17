@@ -1,0 +1,26 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Webhook",
+      "field": "name"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Webhook",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[stockPortfolioId, name]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

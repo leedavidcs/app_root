@@ -1,8 +1,9 @@
+import { Card } from "@/client/components/card.component";
 import { action } from "@storybook/addon-actions";
 import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
 import { GraphQLExplorer } from ".";
 
-<Meta title="page-parts/graphql-explorer" component={GraphQLExplorer} />
+<Meta title="general/graphql-explorer" component={GraphQLExplorer} />
 
 # GraphQLExplorer
 
@@ -18,12 +19,15 @@ export const url = "https://graphql-pokemon.now.sh/";
 
 <Preview>
 	<Story name="standard">
-		<GraphQLExplorer
-			url={url}
-			onEditQuery={action("onEditQuery")}
-			onToggleDocs={action("onToggleDocs")}
-			onValidQuery={action("onValidQuery")}
-		/>
+		<Card style={{ width: 1000, padding: 20 }}>
+			<GraphQLExplorer
+				defaultDocsOpen={false}
+				url={url}
+				onEditQuery={action("onEditQuery")}
+				onToggleDocs={action("onToggleDocs")}
+				style={{ width: "100%" }}
+			/>
+		</Card>
 	</Story>
 </Preview>
 

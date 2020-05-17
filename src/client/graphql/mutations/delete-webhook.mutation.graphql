@@ -5,6 +5,5 @@ mutation DeleteWebhook($id: String!) {
 		}
 	) {
 		id
-		name
 	}
 }

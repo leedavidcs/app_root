@@ -109,7 +109,6 @@ input StringFilter {
 
 type Webhook {
   id: String!
-  name: String!
   query: String
   stockPortfolio: StockPortfolio!
   type: WebhookType!

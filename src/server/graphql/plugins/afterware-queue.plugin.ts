@@ -21,7 +21,7 @@ export const afterwarePlugin: ApolloServerPlugin<IServerContext> = {
 	requestDidStart: () => {
 		return {
 			willSendResponse: async ({ context: { afterwares }, errors }) => {
-				if (errors) {
+				if (errors || !afterwares) {
 					return;
 				}
 

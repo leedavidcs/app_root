@@ -29,8 +29,12 @@ export const devLoggerPlugin: ApolloServerPlugin = {
 		console.log("Query:", request.query);
 
 		return {
-			willSendResponse: ({ response }) => {
+			willSendResponse: ({ response, errors }) => {
 				console.log(JSON.stringify(response, null, 2));
+
+				if (errors) {
+					console.log(JSON.stringify(errors));
+				}
 			}
 		};
 	}

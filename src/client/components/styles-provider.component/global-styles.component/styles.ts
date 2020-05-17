@@ -3,16 +3,13 @@ import { createUseStyles } from "react-jss";
 
 const styles = (theme: CustomTheme) => ({
 	"@global": {
-		"html, body": {
+		"html, body, #__next": {
 			height: "100%",
 			margin: 0,
 			padding: 0,
 			backgroundColor: theme.background,
 			fontFamily: theme.fontPrimary
 		}
-	},
-	root: {
-		marginTop: 72
 	}
 });
 

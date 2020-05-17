@@ -1,0 +1,33 @@
+mutation UpsertWebhook(
+	$id: String
+	$query: String
+	$secret: String
+	$type: WebhookType!
+	$url: String!
+	$stockPortfolioId: String!
+) {
+	webhook: upsertOneWebhook(
+		where: {
+			id: $id
+		}
+		create: {
+			query: $query
+			secret: $secret
+			type: $type
+			url: $url
+			stockPortfolio: {
+				connect: {
+					id: $stockPortfolioId
+				}
+			}
+		}
+		update: {
+			query: $query
+			secret: $secret
+			type: $type
+			url: $url
+		}
+	) {
+		id
+	}
+}

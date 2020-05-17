@@ -6,9 +6,6 @@ const styles = (theme: CustomTheme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		position: "fixed",
-		left: 0,
-		bottom: 0,
 		width: "100%",
 		backgroundColor: theme.surface
 	},

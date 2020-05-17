@@ -20,3 +20,5 @@ declare type DeepPartial<T> = {
 			? ReadonlyArray<DeepPartial<U>>
 			: DeepPartial<T[P]>
 };
+
+declare type MaybePromise<T> = Promise<T> | T;

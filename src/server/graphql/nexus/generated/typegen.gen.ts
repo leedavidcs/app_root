@@ -244,10 +244,6 @@ export interface NexusGenInputs {
     resizable: boolean; // Boolean!
     width: number; // Int!
   }
-  StockPortfolioIdNameCompoundUniqueInput: { // input type
-    name: string; // String!
-    stockPortfolioId: string; // String!
-  }
   StockPortfolioIdTypeCompoundUniqueInput: { // input type
     stockPortfolioId: string; // String!
     type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
@@ -302,7 +298,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['StockPortfolioWhereWithoutUserInput'][] | null; // [StockPortfolioWhereWithoutUserInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['StockPortfolioWhereWithoutUserInput'][] | null; // [StockPortfolioWhereWithoutUserInput!]
     OR?: NexusGenInputs['StockPortfolioWhereWithoutUserInput'][] | null; // [StockPortfolioWhereWithoutUserInput!]
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -395,7 +390,8 @@ export interface NexusGenInputs {
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   WebhookCreateInput: { // input type
-    name: string; // String!
+    query?: string | null; // String
+    secret?: string | null; // String
     stockPortfolio: NexusGenInputs['StockPortfolioCreateOneWithoutWebhookInput']; // StockPortfolioCreateOneWithoutWebhookInput!
     timeout?: number | null; // Int
     type: NexusGenEnums['WebhookType']; // WebhookType!
@@ -408,10 +404,10 @@ export interface NexusGenInputs {
   }
   WebhookOrderByInput: { // input type
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
   }
   WebhookUpdateInput: { // input type
-    name?: string | null; // String
+    query?: string | null; // String
+    secret?: string | null; // String
     timeout?: number | null; // Int
     type?: NexusGenEnums['WebhookType'] | null; // WebhookType
     url?: string | null; // String
@@ -420,7 +416,6 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     OR?: NexusGenInputs['WebhookWhereInput'][] | null; // [WebhookWhereInput!]
     stockPortfolio?: NexusGenInputs['StockPortfolioWhereWithoutUserInput'] | null; // StockPortfolioWhereWithoutUserInput
@@ -431,7 +426,6 @@ export interface NexusGenInputs {
   }
   WebhookWhereUniqueInput: { // input type
     id?: string | null; // String
-    stockPortfolioId_name?: NexusGenInputs['StockPortfolioIdNameCompoundUniqueInput'] | null; // StockPortfolioIdNameCompoundUniqueInput
   }
 }
 
@@ -573,7 +567,8 @@ export interface NexusGenRootTypes {
   Webhook: { // root type
     createdAt: any; // DateTime!
     id: string; // String!
-    name: string; // String!
+    query?: string | null; // String
+    secret?: string | null; // String
     timeout: number; // Int!
     type: NexusGenEnums['WebhookType']; // WebhookType!
     url: string; // String!
@@ -630,7 +625,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioEventWhereUniqueInput: NexusGenInputs['StockPortfolioEventWhereUniqueInput'];
   StockPortfolioFilter: NexusGenInputs['StockPortfolioFilter'];
   StockPortfolioHeaderInput: NexusGenInputs['StockPortfolioHeaderInput'];
-  StockPortfolioIdNameCompoundUniqueInput: NexusGenInputs['StockPortfolioIdNameCompoundUniqueInput'];
   StockPortfolioIdTypeCompoundUniqueInput: NexusGenInputs['StockPortfolioIdTypeCompoundUniqueInput'];
   StockPortfolioOrderByInput: NexusGenInputs['StockPortfolioOrderByInput'];
   StockPortfolioSettingsUpdateInput: NexusGenInputs['StockPortfolioSettingsUpdateInput'];
@@ -703,6 +697,7 @@ export interface NexusGenFieldTypes {
     updateOneStockPortfolioSettings: NexusGenRootTypes['StockPortfolioSettings'] | null; // StockPortfolioSettings
     updateOneWebhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     upsertOneStockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent']; // StockPortfolioEvent!
+    upsertOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
     viewer: NexusGenRootTypes['User'] | null; // User
   }
   PriceBundle: { // field return type
@@ -860,7 +855,8 @@ export interface NexusGenFieldTypes {
   Webhook: { // field return type
     createdAt: any; // DateTime!
     id: string; // String!
-    name: string; // String!
+    query: string | null; // String
+    secret: string | null; // String
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
     timeout: number; // Int!
     type: NexusGenEnums['WebhookType']; // WebhookType!
@@ -933,6 +929,11 @@ export interface NexusGenArgTypes {
       create: NexusGenInputs['StockPortfolioEventCreateInput']; // StockPortfolioEventCreateInput!
       update: NexusGenInputs['StockPortfolioEventUpdateInput']; // StockPortfolioEventUpdateInput!
       where: NexusGenInputs['StockPortfolioEventWhereUniqueInput']; // StockPortfolioEventWhereUniqueInput!
+    }
+    upsertOneWebhook: { // args
+      create: NexusGenInputs['WebhookCreateInput']; // WebhookCreateInput!
+      update: NexusGenInputs['WebhookUpdateInput']; // WebhookUpdateInput!
+      where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
   }
   Query: {
@@ -1039,7 +1040,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "RunScheduledEvent" | "ScheduledEvent" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioEvent" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LatestSnapshotFilter" | "LatestSnapshotWhereInput" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdNameCompoundUniqueInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceFilter" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "IntFilter" | "LatestSnapshotFilter" | "LatestSnapshotWhereInput" | "LoginLocalUserInput" | "NullableIntFilter" | "NullableStringFilter" | "OrderDetailInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
 export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "OrderDetailType" | "Recurrence" | "StockPortfolioEventType" | "TransactionStatus" | "WebhookType";
 

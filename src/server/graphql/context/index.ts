@@ -39,7 +39,7 @@ export const createContext = async ({
 	res
 }: IServerCreateContextArgs): Promise<Omit<IServerContext, "dataSources">> => {
 	const userId: string | null = getAuthorizedUserId(req);
-	const user = await prisma.user.findOne({ where: { id: userId ?? "" } });
+	const user = userId ? await prisma.user.findOne({ where: { id: userId } }) : null;
 
 	const apolloContext: Omit<IServerContext, "dataSources"> = {
 		afterwares: new AfterwareQueue(),
