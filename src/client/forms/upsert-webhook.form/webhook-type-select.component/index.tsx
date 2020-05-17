@@ -42,6 +42,12 @@ const itemName = (item: IWebhookTypeItem): string => item.label;
 
 const TypedFormSelect = FormSelect.ofType<WebhookType, IWebhookTypeItem>();
 
+export const webhookTypeToName = (webhookType: WebhookType): string => {
+	const itemIndex: number = items.findIndex(({ value }) => value === webhookType);
+
+	return itemIndex !== -1 ? items[itemIndex].label : "";
+};
+
 export const WebhookTypeSelect: FC<IProps> = memo(
 	({ control, defaultValue, error, inline, label, name, placeholder }) => {
 		return (

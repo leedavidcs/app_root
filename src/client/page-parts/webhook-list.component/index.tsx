@@ -1,4 +1,5 @@
 import { Button, ClassesSkeleton, List } from "@/client/components";
+import { webhookTypeToName } from "@/client/forms";
 import { GetWebhooksQuery, useDeleteWebhookMutation } from "@/client/graphql";
 import { ApolloQueryResult } from "@apollo/client";
 import classnames from "classnames";
@@ -56,13 +57,14 @@ export const WebhookList: FC<IProps> = memo((props) => {
 	return (
 		<List className={className} divider="full">
 			{webhooks.map((webhook) => {
-				const { id, url } = webhook;
+				const { id, type, url } = webhook;
 
 				return (
 					<List.Item
 						key={id}
 						href={`/webhooks/${id}`}
 						text={<span className={classes.url}>{url}</span>}
+						info={<span>{webhookTypeToName(type)}</span>}
 					>
 						<Button
 							icon="trash"
