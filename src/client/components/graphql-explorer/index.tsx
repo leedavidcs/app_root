@@ -73,9 +73,13 @@ export const GraphQLExplorer: FC<IProps> = memo(
 
 		const validateQuery = useCallback(
 			(query: string): boolean => {
-				const errors: readonly GraphQLError[] = validate(schema!, parse(query));
+				try {
+					const errors: readonly GraphQLError[] = validate(schema!, parse(query));
 
-				return errors.length === 0;
+					return errors.length === 0;
+				} catch {
+					return false;
+				}
 			},
 			[schema]
 		);

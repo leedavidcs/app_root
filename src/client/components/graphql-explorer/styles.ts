@@ -56,7 +56,7 @@ const styles = (theme: CustomTheme) => ({
 			fontFamily: [theme.fontPrimary, "!important"],
 
 			"& .doc-explorer-back": {
-				paddingLeft: 12,
+				padding: `0 12px`,
 				margin: 0,
 				borderRight: `1px solid ${colors.darkGray2}`,
 				color: theme.onSurface,

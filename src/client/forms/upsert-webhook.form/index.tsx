@@ -1,23 +1,23 @@
-import { Alert, Button, TextInput } from "@/client/components";
+import { Alert, Anchor, Button, GraphQLExplorer, TextInput } from "@/client/components";
 import {
-	GetWebhookQuery,
-	useCreateWebhookMutation,
 	useDeleteWebhookMutation,
 	useSetToastsMutation,
-	useUpdateWebhookMutation,
+	useUpsertWebhookMutation,
+	Webhook as _Webhook,
 	WebhookType
 } from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
-import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
+import { string } from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
 
-type Webhook = NonNullable<GetWebhookQuery["webhook"]>;
+type Webhook = Pick<_Webhook, "id" | "url" | "secret" | "type" | "query">;
+
+const WEBHOOKS_API_URL = `${process.env.API_BASE_URL ?? ""}/api/webhooks`;
 
 interface IProps {
 	className?: string;
@@ -26,34 +26,46 @@ interface IProps {
 }
 
 interface IFormData {
-	data: {
-		name: string;
-		url: string;
-		type: WebhookType;
-	};
+	url: string;
+	secret: string;
+	type: WebhookType;
 }
 
 const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	data: object().shape({
-		name: string().required("Name is required"),
-		url: string()
-			.required("Url is required")
-			.url("Url is invalid")
-			.test({
-				message: "Url host localhost is not supported",
-				test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
-			}),
-		type: string<WebhookType>()
-			.required("Type is required")
-			.test({
-				message: "Type is invalid",
-				test: (value) => webhookTypes.some((type) => type === value)
-			})
-	})
+	url: string()
+		.required("Url is required")
+		.url("Url is invalid")
+		.test({
+			message: "Url host localhost is not supported",
+			test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
+		}),
+	secret: string(),
+	type: string<WebhookType>()
+		.required("Type is required")
+		.test({
+			message: "Type is invalid",
+			test: (value) => webhookTypes.some((type) => type === value)
+		})
 }));
 
+const useOnEditQuery = ({ webhook }: IProps) => {
+	const [query, setQuery] = useState<Maybe<string>>(webhook?.query);
+	const [isValid, setIsValid] = useState<boolean>(true);
+
+	const onEditQuery = useCallback((newQuery, newIsValid) => {
+		setQuery(newQuery);
+		setIsValid(newIsValid);
+	}, []);
+
+	const states = useMemo(() => ({ query, isValid }), [isValid, query]);
+
+	return [onEditQuery, states] as [typeof onEditQuery, typeof states];
+};
+
 // Populate initial form (for update)
-export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, webhook }) => {
+export const UpsertWebhookForm: FC<IProps> = (props) => {
+	const { className, stockPortfolioId, webhook } = props;
+
 	const classes = useStyles();
 	const toaster = useToast();
 	const router: NextRouter = useRouter();
@@ -62,22 +74,26 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 
 	const [setToasts] = useSetToastsMutation();
 
-	const [createWebhook] = useCreateWebhookMutation({
+	const [upsertWebhook] = useUpsertWebhookMutation({
 		onCompleted: async (result) => {
+			if (webhook) {
+				toaster.show({ intent: "success", message: "Webhook was successfully updated" });
+
+				return;
+			}
+
 			await setToasts({
 				variables: {
-					toasts: [{ intent: "success", message: "Webhook was successfully created" }]
+					toasts: [{ intent: "success", message: `Webhook was successfully created` }]
 				}
 			});
 
-			router.push(`/webhooks/${result.webhook.id}`);
+			if (!webhook) {
+				router.push(`/webhooks/${result.webhook.id}`);
+			}
 		}
 	});
-	const [updateWebhook] = useUpdateWebhookMutation({
-		onCompleted: () => {
-			toaster.show({ intent: "success", message: "Webhook was successfully updated" });
-		}
-	});
+
 	const [deleteWebhook] = useDeleteWebhookMutation({
 		onCompleted: async () => {
 			await setToasts({
@@ -90,30 +106,51 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 		}
 	});
 
-	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ validationResolver });
+	const { control, errors, handleSubmit, setError } = useForm<IFormData>({
+		validationResolver
+	});
 
 	const onFormSubmitError = useOnFormSubmitError<IFormData>({
 		onBadUserInput: (invalidArgs) => setError(invalidArgs)
 	});
 
+	const [onEditQuery, queryStates] = useOnEditQuery(props);
+
 	const onSubmit = useCallback(
 		async (formData: IFormData) => {
-			const data = {
-				...formData.data,
-				stockPortfolio: { connect: { id: stockPortfolioId } }
-			};
+			if (queryStates.query && !queryStates.isValid) {
+				toaster.show({
+					intent: "danger",
+					message: "GraphQL query is invalid"
+				});
+
+				return;
+			}
 
 			try {
-				if (webhook) {
-					await updateWebhook({ variables: { where: { id: webhook.id }, data } });
-				} else {
-					await createWebhook({ variables: { data } });
-				}
+				await upsertWebhook({
+					variables: {
+						id: webhook?.id,
+						query: queryStates.query,
+						secret: formData.secret,
+						type: formData.type,
+						url: formData.url,
+						stockPortfolioId
+					}
+				});
 			} catch (err) {
 				onFormSubmitError(err);
 			}
 		},
-		[createWebhook, onFormSubmitError, stockPortfolioId, updateWebhook, webhook]
+		[
+			onFormSubmitError,
+			queryStates.isValid,
+			queryStates.query,
+			stockPortfolioId,
+			toaster,
+			upsertWebhook,
+			webhook
+		]
 	);
 
 	const onAlertOpen = useCallback(() => setAlertOpen(true), []);
@@ -131,57 +168,72 @@ export const UpsertWebhookForm: FC<IProps> = ({ className, stockPortfolioId, web
 		<>
 			<div className={className}>
 				<div className={classes.section}>
-					<p>
+					<p className={classes.info}>
 						We&apos;ll send a <code className={classes.code}>POST</code> request to the
-						URL below, with a payload that is structured depending on the
-						webhook-trigger selected. More information at{" "}
-						{/** TODO. Add developer documentation */}
-						<Link href="">
-							<a>our developer documentation</a>
-						</Link>
-						.
+						URL below, with a payload of the data you&apos;ve requested via{" "}
+						<Anchor href="https://graphql.org" useLink={false} value="GraphQL" />. More
+						information at {/** TODO. Add developer documentation */}
+						<Anchor href="" value="our developer documentation" />.
 					</p>
 				</div>
-				<form className={classes.section} onSubmit={handleSubmit(onSubmit)}>
-					<div className={classes.inputsContainer}>
-						<TextInput
-							defaultValue={webhook?.name}
-							label="Name"
-							labelInfo="(required)"
-							name="data.name"
-							error={errors.data?.name?.message}
-							control={control}
-						/>
-						<TextInput
-							defaultValue={webhook?.url}
-							label="Payload URL"
-							labelInfo="(required)"
-							name="data.url"
-							error={errors.data?.url?.message}
-							control={control}
-						/>
-						<WebhookTypeSelect
-							defaultValue={webhook?.type ?? webhookTypes[0]}
-							label="Webhook trigger"
-							name="data.type"
-							error={errors.data?.type?.message}
-							control={control}
-						/>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<div className={classes.section}>
+						<div className={classes.inputsContainer}>
+							<TextInput
+								defaultValue={webhook?.url}
+								label="Payload URL"
+								labelInfo="(required)"
+								name="url"
+								error={errors.url?.message}
+								control={control}
+							/>
+							<TextInput
+								defaultValue={webhook?.secret ?? ""}
+								label="Secret"
+								name="secret"
+								error={errors.secret?.message}
+								control={control}
+							/>
+							<WebhookTypeSelect
+								defaultValue={webhook?.type ?? webhookTypes[0]}
+								label="Webhook trigger"
+								name="type"
+								error={errors.type?.message}
+								control={control}
+							/>
+						</div>
 					</div>
-					<Button
-						intent="primary"
-						text={`${webhook ? "Update" : "Create"} webhook`}
-						type="submit"
-					/>
-					{webhook && (
-						<Button
-							className={classes.deleteBtn}
-							icon="trash"
-							intent="danger"
-							onClick={onAlertOpen}
-							text="Delete"
+					<div className={classes.section}>
+						<h2 className={classes.queryTitle}>Webhook data</h2>
+						<p className={classes.info}>
+							Use{" "}
+							<Anchor href="https://graphql.org" useLink={false} value="GraphQL" /> to
+							specify the data to be attached to your webhook. If no query is
+							specified, your webhook will be triggered without a request body.
+						</p>
+					</div>
+					<div className={classes.section}>
+						<GraphQLExplorer
+							className={classes.graphqlExplorer}
+							defaultQuery={queryStates.query ?? ""}
+							onEditQuery={onEditQuery}
+							url={WEBHOOKS_API_URL}
 						/>
-					)}
+						<Button
+							intent="primary"
+							text={`${webhook ? "Update" : "Create"} webhook`}
+							type="submit"
+						/>
+						{webhook && (
+							<Button
+								className={classes.deleteBtn}
+								icon="trash"
+								intent="danger"
+								onClick={onAlertOpen}
+								text="Delete"
+							/>
+						)}
+					</div>
 				</form>
 			</div>
 			<Alert

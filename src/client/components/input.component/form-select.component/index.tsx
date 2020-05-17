@@ -74,6 +74,7 @@ const ofType = <T extends any, TOriginal = T>() => {
 						intent={intent}
 						rightIcon="caret-down"
 						text={valueText ?? placeholder ?? "Select a value"}
+						type="button"
 					/>
 				</TypedSelect>
 			</FormGroup>
