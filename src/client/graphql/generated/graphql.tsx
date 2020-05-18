@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import * as ApolloReactCommon from '@apollo/client';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
-// This file was generated on: May 15th 2020 11:49:24 pm
+// This file was generated on: May 17th 2020 7:34:37 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -1663,7 +1663,7 @@ export type GetWebhookQuery = (
   { readonly __typename?: 'Query' }
   & { readonly webhook?: Maybe<(
     { readonly __typename?: 'Webhook' }
-    & Pick<Webhook, 'id' | 'query' | 'timeout' | 'type' | 'url'>
+    & Pick<Webhook, 'id' | 'query' | 'secret' | 'type' | 'url'>
     & { readonly stockPortfolio: (
       { readonly __typename?: 'StockPortfolio' }
       & Pick<StockPortfolio, 'id' | 'name'>
@@ -2946,7 +2946,7 @@ export const GetWebhookDocument = gql`
   webhook(where: $where) {
     id
     query
-    timeout
+    secret
     type
     url
     stockPortfolio {

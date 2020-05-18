@@ -2,7 +2,7 @@ query GetWebhook($where: WebhookWhereUniqueInput!) {
 	webhook(where: $where) {
 		id
 		query
-		timeout
+		secret
 		type
 		url
 		stockPortfolio {
