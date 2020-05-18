@@ -95,6 +95,17 @@ type FeaturePricingConfig {
   price: Int!
 }
 
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: Float
+  notIn: [Float!]
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -176,6 +187,28 @@ type Mutation implements RequestRoot {
   viewer: User
 }
 
+input NullableDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
+input NullableFloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: Float
+  notIn: [Float!]
+}
+
 input NullableIntFilter {
   equals: Int
   gt: Int
@@ -201,6 +234,23 @@ input NullableStringFilter {
   startsWith: String
 }
 
+type Order {
+  avgFilledPrice: Float
+  cancelledAt: DateTime
+  createdAt: DateTime!
+  failedAt: DateTime
+  filledAt: DateTime
+  id: String!
+  limitPrice: Float
+  quantity: Int!
+  side: OrderSide!
+  status: OrderStatus!
+  stockPortfolio: StockPortfolio!
+  stopPrice: Float
+  ticker: String!
+  type: OrderType!
+}
+
 enum OrderByArg {
   asc
   desc
@@ -214,6 +264,82 @@ input OrderDetailInput {
 
 enum OrderDetailType {
   PriceBundle
+}
+
+input OrderFilter {
+  every: OrderWhereInput
+  none: OrderWhereInput
+  some: OrderWhereInput
+}
+
+enum OrderSide {
+  Buy
+  Sell
+}
+
+enum OrderStatus {
+  Closed
+  Open
+}
+
+enum OrderType {
+  Limit
+  Market
+  Stop
+  StopLimit
+}
+
+input OrderWhereInput {
+  AND: [OrderWhereInput!]
+  avgFilledPrice: NullableFloatFilter
+  cancelledAt: NullableDateTimeFilter
+  createdAt: DateTimeFilter
+  failedAt: NullableDateTimeFilter
+  filledAt: NullableDateTimeFilter
+  id: StringFilter
+  limitPrice: NullableFloatFilter
+  NOT: [OrderWhereInput!]
+  OR: [OrderWhereInput!]
+  quantity: IntFilter
+  side: OrderSide
+  status: OrderStatus
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  stopPrice: NullableFloatFilter
+  ticker: StringFilter
+  type: OrderType
+}
+
+input OrderWhereUniqueInput {
+  id: String
+}
+
+type Position {
+  avgEntryPrice: Float!
+  costBasis: Float!
+  id: String!
+  quantity: Int!
+  stockPortfolio: StockPortfolio!
+  ticker: String!
+}
+
+input PositionFilter {
+  every: PositionWhereInput
+  none: PositionWhereInput
+  some: PositionWhereInput
+}
+
+input PositionWhereInput {
+  AND: [PositionWhereInput!]
+  avgEntryPrice: FloatFilter
+  costBasis: FloatFilter
+  id: StringFilter
+  NOT: [PositionWhereInput!]
+  OR: [PositionWhereInput!]
+  quantity: IntFilter
+  stockPortfolio: StockPortfolioWhereInput
+  stockPortfolioId: StringFilter
+  ticker: StringFilter
 }
 
 type PriceBundle {
@@ -240,6 +366,8 @@ type Query implements RequestRoot {
     provider: String
   ): [DataKeyOption!]!
   featurePricing: FeaturePricing!
+  order(where: OrderWhereUniqueInput!): Order
+  orders(after: OrderWhereUniqueInput, before: OrderWhereUniqueInput, first: Int, last: Int, skip: Int): [Order!]!
   priceBundles: [PriceBundle!]!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshotCount(where: SnapshotWhereInput): Int!
@@ -462,6 +590,7 @@ type StockPortfolio {
   headers: [StockPortfolioHeader!]!
   id: String!
   latestSnapshot: Snapshot
+  marketValue: Float!
   name: String!
   settings: StockPortfolioSettings!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
@@ -564,6 +693,7 @@ input StockPortfolioIdTypeCompoundUniqueInput {
 input StockPortfolioOrderByInput {
   createdAt: OrderByArg
   id: OrderByArg
+  marketValue: OrderByArg
   name: OrderByArg
   updatedAt: OrderByArg
   userId: OrderByArg
@@ -605,9 +735,12 @@ input StockPortfolioWhereInput {
   createdAt: DateTimeFilter
   id: StringFilter
   LatestSnapshot: LatestSnapshotFilter
+  marketValue: FloatFilter
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
+  Order: OrderFilter
+  Position: PositionFilter
   settings: StockPortfolioSettingsWhereInput
   Snapshot: SnapshotFilter
   StockPortfolioEvent: StockPortfolioEventFilter

@@ -14,7 +14,6 @@ const isGenerateScript: boolean = process.argv.includes("--nexus-exit");
 
 export const schema = makeSchema({
 	shouldGenerateArtifacts: isGenerateScript,
-	shouldExitAfterGenerateArtifacts: isGenerateScript,
 	types: { ...queries, ...types },
 	outputs: {
 		schema: getPath("generated/schema.gen.graphql"),

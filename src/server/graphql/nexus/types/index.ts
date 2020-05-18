@@ -3,6 +3,8 @@ export * from "./authentication.types";
 export * from "./balance.types";
 export * from "./data-key.types";
 export * from "./feature-pricing.types";
+export * from "./order.types";
+export * from "./position.types";
 export * from "./price-bundle.types";
 export * from "./root.types";
 export * from "./scalars.types";
