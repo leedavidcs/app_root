@@ -1,6 +1,6 @@
 import { Card, ResourcePath } from "@/client/components";
 import { UpsertWebhookForm } from "@/client/forms";
-import { GetWebhookQuery } from "@/client/graphql";
+import { GetWebhookQuery, useGetWebhookQuery } from "@/client/graphql";
 import { withWebhookAuth } from "@/client/hocs";
 import { StockPortfolioHead, StockPortfolioSettings } from "@/client/page-parts";
 import { breakpoints, colors, CustomTheme } from "@/client/themes";
@@ -52,8 +52,14 @@ const styles = (theme: CustomTheme) => ({
 
 const useStyles = createUseStyles<CustomTheme, keyof ReturnType<typeof styles>>(styles);
 
-const Page: NextPage<IProps> = ({ webhook }) => {
+const Page: NextPage<IProps> = ({ webhook: propsWebhook }) => {
 	const classes = useStyles();
+
+	const { data } = useGetWebhookQuery({
+		variables: { where: { id: propsWebhook.id } }
+	});
+
+	const webhook: Webhook = data?.webhook ?? propsWebhook;
 
 	const stockPortfolio = webhook.stockPortfolio;
 

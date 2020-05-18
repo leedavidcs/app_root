@@ -1,5 +1,6 @@
 import { Alert, Anchor, Button, GraphQLExplorer, TextInput } from "@/client/components";
 import {
+	GetWebhookDocument,
 	useDeleteWebhookMutation,
 	useSetToastsMutation,
 	useUpsertWebhookMutation,
@@ -77,6 +78,9 @@ export const UpsertWebhookForm: FC<IProps> = (props) => {
 	const [setToasts] = useSetToastsMutation();
 
 	const [upsertWebhook] = useUpsertWebhookMutation({
+		refetchQueries: webhook
+			? [{ query: GetWebhookDocument, variables: { where: { id: webhook.id } } }]
+			: undefined,
 		onCompleted: async (result) => {
 			if (webhook) {
 				toaster.show({ intent: "success", message: "Webhook was successfully updated" });
@@ -86,7 +90,12 @@ export const UpsertWebhookForm: FC<IProps> = (props) => {
 
 			await setToasts({
 				variables: {
-					toasts: [{ intent: "success", message: `Webhook was successfully created` }]
+					toasts: [
+						{
+							intent: "success",
+							message: `Webhook was successfully created`
+						}
+					]
 				}
 			});
 
