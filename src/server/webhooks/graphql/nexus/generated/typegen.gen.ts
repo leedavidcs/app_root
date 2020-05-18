@@ -3,11 +3,9 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "@/server/webhooks/graphql/context"
+
 import { QueryComplexity } from "@nexus/schema/dist/plugins/queryComplexityPlugin"
-import { IFieldRateLimitResolver } from "@/server/graphql/nexus/plugins/rate-limit.plugin"
 import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
-import { IFieldYupValidationResolver } from "@/server/graphql/nexus/plugins/yup-validation.plugin"
 
 
 declare global {
@@ -133,6 +131,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   Query: { // field return type
+    ok: boolean; // Boolean!
     snapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
     stockPortfolio: NexusGenRootTypes['StockPortfolio'] | null; // StockPortfolio
@@ -223,7 +222,7 @@ export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int
 export type NexusGenUnionNames = never;
 
 export interface NexusGenTypes {
-  context: ctx.IWebhooksContext;
+  context: any;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   argTypes: NexusGenArgTypes;
@@ -255,10 +254,6 @@ declare global {
      */
     complexity?: QueryComplexity<TypeName, FieldName>
     /**
-     * Rate limit plugin for an individual field. Uses the same directive args as `graphql-rate-limit`.
-     */
-    rateLimit?: IFieldRateLimitResolver<TypeName, FieldName>
-    /**
      * Authorization for an individual field. Returning "true"
      * or "Promise<true>" means the field can be accessed.
      * Returning "false" or "Promise<false>" will respond
@@ -267,10 +262,6 @@ declare global {
      * resolver from executing.
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
-    /**
-     * `yup` validation plugin for an individual field. Requires that an object schema definition be defined for the input args.
-     */
-    yupValidation?: IFieldYupValidationResolver<TypeName, FieldName>
   }
   interface NexusGenPluginSchemaConfig {
   }
