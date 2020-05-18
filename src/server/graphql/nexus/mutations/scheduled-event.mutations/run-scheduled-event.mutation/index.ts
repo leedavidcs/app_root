@@ -1,9 +1,13 @@
+import { Logger } from "@/server/utils";
 import { mutationField, objectType } from "@nexus/schema";
 import { Day, Recurrence, ScheduledEvent, User } from "@prisma/client";
+import { mapLimit } from "blend-promise-utils";
 import { oneLine } from "common-tags";
 import { add, getDay, isAfter, isBefore, set, setDay } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { isFinite, isNil } from "lodash";
+
+const STOCK_DATA_RETRIEVED_PARALLEL_LIMIT = 5;
 
 /* eslint-disable no-magic-numbers */
 export type DayAsNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -155,9 +159,20 @@ export const RunScheduledEvent = objectType({
 					}
 				});
 
-				for (const { stockPortfolio } of stockPortfolioEvents) {
-					await IexCloudAPI.getStockPortfolioData(stockPortfolio, stockPortfolio.user);
-				}
+				await mapLimit(
+					stockPortfolioEvents,
+					STOCK_DATA_RETRIEVED_PARALLEL_LIMIT,
+					async ({ stockPortfolio }) => {
+						try {
+							await IexCloudAPI.getStockPortfolioData(
+								stockPortfolio,
+								stockPortfolio.user
+							);
+						} catch (err) {
+							Logger.error(err.message ?? err);
+						}
+					}
+				);
 
 				return stockPortfolioEvents;
 			}
