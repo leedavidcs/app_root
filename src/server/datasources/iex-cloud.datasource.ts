@@ -1,12 +1,13 @@
 import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
 import { IServerContextWithUser } from "@/server/graphql";
-import { Logger, NotFoundError } from "@/server/utils";
+import { NotFoundError } from "@/server/utils";
 import {
 	Snapshot,
 	StockPortfolio,
 	StockPortfolioSettings,
 	Transaction,
-	User
+	User,
+	WebhookType
 } from "@prisma/client";
 import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { ForbiddenError, UserInputError } from "apollo-server-micro";
@@ -148,10 +149,6 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 		try {
 			results = await this.symbols(tickers, types);
 		} catch (err) {
-			const message: string = err instanceof Error ? err.message : err;
-
-			Logger.error(message);
-
 			throw new UserInputError("Could not get data. Inputs may be invalid", {
 				invalidArgs: []
 			});
@@ -166,6 +163,13 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 		}
 
 		await this.upsertLatestSnapshot(stockPortfolio, mapped);
+
+		await this.context.webhooks.sendMany({
+			where: {
+				stockPortfolioId: id,
+				type: WebhookType.StockDataRetrieved
+			}
+		});
 
 		return mapped;
 	}
@@ -335,7 +339,9 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	};
 
 	/** Merge results from multiple calls from `resolveTypes` */
-	private mergeResults = (results: readonly Record<string, IexStockResult>[]) => {
+	private mergeResults = (
+		results: readonly Record<string, IexStockResult>[]
+	): Record<string, IexStockResult> => {
 		const final = results.reduce((source, nextResult) => {
 			const sourceTickers = Object.keys(source);
 			const newTickers = Object.keys(nextResult);
