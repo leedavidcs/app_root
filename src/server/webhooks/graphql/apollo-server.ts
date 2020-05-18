@@ -95,22 +95,17 @@ export class WebhooksClient {
 			body = result.data ?? {};
 		}
 
+		const signatureHeader = this.createSignatureHeader(webhook.secret, body);
+
 		const timeoutFetch = timeout(fetch, webhook.timeout);
-
-		const headers: Record<string, string> = {
-			"Content-Type": "application/json"
-		};
-
-		if (webhook.secret) {
-			const signature: string = this.createSignature(webhook.secret, body);
-
-			headers[`X-${WEBHOOK_BASE_NAME}-Signature`] = signature;
-		}
 
 		try {
 			await timeoutFetch(webhook.url, {
 				method: "post",
-				headers,
+				headers: {
+					"Content-Type": "application/json",
+					...signatureHeader
+				},
 				body: JSON.stringify(body)
 			});
 		} catch (err) {
@@ -118,10 +113,17 @@ export class WebhooksClient {
 		}
 	};
 
-	private createSignature = (secret: string, payload: Record<string, any>): string => {
+	private createSignatureHeader = (
+		secret: Maybe<string>,
+		payload: Record<string, any>
+	): Record<string, string> => {
+		if (!secret) {
+			return {};
+		}
+
 		const hmac: Hmac = crypto.createHmac("sha1", secret);
 		const signature: string = hmac.update(JSON.stringify(payload)).digest("hex");
 
-		return `sha1=${signature}`;
+		return { [`X-${WEBHOOK_BASE_NAME}-Signature`]: `sha1=${signature}` };
 	};
 }
