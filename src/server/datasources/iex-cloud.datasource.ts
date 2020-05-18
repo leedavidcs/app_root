@@ -53,13 +53,13 @@ const DEFAULT_SYMBOLS_OPTIONS: ISymbolsOptions = {
 export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	private context!: IServerContextWithUser;
 
-	private _client = new IEXCloudClient(fetch, {
+	private client = new IEXCloudClient(fetch, {
 		sandbox: isDevelopment,
 		publishable: isDevelopment ? sandboxPublishable : publishable,
 		version
 	});
 
-	private _mockClient = new IEXCloudClient(fetch, {
+	private mockClient = new IEXCloudClient(fetch, {
 		sandbox: true,
 		publishable: sandboxPublishable,
 		version
@@ -77,7 +77,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	}
 
 	public search(text: string) {
-		return queue.add(() => this._client.search(text));
+		return queue.add(() => this.client.search(text));
 	}
 
 	public async symbols(
@@ -98,7 +98,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 		/** Resolve all data for  given symbols and types */
 		const resolveTypes = (symbolBatch: readonly string[], typeBatch: readonly IexType[]) => {
-			const client: IEXCloudClient = _options.mock ? this._mockClient : this._client;
+			const client: IEXCloudClient = _options.mock ? this.mockClient : this.client;
 			const batch: Batch = client.batchSymbols(...symbolBatch).batch();
 
 			const withAllTypes: Batch = typeBatch.reduce<Batch>((currentBatch, iexType) => {

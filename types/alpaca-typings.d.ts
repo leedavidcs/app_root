@@ -117,7 +117,7 @@ declare module "@alpacahq/alpaca-trade-api" {
 
 		public cancelOrder(uuid: string): Promise<Order>;
 
-		public cancelAllOrder(): Promise<void>;
+		public cancelAllOrders(): Promise<void>;
 
 		public getPosition(symbol: string): Promise<Position>;
 
@@ -125,7 +125,7 @@ declare module "@alpacahq/alpaca-trade-api" {
 
 		public closePosition(symbol: string): Promise<void>;
 
-		public closeAllPositionms(): Promise<void>;
+		public closeAllPositions(): Promise<void>;
 
 		public getClock(): Promise<Clock>;
 	}
