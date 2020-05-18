@@ -25,7 +25,9 @@ enum OrderByArg {
   desc
 }
 
+"""Root query type"""
 type Query {
+  ok: Boolean!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
   stockPortfolio(where: StockPortfolioWhereUniqueInput): StockPortfolio
