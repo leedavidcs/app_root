@@ -1,4 +1,7 @@
+import { schema } from "@/server/webhooks";
 import { arg, mutationField } from "@nexus/schema";
+import { parse, validate } from "graphql";
+import { object, string } from "yup";
 
 export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 	type: "Webhook",
@@ -42,5 +45,43 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 
 		return true;
 	},
+	yupValidation: () => ({
+		create: object().shape({
+			url: string().required("Url is required").url("Url is invalid"),
+			query: string().test({
+				message: "",
+				test: (query) => {
+					try {
+						const parsed = parse(query);
+						const errors = validate(schema, parsed);
+
+						const isValid = errors.length === 0;
+
+						return isValid;
+					} catch {
+						return false;
+					}
+				}
+			})
+		}),
+		update: object().shape({
+			url: string().url("Url is invalid"),
+			query: string().test({
+				message: "",
+				test: (query) => {
+					try {
+						const parsed = parse(query);
+						const errors = validate(schema, parsed);
+
+						const isValid = errors.length === 0;
+
+						return isValid;
+					} catch {
+						return false;
+					}
+				}
+			})
+		})
+	}),
 	resolve: (parent, args, { prisma }) => prisma.webhook.upsert(args)
 });

@@ -1,5 +1,7 @@
+import { schema } from "@/server/webhooks";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import { AuthenticationError, ForbiddenError } from "apollo-server-micro";
+import { parse, validate } from "graphql";
 import { object, string } from "yup";
 
 export const WebhookUpdateInput = inputObjectType({
@@ -38,9 +40,24 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 
 		return true;
 	},
-	yupValidation: (parent, { data, where }, { prisma }) => ({
+	yupValidation: (parent) => ({
 		data: object().shape({
-			url: string().url("Url is invalid")
+			url: string().url("Url is invalid"),
+			query: string().test({
+				message: "Query is invalid",
+				test: (query) => {
+					try {
+						const parsed = parse(query);
+						const errors = validate(schema, parsed);
+
+						const isValid = errors.length === 0;
+
+						return isValid;
+					} catch {
+						return false;
+					}
+				}
+			})
 		})
 	}),
 	resolve: (parent, args, { prisma }) => prisma.webhook.update(args)
