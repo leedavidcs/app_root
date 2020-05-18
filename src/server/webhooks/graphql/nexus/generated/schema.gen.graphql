@@ -20,9 +20,52 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
+type Order {
+  avgFilledPrice: Float
+  cancelledAt: DateTime
+  createdAt: DateTime!
+  failedAt: DateTime
+  filledAt: DateTime
+  id: String!
+  limitPrice: Float
+  quantity: Int!
+  side: OrderSide!
+  status: OrderStatus!
+  stockPortfolio: StockPortfolio!
+  stopPrice: Float
+  ticker: String!
+  type: OrderType!
+}
+
 enum OrderByArg {
   asc
   desc
+}
+
+enum OrderSide {
+  Buy
+  Sell
+}
+
+enum OrderStatus {
+  Closed
+  Open
+}
+
+enum OrderType {
+  Limit
+  Market
+  Stop
+  StopLimit
+}
+
+type Position {
+  avgEntryPrice: Float!
+  costBasis: Float!
+  id: String!
+  quantity: Int!
+  stockPortfolio: StockPortfolio!
+  ticker: String!
 }
 
 """Root query type"""

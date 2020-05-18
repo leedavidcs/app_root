@@ -18,6 +18,9 @@ export const StockPortfolio = objectType({
 		t.model.id();
 		t.model.user();
 		t.model.name();
+		t.model.marketValue();
+		t.model.settings();
+		t.model.tickers();
 		t.list.field("headers", {
 			type: "StockPortfolioHeader",
 			nullable: false,
@@ -31,8 +34,6 @@ export const StockPortfolio = objectType({
 				return parsedHeaders;
 			}
 		});
-		t.model.tickers();
-		t.model.settings();
 		t.field("stockData", {
 			type: "StockData",
 			nullable: false,

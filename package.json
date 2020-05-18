@@ -19,7 +19,6 @@
     "generate:prisma": "prisma generate",
     "generate:options": "npm run with-script -- scripts/generate-data-key-options.script",
     "generate:frontend": "graphql-codegen",
-    "generate:webhooks": "npm run with-script -- src/server/webhooks/graphql/nexus/schema --nexus-exit",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "lint:fix": "npm run lint -- --fix",
     "postinstall": "npm run generate:backend",
