@@ -8,3 +8,4 @@
 20200515222755-remove-name-from-webhook
 20200517190619-reduce-default-webhook-timeout
 20200518040841-new-order-and-position-models
+20200518042708-rename-stock-portfolio-balance-to-market-value
