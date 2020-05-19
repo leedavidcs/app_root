@@ -600,6 +600,7 @@ type StockPortfolio {
   tickers: [String!]!
   updatedAt: DateTime!
   user: User!
+  userId: String!
 }
 
 input StockPortfolioCreateInput {

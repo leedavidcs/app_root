@@ -17,9 +17,31 @@ export const StockPortfolio = objectType({
 	definition: (t) => {
 		t.model.id();
 		t.model.user();
+		t.model.userId();
 		t.model.name();
 		t.model.marketValue();
-		t.model.settings();
+		t.field("settings", {
+			type: "StockPortfolioSettings",
+			nullable: false,
+			authorize: ({ id, userId }, args, { prisma, user }) => {
+				if (!user || user.id !== userId) {
+					return false;
+				}
+
+				return true;
+			},
+			resolve: async ({ id }, args, { prisma }) => {
+				const settings = await prisma.stockPortfolioSettings.findOne({
+					where: { stockPortfolioId: id }
+				});
+
+				if (!settings) {
+					throw new NotFoundError("Settings could not be found");
+				}
+
+				return settings;
+			}
+		});
 		t.model.tickers();
 		t.list.field("headers", {
 			type: "StockPortfolioHeader",
