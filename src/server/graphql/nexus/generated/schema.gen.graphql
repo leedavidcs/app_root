@@ -150,8 +150,10 @@ input LoginLocalUserInput {
 """Root mutation type"""
 type Mutation implements RequestRoot {
   applySucceededTransaction(paymentIntentId: String!): Balance
+  cancelOneOrder(where: OrderWhereUniqueInput!): Order
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
+  createOneOrder(data: OrderCreateInput!): Order
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
   createOneWebhook(data: WebhookCreateInput!): Webhook!
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
@@ -248,12 +250,25 @@ type Order {
   stockPortfolio: StockPortfolio!
   stopPrice: Float
   ticker: String!
+  timeInForce: TimeInForce!
   type: OrderType!
 }
 
 enum OrderByArg {
   asc
   desc
+}
+
+input OrderCreateInput {
+  limitPrice: Float
+  quantity: Int!
+  side: OrderSide!
+  status: OrderStatus
+  stockPortfolio: StockPortfolioCreateOneWithoutOrderInput!
+  stopPrice: Float
+  ticker: String!
+  timeInForce: TimeInForce
+  type: OrderType
 }
 
 input OrderDetailInput {
@@ -270,6 +285,22 @@ input OrderFilter {
   every: OrderWhereInput
   none: OrderWhereInput
   some: OrderWhereInput
+}
+
+input OrderOrderByInput {
+  avgFilledPrice: OrderByArg
+  cancelledAt: OrderByArg
+  createdAt: OrderByArg
+  failedAt: OrderByArg
+  filledAt: OrderByArg
+  limitPrice: OrderByArg
+  quantity: OrderByArg
+  side: OrderByArg
+  status: OrderByArg
+  stopPrice: OrderByArg
+  ticker: OrderByArg
+  timeInForce: OrderByArg
+  type: OrderByArg
 }
 
 enum OrderSide {
@@ -307,6 +338,7 @@ input OrderWhereInput {
   stockPortfolioId: StringFilter
   stopPrice: NullableFloatFilter
   ticker: StringFilter
+  timeInForce: TimeInForce
   type: OrderType
 }
 
@@ -367,7 +399,7 @@ type Query implements RequestRoot {
   ): [DataKeyOption!]!
   featurePricing: FeaturePricing!
   order(where: OrderWhereUniqueInput!): Order
-  orders(after: OrderWhereUniqueInput, before: OrderWhereUniqueInput, first: Int, last: Int, skip: Int): [Order!]!
+  orders(after: OrderWhereUniqueInput, before: OrderWhereUniqueInput, first: Int, last: Int, orderBy: OrderOrderByInput, skip: Int, where: OrderWhereInput): [Order!]!
   priceBundles: [PriceBundle!]!
   snapshot(where: SnapshotWhereUniqueInput!): Snapshot
   snapshotCount(where: SnapshotWhereInput): Int!
@@ -607,6 +639,10 @@ input StockPortfolioCreateInput {
   name: String!
 }
 
+input StockPortfolioCreateOneWithoutOrderInput {
+  connect: StockPortfolioWhereUniqueInput
+}
+
 input StockPortfolioCreateOneWithoutStockPortfolioEventInput {
   connect: StockPortfolioWhereUniqueInput!
 }
@@ -823,6 +859,15 @@ type StripeSetupIntent {
   created: Int!
   id: String!
   payment_method: StripePaymentMethod
+}
+
+enum TimeInForce {
+  CLS
+  Day
+  FOK
+  GTC
+  IOC
+  OPG
 }
 
 """The response from a successful login or token refresh request"""

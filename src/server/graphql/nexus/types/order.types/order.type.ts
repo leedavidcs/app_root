@@ -10,6 +10,7 @@ export const Order = objectType({
 		t.model.type();
 		t.model.side();
 		t.model.status();
+		t.model.timeInForce();
 		t.model.limitPrice();
 		t.model.stopPrice();
 		t.model.avgFilledPrice();
