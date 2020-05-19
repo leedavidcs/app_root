@@ -18,12 +18,14 @@ export const Transaction = objectType({
 
 				return transaction?.userId === user.id;
 			},
-			resolve: ({ paymentIntentId }, args, { stripe }) => {
+			resolve: ({ paymentIntentId }, args, { dataSources }) => {
+				const { StripeAPI } = dataSources;
+
 				if (!paymentIntentId) {
 					return null;
 				}
 
-				return stripe.paymentIntents.retrieve(paymentIntentId);
+				return StripeAPI.paymentIntents.retrieve(paymentIntentId);
 			}
 		});
 		t.model.user();

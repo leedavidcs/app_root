@@ -1,5 +1,4 @@
 import { getAuthorizedUserId } from "@/server/authentication";
-import { stripe } from "@/server/configs";
 import { dataSources } from "@/server/datasources";
 import { AfterwareQueue } from "@/server/graphql/plugins";
 import { prisma } from "@/server/prisma";
@@ -7,7 +6,6 @@ import { WebhooksClient } from "@/server/webhooks";
 import { PrismaClient, User } from "@prisma/client";
 import { once } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
-import Stripe from "stripe";
 import { isEasyCron } from "./is-easy-cron";
 
 const isDevelopment: boolean = process.env.NODE_ENV === "development";
@@ -20,7 +18,6 @@ export interface IServerContext {
 	prisma: PrismaClient;
 	req: NextApiRequest;
 	res: NextApiResponse;
-	stripe: Stripe;
 	user: User | null;
 	webhooks: WebhooksClient;
 }
@@ -47,7 +44,6 @@ export const createContext = async ({
 		prisma,
 		req,
 		res,
-		stripe,
 		user,
 		webhooks: new WebhooksClient({ context: { prisma } })
 	};
