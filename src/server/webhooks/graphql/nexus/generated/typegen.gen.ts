@@ -73,10 +73,35 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   OrderByArg: "asc" | "desc"
+  OrderSide: "Buy" | "Sell"
+  OrderStatus: "Closed" | "Open"
+  OrderType: "Limit" | "Market" | "Stop" | "StopLimit"
   WebhookType: "StockDataRetrieved"
 }
 
 export interface NexusGenRootTypes {
+  Order: { // root type
+    avgFilledPrice?: number | null; // Float
+    cancelledAt?: any | null; // DateTime
+    createdAt: any; // DateTime!
+    failedAt?: any | null; // DateTime
+    filledAt?: any | null; // DateTime
+    id: string; // String!
+    limitPrice?: number | null; // Float
+    quantity: number; // Int!
+    side: NexusGenEnums['OrderSide']; // OrderSide!
+    status: NexusGenEnums['OrderStatus']; // OrderStatus!
+    stopPrice?: number | null; // Float
+    ticker: string; // String!
+    type: NexusGenEnums['OrderType']; // OrderType!
+  }
+  Position: { // root type
+    avgEntryPrice: number; // Float!
+    costBasis: number; // Float!
+    id: string; // String!
+    quantity: number; // Int!
+    ticker: string; // String!
+  }
   Query: {};
   Snapshot: { // root type
     createdAt: any; // DateTime!
@@ -126,10 +151,37 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioWhereUniqueInput: NexusGenInputs['StockPortfolioWhereUniqueInput'];
   StringFilter: NexusGenInputs['StringFilter'];
   OrderByArg: NexusGenEnums['OrderByArg'];
+  OrderSide: NexusGenEnums['OrderSide'];
+  OrderStatus: NexusGenEnums['OrderStatus'];
+  OrderType: NexusGenEnums['OrderType'];
   WebhookType: NexusGenEnums['WebhookType'];
 }
 
 export interface NexusGenFieldTypes {
+  Order: { // field return type
+    avgFilledPrice: number | null; // Float
+    cancelledAt: any | null; // DateTime
+    createdAt: any; // DateTime!
+    failedAt: any | null; // DateTime
+    filledAt: any | null; // DateTime
+    id: string; // String!
+    limitPrice: number | null; // Float
+    quantity: number; // Int!
+    side: NexusGenEnums['OrderSide']; // OrderSide!
+    status: NexusGenEnums['OrderStatus']; // OrderStatus!
+    stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    stopPrice: number | null; // Float
+    ticker: string; // String!
+    type: NexusGenEnums['OrderType']; // OrderType!
+  }
+  Position: { // field return type
+    avgEntryPrice: number; // Float!
+    costBasis: number; // Float!
+    id: string; // String!
+    quantity: number; // Int!
+    stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
+    ticker: string; // String!
+  }
   Query: { // field return type
     ok: boolean; // Boolean!
     snapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
@@ -209,11 +261,11 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query" | "Snapshot" | "SnapshotHeader" | "StockPortfolio" | "StockPortfolioHeader" | "Webhook" | "WebhookInfo";
+export type NexusGenObjectNames = "Order" | "Position" | "Query" | "Snapshot" | "SnapshotHeader" | "StockPortfolio" | "StockPortfolioHeader" | "Webhook" | "WebhookInfo";
 
 export type NexusGenInputNames = "DateTimeFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StringFilter";
 
-export type NexusGenEnumNames = "OrderByArg" | "WebhookType";
+export type NexusGenEnumNames = "OrderByArg" | "OrderSide" | "OrderStatus" | "OrderType" | "WebhookType";
 
 export type NexusGenInterfaceNames = never;
 

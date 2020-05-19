@@ -611,6 +611,7 @@ export interface NexusGenRootTypes {
     name: string; // String!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
+    userId: string; // String!
   }
   StockPortfolioEvent: { // root type
     scheduledEventId: string; // String!
@@ -929,6 +930,7 @@ export interface NexusGenFieldTypes {
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
     user: NexusGenRootTypes['User']; // User!
+    userId: string; // String!
   }
   StockPortfolioEvent: { // field return type
     scheduledEvent: NexusGenRootTypes['ScheduledEvent']; // ScheduledEvent!
