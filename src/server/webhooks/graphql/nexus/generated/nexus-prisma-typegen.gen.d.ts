@@ -278,8 +278,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
 }
     orders: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
 }
     stockPortfolioSettings: {
   filtering: 'stockPortfolioId' | 'enableSnapshots' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
@@ -347,8 +347,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
 }
     Order: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
 }
     Webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
@@ -574,6 +574,7 @@ interface NexusPrismaTypes {
     limitPrice: 'Float'
     stopPrice: 'Float'
     avgFilledPrice: 'Float'
+    timeInForce: 'TimeInForce'
     createdAt: 'DateTime'
     filledAt: 'DateTime'
     cancelledAt: 'DateTime'
