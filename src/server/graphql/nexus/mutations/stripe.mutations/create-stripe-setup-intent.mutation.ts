@@ -5,7 +5,9 @@ import Stripe from "stripe";
 export const createStripeSetupIntent = mutationField("createStripeSetupIntent", {
 	type: "StripeSetupIntent",
 	authorize: (parent, args, { user }) => Boolean(user),
-	resolve: async (parent, args, { prisma, stripe, user }) => {
+	resolve: async (parent, args, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
 		const stripeDetails = await prisma.stripeDetails.findOne({
 			where: { userId: user.id }
 		});
@@ -16,8 +18,8 @@ export const createStripeSetupIntent = mutationField("createStripeSetupIntent", 
 
 		try {
 			stripeCustomer = existingCustomer
-				? await stripe.customers.retrieve(existingCustomer)
-				: await stripe.customers.create({ email: user.email });
+				? await StripeAPI.customers.retrieve(existingCustomer)
+				: await StripeAPI.customers.create({ email: user.email });
 		} catch (err) {
 			throw new UnexpectedError("Stripe customer could not be found");
 		}
@@ -31,7 +33,7 @@ export const createStripeSetupIntent = mutationField("createStripeSetupIntent", 
 			});
 		}
 
-		const setupIntent = await stripe.setupIntents.create({
+		const setupIntent = await StripeAPI.setupIntents.create({
 			customer: stripeCustomer.id
 		});
 

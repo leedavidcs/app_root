@@ -6,7 +6,9 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 	args: {
 		paymentIntentId: stringArg({ nullable: false })
 	},
-	authorize: async (parent, { paymentIntentId }, { prisma, stripe, user }) => {
+	authorize: async (parent, { paymentIntentId }, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
 		if (!user) {
 			return false;
 		}
@@ -20,7 +22,9 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 
 		/** If this transaction is part of a payment, ensure that payment was successful */
 		if (transaction.paymentIntentId) {
-			const paymentIntent = await stripe.paymentIntents.retrieve(transaction.paymentIntentId);
+			const paymentIntent = await StripeAPI.paymentIntents.retrieve(
+				transaction.paymentIntentId
+			);
 
 			if (paymentIntent.status !== "succeeded") {
 				return false;
@@ -29,7 +33,7 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 
 		return transaction.status === "PENDING";
 	},
-	resolve: async (parent, { paymentIntentId }, { prisma, stripe, user }) => {
+	resolve: async (parent, { paymentIntentId }, { prisma, user }) => {
 		const transaction = await prisma.transaction.findOne({ where: { paymentIntentId } });
 
 		/** Should not reach here */

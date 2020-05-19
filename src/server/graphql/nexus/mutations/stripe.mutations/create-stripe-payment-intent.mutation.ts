@@ -38,7 +38,9 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 
 		return Boolean(stripeDetails?.customerId);
 	},
-	resolve: async (parent, { paymentMethodId, orderDetails }, { prisma, stripe, user }) => {
+	resolve: async (parent, { paymentMethodId, orderDetails }, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
 		const stripeDetails = await prisma.stripeDetails.findOne({ where: { userId: user.id } });
 
 		const existingBalance = await prisma.balance.findOne({ where: { userId: user.id } });
@@ -72,7 +74,7 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 		const currency = "usd";
 		const amount: number = StripeUtil.formatAmount(price, currency);
 
-		const paymentIntent = await stripe.paymentIntents.create({
+		const paymentIntent = await StripeAPI.paymentIntents.create({
 			amount,
 			currency,
 			customer: stripeDetails?.customerId,

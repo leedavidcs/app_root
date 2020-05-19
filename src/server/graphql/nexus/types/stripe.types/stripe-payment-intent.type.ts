@@ -10,7 +10,9 @@ export const StripePaymentIntent = objectType({
 		t.int("created", { nullable: false });
 		t.field("payment_method", {
 			type: "StripePaymentMethod",
-			authorize: async ({ id }, args, { prisma, stripe, user }) => {
+			authorize: async ({ id }, args, { dataSources, prisma, user }) => {
+				const { StripeAPI } = dataSources;
+
 				if (!user) {
 					return false;
 				}
@@ -25,12 +27,14 @@ export const StripePaymentIntent = objectType({
 					return false;
 				}
 
-				const paymentIntent = await stripe.paymentIntents.retrieve(id);
+				const paymentIntent = await StripeAPI.paymentIntents.retrieve(id);
 
 				return paymentIntent.customer === customerId;
 			},
-			resolve: async ({ id }, args, { stripe }) => {
-				const paymentIntent = await stripe.paymentIntents.retrieve(id);
+			resolve: async ({ id }, args, { dataSources }) => {
+				const { StripeAPI } = dataSources;
+
+				const paymentIntent = await StripeAPI.paymentIntents.retrieve(id);
 
 				const paymentMethod = paymentIntent.payment_method;
 
@@ -38,7 +42,7 @@ export const StripePaymentIntent = objectType({
 					return paymentMethod;
 				}
 
-				return await stripe.paymentMethods.retrieve(paymentMethod);
+				return await StripeAPI.paymentMethods.retrieve(paymentMethod);
 			}
 		});
 	}

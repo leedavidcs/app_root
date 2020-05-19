@@ -8,12 +8,14 @@ export const cancelStripeSetupIntent = mutationField("cancelStripeSetupIntent", 
 	args: {
 		id: stringArg({ nullable: false })
 	},
-	authorize: async (parent, { id }, { prisma, stripe, user }) => {
+	authorize: async (parent, { id }, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
 		if (!user) {
 			return false;
 		}
 
-		const setupIntent = await stripe.setupIntents.retrieve(id);
+		const setupIntent = await StripeAPI.setupIntents.retrieve(id);
 		const stripeDetails = await prisma.stripeDetails.findOne({ where: { userId: user.id } });
 
 		const customerId: Maybe<string> = stripeDetails?.customerId;
@@ -24,8 +26,10 @@ export const cancelStripeSetupIntent = mutationField("cancelStripeSetupIntent", 
 
 		return setupIntent.customer === customerId;
 	},
-	resolve: async (parent, { id }, { stripe, user }) => {
-		const setupIntent = await stripe.setupIntents.cancel(id);
+	resolve: async (parent, { id }, { dataSources, user }) => {
+		const { StripeAPI } = dataSources;
+
+		const setupIntent = await StripeAPI.setupIntents.cancel(id);
 
 		return setupIntent;
 	}

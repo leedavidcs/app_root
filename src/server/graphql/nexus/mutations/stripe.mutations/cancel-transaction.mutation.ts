@@ -9,7 +9,9 @@ export const cancelTransaction = mutationField("cancelTransaction", {
 	args: {
 		paymentIntentId: stringArg({ nullable: false })
 	},
-	authorize: async (parent, { paymentIntentId }, { prisma, stripe, user }) => {
+	authorize: async (parent, { paymentIntentId }, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
 		/** User is logged-in */
 		if (!user) {
 			return false;
@@ -23,7 +25,7 @@ export const cancelTransaction = mutationField("cancelTransaction", {
 		}
 
 		/** PaymentIntent can be cancelled */
-		const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+		const paymentIntent = await StripeAPI.paymentIntents.retrieve(paymentIntentId);
 		const isPaymentCancellable: boolean =
 			paymentIntent.status === "requires_action" ||
 			paymentIntent.status === "requires_capture" ||
@@ -37,8 +39,10 @@ export const cancelTransaction = mutationField("cancelTransaction", {
 		/** Transaction is one that is not already succeeded */
 		return transaction.status !== "SUCCEEDED";
 	},
-	resolve: async (parent, { paymentIntentId }, { prisma, stripe, user }) => {
-		await stripe.paymentIntents.cancel(paymentIntentId);
+	resolve: async (parent, { paymentIntentId }, { dataSources, prisma, user }) => {
+		const { StripeAPI } = dataSources;
+
+		await StripeAPI.paymentIntents.cancel(paymentIntentId);
 		await prisma.transaction.update({
 			where: { paymentIntentId },
 			data: { status: "FAILED" }
