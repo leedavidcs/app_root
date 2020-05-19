@@ -23,7 +23,7 @@ export const StockPortfolio = objectType({
 		t.field("settings", {
 			type: "StockPortfolioSettings",
 			nullable: false,
-			authorize: ({ id, userId }, args, { prisma, user }) => {
+			authorize: ({ userId }, args, { user }) => {
 				if (!user || user.id !== userId) {
 					return false;
 				}
