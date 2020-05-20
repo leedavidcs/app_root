@@ -153,7 +153,7 @@ type Mutation implements RequestRoot {
   cancelOneOrder(where: OrderWhereUniqueInput!): Order
   cancelStripeSetupIntent(id: String!): StripeSetupIntent
   cancelTransaction(paymentIntentId: String!): Balance
-  createOneOrder(data: OrderCreateInput!): Order
+  createOneOrder(data: OrderCreateInput!): Order!
   createOneStockPortfolio(data: StockPortfolioCreateInput!): StockPortfolio!
   createOneWebhook(data: WebhookCreateInput!): Webhook!
   createStripePaymentIntent(orderDetails: [OrderDetailInput!]!, paymentMethodId: String!): StripePaymentIntent
@@ -263,7 +263,6 @@ input OrderCreateInput {
   limitPrice: Float
   quantity: Int!
   side: OrderSide!
-  status: OrderStatus
   stockPortfolio: StockPortfolioCreateOneWithoutOrderInput!
   stopPrice: Float
   ticker: String!
@@ -618,11 +617,11 @@ input StockDataWhereUniqueInput {
 
 """StockPortfolio entity. This is what gets shown on the data grid"""
 type StockPortfolio {
+  buyingPower: Float!
   createdAt: DateTime!
   headers: [StockPortfolioHeader!]!
   id: String!
   latestSnapshot: Snapshot
-  marketValue: Float!
   name: String!
   settings: StockPortfolioSettings!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
@@ -728,9 +727,9 @@ input StockPortfolioIdTypeCompoundUniqueInput {
 }
 
 input StockPortfolioOrderByInput {
+  buyingPower: OrderByArg
   createdAt: OrderByArg
   id: OrderByArg
-  marketValue: OrderByArg
   name: OrderByArg
   updatedAt: OrderByArg
   userId: OrderByArg
@@ -769,10 +768,10 @@ input StockPortfolioUpdateInput {
 
 input StockPortfolioWhereInput {
   AND: [StockPortfolioWhereInput!]
+  buyingPower: FloatFilter
   createdAt: DateTimeFilter
   id: StringFilter
   LatestSnapshot: LatestSnapshotFilter
-  marketValue: FloatFilter
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
