@@ -2,16 +2,16 @@ import { ValidationResolver } from "react-hook-form";
 import { object, ObjectSchemaDefinition, ValidationError } from "yup";
 
 export const getYupValidationResolver = <TData extends object = any, TContext = {}>(
-	validationSchema: (data: TData, context: TContext) => ObjectSchemaDefinition<TData>
+	validationSchema: (data: TData, context: TContext) => ObjectSchemaDefinition<DeepPartial<TData>>
 ) => {
 	const validationResolver: ValidationResolver<TData, any> = async (
 		data: TData,
 		context: TContext
 	) => {
 		try {
-			const values = await object().shape(validationSchema(data, context)).validate(data, {
-				abortEarly: false
-			});
+			const values = (await object(validationSchema(data, context))
+				.required()
+				.validate(data, { abortEarly: false })) as TData;
 
 			return { values, errors: {} };
 		} catch (errors) {

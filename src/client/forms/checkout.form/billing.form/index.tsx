@@ -39,7 +39,7 @@ interface IProps {
 	onSubmit: () => void;
 }
 
-const validationResolver = getYupValidationResolver(() => ({
+const validationResolver = getYupValidationResolver<IBillingFormData>(() => ({
 	line1: string().required(),
 	cardholder: string().required(),
 	city: string().required(),

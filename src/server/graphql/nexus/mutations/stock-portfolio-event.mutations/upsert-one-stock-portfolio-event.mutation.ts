@@ -45,76 +45,96 @@ export const upsertOneStockPortfolioEvent = mutationField("upsertOneStockPortfol
 		return true;
 	},
 	yupValidation: () => ({
-		create: object().shape({
-			scheduledEvent: object()
-				.required()
-				.shape({
-					create: lazy<any>((value) => {
-						if (typeof value.interval === "number") {
-							return object()
-								.shape({
-									interval: number().required()
-								})
-								.noUnknown();
-						}
+		create: object({
+			scheduledEvent: object({
+				create: lazy<any>((value) => {
+					if (typeof value.interval === "number") {
+						return object({ interval: number().required() }).noUnknown();
+					}
 
-						return object()
-							.shape({
-								recurrence: string<Recurrence>().required(),
-								days: object().when("recurrence", {
-									is: Recurrence.Weekly,
-									then: object()
-										.shape({
-											set: array<Day>().of(string<Day>()).required().min(1)
-										})
-										.required()
-								}),
-								hour: number(),
-								minute: number()
-							})
-							.noUnknown();
-					})
+					return object({
+						recurrence: string()
+							.required()
+							.oneOf<Recurrence>([
+								Recurrence.Daily,
+								Recurrence.Once,
+								Recurrence.Weekly
+							]),
+						days: object().when("recurrence", {
+							is: Recurrence.Weekly,
+							then: object({
+								set: array<Day>()
+									.of(
+										string().oneOf<Day>([
+											Day.Mon,
+											Day.Tues,
+											Day.Wed,
+											Day.Thurs,
+											Day.Fri,
+											Day.Sat,
+											Day.Sun
+										])
+									)
+									.required()
+									.min(1)
+							}).required()
+						}),
+						hour: number(),
+						minute: number()
+					}).noUnknown();
 				})
+			}).required()
 		}),
-		update: object().shape({
-			scheduledEvent: object()
-				.required()
-				.shape({
-					update: lazy<any>((value) => {
-						if (typeof value.interval === "number") {
-							return object()
-								.shape({
-									interval: number().required()
-								})
-								.transform((scheduledEvent) => ({
-									...scheduledEvent,
-									recurrence: null,
-									days: { set: [] },
-									hour: 0,
-									minute: 0
-								}));
-						}
-
-						return object()
-							.shape({
-								recurrence: string<Recurrence>().required(),
-								days: object().when("recurrence", {
-									is: Recurrence.Weekly,
-									then: object()
-										.shape({
-											set: array<Day>().of(string<Day>()).required().min(1)
-										})
-										.required()
-								}),
-								hour: number(),
-								minute: number()
-							})
-							.transform((scheduledEvent) => ({
+		update: object({
+			scheduledEvent: object({
+				update: lazy<any>((value) => {
+					if (typeof value.interval === "number") {
+						return object({ interval: number().required() }).transform(
+							(scheduledEvent) => ({
 								...scheduledEvent,
-								interval: null
-							}));
-					})
+								recurrence: null,
+								days: { set: [] },
+								hour: 0,
+								minute: 0
+							})
+						);
+					}
+
+					return object({
+						recurrence: string()
+							.required()
+							.oneOf<Recurrence>([
+								Recurrence.Daily,
+								Recurrence.Once,
+								Recurrence.Weekly
+							]),
+						days: object().when("recurrence", {
+							is: Recurrence.Weekly,
+							then: object({
+								set: array<Day>()
+									.of(
+										string().oneOf<Day>([
+											Day.Mon,
+											Day.Tues,
+											Day.Wed,
+											Day.Thurs,
+											Day.Fri,
+											Day.Sat,
+											Day.Sun
+										])
+									)
+									.required()
+									.min(1)
+							}).required()
+						}),
+						hour: number(),
+						minute: number()
+					}).transform((scheduledEvent) => ({
+						...scheduledEvent,
+						interval: null
+					}));
 				})
+			}).required()
 		})
 	}),
 	resolve: (parent, { where, create, update }, { prisma, user }) => {
