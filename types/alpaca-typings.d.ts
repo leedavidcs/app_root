@@ -95,12 +95,22 @@ declare module "@alpacahq/alpaca-trade-api" {
 		next_close: string;
 	};
 
+	export type LastQuoteObject = {
+		askprice: number;
+		asksize: number;
+		askexchange: number;
+		bidprice: number;
+		bidsize: number;
+		bidexchange: number;
+		timestamp: number;
+	};
+
 	export type AlpacaConfig = {
 		keyId: string;
 		secretKey: string;
 		paper: boolean;
 		usePolygon: boolean;
-	}
+	};
 
 	export default class Alpaca {
 		constructor(config: AlpacaConfig);
@@ -128,5 +138,7 @@ declare module "@alpacahq/alpaca-trade-api" {
 		public closeAllPositions(): Promise<void>;
 
 		public getClock(): Promise<Clock>;
+
+		public lastQuote(symbol: string): Promise<LastQuoteObject>;
 	}
 }
