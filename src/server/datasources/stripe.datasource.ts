@@ -45,7 +45,7 @@ export class StripeAPI extends DataSource {
 		}
 
 		const rateLimitedFn = ((...params: any) => {
-			return queue.add(() => fn(...params));
+			return queue.add(() => fn.call(this.stripe[resource], ...params));
 		}) as any;
 
 		return rateLimitedFn;
