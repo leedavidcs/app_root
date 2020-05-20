@@ -1,0 +1,75 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "balance",
+      "type": "Balance",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "stripeDetails",
+      "type": "StripeDetails",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "stockPortfolios",
+      "type": "StockPortfolio",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "transactions",
+      "type": "Transaction",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "orders",
+      "type": "Order",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "positions",
+      "type": "Position",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "stockPortfolioEvents",
+      "type": "StockPortfolioEvent",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "snapshots",
+      "type": "Snapshot",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "latestSnapshot",
+      "type": "LatestSnapshot",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "webhooks",
+      "type": "Webhook",
+      "arity": "List"
+    }
+  ]
+}

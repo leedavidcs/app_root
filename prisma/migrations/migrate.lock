@@ -11,3 +11,5 @@
 20200518042708-rename-stock-portfolio-balance-to-market-value
 20200518212647-add-time-in-force-to-order
 20200519184540-change-stock-portfolio-market-value-to-buying-power
+20200520000053-with-dual-side-relations
+20200520014820-remove-unnecessary-types

@@ -119,39 +119,7 @@ export const StockPortfolio = objectType({
 				});
 			}
 		});
-		t.list.field("snapshots", {
-			type: "Snapshot",
-			nullable: false,
-			args: {
-				where: arg({ type: "SnapshotWhereInput" }),
-				orderBy: arg({ type: "SnapshotOrderByInput" }),
-				skip: intArg(),
-				after: arg({ type: "SnapshotWhereUniqueInput" }),
-				before: arg({ type: "SnapshotWhereUniqueInput" }),
-				first: intArg(),
-				last: intArg()
-			},
-			resolve: async (
-				{ id },
-				{ where, orderBy, skip, after, before, first, last },
-				{ prisma }
-			) => {
-				const snapshots = await prisma.snapshot.findMany({
-					where: {
-						...where,
-						stockPortfolioId: id
-					},
-					orderBy,
-					skip,
-					after,
-					before,
-					first,
-					last
-				});
-
-				return snapshots;
-			}
-		});
+		t.model.snapshots({ filtering: true, ordering: true });
 		t.model.createdAt();
 		t.model.updatedAt();
 	}

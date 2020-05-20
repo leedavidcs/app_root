@@ -10,10 +10,18 @@ export const User = objectType({
 		t.model.username();
 		t.field("balance", {
 			type: "Balance",
+			authorize: ({ id }, args, { user }) => {
+				if (!user || user.id !== id) {
+					return false;
+				}
+
+				return true;
+			},
 			resolve: async ({ id }, args, { prisma }) => {
 				return prisma.balance.findOne({ where: { userId: id } });
 			}
 		});
+		t.model.stockPortfolios();
 		t.model.timezone();
 		t.model.createdAt();
 		t.model.updatedAt();
