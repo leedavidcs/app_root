@@ -75,7 +75,12 @@ export const registerLocalUser = mutationField("registerLocalUser", {
 		}
 
 		const newUser: User = await prisma.user.create({
-			data: { email, password, username }
+			data: {
+				email,
+				password,
+				username,
+				balance: { create: {} }
+			}
 		});
 
 		const emailTemplate: string = createEmailHtml(VerifyEmail, {

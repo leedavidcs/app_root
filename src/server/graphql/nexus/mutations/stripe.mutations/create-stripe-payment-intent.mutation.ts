@@ -44,7 +44,7 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 		const stripeDetails = await prisma.stripeDetails.findOne({ where: { userId: user.id } });
 
 		const existingBalance = await prisma.balance.findOne({ where: { userId: user.id } });
-		const creditsBefore: number = existingBalance?.credits ?? 0;
+		const creditsBefore: number = existingBalance!.credits;
 
 		const { price, credits } = orderDetails.reduce(
 			(acc, orderDetail) => {

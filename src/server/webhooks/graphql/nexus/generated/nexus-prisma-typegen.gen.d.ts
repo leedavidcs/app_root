@@ -266,11 +266,11 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt' | 'StockPortfolio' | 'Balance' | 'Transaction' | 'StripeDetails' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'stockPortfolios' | 'transactions' | 'createdAt' | 'updatedAt' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT' | 'balance' | 'stripeDetails'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'Position' | 'Order' | 'Webhook' | 'Snapshot' | 'LatestSnapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+  filtering: 'id' | 'userId' | 'name' | 'orders' | 'positions' | 'stockPortfolioEvents' | 'snapshots' | 'webhooks' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
   ordering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt'
 }
     positions: {
@@ -320,21 +320,13 @@ interface NexusPrismaInputs {
 
   },
     User: {
-    StockPortfolio: {
-  filtering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'Position' | 'Order' | 'Webhook' | 'Snapshot' | 'LatestSnapshot' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings'
+    stockPortfolios: {
+  filtering: 'id' | 'userId' | 'name' | 'orders' | 'positions' | 'stockPortfolioEvents' | 'snapshots' | 'webhooks' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
   ordering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt'
 }
-    Balance: {
-  filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'userId' | 'credits'
-}
-    Transaction: {
+    transactions: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
-}
-    StripeDetails: {
-  filtering: 'userId' | 'customerId' | 'AND' | 'OR' | 'NOT' | 'user'
-  ordering: 'userId' | 'customerId'
 }
     ScheduledEvent: {
   filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
@@ -342,29 +334,25 @@ interface NexusPrismaInputs {
 }
 
   },  StockPortfolio: {
-    Position: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
-}
-    Order: {
+    orders: {
   filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
 }
-    Webhook: {
-  filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
+    positions: {
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
 }
-    Snapshot: {
+    stockPortfolioEvents: {
+  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
+  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
+}
+    snapshots: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
-    LatestSnapshot: {
-  filtering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'snapshot' | 'stockPortfolio'
-  ordering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt'
-}
-    StockPortfolioEvent: {
-  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
-  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
+    webhooks: {
+  filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
 }
 
   },  Position: {
@@ -527,12 +515,12 @@ interface NexusPrismaTypes {
     password: 'String'
     username: 'String'
     timezone: 'String'
+    balance: 'Balance'
+    stripeDetails: 'StripeDetails'
+    stockPortfolios: 'StockPortfolio'
+    transactions: 'Transaction'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    StockPortfolio: 'StockPortfolio'
-    Balance: 'Balance'
-    Transaction: 'Transaction'
-    StripeDetails: 'StripeDetails'
     ScheduledEvent: 'ScheduledEvent'
 
 },  StockPortfolio: {
@@ -543,15 +531,15 @@ interface NexusPrismaTypes {
     headers: 'String'
     tickers: 'String'
     settings: 'StockPortfolioSettings'
+    orders: 'Order'
+    positions: 'Position'
+    stockPortfolioEvents: 'StockPortfolioEvent'
+    snapshots: 'Snapshot'
+    latestSnapshot: 'LatestSnapshot'
+    webhooks: 'Webhook'
     buyingPower: 'Float'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    Position: 'Position'
-    Order: 'Order'
-    Webhook: 'Webhook'
-    Snapshot: 'Snapshot'
-    LatestSnapshot: 'LatestSnapshot'
-    StockPortfolioEvent: 'StockPortfolioEvent'
 
 },  Position: {
     id: 'String'

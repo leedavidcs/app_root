@@ -56,15 +56,10 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 		 * @date April 05, 2020
 		 */
 		const existingBalance = await prisma.balance.findOne({ where: { userId: user.id } });
-		const creditsBefore = Math.max(transaction.creditsBefore, existingBalance?.credits || 0);
 
-		const updatedBalance = await prisma.balance.upsert({
+		const updatedBalance = await prisma.balance.update({
 			where: { userId: user.id },
-			create: {
-				user: { connect: { id: user.id } },
-				credits: transaction.creditsTransacted
-			},
-			update: { credits: creditsBefore + transaction.creditsTransacted }
+			data: { credits: existingBalance!.credits + transaction.creditsTransacted }
 		});
 
 		await prisma.transaction.update({

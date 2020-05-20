@@ -15,12 +15,6 @@ type Balance {
   user: User!
 }
 
-input BalanceFilter {
-  every: BalanceWhereInput
-  none: BalanceWhereInput
-  some: BalanceWhereInput
-}
-
 input BalanceWhereInput {
   AND: [BalanceWhereInput!]
   credits: IntFilter
@@ -772,19 +766,19 @@ input StockPortfolioWhereInput {
   buyingPower: FloatFilter
   createdAt: DateTimeFilter
   id: StringFilter
-  LatestSnapshot: LatestSnapshotFilter
+  latestSnapshot: LatestSnapshotWhereInput
   name: StringFilter
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
-  Order: OrderFilter
-  Position: PositionFilter
+  orders: OrderFilter
+  positions: PositionFilter
   settings: StockPortfolioSettingsWhereInput
-  Snapshot: SnapshotFilter
-  StockPortfolioEvent: StockPortfolioEventFilter
+  snapshots: SnapshotFilter
+  stockPortfolioEvents: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
-  Webhook: WebhookFilter
+  webhooks: WebhookFilter
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -822,12 +816,6 @@ type StripeCard {
   exp_year: Int!
   fingerprint: String
   last4: String!
-}
-
-input StripeDetailsFilter {
-  every: StripeDetailsWhereInput
-  none: StripeDetailsWhereInput
-  some: StripeDetailsWhereInput
 }
 
 input StripeDetailsWhereInput {
@@ -959,7 +947,7 @@ scalar UserPassword
 
 input UserWhereInput {
   AND: [UserWhereInput!]
-  Balance: BalanceFilter
+  balance: BalanceWhereInput
   createdAt: DateTimeFilter
   email: StringFilter
   emailVerified: BooleanFilter
@@ -968,10 +956,10 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   password: StringFilter
   ScheduledEvent: ScheduledEventFilter
-  StockPortfolio: StockPortfolioFilter
-  StripeDetails: StripeDetailsFilter
+  stockPortfolios: StockPortfolioFilter
+  stripeDetails: StripeDetailsWhereInput
   timezone: StringFilter
-  Transaction: TransactionFilter
+  transactions: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }
