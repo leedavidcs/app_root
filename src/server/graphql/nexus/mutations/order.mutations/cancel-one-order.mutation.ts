@@ -31,6 +31,10 @@ export const cancelOneOrder = mutationField("cancelOneOrder", {
 			return false;
 		}
 
+		if (order.status !== OrderStatus.Open) {
+			return false;
+		}
+
 		return true;
 	},
 	resolve: (parent, { where }, { prisma }) => {

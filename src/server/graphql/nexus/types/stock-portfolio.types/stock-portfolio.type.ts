@@ -85,6 +85,40 @@ export const StockPortfolio = objectType({
 				return latestSnapshot?.snapshot ?? null;
 			}
 		});
+		t.list.field("orders", {
+			type: "Order",
+			nullable: false,
+			args: {
+				where: arg({ type: "OrderWhereInput" }),
+				orderBy: arg({ type: "OrderOrderByInput" }),
+				skip: intArg(),
+				after: arg({ type: "OrderWhereUniqueInput" }),
+				before: arg({ type: "OrderWhereUniqueInput" }),
+				first: intArg(),
+				last: intArg()
+			},
+			resolve: async (
+				{ id },
+				{ where, orderBy, skip, after, before, first, last },
+				{ prisma, user }
+			) => {
+				return await prisma.order.findMany({
+					where: {
+						...where,
+						stockPortfolio: {
+							...where?.stockPortfolio,
+							id
+						}
+					},
+					orderBy,
+					skip,
+					after,
+					before,
+					first,
+					last
+				});
+			}
+		});
 		t.list.field("snapshots", {
 			type: "Snapshot",
 			nullable: false,

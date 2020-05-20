@@ -623,6 +623,7 @@ type StockPortfolio {
   id: String!
   latestSnapshot: Snapshot
   name: String!
+  orders(after: OrderWhereUniqueInput, before: OrderWhereUniqueInput, first: Int, last: Int, orderBy: OrderOrderByInput, skip: Int, where: OrderWhereInput): [Order!]!
   settings: StockPortfolioSettings!
   snapshots(after: SnapshotWhereUniqueInput, before: SnapshotWhereUniqueInput, first: Int, last: Int, orderBy: SnapshotOrderByInput, skip: Int, where: SnapshotWhereInput): [Snapshot!]!
 

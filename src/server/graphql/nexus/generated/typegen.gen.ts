@@ -962,6 +962,7 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     latestSnapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
     name: string; // String!
+    orders: NexusGenRootTypes['Order'][]; // [Order!]!
     settings: NexusGenRootTypes['StockPortfolioSettings']; // StockPortfolioSettings!
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
     stockData: NexusGenRootTypes['StockData']; // StockData!
@@ -1220,6 +1221,15 @@ export interface NexusGenArgTypes {
     }
   }
   StockPortfolio: {
+    orders: { // args
+      after?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
+      before?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['OrderOrderByInput'] | null; // OrderOrderByInput
+      skip?: number | null; // Int
+      where?: NexusGenInputs['OrderWhereInput'] | null; // OrderWhereInput
+    }
     snapshots: { // args
       after?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput
       before?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput
