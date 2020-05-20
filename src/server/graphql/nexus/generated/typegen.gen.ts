@@ -145,7 +145,6 @@ export interface NexusGenInputs {
     limitPrice?: number | null; // Float
     quantity: number; // Int!
     side: NexusGenEnums['OrderSide']; // OrderSide!
-    status?: NexusGenEnums['OrderStatus'] | null; // OrderStatus
     stockPortfolio: NexusGenInputs['StockPortfolioCreateOneWithoutOrderInput']; // StockPortfolioCreateOneWithoutOrderInput!
     stopPrice?: number | null; // Float
     ticker: string; // String!
@@ -354,9 +353,9 @@ export interface NexusGenInputs {
     type: NexusGenEnums['StockPortfolioEventType']; // StockPortfolioEventType!
   }
   StockPortfolioOrderByInput: { // input type
+    buyingPower?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     id?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    marketValue?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     name?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     updatedAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
     userId?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
@@ -382,10 +381,10 @@ export interface NexusGenInputs {
   }
   StockPortfolioWhereInput: { // input type
     AND?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
+    buyingPower?: NexusGenInputs['FloatFilter'] | null; // FloatFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     LatestSnapshot?: NexusGenInputs['LatestSnapshotFilter'] | null; // LatestSnapshotFilter
-    marketValue?: NexusGenInputs['FloatFilter'] | null; // FloatFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
     OR?: NexusGenInputs['StockPortfolioWhereInput'][] | null; // [StockPortfolioWhereInput!]
@@ -637,9 +636,9 @@ export interface NexusGenRootTypes {
     symbol: string; // String!
   }
   StockPortfolio: { // root type
+    buyingPower: number; // Float!
     createdAt: any; // DateTime!
     id: string; // String!
-    marketValue: number; // Float!
     name: string; // String!
     tickers: string[]; // [String!]!
     updatedAt: any; // DateTime!
@@ -834,7 +833,7 @@ export interface NexusGenFieldTypes {
     cancelOneOrder: NexusGenRootTypes['Order'] | null; // Order
     cancelStripeSetupIntent: NexusGenRootTypes['StripeSetupIntent'] | null; // StripeSetupIntent
     cancelTransaction: NexusGenRootTypes['Balance'] | null; // Balance
-    createOneOrder: NexusGenRootTypes['Order'] | null; // Order
+    createOneOrder: NexusGenRootTypes['Order']; // Order!
     createOneStockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
     createOneWebhook: NexusGenRootTypes['Webhook']; // Webhook!
     createStripePaymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
@@ -957,12 +956,13 @@ export interface NexusGenFieldTypes {
     symbol: string; // String!
   }
   StockPortfolio: { // field return type
+    buyingPower: number; // Float!
     createdAt: any; // DateTime!
     headers: NexusGenRootTypes['StockPortfolioHeader'][]; // [StockPortfolioHeader!]!
     id: string; // String!
     latestSnapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
-    marketValue: number; // Float!
     name: string; // String!
+    orders: NexusGenRootTypes['Order'][]; // [Order!]!
     settings: NexusGenRootTypes['StockPortfolioSettings']; // StockPortfolioSettings!
     snapshots: NexusGenRootTypes['Snapshot'][]; // [Snapshot!]!
     stockData: NexusGenRootTypes['StockData']; // StockData!
@@ -1221,6 +1221,15 @@ export interface NexusGenArgTypes {
     }
   }
   StockPortfolio: {
+    orders: { // args
+      after?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
+      before?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['OrderOrderByInput'] | null; // OrderOrderByInput
+      skip?: number | null; // Int
+      where?: NexusGenInputs['OrderWhereInput'] | null; // OrderWhereInput
+    }
     snapshots: { // args
       after?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput
       before?: NexusGenInputs['SnapshotWhereUniqueInput'] | null; // SnapshotWhereUniqueInput

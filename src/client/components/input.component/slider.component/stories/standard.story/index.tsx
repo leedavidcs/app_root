@@ -12,7 +12,7 @@ interface IFormData {
 	story_slider: number;
 }
 
-const validationResolver = getYupValidationResolver(() => ({
+const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	story_slider: number().required().max(MAX_ALLOWED_VALUE)
 }));
 

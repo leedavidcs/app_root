@@ -53,7 +53,17 @@ const validationResolver = getYupValidationResolver<IFormData>((data) => {
 			}
 		}) as StringSchema<Recurrence>,
 		days: array()
-			.of(string<Day>())
+			.of(
+				string().oneOf<Day>([
+					Day.Mon,
+					Day.Tues,
+					Day.Wed,
+					Day.Thurs,
+					Day.Fri,
+					Day.Sat,
+					Day.Sun
+				])
+			)
 			.test({
 				message: "Must specify at least 1 day",
 				test: (value) => {

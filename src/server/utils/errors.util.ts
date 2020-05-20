@@ -6,6 +6,12 @@ export class AuthorizationError extends ApolloError {
 	}
 }
 
+export class BadRequestError extends ApolloError {
+	constructor(message = "This operation will not be processed.") {
+		super(message, "BAD_REQUEST");
+	}
+}
+
 export class BadInputError extends ApolloError {
 	constructor(message = "This operation contains invalid arguments.") {
 		super(message, "BAD_REQUEST");

@@ -81,12 +81,10 @@ export const yupValidationPlugin = () => {
 
 				let values: typeof args;
 
-				const yupSchema = object().shape(objectSchemaDef);
+				const yupSchema = object(objectSchemaDef);
 
 				try {
-					values = await yupSchema.validate(args, {
-						abortEarly: false
-					});
+					values = await yupSchema.validate(args, { abortEarly: false });
 				} catch (errors) {
 					if (!(errors instanceof ValidationError)) {
 						throw errors;

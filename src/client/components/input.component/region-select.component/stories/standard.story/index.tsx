@@ -10,7 +10,7 @@ interface IFormData {
 	state: string;
 }
 
-const validationResolver = getYupValidationResolver(() => ({
+const validationResolver = getYupValidationResolver<IFormData>(() => ({
 	state: string().required()
 }));
 

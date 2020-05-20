@@ -31,13 +31,14 @@ const mockData: readonly IMockData[] = range(DATA_SIZE).map(() => {
 const TypedFormMultiSelect = FormMultiSelect.ofType<IMockData>();
 
 const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	demo: array()
+	demo: array<IMockData>()
 		.of(
-			object().shape<IMockData>({
-				key: string(),
-				uuid: string()
-			})
+			object({
+				key: string().required(),
+				uuid: string().required()
+			}).required()
 		)
+		.required()
 		.min(MIN_LENGTH, "Must select at least 5 items")
 }));
 

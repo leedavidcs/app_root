@@ -28,13 +28,30 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 		usePolygon: false
 	});
 
-	public getClock = () =>
-		queue
-			.add(() => this.alpaca.getClock())
-			.then(({ timestamp, is_open, next_open, next_close }) => ({
-				timestamp: new Date(timestamp),
-				is_open,
-				next_open: new Date(next_open),
-				next_close: new Date(next_close)
-			}));
+	private withRateLimit<TParams extends any[], TResult, TTransform = TResult>(
+		fn: (...params: TParams) => Promise<TResult>,
+		transform?: (result: TResult) => MaybePromise<TTransform>
+	) {
+		return (...params: TParams) =>
+			queue.add(() =>
+				fn.call(this.alpaca, ...params).then((result) => {
+					return transform ? transform(result) : result;
+				})
+			);
+	}
+
+	public getClock = this.withRateLimit(
+		this.alpaca.getClock,
+		({ timestamp, is_open, next_open, next_close }) => ({
+			timestamp: new Date(timestamp),
+			is_open,
+			next_open: new Date(next_open),
+			next_close: new Date(next_close)
+		})
+	);
+
+	public lastQuote = this.withRateLimit(this.alpaca.lastQuote, ({ timestamp, ...restProps }) => ({
+		timestamp: new Date(timestamp),
+		...restProps
+	}));
 }

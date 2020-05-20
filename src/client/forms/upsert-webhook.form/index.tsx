@@ -43,7 +43,8 @@ const validationResolver = getYupValidationResolver<IFormData>(() => ({
 			test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
 		}),
 	secret: string(),
-	type: string<WebhookType>()
+	type: string()
+		.oneOf<WebhookType>([WebhookType.StockDataRetrieved])
 		.required("Type is required")
 		.test({
 			message: "Type is invalid",
