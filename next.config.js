@@ -5,7 +5,7 @@ const path = require("path");
 const enhance = bundleAnalyzer({ enabled: process.env.BUNDLE_ANALYZE === "true" });
 
 const config = {
-	target: "serverless",
+	target: "experimental-serverless-trace",
 	env: {
 		PROJECT_DIRNAME: __dirname,
 		BRAND_NAME: process.env.BRAND_NAME,
