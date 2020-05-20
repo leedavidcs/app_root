@@ -19,7 +19,7 @@ export const StockPortfolio = objectType({
 		t.model.user();
 		t.model.userId();
 		t.model.name();
-		t.model.marketValue();
+		t.model.buyingPower();
 		t.field("settings", {
 			type: "StockPortfolioSettings",
 			nullable: false,
