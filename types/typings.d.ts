@@ -22,3 +22,6 @@ declare type DeepPartial<T> = {
 };
 
 declare type MaybePromise<T> = Promise<T> | T;
+
+declare type UnPromise<T> = T extends Promise<infer U> ? U : T;
+declare type UnArray<T> = T extends (infer U)[] ? U : T;
