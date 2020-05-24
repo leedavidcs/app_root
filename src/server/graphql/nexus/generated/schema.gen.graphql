@@ -81,6 +81,12 @@ A field whose value conforms to the standard internet email address format as sp
 """
 scalar EmailAddress
 
+type ExecuteOrder {
+  buyOrders: Int!
+  deleteInvalidOrders: Int!
+  startTime: DateTime!
+}
+
 type FeaturePricing {
   snapshot: FeaturePricingConfig!
 }
@@ -771,14 +777,14 @@ input StockPortfolioWhereInput {
   NOT: [StockPortfolioWhereInput!]
   OR: [StockPortfolioWhereInput!]
   orders: OrderFilter
-  positions: PositionFilter
+  Position: PositionFilter
   settings: StockPortfolioSettingsWhereInput
   snapshots: SnapshotFilter
-  stockPortfolioEvents: StockPortfolioEventFilter
+  StockPortfolioEvent: StockPortfolioEventFilter
   updatedAt: DateTimeFilter
   user: UserWhereInput
   userId: StringFilter
-  webhooks: WebhookFilter
+  Webhook: WebhookFilter
 }
 
 input StockPortfolioWhereUniqueInput {
@@ -932,6 +938,7 @@ type User {
   email: EmailAddress!
   emailVerified: Boolean!
   id: String!
+  stockPortfolios(after: StockPortfolioWhereUniqueInput, before: StockPortfolioWhereUniqueInput, first: Int, last: Int, skip: Int): [StockPortfolio!]!
   timezone: String!
   updatedAt: DateTime!
   username: String!
@@ -959,7 +966,7 @@ input UserWhereInput {
   stockPortfolios: StockPortfolioFilter
   stripeDetails: StripeDetailsWhereInput
   timezone: StringFilter
-  transactions: TransactionFilter
+  Transaction: TransactionFilter
   updatedAt: DateTimeFilter
   username: StringFilter
 }

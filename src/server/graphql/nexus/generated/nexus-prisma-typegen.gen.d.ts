@@ -266,11 +266,11 @@ interface ModelTypes {
 interface NexusPrismaInputs {
   Query: {
     users: {
-  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'stockPortfolios' | 'transactions' | 'createdAt' | 'updatedAt' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT' | 'balance' | 'stripeDetails'
+  filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'stockPortfolios' | 'createdAt' | 'updatedAt' | 'Transaction' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT' | 'balance' | 'stripeDetails'
   ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
 }
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'orders' | 'positions' | 'stockPortfolioEvents' | 'snapshots' | 'webhooks' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
+  filtering: 'id' | 'userId' | 'name' | 'snapshots' | 'orders' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'Position' | 'Webhook' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
   ordering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt'
 }
     positions: {
@@ -278,8 +278,8 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
 }
     orders: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'filledQuantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'filledQuantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
 }
     stockPortfolioSettings: {
   filtering: 'stockPortfolioId' | 'enableSnapshots' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
@@ -321,10 +321,10 @@ interface NexusPrismaInputs {
   },
     User: {
     stockPortfolios: {
-  filtering: 'id' | 'userId' | 'name' | 'orders' | 'positions' | 'stockPortfolioEvents' | 'snapshots' | 'webhooks' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
+  filtering: 'id' | 'userId' | 'name' | 'snapshots' | 'orders' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'Position' | 'Webhook' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
   ordering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt'
 }
-    transactions: {
+    Transaction: {
   filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
@@ -334,25 +334,25 @@ interface NexusPrismaInputs {
 }
 
   },  StockPortfolio: {
-    orders: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
-}
-    positions: {
-  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
-  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
-}
-    stockPortfolioEvents: {
-  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
-  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
-}
     snapshots: {
   filtering: 'id' | 'stockPortfolioId' | 'createdAt' | 'LatestSnapshot' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'createdAt'
 }
-    webhooks: {
+    orders: {
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'filledQuantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'filledQuantity' | 'type' | 'side' | 'status' | 'limitPrice' | 'stopPrice' | 'avgFilledPrice' | 'timeInForce' | 'createdAt' | 'filledAt' | 'cancelledAt' | 'failedAt'
+}
+    Position: {
+  filtering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
+  ordering: 'id' | 'stockPortfolioId' | 'ticker' | 'quantity' | 'avgEntryPrice' | 'costBasis'
+}
+    Webhook: {
   filtering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt' | 'AND' | 'OR' | 'NOT' | 'stockPortfolio'
   ordering: 'id' | 'stockPortfolioId' | 'query' | 'secret' | 'type' | 'url' | 'timeout' | 'createdAt'
+}
+    StockPortfolioEvent: {
+  filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
+  ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
 }
 
   },  Position: {
@@ -518,9 +518,9 @@ interface NexusPrismaTypes {
     balance: 'Balance'
     stripeDetails: 'StripeDetails'
     stockPortfolios: 'StockPortfolio'
-    transactions: 'Transaction'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
+    Transaction: 'Transaction'
     ScheduledEvent: 'ScheduledEvent'
 
 },  StockPortfolio: {
@@ -531,15 +531,15 @@ interface NexusPrismaTypes {
     headers: 'String'
     tickers: 'String'
     settings: 'StockPortfolioSettings'
-    orders: 'Order'
-    positions: 'Position'
-    stockPortfolioEvents: 'StockPortfolioEvent'
     snapshots: 'Snapshot'
+    orders: 'Order'
     latestSnapshot: 'LatestSnapshot'
-    webhooks: 'Webhook'
     buyingPower: 'Float'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
+    Position: 'Position'
+    Webhook: 'Webhook'
+    StockPortfolioEvent: 'StockPortfolioEvent'
 
 },  Position: {
     id: 'String'
@@ -556,6 +556,7 @@ interface NexusPrismaTypes {
     stockPortfolioId: 'String'
     ticker: 'String'
     quantity: 'Int'
+    filledQuantity: 'Int'
     type: 'OrderType'
     side: 'OrderSide'
     status: 'OrderStatus'
