@@ -105,6 +105,23 @@ declare module "@alpacahq/alpaca-trade-api" {
 		timestamp: number;
 	};
 
+	export type LastTradeObject = {
+		price: number;
+		size: number;
+		exchange: number;
+		cond1: number;
+		cond2: number;
+		cond3: number;
+		cond4: number;
+		timestamp: number;
+	};
+
+	export type LastResponseObject<TLast extends Record<string, any>> = {
+		status: string;
+		symbol: string;
+		last: TLast;
+	};
+
 	export type AlpacaConfig = {
 		keyId: string;
 		secretKey: string;
@@ -139,6 +156,8 @@ declare module "@alpacahq/alpaca-trade-api" {
 
 		public getClock(): Promise<Clock>;
 
-		public lastQuote(symbol: string): Promise<LastQuoteObject>;
+		public lastQuote(symbol: string): Promise<LastResponseObject<LastQuoteObject>>;
+
+		public lastTrade(symbol: string): Promise<LastResponseObject<LastTradeObject>>;
 	}
 }
