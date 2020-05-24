@@ -1,9 +1,9 @@
 import { useModule } from "@/client/hooks";
 import { HttpLink } from "@apollo/client";
+import { introspectSchema } from "@graphql-tools/wrap";
 import classnames from "classnames";
 import { FetcherParams, FetcherResult } from "graphiql/dist/components/GraphiQL";
 import { GraphQLError, GraphQLSchema, parse, validate } from "graphql";
-import { introspectSchema } from "graphql-tools";
 import React, {
 	CSSProperties,
 	FC,
