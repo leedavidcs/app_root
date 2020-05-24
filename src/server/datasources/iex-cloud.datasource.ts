@@ -43,7 +43,7 @@ type IexResultsMap = { [P in IexType]: UnPromise<ReturnType<Stock[P]>> };
 type IexSelect<T extends IexType> = Partial<{ [P in T]: boolean | null | undefined }>;
 
 interface ISymbolsParams<TTickers extends string, TSelect extends IexType> {
-	symbols: TTickers[];
+	symbols: readonly TTickers[];
 	select: IexSelect<TSelect>;
 	options?: Partial<ISymbolsOptions>;
 }
@@ -78,9 +78,13 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	/** Ensure that data can be retrieved for given symbols */
 	public async areSymbolsValid(symbols: readonly string[]) {
 		try {
-			const result = await this.symbols(symbols, { price: true }, { mock: true });
+			const result = await this.symbols({
+				symbols,
+				select: { price: true },
+				options: { mock: true }
+			});
 
-			return Boolean(result);
+			return Object.keys(result).length === symbols.length;
 		} catch (err) {
 			return false;
 		}
