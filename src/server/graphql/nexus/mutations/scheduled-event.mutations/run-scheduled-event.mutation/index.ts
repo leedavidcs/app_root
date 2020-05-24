@@ -120,14 +120,8 @@ export const getNextScheduledTime = (
 export const RunScheduledEvent = objectType({
 	name: "RunScheduledEvent",
 	definition: (t) => {
-		t.list.field("scheduledEvents", {
-			type: "ScheduledEvent",
-			nullable: false
-		});
-		t.field("startTime", {
-			type: "DateTime",
-			nullable: false
-		});
+		t.list.field("scheduledEvents", { type: "ScheduledEvent", nullable: false });
+		t.field("startTime", { type: "DateTime", nullable: false });
 		t.list.field("stockDataRetrieved", {
 			type: "StockPortfolioEvent",
 			nullable: false,
@@ -135,6 +129,7 @@ export const RunScheduledEvent = objectType({
 				Retrieves stock-data for stock-portfolios that have polling configured, and
 				generates snapshots for each one.
 			`,
+			authorize: (parent, args, { isEasyCron }) => isEasyCron(),
 			resolve: async ({ scheduledEvents }, args, { dataSources, prisma }) => {
 				const { IexCloudAPI } = dataSources;
 

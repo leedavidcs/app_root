@@ -80,7 +80,11 @@ const getDataKeyOptions = async () => {
 		{} as Record<IexType, boolean>
 	);
 
-	const results = await iexCloudApi.symbols([ticker], types, { mock: true });
+	const results = await iexCloudApi.symbols({
+		symbols: [ticker],
+		select: types,
+		options: { mock: true }
+	});
 
 	if (!results[ticker]) {
 		return [];
