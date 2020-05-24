@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -43,7 +43,6 @@ model StockPortfolio {
   tickers        String[]
   settings       StockPortfolioSettings
   snapshots      Snapshot[]
-  orders         Order[]
   latestSnapshot LatestSnapshot?
   buyingPower    Float                  @default(0)
   createdAt      DateTime               @default(now())
