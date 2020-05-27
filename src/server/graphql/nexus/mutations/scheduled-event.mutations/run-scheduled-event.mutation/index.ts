@@ -4,6 +4,7 @@ import { add, getDay, isAfter, isBefore, set, setDay } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 import { isFinite, isNil } from "lodash";
 
+export * from "./close-expired-orders.field";
 export * from "./delete-invalid-orders.field";
 export * from "./execute-open-orders.field";
 export * from "./stock-data-retrieved.field";
