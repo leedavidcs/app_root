@@ -11,7 +11,7 @@ import {
 	TimeInForce
 } from "@prisma/client";
 import { settleAll } from "blend-promise-utils";
-import { maxTime } from "date-fns";
+import { maxTime } from "date-fns/constants";
 import sql from "sql-template-tag";
 
 const EXECUTE_OPEN_ORDERS_ID = "OrderEventExecuteOpenOrders";
