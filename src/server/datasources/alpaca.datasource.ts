@@ -2,7 +2,7 @@ import { IServerContextWithUser } from "@/server/graphql";
 import Alpaca from "@alpacahq/alpaca-trade-api";
 import { DataSource } from "apollo-datasource";
 import { immediate } from "blend-promise-utils";
-import { set, subDays } from "date-fns";
+import { set, startOfToday, subDays } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { upperCase } from "lodash";
 import ms from "ms";
@@ -94,16 +94,36 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 		(symbol) => [upperCase(symbol)]
 	);
 
+	public get todayRegularTradingHours(): [Date, Date] {
+		const today: Date = startOfToday();
+
+		const utc0930: Date = set(today, {
+			hours: 9,
+			minutes: 30
+		});
+
+		const utc1600: Date = set(today, {
+			hours: 16,
+			minutes: 0
+		});
+
+		const et0930: Date = utcToZonedTime(utc0930, "America/New_York");
+		const et1600: Date = utcToZonedTime(utc1600, "America/New_York");
+
+		return [et0930, et1600];
+	}
+
 	/**
 	 * @description Today [09:28ET, 19:00ET] - This is when executable OPG orders should be
 	 *     executed (Orders created in `this.executableOpgOrderTimeRange`)
 	 */
 	public get todayOpgRejectTimeRange(): [Date, Date] {
-		const today: Date = new Date();
+		const today: Date = startOfToday();
 
 		const utc0928: Date = set(today, {
 			hours: 9,
-			minutes: 28
+			minutes: 28,
+			seconds: 0
 		});
 
 		const utc1900: Date = set(today, {
@@ -122,7 +142,7 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 	 *     executed (Orders created in `this.executableClsOrderTimeRange`)
 	 */
 	public get todayClsRejectTimeRange(): [Date, Date] {
-		const today: Date = new Date();
+		const today: Date = startOfToday();
 
 		const utc1550: Date = set(today, {
 			hours: 15,
@@ -142,7 +162,7 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 
 	/**
 	 * @description [Yesterday 19:00ET, Today 09:28ET] - Orders created in this time  should be
-	 *     executed during t he time range given by `this.todayOpgRejectTimeRange`
+	 *     executed during the time range given by `this.todayOpgRejectTimeRange`
 	 */
 	public get executableOpgOrderTimeRange(): [Date, Date] {
 		const [start, end] = this.todayOpgRejectTimeRange;
