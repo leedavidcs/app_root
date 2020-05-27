@@ -146,7 +146,7 @@ const isOrderExecutable = (order: Order, priceInfo?: Maybe<IPriceInfo>): boolean
 	}
 };
 
-const _executeOrders = async (
+const executeOrders = async (
 	where: OrderWhereInput,
 	context: IServerContextWithUser
 ): Promise<number> => {
@@ -247,7 +247,7 @@ const handleOpgOrders = async (context: IServerContextWithUser): Promise<number>
 		return 0;
 	}
 
-	const executed: number = await _executeOrders(
+	const executed: number = await executeOrders(
 		{
 			timeInForce: TimeInForce.OPG,
 			status: OrderStatus.Open,
@@ -275,7 +275,7 @@ const handleClsOrders = async (context: IServerContextWithUser): Promise<number>
 		return 0;
 	}
 
-	const executed: number = await _executeOrders(
+	const executed: number = await executeOrders(
 		{
 			timeInForce: TimeInForce.CLS,
 			status: OrderStatus.Open,
@@ -300,7 +300,7 @@ const handleRegularOrders = async (context: IServerContextWithUser): Promise<num
 		return 0;
 	}
 
-	const executed: number = await _executeOrders(
+	const executed: number = await executeOrders(
 		{
 			timeInForce: { notIn: [TimeInForce.CLS, TimeInForce.OPG] },
 			status: OrderStatus.Open
@@ -311,11 +311,10 @@ const handleRegularOrders = async (context: IServerContextWithUser): Promise<num
 	return executed;
 };
 
-export const executeOrders = extendType({
+export const executeOpenOrders = extendType({
 	type: "RunScheduledEvent",
 	definition: (t) => {
-		t.field("executeOrders", {
-			type: "Int",
+		t.int("executeOpenOrders", {
 			nullable: true,
 			resolve: async ({ scheduledEvents }, args, context) => {
 				const { prisma } = context;
