@@ -14,7 +14,7 @@ import { settleAll } from "blend-promise-utils";
 import { maxTime } from "date-fns";
 import sql from "sql-template-tag";
 
-const EXECUTE_ORDERS_ID = "OrderEventExecuteOrders";
+const EXECUTE_OPEN_ORDERS_ID = "OrderEventExecuteOpenOrders";
 
 const DEFAULT_ASK_PRICE = 0;
 const DOLLAR_SIGFIG = 4;
@@ -320,7 +320,7 @@ export const executeOpenOrders = extendType({
 				const { prisma } = context;
 
 				const event = await prisma.orderEvent.findOne({
-					where: { type: OrderEventType.ExecuteOrders }
+					where: { type: OrderEventType.ExecuteOpenOrders }
 				});
 
 				if (!event) {
@@ -330,10 +330,10 @@ export const executeOpenOrders = extendType({
 					 */
 					await prisma.orderEvent.create({
 						data: {
-							type: OrderEventType.ExecuteOrders,
+							type: OrderEventType.ExecuteOpenOrders,
 							scheduledEvent: {
 								create: {
-									id: EXECUTE_ORDERS_ID,
+									id: EXECUTE_OPEN_ORDERS_ID,
 									interval: 1
 								}
 							}
@@ -341,7 +341,7 @@ export const executeOpenOrders = extendType({
 					});
 				}
 
-				const didTrigger = scheduledEvents.some(({ id }) => id === EXECUTE_ORDERS_ID);
+				const didTrigger = scheduledEvents.some(({ id }) => id === EXECUTE_OPEN_ORDERS_ID);
 
 				if (!didTrigger) {
 					return 0;
