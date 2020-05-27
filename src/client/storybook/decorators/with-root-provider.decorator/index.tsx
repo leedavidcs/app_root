@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import React, { ReactElement } from "react";
 import { MockNextRouter } from "./mock-next-router.component";
 
-const stripePublishable: string = process.env.STORYBOOK_STRIPE_PUBLISHABLE || "";
+const stripePublishable: string = process.env.STRIPE_PUBLISHABLE || "";
 const stripePromise = loadStripe(stripePublishable);
 
 export const withRootProvider: DecoratorFunction<ReactElement> = (getStory) => {
