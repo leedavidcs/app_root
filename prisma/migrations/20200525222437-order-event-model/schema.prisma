@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -197,18 +197,15 @@ enum Recurrence {
 }
 
 model ScheduledEvent {
-  id         String      @id @default(cuid())
-  // The user that created this scheduled-event (uses their timezone data). If no user, then the
-  // scheduled-event is a system-event, and should be executed in timezone = America/Los_Angeles
-  user       User?       @relation(fields: [userId], references: [id])
-  userId     String?
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
   recurrence Recurrence?
   days       Day[]
-  hour       Int         @default(0)
-  minute     Int         @default(0)
-  // Interval in minutes for min time till next execution
+  hour       Int      @default(0)
+  minute     Int      @default(0)
   interval   Int?
-  next       DateTime    @default(now())
+  next       DateTime @default(now())
 }
 
 enum StockPortfolioEventType {
