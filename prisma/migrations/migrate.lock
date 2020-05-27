@@ -14,3 +14,5 @@
 20200520182926-add-orders-to-stock-portfolio
 20200525222437-order-event-model
 20200526200118-optional-user-on-scheduled-events
+20200527002302-update-order-event-type-enum
+20200527003215-update-order-event-type-enum
