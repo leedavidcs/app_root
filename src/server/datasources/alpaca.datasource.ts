@@ -3,7 +3,7 @@ import Alpaca from "@alpacahq/alpaca-trade-api";
 import { DataSource } from "apollo-datasource";
 import { immediate } from "blend-promise-utils";
 import { set, startOfToday, subDays } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { zonedTimeToUtc } from "date-fns-tz";
 import { upperCase } from "lodash";
 import ms from "ms";
 import PQueue from "p-queue";
@@ -107,8 +107,8 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 			minutes: 0
 		});
 
-		const et0930: Date = utcToZonedTime(utc0930, "America/New_York");
-		const et1600: Date = utcToZonedTime(utc1600, "America/New_York");
+		const et0930: Date = zonedTimeToUtc(utc0930, "America/New_York");
+		const et1600: Date = zonedTimeToUtc(utc1600, "America/New_York");
 
 		return [et0930, et1600];
 	}
@@ -131,8 +131,8 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 			minutes: 0
 		});
 
-		const et0928: Date = utcToZonedTime(utc0928, "America/New_York");
-		const et1900: Date = utcToZonedTime(utc1900, "America/New_York");
+		const et0928: Date = zonedTimeToUtc(utc0928, "America/New_York");
+		const et1900: Date = zonedTimeToUtc(utc1900, "America/New_York");
 
 		return [et0928, et1900];
 	}
@@ -154,8 +154,8 @@ export class AlpacaAPI extends DataSource<IServerContextWithUser> {
 			minutes: 0
 		});
 
-		const et1550: Date = utcToZonedTime(utc1550, "America/New_York");
-		const et1900: Date = utcToZonedTime(utc1900, "America/New_York");
+		const et1550: Date = zonedTimeToUtc(utc1550, "America/New_York");
+		const et1900: Date = zonedTimeToUtc(utc1900, "America/New_York");
 
 		return [et1550, et1900];
 	}
