@@ -1,7 +1,7 @@
 import { mutationField, objectType } from "@nexus/schema";
 import { Day, Recurrence, ScheduledEvent, User } from "@prisma/client";
 import { add, getDay, isAfter, isBefore, set, setDay } from "date-fns";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { zonedTimeToUtc } from "date-fns-tz";
 import { isFinite, isNil } from "lodash";
 
 export * from "./delete-invalid-orders.field";
@@ -115,10 +115,10 @@ export const getNextScheduledTime = (
 			return null;
 	}
 
-	const zonedNewTime: Date = utcToZonedTime(newTime, timezone);
+	newTime = zonedTimeToUtc(newTime, timezone);
 
-	if (isBefore(zonedNewTime, prevTime)) {
-		newTime = add(zonedNewTime, { days: 1 });
+	if (isBefore(newTime, prevTime)) {
+		newTime = add(newTime, { days: 1 });
 	}
 
 	newTime = zonedTimeToUtc(newTime, timezone);
