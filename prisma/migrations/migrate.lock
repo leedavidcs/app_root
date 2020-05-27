@@ -1,7 +1,4 @@
-# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
-# INSTEAD EXECUTE `prisma migrate fix`
 # Prisma Migrate lockfile v1
-# Read more about conflict resolution here: TODO
 
 20200513005053-re-init-migrate
 20200513005351-with-query-on-webhook
@@ -13,3 +10,10 @@
 20200519184540-change-stock-portfolio-market-value-to-buying-power
 20200520000053-with-dual-side-relations
 20200520014820-remove-unnecessary-types
+20200520180755-add-filled-quantity-to-order
+20200520182926-add-orders-to-stock-portfolio
+20200525222437-order-event-model
+20200526200118-optional-user-on-scheduled-events
+20200527002302-update-order-event-type-enum
+20200527003215-update-order-event-type-enum
+20200527004402-update-order-event-type-enum

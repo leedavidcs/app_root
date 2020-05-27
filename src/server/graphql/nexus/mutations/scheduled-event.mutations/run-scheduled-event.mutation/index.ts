@@ -1,13 +1,13 @@
-import { Logger } from "@/server/utils";
 import { mutationField, objectType } from "@nexus/schema";
 import { Day, Recurrence, ScheduledEvent, User } from "@prisma/client";
-import { mapLimit } from "blend-promise-utils";
-import { oneLine } from "common-tags";
 import { add, getDay, isAfter, isBefore, set, setDay } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { zonedTimeToUtc } from "date-fns-tz";
 import { isFinite, isNil } from "lodash";
 
-const STOCK_DATA_RETRIEVED_PARALLEL_LIMIT = 5;
+export * from "./close-expired-orders.field";
+export * from "./delete-invalid-orders.field";
+export * from "./execute-open-orders.field";
+export * from "./stock-data-retrieved.field";
 
 /* eslint-disable no-magic-numbers */
 export type DayAsNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -26,13 +26,16 @@ export const DayToNumber = (day: Day): DayAsNumber => {
 			return 5;
 		case Day.Sat:
 			return 6;
-		default:
+		case Day.Sun:
 			return 0;
+		default:
+			throw new Error(`Tried to convert an invalid day value: ${day}`);
 	}
 };
+
 /**
- * @description Given a day of the week, and an array of days of the week, return the next day of
- *     the week
+ * @description Given a day of the week, and an array of valid days days of the week, return the
+ *     next valid day of the week from the day (first param) given
  * @author David Lee
  * @date April 27, 2020
  */
@@ -71,11 +74,13 @@ const setNextDay = (prevTime: number | Date, days: readonly Day[]): Maybe<Date> 
 
 export const getNextScheduledTime = (
 	prevTime: number | Date,
-	scheduledEvent: ScheduledEvent & { user: Pick<User, "timezone"> }
+	scheduledEvent: ScheduledEvent & { user: Maybe<Pick<User, "timezone">> }
 ): Maybe<Date> => {
-	const { timezone } = scheduledEvent.user;
+	const { timezone = "America/Los_Angeles" } = scheduledEvent.user ?? {};
 
-	if (!scheduledEvent.interval && !scheduledEvent.recurrence) {
+	const isInvalid: boolean = !scheduledEvent.interval && !scheduledEvent.recurrence;
+
+	if (isInvalid) {
 		return null;
 	}
 
@@ -86,20 +91,16 @@ export const getNextScheduledTime = (
 	const hours: number = scheduledEvent.hour ?? 0;
 	const minutes: number = scheduledEvent.minute ?? 0;
 
+	let newTime: Maybe<Date>;
+
 	switch (scheduledEvent.recurrence) {
 		case Recurrence.Daily: {
-			let newTime: Date = set(prevTime, { hours, minutes });
+			newTime = set(prevTime, { hours, minutes });
 
-			if (isBefore(newTime, prevTime)) {
-				newTime = add(newTime, { days: 1 });
-			}
-
-			newTime = utcToZonedTime(newTime, timezone);
-
-			return newTime;
+			break;
 		}
 		case Recurrence.Weekly: {
-			let newTime: Maybe<Date> = setNextDay(prevTime, scheduledEvent.days);
+			newTime = setNextDay(prevTime, scheduledEvent.days);
 
 			/** Scheduled-event is invalid. Return null */
 			if (!newTime) {
@@ -107,76 +108,30 @@ export const getNextScheduledTime = (
 			}
 
 			newTime = set(newTime, { hours, minutes });
-			newTime = utcToZonedTime(newTime, timezone);
 
-			return newTime;
+			break;
 		}
 		/** Recurrence is either `Once` or invalid. Return null either way */
 		default:
 			return null;
 	}
+
+	newTime = zonedTimeToUtc(newTime, timezone);
+
+	if (isBefore(newTime, prevTime)) {
+		newTime = add(newTime, { days: 1 });
+	}
+
+	newTime = zonedTimeToUtc(newTime, timezone);
+
+	return newTime;
 };
 
 export const RunScheduledEvent = objectType({
 	name: "RunScheduledEvent",
 	definition: (t) => {
-		t.list.field("scheduledEvents", {
-			type: "ScheduledEvent",
-			nullable: false
-		});
-		t.field("startTime", {
-			type: "DateTime",
-			nullable: false
-		});
-		t.list.field("stockDataRetrieved", {
-			type: "StockPortfolioEvent",
-			nullable: false,
-			description: oneLine`
-				Retrieves stock-data for stock-portfolios that have polling configured, and
-				generates snapshots for each one.
-			`,
-			resolve: async ({ scheduledEvents }, args, { dataSources, prisma }) => {
-				const { IexCloudAPI } = dataSources;
-
-				const stockPortfolioEvents = await prisma.stockPortfolioEvent.findMany({
-					where: {
-						scheduledEventId: {
-							in: scheduledEvents.map(({ id }) => id)
-						}
-					},
-					include: {
-						stockPortfolio: {
-							select: {
-								id: true,
-								tickers: true,
-								user: {
-									select: {
-										id: true
-									}
-								}
-							}
-						}
-					}
-				});
-
-				await mapLimit(
-					stockPortfolioEvents,
-					STOCK_DATA_RETRIEVED_PARALLEL_LIMIT,
-					async ({ stockPortfolio }) => {
-						try {
-							await IexCloudAPI.getStockPortfolioData(
-								stockPortfolio,
-								stockPortfolio.user
-							);
-						} catch (err) {
-							Logger.error(err.message ?? err);
-						}
-					}
-				);
-
-				return stockPortfolioEvents;
-			}
-		});
+		t.list.field("scheduledEvents", { type: "ScheduledEvent", nullable: false });
+		t.field("startTime", { type: "DateTime", nullable: false });
 	}
 });
 

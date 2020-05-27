@@ -87,9 +87,9 @@ const getCurrentPriceForTicker = async (
 	const { dataSources } = context;
 	const { AlpacaAPI } = dataSources;
 
-	const { askprice } = await AlpacaAPI.lastQuote(ticker);
+	const lastQuote = await AlpacaAPI.lastQuote(ticker);
 
-	return askprice;
+	return lastQuote?.last.askprice ?? Infinity;
 };
 
 const handleBuyOrder = async (order: Order, context: IServerContextWithUser): Promise<Order> => {
@@ -124,7 +124,9 @@ const handleBuyOrder = async (order: Order, context: IServerContextWithUser): Pr
 		where: { id: order.id },
 		data: {
 			status: OrderStatus.Closed,
-			avgFilledPrice: price
+			avgFilledPrice: price,
+			filledQuantity: order.filledQuantity,
+			filledAt: new Date()
 		}
 	});
 
@@ -201,6 +203,7 @@ const handleSellOrder = async (order: Order, context: IServerContextWithUser): P
 		data: {
 			status: OrderStatus.Closed,
 			avgFilledPrice: price,
+			filledQuantity: order.quantity,
 			filledAt: new Date()
 		}
 	});
@@ -325,9 +328,16 @@ export const createOneOrder = mutationField("createOneOrder", {
 
 		const order = await prisma.order.create({ data });
 
-		const { is_open } = await AlpacaAPI.getClock();
+		switch (data.timeInForce) {
+			case TimeInForce.CLS:
+			case TimeInForce.OPG:
+				return order;
+			default:
+		}
 
-		if (!is_open) {
+		const clock = await AlpacaAPI.getClock();
+
+		if (!clock?.is_open) {
 			return order;
 		}
 

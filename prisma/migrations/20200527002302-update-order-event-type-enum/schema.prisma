@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -226,9 +226,9 @@ model StockPortfolioEvent {
 }
 
 enum OrderEventType {
-  CloseExpiredOrders
   DeleteInvalidOrders
-  ExecuteOpenOrders
+  ExecuteOrders
+  ExpireOrders
 }
 
 model OrderEvent {

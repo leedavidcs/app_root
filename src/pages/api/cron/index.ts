@@ -17,6 +17,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				mutation {
 					runScheduledEvent {
 						startTime
+						closeExpiredOrders
+						deleteInvalidOrders
+						executeOpenOrders
 						stockDataRetrieved {
 							scheduledEventId
 						}

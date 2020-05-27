@@ -1,0 +1,100 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "OrderEventType",
+      "values": [
+        "ExecuteOrders",
+        "ExpireOrders",
+        "CleanInvalidOrders"
+      ]
+    },
+    {
+      "tag": "CreateModel",
+      "model": "OrderEvent"
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "scheduledEvent",
+      "type": "ScheduledEvent",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[scheduledEventId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "scheduledEventId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEventId"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "type",
+      "type": "OrderEventType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "type"
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

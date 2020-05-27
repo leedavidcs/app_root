@@ -16,6 +16,7 @@ import { camelCase, chunk, get, intersection } from "lodash";
 import fetch from "node-fetch";
 import { IEXCloudClient } from "node-iex-cloud";
 import Batch from "node-iex-cloud/lib/batch";
+import Stock from "node-iex-cloud/lib/stock";
 import { Last, Range } from "node-iex-cloud/lib/types";
 import PQueue from "p-queue";
 
@@ -36,7 +37,16 @@ interface ISymbolsOptions {
 }
 
 export type IexType = Exclude<keyof Batch, "req" | "batching" | "range">;
-type IexStockResult = Partial<Record<IexType, any>>;
+
+type IexResultsMap = { [P in IexType]: UnPromise<ReturnType<Stock[P]>> };
+
+type IexSelect<T extends IexType> = Partial<{ [P in T]: boolean | null | undefined }>;
+
+interface ISymbolsParams<TTickers extends string, TSelect extends IexType> {
+	symbols: readonly TTickers[];
+	select: IexSelect<TSelect>;
+	options?: Partial<ISymbolsOptions>;
+}
 
 const queue = new PQueue({
 	concurrency: 1,
@@ -68,9 +78,13 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	/** Ensure that data can be retrieved for given symbols */
 	public async areSymbolsValid(symbols: readonly string[]) {
 		try {
-			const result = await this.symbols(symbols, { price: true }, { mock: true });
+			const result = await this.symbols({
+				symbols,
+				select: { price: true },
+				options: { mock: true }
+			});
 
-			return Boolean(result);
+			return Object.keys(result).length === symbols.length;
 		} catch (err) {
 			return false;
 		}
@@ -80,24 +94,23 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 		return queue.add(() => this.client.search(text));
 	}
 
-	public async symbols(
-		symbols: readonly string[],
-		types: Partial<Record<IexType, boolean>>,
-		options: Partial<ISymbolsOptions> = {}
-	): Promise<Record<string, IexStockResult>> {
+	public async symbols<TSymbols extends string, TSelect extends IexType>(
+		params: ISymbolsParams<TSymbols, TSelect>
+	): Promise<{ [P in TSymbols]: { [S in TSelect]: IexResultsMap[S] } }> {
+		type SymbolPayload = { [P in TSymbols]: { [S in TSelect]: IexResultsMap[S] } };
+
+		const { symbols, select, options } = params;
+
 		const _options: ISymbolsOptions = { ...DEFAULT_SYMBOLS_OPTIONS, ...options };
 
-		/** Split symbols up into batches, defined by request limits of iex-cloud */
-		const symbolBatches: readonly (readonly string[])[] = chunk(symbols, MAX_SYMBOL_BATCH_SIZE);
+		const symbolBatches = chunk(symbols, MAX_SYMBOL_BATCH_SIZE);
 
-		/** Split types up into batches, defined by request limits of iex-cloud */
-		const iexTypes = Object.keys(types)
-			.filter((key) => types[key])
-			.sort() as readonly IexType[];
-		const typeBatches: readonly (readonly IexType[])[] = chunk(iexTypes, MAX_TYPE_BATCH_SIZE);
+		const iexTypes = (Object.keys(select) as TSelect[])
+			.filter((key) => Boolean(select[key]))
+			.sort();
+		const typeBatches = chunk(iexTypes, MAX_TYPE_BATCH_SIZE);
 
-		/** Resolve all data for  given symbols and types */
-		const resolveTypes = (symbolBatch: readonly string[], typeBatch: readonly IexType[]) => {
+		const resolveTypes = (symbolBatch: readonly TSymbols[], typeBatch: readonly TSelect[]) => {
 			const client: IEXCloudClient = _options.mock ? this.mockClient : this.client;
 			const batch: Batch = client.batchSymbols(...symbolBatch).batch();
 
@@ -109,10 +122,9 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 				return withAddedTypes;
 			}, batch);
 
-			/** Add to the delayed-queue to ensure not exceeding iex-cloud request limits */
 			const evaled = queue.add(() => withAllTypes.range(_options.range, _options.last));
 
-			return evaled;
+			return evaled as Promise<SymbolPayload>;
 		};
 
 		const mergedResults = mapSeries(symbolBatches, async (symbolBatch) => {
@@ -147,7 +159,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 		let results: Record<string, Record<string, any>>;
 		try {
-			results = await this.symbols(tickers, types);
+			results = await this.symbols({ symbols: tickers, select: types });
 		} catch (err) {
 			throw new UserInputError("Could not get data. Inputs may be invalid", {
 				invalidArgs: []
@@ -339,9 +351,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	};
 
 	/** Merge results from multiple calls from `resolveTypes` */
-	private mergeResults = (
-		results: readonly Record<string, IexStockResult>[]
-	): Record<string, IexStockResult> => {
+	private mergeResults = <T extends Record<string, any>>(results: readonly T[]): T => {
 		const final = results.reduce((source, nextResult) => {
 			const sourceTickers = Object.keys(source);
 			const newTickers = Object.keys(nextResult);
@@ -355,7 +365,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 					return withUpdatedTicker;
 				},
-				{ ...source, ...nextResult } as Record<string, IexStockResult>
+				{ ...source, ...nextResult }
 			);
 
 			return result;
