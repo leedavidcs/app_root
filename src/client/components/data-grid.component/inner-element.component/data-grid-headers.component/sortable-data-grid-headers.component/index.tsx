@@ -26,7 +26,7 @@ export const SortableDataGridHeaders = SortableContainer<IProps>(
 		const [editStates, editActions] = useOnEditHeader();
 
 		const createHeaderItems = useCallback(
-			(configs: readonly IHeaderConfig[], offset = 0) => {
+			(configs: readonly IHeaderConfig[], offset: number = 0) => {
 				return configs.map((header, i) => {
 					const { editable = true, frozen, label } = header;
 					const adjIndex: number = i + offset; /* Adjusted index, for unfrozen headers */

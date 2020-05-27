@@ -46,7 +46,7 @@ export const SortableDataRow = SortableElement<IProps>(
 		);
 
 		const getCellItems = useCallback(
-			(configs: readonly IHeaderConfig[], offset = 0) => {
+			(configs: readonly IHeaderConfig[], offset: number = 0) => {
 				return configs.map((header, i) => {
 					const { value, width } = header;
 					const adjIndex: number = i + offset;
