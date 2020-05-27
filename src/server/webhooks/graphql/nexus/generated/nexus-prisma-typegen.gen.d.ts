@@ -261,6 +261,7 @@ interface ModelTypes {
   LatestSnapshot: prisma.LatestSnapshot
   ScheduledEvent: prisma.ScheduledEvent
   StockPortfolioEvent: prisma.StockPortfolioEvent
+  OrderEvent: prisma.OrderEvent
 }
   
 interface NexusPrismaInputs {
@@ -310,12 +311,16 @@ interface NexusPrismaInputs {
   ordering: 'snapshotId' | 'stockPortfolioId' | 'updatedAt'
 }
     scheduledEvents: {
-  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'OrderEvent' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
     stockPortfolioEvents: {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
   ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
+}
+    orderEvents: {
+  filtering: 'scheduledEventId' | 'type' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent'
+  ordering: 'scheduledEventId' | 'type'
 }
 
   },
@@ -329,7 +334,7 @@ interface NexusPrismaInputs {
   ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
 }
     ScheduledEvent: {
-  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user'
+  filtering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next' | 'StockPortfolioEvent' | 'OrderEvent' | 'AND' | 'OR' | 'NOT' | 'user'
   ordering: 'id' | 'userId' | 'recurrence' | 'hour' | 'minute' | 'interval' | 'next'
 }
 
@@ -390,8 +395,15 @@ interface NexusPrismaInputs {
   filtering: 'scheduledEventId' | 'type' | 'stockPortfolioId' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent' | 'stockPortfolio'
   ordering: 'scheduledEventId' | 'type' | 'stockPortfolioId'
 }
+    OrderEvent: {
+  filtering: 'scheduledEventId' | 'type' | 'AND' | 'OR' | 'NOT' | 'scheduledEvent'
+  ordering: 'scheduledEventId' | 'type'
+}
 
   },  StockPortfolioEvent: {
+
+
+  },  OrderEvent: {
 
 
   }
@@ -425,6 +437,8 @@ interface NexusPrismaTypes {
     scheduledEvents: 'ScheduledEvent'
     stockPortfolioEvent: 'StockPortfolioEvent'
     stockPortfolioEvents: 'StockPortfolioEvent'
+    orderEvent: 'OrderEvent'
+    orderEvents: 'OrderEvent'
 
   },
   Mutation: {
@@ -506,6 +520,12 @@ interface NexusPrismaTypes {
     deleteOneStockPortfolioEvent: 'StockPortfolioEvent'
     deleteManyStockPortfolioEvent: 'BatchPayload'
     upsertOneStockPortfolioEvent: 'StockPortfolioEvent'
+    createOneOrderEvent: 'OrderEvent'
+    updateOneOrderEvent: 'OrderEvent'
+    updateManyOrderEvent: 'BatchPayload'
+    deleteOneOrderEvent: 'OrderEvent'
+    deleteManyOrderEvent: 'BatchPayload'
+    upsertOneOrderEvent: 'OrderEvent'
 
   },
   User: {
@@ -633,6 +653,7 @@ interface NexusPrismaTypes {
     interval: 'Int'
     next: 'DateTime'
     StockPortfolioEvent: 'StockPortfolioEvent'
+    OrderEvent: 'OrderEvent'
 
 },  StockPortfolioEvent: {
     scheduledEvent: 'ScheduledEvent'
@@ -640,6 +661,11 @@ interface NexusPrismaTypes {
     type: 'StockPortfolioEventType'
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
+
+},  OrderEvent: {
+    scheduledEvent: 'ScheduledEvent'
+    scheduledEventId: 'String'
+    type: 'OrderEventType'
 
 }
 }
@@ -658,6 +684,7 @@ interface NexusPrismaMethods {
   LatestSnapshot: NexusPrismaFields<'LatestSnapshot'>
   ScheduledEvent: NexusPrismaFields<'ScheduledEvent'>
   StockPortfolioEvent: NexusPrismaFields<'StockPortfolioEvent'>
+  OrderEvent: NexusPrismaFields<'OrderEvent'>
   Query: NexusPrismaFields<'Query'>
   Mutation: NexusPrismaFields<'Mutation'>
 }

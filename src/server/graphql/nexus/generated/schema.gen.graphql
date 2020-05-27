@@ -81,12 +81,6 @@ A field whose value conforms to the standard internet email address format as sp
 """
 scalar EmailAddress
 
-type ExecuteOrder {
-  buyOrders: Int!
-  deleteInvalidOrders: Int!
-  startTime: DateTime!
-}
-
 type FeaturePricing {
   snapshot: FeaturePricingConfig!
 }
@@ -280,6 +274,27 @@ enum OrderDetailType {
   PriceBundle
 }
 
+input OrderEventFilter {
+  every: OrderEventWhereInput
+  none: OrderEventWhereInput
+  some: OrderEventWhereInput
+}
+
+enum OrderEventType {
+  CloseExpiredOrders
+  DeleteInvalidOrders
+  ExecuteOpenOrders
+}
+
+input OrderEventWhereInput {
+  AND: [OrderEventWhereInput!]
+  NOT: [OrderEventWhereInput!]
+  OR: [OrderEventWhereInput!]
+  scheduledEvent: ScheduledEventWhereInput
+  scheduledEventId: StringFilter
+  type: OrderEventType
+}
+
 input OrderFilter {
   every: OrderWhereInput
   none: OrderWhereInput
@@ -470,13 +485,20 @@ type ResendVerifyEmailPayload {
 }
 
 type RunScheduledEvent {
+  closeExpiredOrders: Int
+
+  """
+  Deletes invalid orders (e.g. limit-orders without a limit-price, or stop-orders without a stop-price)
+  """
+  deleteInvalidOrders: Int!
+  executeOpenOrders: Int
   scheduledEvents: [ScheduledEvent!]!
   startTime: DateTime!
 
   """
   Retrieves stock-data for stock-portfolios that have polling configured, and generates snapshots for each one.
   """
-  stockDataRetrieved: [StockPortfolioEvent!]!
+  stockDataRetrieved: [StockPortfolioEvent!]
 }
 
 type ScheduledEvent {
@@ -488,7 +510,7 @@ type ScheduledEvent {
   next: DateTime!
   recurrence: Recurrence
   stockPortfolioEvent: StockPortfolioEvent
-  user: User!
+  user: User
 }
 
 input ScheduledEventCreatedaysInput {
@@ -538,10 +560,11 @@ input ScheduledEventWhereInput {
   next: DateTimeFilter
   NOT: [ScheduledEventWhereInput!]
   OR: [ScheduledEventWhereInput!]
+  OrderEvent: OrderEventFilter
   recurrence: Recurrence
   StockPortfolioEvent: StockPortfolioEventFilter
   user: UserWhereInput
-  userId: StringFilter
+  userId: NullableStringFilter
 }
 
 type Snapshot {
