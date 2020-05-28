@@ -485,7 +485,8 @@ type ResendVerifyEmailPayload {
 }
 
 type RunScheduledEvent {
-  closeExpiredOrders: Int
+  """Update orders that are expired (no longer valid to be executed)"""
+  closeExpiredOrders: Int!
 
   """
   Deletes invalid orders (e.g. limit-orders without a limit-price, or stop-orders without a stop-price)
