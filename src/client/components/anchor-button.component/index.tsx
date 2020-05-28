@@ -1,7 +1,9 @@
 import type { Alignment, IconName, Intent } from "@blueprintjs/core";
 import { AnchorButton as BpButton } from "@blueprintjs/core";
+import classnames from "classnames";
 import Link from "next/link";
 import React, { CSSProperties, FC, MouseEvent, ReactElement, ReactNode } from "react";
+import { useStyles } from "./styles";
 
 interface IProps {
 	active?: boolean;
@@ -39,10 +41,12 @@ export const AnchorButton: FC<IProps> = ({
 	text,
 	type
 }) => {
+	const classes = useStyles();
+
 	return (
 		<Link href={href} passHref={true}>
 			<BpButton
-				className={className}
+				className={classnames(classes.root, className)}
 				active={active}
 				alignText={alignText}
 				disabled={disabled}
