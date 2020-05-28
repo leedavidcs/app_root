@@ -922,7 +922,7 @@ export interface NexusGenFieldTypes {
     success: boolean; // Boolean!
   }
   RunScheduledEvent: { // field return type
-    closeExpiredOrders: number | null; // Int
+    closeExpiredOrders: number; // Int!
     deleteInvalidOrders: number; // Int!
     executeOpenOrders: number | null; // Int
     scheduledEvents: NexusGenRootTypes['ScheduledEvent'][]; // [ScheduledEvent!]!
