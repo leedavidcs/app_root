@@ -1,6 +1,8 @@
 import type { Alignment, IconName, Intent } from "@blueprintjs/core";
 import { Button as BpButton } from "@blueprintjs/core";
+import classnames from "classnames";
 import React, { CSSProperties, FC, MouseEvent, ReactElement, ReactNode } from "react";
+import { useStyles } from "./styles";
 
 interface IProps {
 	active?: boolean;
@@ -36,9 +38,11 @@ export const Button: FC<IProps> = ({
 	text,
 	type
 }) => {
+	const classes = useStyles();
+
 	return (
 		<BpButton
-			className={className}
+			className={classnames(classes.root, className)}
 			active={active}
 			alignText={alignText}
 			disabled={disabled}
