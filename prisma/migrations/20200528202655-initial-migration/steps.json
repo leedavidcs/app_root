@@ -3,6 +3,44 @@
   "steps": [
     {
       "tag": "CreateEnum",
+      "enum": "OrderSide",
+      "values": [
+        "Buy",
+        "Sell"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "OrderType",
+      "values": [
+        "Market",
+        "Limit",
+        "Stop",
+        "StopLimit"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "OrderStatus",
+      "values": [
+        "Open",
+        "Closed"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "TimeInForce",
+      "values": [
+        "Day",
+        "GTC",
+        "OPG",
+        "CLS",
+        "IOC",
+        "FOK"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
       "enum": "TransactionStatus",
       "values": [
         "FAILED",
@@ -44,6 +82,15 @@
       "enum": "StockPortfolioEventType",
       "values": [
         "DataRetrieved"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "OrderEventType",
+      "values": [
+        "CloseExpiredOrders",
+        "DeleteInvalidOrders",
+        "ExecuteOpenOrders"
       ]
     },
     {
@@ -221,6 +268,27 @@
       },
       "argument": "",
       "value": "\"America/Los_Angeles\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "balance",
+      "type": "Balance",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "stripeDetails",
+      "type": "StripeDetails",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "stockPortfolios",
+      "type": "StockPortfolio",
+      "arity": "List"
     },
     {
       "tag": "CreateField",
@@ -403,6 +471,59 @@
     {
       "tag": "CreateField",
       "model": "StockPortfolio",
+      "field": "snapshots",
+      "type": "Snapshot",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "orders",
+      "type": "Order",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "latestSnapshot",
+      "type": "LatestSnapshot",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
+      "field": "buyingPower",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolio",
+          "field": "buyingPower"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "StockPortfolio",
+          "field": "buyingPower"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "0"
+    },
+    {
+      "tag": "CreateField",
+      "model": "StockPortfolio",
       "field": "createdAt",
       "type": "DateTime",
       "arity": "Required"
@@ -465,6 +586,448 @@
         },
         "directive": "unique"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Position"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "stockPortfolio",
+      "type": "StockPortfolio",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[stockPortfolioId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Position",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "stockPortfolioId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "ticker",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "quantity",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "avgEntryPrice",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Position",
+      "field": "costBasis",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Position",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[stockPortfolioId, ticker]"
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Order"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "stockPortfolio",
+      "type": "StockPortfolio",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[stockPortfolioId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "stockPortfolio"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "stockPortfolioId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "ticker",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "quantity",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "filledQuantity",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "type",
+      "type": "OrderType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "type"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "type"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "Market"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "side",
+      "type": "OrderSide",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "status",
+      "type": "OrderStatus",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "status"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "status"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "Open"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "limitPrice",
+      "type": "Float",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "stopPrice",
+      "type": "Float",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "avgFilledPrice",
+      "type": "Float",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "timeInForce",
+      "type": "TimeInForce",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "timeInForce"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "timeInForce"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "Day"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "filledAt",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "cancelledAt",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "failedAt",
+      "type": "DateTime",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -1051,9 +1614,9 @@
     {
       "tag": "CreateField",
       "model": "Webhook",
-      "field": "name",
+      "field": "query",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -1106,7 +1669,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "30000"
+      "value": "10000"
     },
     {
       "tag": "CreateField",
@@ -1139,22 +1702,6 @@
       },
       "argument": "",
       "value": "now()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Model",
-          "model": "Webhook",
-          "arguments": [
-            {
-              "name": "",
-              "value": "[stockPortfolioId, name]"
-            }
-          ]
-        },
-        "directive": "unique"
-      }
     },
     {
       "tag": "CreateModel",
@@ -1511,7 +2058,7 @@
       "model": "ScheduledEvent",
       "field": "user",
       "type": "User",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
@@ -1557,7 +2104,7 @@
       "model": "ScheduledEvent",
       "field": "userId",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -1816,6 +2363,92 @@
               "value": "[stockPortfolioId, type]"
             }
           ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "OrderEvent"
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "scheduledEvent",
+      "type": "ScheduledEvent",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[scheduledEventId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEvent"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "scheduledEventId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "scheduledEventId"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "OrderEvent",
+      "field": "type",
+      "type": "OrderEventType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "OrderEvent",
+          "field": "type"
         },
         "directive": "unique"
       }

@@ -84,7 +84,7 @@ export const registerLocalUser = mutationField("registerLocalUser", {
 		});
 
 		const emailTemplate: string = createEmailHtml(VerifyEmail, {
-			confirmationLink: `${getBaseUrl()}/verify-email/${newUser.id}`,
+			confirmationLink: `${getBaseUrl()}/api/verify-email/${newUser.id}`,
 			username: newUser.username
 		});
 		const emailResponse: ISendEmailResponse = await sendEmail({

@@ -1,8 +1,13 @@
 const bundleAnalyzer = require("@next/bundle-analyzer");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
+const nextTranspileModules = require("next-transpile-modules");
 const path = require("path");
+const flow = require("lodash/flow");
 
-const enhance = bundleAnalyzer({ enabled: process.env.BUNDLE_ANALYZE === "true" });
+const withTranspileModules = nextTranspileModules(["graphql-language-service-interface/esm"]);
+const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.BUNDLE_ANALYZE === "true" });
+
+const enhance = flow([withTranspileModules, withBundleAnalyzer]);
 
 const config = {
 	target: "experimental-serverless-trace",
