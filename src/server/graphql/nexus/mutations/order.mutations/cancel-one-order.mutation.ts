@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/server/utils";
+import { NotFoundError, PrismaUtils } from "@/server/utils";
 import { arg, mutationField } from "@nexus/schema";
 import { OrderStatus } from "@prisma/client";
 
@@ -7,7 +7,9 @@ export const cancelOneOrder = mutationField("cancelOneOrder", {
 	args: {
 		where: arg({ type: "OrderWhereUniqueInput", nullable: false })
 	},
-	authorize: async (parent, { where }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -37,7 +39,9 @@ export const cancelOneOrder = mutationField("cancelOneOrder", {
 
 		return true;
 	},
-	resolve: (parent, { where }, { prisma }) => {
+	resolve: (parent, args, { prisma }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		return prisma.order.update({
 			where,
 			data: {

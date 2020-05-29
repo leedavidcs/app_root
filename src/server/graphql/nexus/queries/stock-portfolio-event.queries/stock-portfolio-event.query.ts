@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, queryField } from "@nexus/schema";
 import { ForbiddenError } from "apollo-server-micro";
 
@@ -23,7 +24,9 @@ export const stockPortfolioEvent = queryField("stockPortfolioEvent", {
 		where: arg({ type: "StockPortfolioEventWhereUniqueInput", nullable: false })
 	},
 	authorize: (parent, args, { user }) => Boolean(user),
-	resolve: async (parent, { where }, { prisma, user }) => {
+	resolve: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		const result = await prisma.stockPortfolioEvent.findOne({
 			where,
 			include: {

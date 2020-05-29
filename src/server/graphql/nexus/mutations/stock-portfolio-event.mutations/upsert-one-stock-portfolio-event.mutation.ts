@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/server/utils";
+import { NotFoundError, PrismaUtils } from "@/server/utils";
 import { arg, mutationField } from "@nexus/schema";
 import { Day, Recurrence } from "@prisma/client";
 import { ForbiddenError } from "apollo-server-micro";
@@ -12,7 +12,9 @@ export const upsertOneStockPortfolioEvent = mutationField("upsertOneStockPortfol
 		create: arg({ type: "StockPortfolioEventCreateInput", nullable: false }),
 		update: arg({ type: "StockPortfolioEventUpdateInput", nullable: false })
 	},
-	authorize: async (parent, { where, create }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where, create } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -137,7 +139,9 @@ export const upsertOneStockPortfolioEvent = mutationField("upsertOneStockPortfol
 			}).required()
 		})
 	}),
-	resolve: (parent, { where, create, update }, { prisma, user }) => {
+	resolve: (parent, args, { prisma, user }) => {
+		const { where, create, update } = PrismaUtils.castInputs(args);
+
 		return prisma.stockPortfolioEvent.upsert({
 			where,
 			create: {

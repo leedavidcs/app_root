@@ -1,4 +1,5 @@
 import { applyGenerators, stringFilter } from "@/server/prisma";
+import { PrismaUtils } from "@/server/utils";
 import { arg, extendType, intArg, stringArg } from "@nexus/schema";
 
 export const stockPortfolioQueries = extendType({
@@ -21,7 +22,7 @@ export const stockPortfolioQueries = extendType({
 				query: stringArg()
 			},
 			resolve: async (parent, args, { prisma }) => {
-				const { query, where, ...paginationArgs } = args;
+				const { query, where, ...paginationArgs } = PrismaUtils.castInputs(args);
 
 				return prisma.stockPortfolio.findMany({
 					...paginationArgs,

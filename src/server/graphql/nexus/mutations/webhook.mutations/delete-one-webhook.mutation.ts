@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, mutationField } from "@nexus/schema";
 import { AuthenticationError, ForbiddenError } from "apollo-server-micro";
 
@@ -6,7 +7,9 @@ export const deleteOneWebhook = mutationField("deleteOneWebhook", {
 	args: {
 		where: arg({ type: "WebhookWhereUniqueInput", nullable: false })
 	},
-	authorize: async (parent, { where }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return new AuthenticationError("This request requires authentication");
 		}
@@ -28,5 +31,9 @@ export const deleteOneWebhook = mutationField("deleteOneWebhook", {
 
 		return true;
 	},
-	resolve: (parent, args, { prisma }) => prisma.webhook.delete(args)
+	resolve: (parent, args, { prisma }) => {
+		const casted = PrismaUtils.castInputs(args);
+
+		return prisma.webhook.delete(casted);
+	}
 });

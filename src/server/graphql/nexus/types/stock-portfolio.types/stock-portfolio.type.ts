@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/server/utils";
+import { NotFoundError, PrismaUtils } from "@/server/utils";
 import { arg, intArg, objectType } from "@nexus/schema";
 
 export const StockPortfolioHeader = objectType({
@@ -97,25 +97,18 @@ export const StockPortfolio = objectType({
 				first: intArg(),
 				last: intArg()
 			},
-			resolve: async (
-				{ id },
-				{ where, orderBy, skip, after, before, first, last },
-				{ prisma, user }
-			) => {
+			resolve: async ({ id }, args, { prisma, user }) => {
+				const casted = PrismaUtils.castInputs(args);
+
 				return await prisma.order.findMany({
+					...casted,
 					where: {
-						...where,
+						...casted?.where,
 						stockPortfolio: {
-							...where?.stockPortfolio,
+							...casted?.where?.stockPortfolio,
 							id
 						}
-					},
-					orderBy,
-					skip,
-					after,
-					before,
-					first,
-					last
+					}
 				});
 			}
 		});

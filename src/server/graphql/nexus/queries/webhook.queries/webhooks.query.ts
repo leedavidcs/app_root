@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, intArg, queryField } from "@nexus/schema";
 import { AuthenticationError } from "apollo-server-micro";
 
@@ -58,12 +59,14 @@ export const webhooks = queryField("webhooks", {
 		return true;
 	},
 	resolve: (parent, args, { prisma, user }) => {
+		const casted = PrismaUtils.castInputs(args);
+
 		return prisma.webhook.findMany({
-			...args,
+			...casted,
 			where: {
-				...args.where,
+				...casted.where,
 				stockPortfolio: {
-					...args.where?.stockPortfolio,
+					...casted.where?.stockPortfolio,
 					userId: { equals: user.id }
 				}
 			}

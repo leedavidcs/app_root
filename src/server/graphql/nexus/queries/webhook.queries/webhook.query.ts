@@ -1,4 +1,4 @@
-import { NotFoundError } from "@/server/utils";
+import { NotFoundError, PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, queryField } from "@nexus/schema";
 
 export const WebhookWhereUniqueInput = inputObjectType({
@@ -13,7 +13,9 @@ export const webhook = queryField("webhook", {
 	args: {
 		where: arg({ type: "WebhookWhereUniqueInput", nullable: false })
 	},
-	authorize: async (parent, { where }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -31,5 +33,9 @@ export const webhook = queryField("webhook", {
 
 		return retrievedWebhook.stockPortfolio.userId === user.id;
 	},
-	resolve: (parent, { where }, { prisma }) => prisma.webhook.findOne({ where })
+	resolve: (parent, args, { prisma }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
+		return prisma.webhook.findOne({ where });
+	}
 });

@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, extendType } from "@nexus/schema";
 
 export const deleteOneStockPortfolio = extendType({
@@ -9,7 +10,9 @@ export const deleteOneStockPortfolio = extendType({
 				where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 			},
 			rateLimit: () => ({ window: "1m", max: 30 }),
-			authorize: async (parent, { where }, { prisma, user }) => {
+			authorize: async (parent, args, { prisma, user }) => {
+				const { where } = PrismaUtils.castInputs(args);
+
 				if (!user) {
 					return false;
 				}
@@ -29,7 +32,11 @@ export const deleteOneStockPortfolio = extendType({
 
 				return isOwnedByUser;
 			},
-			resolve: (parent, { where }, { prisma }) => prisma.stockPortfolio.delete({ where })
+			resolve: (parent, args, { prisma }) => {
+				const { where } = PrismaUtils.castInputs(args);
+
+				return prisma.stockPortfolio.delete({ where });
+			}
 		});
 	}
 });
