@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, queryField } from "@nexus/schema";
 import { AuthenticationError } from "apollo-server-micro";
 
@@ -15,11 +16,13 @@ export const transaction = queryField("transaction", {
 		where: arg({ type: "TransactionWhereUniqueInput", nullable: false })
 	},
 	authorize: async (parent, args, { prisma, user }) => {
+		const casted = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return new AuthenticationError("This request requires authentication");
 		}
 
-		const retrievedTransaction = await prisma.transaction.findOne(args);
+		const retrievedTransaction = await prisma.transaction.findOne(casted);
 
 		if (!retrievedTransaction) {
 			return true;
@@ -31,5 +34,9 @@ export const transaction = queryField("transaction", {
 
 		return true;
 	},
-	resolve: (parent, args, { prisma }) => prisma.transaction.findOne(args)
+	resolve: (parent, args, { prisma }) => {
+		const casted = PrismaUtils.castInputs(args);
+
+		return prisma.transaction.findOne(casted);
+	}
 });

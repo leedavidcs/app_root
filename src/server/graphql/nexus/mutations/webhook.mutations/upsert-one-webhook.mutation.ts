@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { schema } from "@/server/webhooks";
 import { arg, mutationField } from "@nexus/schema";
 import { parse, validate } from "graphql";
@@ -11,7 +12,9 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 		create: arg({ type: "WebhookCreateInput", nullable: false }),
 		update: arg({ type: "WebhookUpdateInput", nullable: false })
 	},
-	authorize: async (parent, { where, create }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where, create } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -83,5 +86,9 @@ export const upsertOneWebhook = mutationField("upsertOneWebhook", {
 			})
 		})
 	}),
-	resolve: (parent, args, { prisma }) => prisma.webhook.upsert(args)
+	resolve: (parent, args, { prisma }) => {
+		const casted = PrismaUtils.castInputs(args);
+
+		return prisma.webhook.upsert(casted);
+	}
 });

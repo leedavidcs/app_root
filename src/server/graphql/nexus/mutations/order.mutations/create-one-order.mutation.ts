@@ -1,5 +1,5 @@
 import { IServerContextWithUser } from "@/server/graphql/context";
-import { BadRequestError } from "@/server/utils";
+import { BadRequestError, PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import {
 	Order,
@@ -254,7 +254,9 @@ export const createOneOrder = mutationField("createOneOrder", {
 	args: {
 		data: arg({ type: "OrderCreateInput", nullable: false })
 	},
-	authorize: async (parent, { data }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { data } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -292,7 +294,8 @@ export const createOneOrder = mutationField("createOneOrder", {
 			}
 		})
 	}),
-	resolve: async (parent, { data }, context) => {
+	resolve: async (parent, args, context) => {
+		const { data } = PrismaUtils.castInputs(args);
 		const { dataSources, prisma } = context;
 		const { AlpacaAPI } = dataSources;
 

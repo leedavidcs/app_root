@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, intArg, queryField } from "@nexus/schema";
 
 export const OrderOrderByInput = inputObjectType({
@@ -58,11 +59,9 @@ export const orders = queryField("orders", {
 		last: intArg()
 	},
 	authorize: (parent, args, { user }) => Boolean(user),
-	resolve: async (
-		parent,
-		{ where, orderBy, skip, after, before, first, last },
-		{ prisma, user }
-	) => {
+	resolve: async (parent, args, { prisma, user }) => {
+		const { where, orderBy, skip, after, before, first, last } = PrismaUtils.castInputs(args);
+
 		return await prisma.order.findMany({
 			where: {
 				...where,

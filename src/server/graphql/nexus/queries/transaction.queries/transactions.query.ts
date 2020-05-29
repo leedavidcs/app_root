@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, intArg, queryField } from "@nexus/schema";
 import { AuthenticationError } from "apollo-server-micro";
 
@@ -45,10 +46,12 @@ export const transactions = queryField("transactions", {
 		return true;
 	},
 	resolve: (parent, args, { prisma, user }) => {
+		const casted = PrismaUtils.castInputs(args);
+
 		return prisma.transaction.findMany({
-			...args,
+			...casted,
 			where: {
-				...args.where,
+				...casted.where,
 				userId: { equals: user.id }
 			}
 		});

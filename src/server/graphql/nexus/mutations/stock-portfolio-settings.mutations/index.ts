@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 
 export const StockPortfolioSettingsWhereUniqueInput = inputObjectType({
@@ -39,5 +40,9 @@ export const updateOneStockPortfolioSettings = mutationField("updateOneStockPort
 
 		return true;
 	},
-	resolve: (parent, args, { prisma }) => prisma.stockPortfolioSettings.update(args)
+	resolve: (parent, args, { prisma }) => {
+		const casted = PrismaUtils.castInputs(args);
+
+		return prisma.stockPortfolioSettings.update(casted);
+	}
 });

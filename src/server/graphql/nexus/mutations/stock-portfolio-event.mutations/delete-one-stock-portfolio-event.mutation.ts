@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, mutationField } from "@nexus/schema";
 
 export const deleteOneStockPortfolioEvent = mutationField("deleteOneStockPortfolioEvent", {
@@ -5,7 +6,9 @@ export const deleteOneStockPortfolioEvent = mutationField("deleteOneStockPortfol
 	args: {
 		where: arg({ type: "StockPortfolioEventWhereUniqueInput", nullable: false })
 	},
-	authorize: async (parent, { where }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -25,7 +28,8 @@ export const deleteOneStockPortfolioEvent = mutationField("deleteOneStockPortfol
 
 		return true;
 	},
-	resolve: async (parent, { where }, { prisma }) => {
+	resolve: async (parent, args, { prisma }) => {
+		const { where } = PrismaUtils.castInputs(args);
 		const stockPortfolioEvent = await prisma.stockPortfolioEvent.findOne({ where });
 
 		await prisma.stockPortfolioEvent.delete({ where });

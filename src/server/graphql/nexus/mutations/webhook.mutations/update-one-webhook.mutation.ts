@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { schema } from "@/server/webhooks";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import { AuthenticationError, ForbiddenError } from "apollo-server-micro";
@@ -22,7 +23,9 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 		data: arg({ type: "WebhookUpdateInput", nullable: false })
 	},
 	rateLimit: () => ({ window: "1m", max: 30 }),
-	authorize: async (parent, { where, data }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return new AuthenticationError("This request requires authentication");
 		}
@@ -60,5 +63,9 @@ export const updateOneWebhook = mutationField("updateOneWebhook", {
 			})
 		})
 	}),
-	resolve: (parent, args, { prisma }) => prisma.webhook.update(args)
+	resolve: (parent, args, { prisma }) => {
+		const casted = PrismaUtils.castInputs(args);
+
+		return prisma.webhook.update(casted);
+	}
 });

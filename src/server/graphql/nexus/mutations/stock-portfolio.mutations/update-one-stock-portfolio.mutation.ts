@@ -1,5 +1,5 @@
 import { NexusGenRootTypes } from "@/server/graphql/nexus/generated/typegen.gen";
-import { BadInputError } from "@/server/utils";
+import { BadInputError, PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, mutationField } from "@nexus/schema";
 import { uniqBy } from "lodash";
 import { array, object } from "yup";
@@ -20,7 +20,9 @@ export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", 
 		where: arg({ type: "StockPortfolioWhereUniqueInput", nullable: false })
 	},
 	rateLimit: () => ({ window: "1m", max: 30 }),
-	authorize: async (parent, { where }, { prisma, user }) => {
+	authorize: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		if (!user) {
 			return false;
 		}
@@ -50,11 +52,12 @@ export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", 
 			})
 		})
 	}),
-	resolve: async (
-		parent,
-		{ data: { name, headers, tickers }, where },
-		{ dataSources, prisma }
-	) => {
+	resolve: async (parent, args, { dataSources, prisma }) => {
+		const {
+			data: { name, headers, tickers },
+			where
+		} = PrismaUtils.castInputs(args);
+
 		const { IexCloudAPI } = dataSources;
 
 		if (tickers) {

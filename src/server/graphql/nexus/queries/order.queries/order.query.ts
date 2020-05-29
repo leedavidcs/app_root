@@ -1,3 +1,4 @@
+import { PrismaUtils } from "@/server/utils";
 import { arg, inputObjectType, queryField } from "@nexus/schema";
 
 export const OrderWhereUniqueInput = inputObjectType({
@@ -13,7 +14,9 @@ export const order = queryField("order", {
 		where: arg({ type: "OrderWhereUniqueInput", nullable: false })
 	},
 	authorize: (parent, args, { user }) => Boolean(user),
-	resolve: async (parent, { where }, { prisma, user }) => {
+	resolve: async (parent, args, { prisma, user }) => {
+		const { where } = PrismaUtils.castInputs(args);
+
 		const result = await prisma.order.findOne({
 			where,
 			include: {
