@@ -29,6 +29,8 @@
 		"baseUrl": "./",
 		"paths":  {
 			"@/client/*": ["./src/client/*"],
+			"@/pages/*": ["./src/pages/*"],
+			"@/scripts/*": ["./src/scripts/*"],
 			"@/server/*": ["./src/server/*"]
 		},
 		"sourceMap": true,
