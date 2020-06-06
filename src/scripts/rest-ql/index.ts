@@ -36,7 +36,9 @@ export interface IArgAstNode<T = any> extends IAstNode<"Arg">, IWithPropertiesAs
 
 export interface IRequestArgsAstNode<TRequestArgs extends object = any>
 	extends IAstNode<"RequestArgs">,
-		IWithArgsAstNodes<TRequestArgs> {}
+		IWithArgsAstNodes<TRequestArgs> {
+	__groupBy?: { [key in keyof TRequestArgs]: string };
+}
 
 export interface IPropertyAstNode extends IAstNode<"Property">, IWithPropertiesAstNodes {
 	__list?: boolean;
@@ -127,7 +129,10 @@ interface IResolverFieldParams<
 }
 
 type RequestArgsParams<TRequestArgs extends object = any> = {
-	[name in keyof TRequestArgs]: AstResult<IArgAstNode<TRequestArgs[name]>>;
+	args: {
+		[name in keyof TRequestArgs]: AstResult<IArgAstNode<TRequestArgs[name]>>;
+	};
+	groupBy?: { [name in keyof TRequestArgs]: string };
 };
 
 interface IProviderObjectTypeParams {
@@ -288,7 +293,7 @@ export class RestQL<TContext extends object = any, TRequestArgs extends Record<s
 			const args = await this.evaluateChildNodes({
 				parentType,
 				requestArgs,
-				children: params
+				children: params.args
 			});
 
 			const type: string = this.getTypeName({ parentType, name });
@@ -296,7 +301,8 @@ export class RestQL<TContext extends object = any, TRequestArgs extends Record<s
 			const requestArgsAst: IRequestArgsAstNode = {
 				__type: type,
 				__kind: "RequestArgs",
-				__args: args
+				__args: args,
+				__groupBy: params.groupBy
 			};
 
 			return requestArgsAst;

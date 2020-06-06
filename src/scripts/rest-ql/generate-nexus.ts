@@ -259,6 +259,11 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 		return generateProviderTypes(providerNode, providerName, file);
 	});
 
+	const requestArgGroups = Object.entries(requestArgNode.__groupBy ?? {}).filter(([argName]) => {
+		return Boolean(requestArgNode.__args?.[argName]);
+	});
+	const doesGroupBy: boolean = requestArgGroups.length !== 0;
+
 	const code = codeBlock`
 		export const Providers = objectType<any>({
 			name: "Providers",
@@ -269,10 +274,34 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 							type: "${providerNode.__type}" as any,
 							nullable: false,
 							description: "${providerNode.__description ?? ""}",
-							resolve: ({ requestArgs }) => ({ requestArgs })
+							resolve: (parent) => parent
 						});
 					`
 				)}
+			}
+		});
+
+		export const Data = objectType<any>({
+			name: "Data",
+			definition: (t) => {
+				${requestArgGroups.map(([argName, argGroupByAlias]) => {
+					const argNode = requestArgNode.__args?.[argName];
+
+					if (!argNode) {
+						return "";
+					}
+
+					return codeBlock`
+						t.field("${argGroupByAlias}", {
+							type: "${argNode.__type}",
+							nullable: false
+						});
+					`;
+				})}
+				t.field("providers", {
+					type: "Providers" as any,
+					nullable: false
+				});
 			}
 		});
 
@@ -280,16 +309,52 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 			description: "Root query type",
 			definition: (t) => {
 				t.boolean("ok", { resolve: () => true });
-				t.field("providers", {
-					type: "Providers" as any,
+				t${doesGroupBy && ".list"}.field("data", {
+					type: "Data" as any,
+					nullable: false,
 					args: {
 						requestArgs: arg({
 							type: "${requestArgNode.__type}" as any,
 							nullable: false,
-							description: "${requestArgNode.__description ?? ""}"
+							description: "${requestArgNode.__description ?? ""}"	
 						})
 					},
-					resolve: (parent, { requestArgs }) => ({ requestArgs })
+					resolve: (parent, { requestArgs }) => {${((): string => {
+						if (!doesGroupBy) {
+							return codeBlock`
+								return { requestArgs };
+							`;
+						}
+
+						const groupKeys = requestArgGroups.map(([argName]) => argName).join(", ");
+
+						return codeBlock`
+							const { ${groupKeys}, ...restRequestArgs } = requestArgs;
+							const groupByArgs = [${requestArgGroups.map(([name, alias]) => {
+								return codeBlock`["${name}", "${alias}"]`;
+							})}];
+
+							const cartesian = <T = any>(...arrays: T[][]): T[][] => {
+								return arrays.reduce<T[][]>(
+									(results, entries) =>
+										results
+											.map((res) => entries.map((entry) => [...res, entry]))
+											.reduce((sub, res) => [...sub, ...res], []),
+									[[]]
+								);
+							};
+
+							const withGroups = cartesian(${groupKeys}).map((product) => {
+								const groupBys =  product.reduce((acc, value, i) => {
+									return { ...acc, [groupByArgs[i][1]]: value };
+								}, {} as Record<string, any>);
+
+								return { ...groupBys, ...restRequestArgs };
+							});
+
+							return withGroups;
+						`;
+					})()}}
 				});
 			}
 		});
