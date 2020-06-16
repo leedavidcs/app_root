@@ -13,7 +13,8 @@ import type {
 
 interface IGenerateNexusOptions {
 	astPromise: MaybePromise<IAstRoot>;
-	output: string;
+	outputNexus: string;
+	outputGraphQL: string;
 }
 
 const writeToFile = (code: string, file: WriteStream): Promise<void> => {
@@ -53,7 +54,7 @@ const generateArgTypes = async (
 	await mapSeries(propNodes, ([, propNode]) => generateArgTypes(propNode, file));
 
 	const code = codeBlock`
-		export const ${argNode.__type} = inputObjectType<any>({
+		types.${argNode.__type} = inputObjectType<any>({
 			name: "${argNode.__type}",
 			description: "${argNode.__description ?? ""}",
 			definition: (t) => {
@@ -91,7 +92,7 @@ const generatePropertyTypes = async (
 	await mapSeries(propNodes, ([, propNode]) => generatePropertyTypes(propNode, file));
 
 	const code = codeBlock`
-		export const ${propertyNode.__type} = objectType<any>({
+		types.${propertyNode.__type} = objectType<any>({
 			name: "${propertyNode.__type}",
 			description: "${propertyNode.__description ?? ""}",
 			definition: (t) => {
@@ -121,7 +122,7 @@ const generateResolverFieldTypes = async (
 	await mapSeries(propNodes, ([, propNode]) => generatePropertyTypes(propNode, file));
 
 	const code = codeBlock`
-		export const ${fieldNode.__type} = objectType<any>({
+		types.${fieldNode.__type} = objectType<any>({
 			name: "${fieldNode.__type}",
 			description: "${fieldNode.__description ?? ""}",
 			definition: (t) => {
@@ -152,7 +153,7 @@ const generateProviderTypes = async (
 	await mapSeries(fieldNodes, ([, fieldNode]) => generateResolverFieldTypes(fieldNode, file));
 
 	const code = codeBlock`
-		export const ${providerNode.__type} = objectType<any>({
+		types.${providerNode.__type} = objectType<any>({
 			name: "${providerNode.__type}",
 			description: "${providerNode.__description ?? ""}",
 			definition: (t) => {
@@ -166,6 +167,7 @@ const generateProviderTypes = async (
 								const result = await (context as any).client.query({
 									provider: "${parentName}",
 									requestArgs: (parent as any).requestArgs,
+									groupByArgs: (parent as any).groupByArgs,
 									fields: {
 										${fieldName}: { args }
 									}
@@ -194,7 +196,7 @@ const generateRequestArgTypes = async (
 	await mapSeries(argNodes, ([, argNode]) => generateArgTypes(argNode, file));
 
 	const code = codeBlock`
-		export const ${requestArgNode.__type} = inputObjectType<any>({
+		types.${requestArgNode.__type} = inputObjectType<any>({
 			name: "${requestArgNode.__type}",
 			description: "${requestArgNode.__description ?? ""}",
 			definition: (t) => {
@@ -215,17 +217,37 @@ const generateRequestArgTypes = async (
 	return code;
 };
 
-const generateBaseCode = async (file: WriteStream): Promise<string> => {
+const generateBaseCode = async (
+	file: WriteStream,
+	config: IGenerateNexusOptions
+): Promise<string> => {
 	const code = codeBlock`
-		import { arg, inputObjectType, objectType, queryType, scalarType } from "@nexus/schema";
+		import {
+			arg,
+			inputObjectType,
+			makeSchema,
+			objectType,
+			queryType,
+			scalarType
+		} from "@nexus/schema";
 		import { ValueNode } from "graphql";
+		import path from "path";
+
+		const dirname: string = path.join(
+			process.env.PROJECT_DIRNAME ?? "",
+			"src/scripts/generated"
+		);
+
+		const getPath = (fileName: string): string => path.join(dirname, fileName);
+
+		const types = {} as Record<string, any>;
 
 		/**
 		 * @description Assume this value is either a GraphQL Int or Float. Type will not check to
 		 * prevent runtime errors, and this type will not differentiate between the two, for
 		 * flexability wrt type generation.
 		 */
-		export const Number = scalarType({
+		types.Number = scalarType({
 			name: "Number",
 			serialize: (value: number) => value,
 			parseValue: (value: number) => value,
@@ -246,12 +268,12 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 	const requestArgNode = query.__requestArgs;
 	const providerNodes = Object.entries(query.__providers);
 
-	const file: WriteStream = fs.createWriteStream(config.output, {
+	const file: WriteStream = fs.createWriteStream(config.outputNexus, {
 		encoding: "utf8",
 		flags: "w"
 	});
 
-	await generateBaseCode(file);
+	await generateBaseCode(file, config);
 
 	await generateRequestArgTypes(requestArgNode, file);
 
@@ -265,7 +287,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 	const doesGroupBy: boolean = requestArgGroups.length !== 0;
 
 	const code = codeBlock`
-		export const Providers = objectType<any>({
+		types.Providers = objectType<any>({
 			name: "Providers",
 			definition: (t) => {
 				${providerNodes.map(
@@ -274,14 +296,17 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 							type: "${providerNode.__type}" as any,
 							nullable: false,
 							description: "${providerNode.__description ?? ""}",
-							resolve: (parent) => parent
+							resolve: ({ requestArgs, groupByArgs }) => ({
+								requestArgs,
+								groupByArgs
+							})
 						});
 					`
 				)}
 			}
 		});
 
-		export const Data = objectType<any>({
+		types.Data = objectType<any>({
 			name: "Data",
 			definition: (t) => {
 				${requestArgGroups.map(([argName, argGroupByAlias]) => {
@@ -294,18 +319,23 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 					return codeBlock`
 						t.field("${argGroupByAlias}", {
 							type: "${argNode.__type}",
-							nullable: false
+							nullable: false,
+							resolve: ({ groupByArgs }) => (groupByArgs as any)?.${argGroupByAlias}
 						});
 					`;
 				})}
 				t.field("providers", {
 					type: "Providers" as any,
-					nullable: false
+					nullable: false,
+					resolve: ({ requestArgs, groupByArgs }) => ({
+						requestArgs,
+						groupByArgs
+					})
 				});
 			}
 		});
 
-		export const Query = queryType({
+		types.Query = queryType({
 			description: "Root query type",
 			definition: (t) => {
 				t.boolean("ok", { resolve: () => true });
@@ -329,8 +359,8 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 						const groupKeys = requestArgGroups.map(([argName]) => argName).join(", ");
 
 						return codeBlock`
-							const { ${groupKeys}, ...restRequestArgs } = requestArgs;
-							const groupByArgs = [${requestArgGroups.map(([name, alias]) => {
+							const { ${groupKeys} } = requestArgs;
+							const groupByArgsPairs = [${requestArgGroups.map(([name, alias]) => {
 								return codeBlock`["${name}", "${alias}"]`;
 							})}];
 
@@ -345,11 +375,13 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 							};
 
 							const withGroups = cartesian(${groupKeys}).map((product) => {
-								const groupBys =  product.reduce((acc, value, i) => {
-									return { ...acc, [groupByArgs[i][1]]: value };
+								const groupByArgs =  product.reduce((acc, value, i) => {
+									const alias = groupByArgsPairs[i][1];
+
+									return { ...acc, [alias]: value };
 								}, {} as Record<string, any>);
 
-								return { ...groupBys, ...restRequestArgs };
+								return { groupByArgs, requestArgs };
 							});
 
 							return withGroups;
@@ -357,6 +389,19 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 					})()}}
 				});
 			}
+		});
+
+		export const schema = makeSchema({
+			nonNullDefaults: {
+				input: false,
+				output: false
+			},
+			outputs: {
+				schema: getPath("${config.outputGraphQL}")
+			},
+			shouldGenerateArtifacts: true,
+			shouldExitAfterGenerateArtifacts: false,
+			types
 		});
 	`;
 

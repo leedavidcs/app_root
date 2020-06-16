@@ -1,7 +1,12 @@
 import { map } from "blend-promise-utils";
 import { head, merge, upperFirst } from "lodash";
+import path from "path";
 import { RestQLClient } from "./client";
 import { generateNexus } from "./generate-nexus";
+
+const dirname: string = path.join(process.env.PROJECT_DIRNAME ?? "", "src/scripts/generated");
+
+const getPath = (fileName: string) => path.join(dirname, fileName);
 
 type AstNodeKind = "Root" | "RequestArgs" | "Provider" | "Field" | "Property" | "Arg";
 
@@ -59,10 +64,12 @@ export interface IProviderAstNode extends IAstNode<"Provider"> {
 	__fields: { [name: string]: IFieldAstNode };
 }
 
-interface IAstParams<TRequestArgs extends object = any> {
+interface IAstParams<TRequestArgs extends object = any, TGroupByArgs extends object = any> {
+	makeClientConfig: IMakeClientConfig;
 	parentType: string;
 	name: string;
 	requestArgs: TRequestArgs;
+	groupByArgs: TGroupByArgs;
 }
 
 type AstResult<TAst extends IAstNode<any>> = (astParams: IAstParams) => MaybePromise<TAst | null>;
@@ -86,14 +93,16 @@ interface ITypeInfo {
 
 interface IEvaluateChildNodesParams<
 	TChildren extends { [name: string]: AstResult<any> } = any,
-	TRequestArgs extends object = any
+	TRequestArgs extends object = any,
+	TGroupByArgs extends object = any
 > {
+	makeClientConfig: IMakeClientConfig;
 	parentType: string;
 	requestArgs: TRequestArgs;
+	groupByArgs: TGroupByArgs;
 	children: TChildren;
 }
 
-/** ARG START */
 interface IArgParams<T> {
 	description?: string;
 	mock: T;
@@ -103,29 +112,36 @@ interface IArgParams<T> {
 interface IResolverFieldFnParams<
 	TArgs extends object = any,
 	TContext extends object = any,
-	TRequestArgs extends object = any
+	TRequestArgs extends object = any,
+	TGroupByArgs extends object = any
 > {
 	args: TArgs;
 	context: TContext;
 	requestArgs: TRequestArgs;
+	groupByArgs: TGroupByArgs;
+	isMock: boolean;
 }
 
 type IResolverFieldFn<
 	TArgs extends object = any,
 	TResult = any,
 	TContext extends object = any,
-	TRequestArgs extends object = any
-> = (fnParams: IResolverFieldFnParams<TArgs, TContext, TRequestArgs>) => MaybePromise<TResult>;
+	TRequestArgs extends object = any,
+	TGroupByArgs extends object = any
+> = (
+	fnParams: IResolverFieldFnParams<TArgs, TContext, TRequestArgs, TGroupByArgs>
+) => MaybePromise<TResult>;
 
 interface IResolverFieldParams<
 	TArgs extends object = any,
 	TResult = any,
 	TContext extends object = any,
-	TRequestArgs extends object = any
+	TRequestArgs extends object = any,
+	TGroupByArgs extends object = any
 > {
 	description?: string;
-	args: { [name in keyof TArgs]: AstResult<IArgAstNode<TArgs[name]>> };
-	fn: IResolverFieldFn<TArgs, TResult, TContext, TRequestArgs>;
+	args?: { [name in keyof TArgs]: AstResult<IArgAstNode<TArgs[name]>> };
+	fn: IResolverFieldFn<TArgs, TResult, TContext, TRequestArgs, TGroupByArgs>;
 }
 
 type RequestArgsParams<TRequestArgs extends object = any> = {
@@ -140,7 +156,20 @@ interface IProviderObjectTypeParams {
 	fields: Record<string, AstResult<IFieldAstNode>>;
 }
 
+interface IMakeClientOutput {
+	ast: string;
+	graphQL: string;
+	nexus: string;
+}
+
+interface IMakeClientConfig {
+	baseAst?: Maybe<JSONObject>;
+	output: IMakeClientOutput;
+	shouldGenerateArtifacts?: boolean;
+}
+
 interface IMakeClientParams<TRequestArgs extends object = any> {
+	config: IMakeClientConfig;
 	requestArgs: AstResult<IRequestArgsAstNode<TRequestArgs>>;
 	providers: { [name: string]: AstResult<IProviderAstNode> };
 }
@@ -150,27 +179,200 @@ export interface IAstRoot {
 }
 
 interface IRestQLConfig<TContext extends object = any> {
-	baseAst?: Maybe<JSONObject>;
 	context: MaybePromise<TContext>;
-	outputAst: string;
-	outputNexus: string;
-	shouldGenerateAst?: boolean;
 }
 
-export class RestQL<TContext extends object = any, TRequestArgs extends Record<string, any> = any> {
-	private baseAst: Maybe<JSONObject>;
+export class RestQL<
+	TContext extends object = any,
+	TRequestArgs extends object = any,
+	TGroupByArgs extends object = any
+> {
 	private context: MaybePromise<TContext>;
-	private outputAst: string;
-	private outputNexus: string;
-	private shouldGenerateAst: boolean;
 
 	constructor(config: IRestQLConfig<TContext>) {
-		this.baseAst = config.baseAst;
 		this.context = config.context;
-		this.outputAst = config.outputAst;
-		this.outputNexus = config.outputNexus;
-		this.shouldGenerateAst = config.shouldGenerateAst ?? false;
 	}
+
+	public arg = <T>(params: IArgParams<T>): AstResult<IArgAstNode<T>> => {
+		return ({ parentType, name }) => {
+			const typeInfo = this.getTypeInfo({ name, value: params.mock, parentType });
+
+			if (!typeInfo) {
+				return null;
+			}
+
+			const argAstNode: IArgAstNode = {
+				...typeInfo,
+				__kind: "Arg",
+				__description: params.description,
+				__mock: params.mock
+			};
+
+			return argAstNode;
+		};
+	};
+
+	public requestArgsObject = (params: RequestArgsParams): AstResult<IRequestArgsAstNode> => {
+		return async ({ makeClientConfig, name, parentType, requestArgs, groupByArgs }) => {
+			const args = await this.evaluateChildNodes({
+				makeClientConfig,
+				parentType,
+				requestArgs,
+				groupByArgs,
+				children: params.args
+			});
+
+			const type: string = this.getTypeName({ parentType, name });
+
+			const requestArgsAst: IRequestArgsAstNode = {
+				__type: type,
+				__kind: "RequestArgs",
+				__args: args,
+				__groupBy: params.groupBy
+			};
+
+			return requestArgsAst;
+		};
+	};
+
+	public resolverField = <TArgs extends object = any, TResult = any>(
+		params: IResolverFieldParams<TArgs, TResult, TContext, TRequestArgs, TGroupByArgs>
+	): AstResult<IFieldAstNode> => {
+		return async ({ makeClientConfig, name, parentType, requestArgs, groupByArgs }) => {
+			if (!makeClientConfig.shouldGenerateArtifacts) {
+				const fnAst: IFieldAstNode = {
+					__type: "Never",
+					__kind: "Field",
+					__fn: params.fn
+				};
+
+				return fnAst;
+			}
+
+			const args = await this.evaluateChildNodes({
+				makeClientConfig,
+				parentType: this.getTypeName({ parentType, name }),
+				requestArgs,
+				groupByArgs,
+				children: params.args ?? {}
+			});
+
+			const mockArgs = this.toMockArgs(args);
+
+			const context = await this.context;
+
+			const mockResult = await params.fn({
+				args: mockArgs,
+				context,
+				requestArgs,
+				groupByArgs,
+				isMock: true
+			});
+
+			const typeInfo = this.getTypeInfo({
+				name,
+				parentType,
+				value: mockResult
+			});
+
+			if (!typeInfo) {
+				return null;
+			}
+
+			const fieldAst: IFieldAstNode<TArgs, TResult, TContext, TRequestArgs> = {
+				...typeInfo,
+				__kind: "Field",
+				__description: params.description,
+				__args: args,
+				__fn: params.fn
+			};
+
+			return fieldAst;
+		};
+	};
+
+	public providerObjectType = (
+		params: IProviderObjectTypeParams
+	): AstResult<IProviderAstNode> => {
+		return async ({ makeClientConfig, name, parentType, requestArgs, groupByArgs }) => {
+			const typeName: string = this.getTypeName({ name, parentType });
+
+			const fields = await this.evaluateChildNodes({
+				makeClientConfig,
+				parentType: typeName,
+				requestArgs,
+				groupByArgs,
+				children: params.fields
+			});
+
+			const type: string = `${typeName}Provider`;
+
+			const providerAst: IProviderAstNode = {
+				__type: type,
+				__kind: "Provider",
+				__description: params.description,
+				__fields: fields
+			};
+
+			return providerAst;
+		};
+	};
+
+	public makeClient = (params: IMakeClientParams<TRequestArgs>): RestQLClient => {
+		const makeClientConfig = params.config;
+
+		const parentType: string = "";
+
+		const astPromise = (async (): Promise<IAstRoot> => {
+			const requestArgs =
+				(await params.requestArgs({
+					makeClientConfig,
+					name: "requestArgs",
+					parentType,
+					requestArgs: {},
+					groupByArgs: {}
+				})) ?? ({} as IRequestArgsAstNode<TRequestArgs>);
+
+			const mockRequestArgs = requestArgs.__args
+				? this.toMockArgs(requestArgs.__args)
+				: ({} as TRequestArgs);
+
+			const mockGroupByArgs = this.toMockGroupByArgs(
+				mockRequestArgs,
+				requestArgs.__groupBy ?? {}
+			);
+
+			const providers = await this.evaluateChildNodes({
+				makeClientConfig,
+				parentType,
+				children: params.providers,
+				requestArgs: mockRequestArgs,
+				groupByArgs: mockGroupByArgs
+			});
+
+			const query: IRootAstNode = {
+				__type: "Query",
+				__kind: "Root",
+				__requestArgs: requestArgs,
+				__providers: providers
+			};
+
+			const ast: IAstRoot = { query };
+
+			return ast;
+		})();
+
+		if (makeClientConfig.shouldGenerateArtifacts) {
+			this.writeAst(astPromise, makeClientConfig);
+		}
+
+		const client = new RestQLClient({
+			ast: astPromise,
+			context: this.context
+		});
+
+		return client;
+	};
 
 	private evaluateChildNodes = async <TChildren extends { [key: string]: AstResult<any> } = any>(
 		params: IEvaluateChildNodesParams<TChildren, TRequestArgs>
@@ -179,9 +381,11 @@ export class RestQL<TContext extends object = any, TRequestArgs extends Record<s
 			Object.entries(params.children),
 			async ([childName, childResult]) => {
 				const childAst = await childResult({
+					makeClientConfig: params.makeClientConfig,
 					name: childName,
 					parentType: params.parentType,
-					requestArgs: params.requestArgs
+					requestArgs: params.requestArgs,
+					groupByArgs: params.groupByArgs
 				});
 
 				return [childName, childAst] as [string, IAstNode<any> | null];
@@ -205,6 +409,25 @@ export class RestQL<TContext extends object = any, TRequestArgs extends Record<s
 		);
 
 		return mockArgs;
+	};
+
+	private toMockGroupByArgs = (
+		mockRequestArgs: TRequestArgs,
+		groupBy: Partial<Record<keyof TRequestArgs, string>>
+	): TGroupByArgs => {
+		const groupByTuples = Object.entries(groupBy) as [string, string][];
+
+		const mockGroupByArgs = groupByTuples.reduce((acc, [name, alias]) => {
+			const mockRequestArg = mockRequestArgs[name];
+
+			if (!Array.isArray(mockRequestArg) || mockRequestArg.length === 0) {
+				throw new Error("RequestArg to be grouped must be a non-empty array");
+			}
+
+			return { ...acc, [alias]: mockRequestArg[0] ?? null };
+		}, {} as TGroupByArgs);
+
+		return mockGroupByArgs;
 	};
 
 	private getTypeName = (params: IGetTypeNameParams): string => {
@@ -269,205 +492,53 @@ export class RestQL<TContext extends object = any, TRequestArgs extends Record<s
 		}
 	};
 
-	public arg = <T>(params: IArgParams<T>): AstResult<IArgAstNode<T>> => {
-		return ({ parentType, name }) => {
-			const typeInfo = this.getTypeInfo({ name, value: params.mock, parentType });
-
-			if (!typeInfo) {
-				return null;
-			}
-
-			const argAstNode: IArgAstNode = {
-				...typeInfo,
-				__kind: "Arg",
-				__description: params.description,
-				__mock: params.mock
-			};
-
-			return argAstNode;
-		};
-	};
-
-	public requestArgsObject = (params: RequestArgsParams): AstResult<IRequestArgsAstNode> => {
-		return async ({ name, parentType, requestArgs }) => {
-			const args = await this.evaluateChildNodes({
-				parentType,
-				requestArgs,
-				children: params.args
-			});
-
-			const type: string = this.getTypeName({ parentType, name });
-
-			const requestArgsAst: IRequestArgsAstNode = {
-				__type: type,
-				__kind: "RequestArgs",
-				__args: args,
-				__groupBy: params.groupBy
-			};
-
-			return requestArgsAst;
-		};
-	};
-
-	public resolverField = <TArgs extends object = any, TResult = any>(
-		params: IResolverFieldParams<TArgs, TResult, TContext, TRequestArgs>
-	): AstResult<IFieldAstNode> => {
-		return async ({ name, parentType, requestArgs }) => {
-			if (!this.shouldGenerateAst) {
-				const fnAst: IFieldAstNode = {
-					__type: "Never",
-					__kind: "Field",
-					__fn: params.fn
-				};
-
-				return fnAst;
-			}
-
-			const args = await this.evaluateChildNodes({
-				parentType: this.getTypeName({ parentType, name }),
-				requestArgs,
-				children: params.args
-			});
-
-			const mockArgs = this.toMockArgs(args);
-
-			const context = await this.context;
-
-			const mockResult = await params.fn({
-				args: mockArgs,
-				context,
-				requestArgs
-			});
-
-			const typeInfo = this.getTypeInfo({
-				name,
-				parentType,
-				value: mockResult
-			});
-
-			if (!typeInfo) {
-				return null;
-			}
-
-			const fieldAst: IFieldAstNode<TArgs, TResult, TContext, TRequestArgs> = {
-				...typeInfo,
-				__kind: "Field",
-				__description: params.description,
-				__args: args,
-				__fn: params.fn
-			};
-
-			return fieldAst;
-		};
-	};
-
-	public providerObjectType = (
-		params: IProviderObjectTypeParams
-	): AstResult<IProviderAstNode> => {
-		return async ({ name, parentType, requestArgs }) => {
-			const typeName: string = this.getTypeName({ name, parentType });
-
-			const fields = await this.evaluateChildNodes({
-				parentType: typeName,
-				requestArgs,
-				children: params.fields
-			});
-
-			const type: string = `${typeName}Provider`;
-
-			const providerAst: IProviderAstNode = {
-				__type: type,
-				__kind: "Provider",
-				__description: params.description,
-				__fields: fields
-			};
-
-			return providerAst;
-		};
-	};
-
-	public makeClient = (params: IMakeClientParams<TRequestArgs>): RestQLClient => {
-		const parentType: string = "";
-
-		const astPromise = (async (): Promise<IAstRoot> => {
-			const requestArgs =
-				(await params.requestArgs({
-					name: "requestArgs",
-					parentType,
-					requestArgs: {}
-				})) ?? ({} as IRequestArgsAstNode<TRequestArgs>);
-
-			const mockRequestArgs = requestArgs.__args
-				? this.toMockArgs(requestArgs.__args)
-				: ({} as TRequestArgs);
-
-			const providers = await this.evaluateChildNodes({
-				parentType,
-				children: params.providers,
-				requestArgs: mockRequestArgs
-			});
-
-			const query: IRootAstNode = {
-				__type: "Query",
-				__kind: "Root",
-				__requestArgs: requestArgs,
-				__providers: providers
-			};
-
-			const ast: IAstRoot = { query };
-
-			return ast;
-		})();
-
-		if (this.shouldGenerateAst) {
-			this.writeAst(astPromise);
-		}
-
-		const client = new RestQLClient({
-			ast: astPromise,
-			context: this.context
-		});
-
-		return client;
-	};
-
-	private updateAst = (ast: IAstRoot): IAstRoot => {
-		if (!this.baseAst) {
+	private updateAst = (ast: IAstRoot, makeClientConfig: IMakeClientConfig): IAstRoot => {
+		if (!makeClientConfig.baseAst) {
 			return ast;
 		}
 
-		const mergedAst: IAstRoot = merge(ast, this.baseAst);
+		const mergedAst: IAstRoot = merge(ast, makeClientConfig.baseAst);
 
 		return mergedAst;
 	};
 
-	private writeAst = async (astPromise: MaybePromise<IAstRoot>): Promise<void> => {
+	private writeAst = async (
+		astPromise: MaybePromise<IAstRoot>,
+		makeClientConfig: IMakeClientConfig
+	): Promise<void> => {
 		const fs = await import("fs-extra");
 
-		if (!this.outputAst) {
+		if (!makeClientConfig.output.ast) {
 			return;
 		}
 
+		const astFileName: string = getPath(makeClientConfig.output.ast);
+
 		const ast: IAstRoot = await astPromise;
-		const updatedAst: IAstRoot = this.updateAst(ast);
+		const updatedAst: IAstRoot = this.updateAst(ast, makeClientConfig);
 		const serializedAst: string = JSON.stringify(updatedAst, null, "\t");
 
-		await fs.ensureFile(this.outputAst);
+		await fs.ensureFile(astFileName);
 
 		const code: string = `export default ${serializedAst};
 		`;
-		await fs.writeFile(this.outputAst, code, {
+
+		await fs.writeFile(astFileName, code, {
 			encoding: "utf8",
 			flag: "w"
 		});
 
-		await this.writeNexus(updatedAst);
+		await this.writeNexus(updatedAst, makeClientConfig);
 	};
 
-	private writeNexus = async (ast: IAstRoot): Promise<void> => {
+	private writeNexus = async (
+		ast: IAstRoot,
+		makeClientConfig: IMakeClientConfig
+	): Promise<void> => {
 		await generateNexus({
 			astPromise: ast,
-			output: this.outputNexus
+			outputGraphQL: getPath(makeClientConfig.output.graphQL),
+			outputNexus: getPath(makeClientConfig.output.nexus)
 		});
 	};
 }

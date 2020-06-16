@@ -19,8 +19,9 @@ interface IFieldParams extends IPropParams {
 
 type ProviderField = true | IFieldParams;
 
-interface IQueryParams<TRequestArgs extends object = any> {
-	requestArgs: TRequestArgs;
+interface IQueryParams<TRequestArgs extends object = any, TGroupByArgs extends object = any> {
+	groupByArgs?: TGroupByArgs;
+	requestArgs?: TRequestArgs;
 	provider: string;
 	fields: { [name: string]: ProviderField };
 }
@@ -35,7 +36,7 @@ export class RestQLClient<TContext extends object = any, TRequestArgs extends ob
 	}
 
 	public query = async (params: IQueryParams<TRequestArgs>) => {
-		const { requestArgs, provider, fields } = params;
+		const { requestArgs = {}, groupByArgs = {}, provider, fields } = params;
 
 		const ast = await this.ast;
 		const context = await this.context;
@@ -69,7 +70,9 @@ export class RestQLClient<TContext extends object = any, TRequestArgs extends ob
 				result = await fieldResolver({
 					context,
 					requestArgs,
-					args
+					groupByArgs,
+					args,
+					isMock: false
 				});
 			} catch {
 				result = [fieldName, undefined] as [string, undefined];
