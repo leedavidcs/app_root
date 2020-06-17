@@ -117,6 +117,14 @@ const generateResolverFieldTypes = async (
 	fieldNode: IFieldAstNode,
 	file: WriteStream
 ): Promise<string> => {
+	switch (fieldNode.__type) {
+		case "Number":
+		case "String":
+		case "Boolean":
+			return "";
+		default:
+	}
+
 	const propNodes = Object.entries(fieldNode.__properties ?? {});
 
 	await mapSeries(propNodes, ([, propNode]) => generatePropertyTypes(propNode, file));
@@ -217,10 +225,7 @@ const generateRequestArgTypes = async (
 	return code;
 };
 
-const generateBaseCode = async (
-	file: WriteStream,
-	config: IGenerateNexusOptions
-): Promise<string> => {
+const generateBaseCode = async (file: WriteStream): Promise<string> => {
 	const code = codeBlock`
 		import {
 			arg,
@@ -273,7 +278,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 		flags: "w"
 	});
 
-	await generateBaseCode(file, config);
+	await generateBaseCode(file);
 
 	await generateRequestArgTypes(requestArgNode, file);
 

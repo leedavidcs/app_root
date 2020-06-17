@@ -1,5 +1,5 @@
 import { map } from "blend-promise-utils";
-import { head, merge, upperFirst } from "lodash";
+import { head, isEmpty, merge, upperFirst } from "lodash";
 import path from "path";
 import { RestQLClient } from "./client";
 import { generateNexus } from "./generate-nexus";
@@ -481,6 +481,10 @@ export class RestQL<
 					{} as { [propName: string]: IPropertyAstNode }
 				);
 
+				if (isEmpty(properties)) {
+					return undefined;
+				}
+
 				return {
 					__type: type,
 					__list: list,
@@ -537,7 +541,7 @@ export class RestQL<
 	): Promise<void> => {
 		await generateNexus({
 			astPromise: ast,
-			outputGraphQL: getPath(makeClientConfig.output.graphQL),
+			outputGraphQL: makeClientConfig.output.graphQL,
 			outputNexus: getPath(makeClientConfig.output.nexus)
 		});
 	};

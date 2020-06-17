@@ -1,4 +1,4 @@
-import baseAst from "@/scripts/generated/stock-schema/ast";
+import baseAst from "@/scripts/generated/symbols/ast";
 import { oneLine } from "common-tags";
 import * as providers from "./providers";
 import { rql } from "./rest-ql";
@@ -22,14 +22,14 @@ const requestArgs = rql.requestArgsObject({
 	}
 });
 
-export const makeStockSchema = (config?: IConfig) => {
+export const makeSymbolsClient = (config?: IConfig) => {
 	return rql.makeClient({
 		config: {
 			baseAst,
 			output: {
-				ast: "stock-schema/ast.ts",
-				graphQL: "stock-schema/schema.graphql",
-				nexus: "stock-schema/schema.ts"
+				ast: "symbols/ast.ts",
+				graphQL: "symbols/schema.graphql",
+				nexus: "symbols/schema.ts"
 			},
 			shouldGenerateArtifacts: config?.shouldGenerateArtifacts
 		},

@@ -1,4 +1,4 @@
-import { rql } from "@/scripts/generate-stock-schema.script/rest-ql";
+import { rql } from "@/scripts/generate-symbols-schema.script/rest-ql";
 import { oneLine } from "common-tags";
 import * as fields from "./fields";
 

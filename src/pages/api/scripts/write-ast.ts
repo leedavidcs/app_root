@@ -1,4 +1,4 @@
-import { makeStockSchema } from "@/scripts/generate-stock-schema.script";
+import { makeSymbolsClient } from "@/scripts/generate-symbols-schema.script";
 import HttpStatus from "http-status-codes";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,7 +10,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 		return;
 	}
 
-	makeStockSchema({ shouldGenerateArtifacts: true });
+	makeSymbolsClient({ shouldGenerateArtifacts: true });
 
 	res.status(HttpStatus.OK);
 	res.end();

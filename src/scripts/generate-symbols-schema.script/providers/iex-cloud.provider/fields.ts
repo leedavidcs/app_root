@@ -1,4 +1,4 @@
-import { rql } from "@/scripts/generate-stock-schema.script/rest-ql";
+import { rql } from "@/scripts/generate-symbols-schema.script/rest-ql";
 
 /**
  * @note insiderRoster, insiderSummary, insiderTransaction, and institutionalOwnership are excluded

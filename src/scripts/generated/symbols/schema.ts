@@ -833,12 +833,6 @@ types.IexCloudOhlc = objectType<any>({
 	}
 });
 
-types.String = objectType<any>({
-	name: "String",
-	description: "",
-	definition: (t) => {}
-});
-
 types.IexCloudPrevious = objectType<any>({
 	name: "IexCloudPrevious",
 	description: "",
@@ -971,12 +965,6 @@ types.IexCloudPrevious = objectType<any>({
 			nullable: true
 		});
 	}
-});
-
-types.Number = objectType<any>({
-	name: "Number",
-	description: "",
-	definition: (t) => {}
 });
 
 types.IexCloudQuote = objectType<any>({
@@ -1196,12 +1184,6 @@ types.IexCloudQuote = objectType<any>({
 			nullable: true
 		});
 	}
-});
-
-types.IexCloudSentiment = objectType<any>({
-	name: "IexCloudSentiment",
-	description: "",
-	definition: (t) => {}
 });
 
 types.IexCloudStats = objectType<any>({
@@ -1540,23 +1522,6 @@ types.IexCloudProvider = objectType<any>({
 				return result.quote;
 			}
 		});
-		t.field("sentiment", {
-			type: "IexCloudSentiment" as any,
-			nullable: true,
-			description: "",
-			resolve: async (parent, args = {}, context) => {
-				const result = await (context as any).client.query({
-					provider: "iexCloud",
-					requestArgs: (parent as any).requestArgs,
-					groupByArgs: (parent as any).groupByArgs,
-					fields: {
-						sentiment: { args }
-					}
-				});
-
-				return result.sentiment;
-			}
-		});
 		t.field("stats", {
 			type: "IexCloudStats" as any,
 			nullable: true,
@@ -1656,9 +1621,7 @@ export const schema = makeSchema({
 		output: false
 	},
 	outputs: {
-		schema: getPath(
-			"/home/leedavidcs/projects/app_root/src/scripts/generated/stock-schema/schema.graphql"
-		)
+		schema: getPath("symbols/schema.graphql")
 	},
 	shouldGenerateArtifacts: true,
 	shouldExitAfterGenerateArtifacts: false,

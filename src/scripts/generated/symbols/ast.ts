@@ -1329,13 +1329,6 @@ export default {
 						"__kind": "Field",
 						"__args": {}
 					},
-					"sentiment": {
-						"__type": "IexCloudSentiment",
-						"__list": false,
-						"__properties": {},
-						"__kind": "Field",
-						"__args": {}
-					},
 					"stats": {
 						"__type": "IexCloudStats",
 						"__list": false,
