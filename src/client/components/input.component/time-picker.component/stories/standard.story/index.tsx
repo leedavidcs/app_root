@@ -5,7 +5,7 @@ import { action } from "@storybook/addon-actions";
 import { getHours } from "date-fns";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 
 const MIN_HOURS = 12;
 

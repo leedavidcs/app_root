@@ -5,7 +5,7 @@ import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 import { Actions } from "./actions.component";
 import { useStyles } from "./styles";
 import { IStockPortfolioEditData, useData } from "./use-data.hook.";

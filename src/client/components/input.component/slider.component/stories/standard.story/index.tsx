@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers";
 import { action } from "@storybook/addon-actions";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 
 const MAX_ALLOWED_VALUE = 7;
 

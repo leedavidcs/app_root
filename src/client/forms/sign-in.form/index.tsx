@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers";
 import dynamic from "next/dynamic";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 
 const SignUpModal = dynamic(() => import("@/client/modals/sign-up.modal"));

@@ -13,7 +13,7 @@ import classnames from "classnames";
 import Link from "next/link";
 import React, { CSSProperties, FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 
 type StockPortfolio = Pick<_StockPortfolio, "id"> & {

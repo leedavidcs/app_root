@@ -6,7 +6,7 @@ import Faker from "faker";
 import { range } from "lodash";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 
 Faker.seed(1);
 

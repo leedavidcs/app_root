@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
 

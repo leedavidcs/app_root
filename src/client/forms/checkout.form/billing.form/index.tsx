@@ -21,7 +21,7 @@ import { StripeCardElement, StripeCardElementChangeEvent } from "@stripe/stripe-
 import classnames from "classnames";
 import React, { FC, useCallback, useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import yup from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 
 export interface IBillingFormData {
