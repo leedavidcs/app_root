@@ -22,7 +22,7 @@ types.Number = scalarType({
 
 types.RequestArgs = inputObjectType<any>({
 	name: "RequestArgs",
-	description: "",
+
 	definition: (t) => {
 		t.list.field("symbols", {
 			type: "String" as any,
@@ -33,7 +33,7 @@ types.RequestArgs = inputObjectType<any>({
 
 types.IexCloudBookQuote = objectType<any>({
 	name: "IexCloudBookQuote",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -252,7 +252,7 @@ types.IexCloudBookQuote = objectType<any>({
 
 types.IexCloudBookTrades = objectType<any>({
 	name: "IexCloudBookTrades",
-	description: "",
+
 	definition: (t) => {
 		t.field("price", {
 			type: "Number" as any,
@@ -295,7 +295,7 @@ types.IexCloudBookTrades = objectType<any>({
 
 types.IexCloudBookSystemEvent = objectType<any>({
 	name: "IexCloudBookSystemEvent",
-	description: "",
+
 	definition: (t) => {
 		t.field("systemEvent", {
 			type: "String" as any,
@@ -310,7 +310,7 @@ types.IexCloudBookSystemEvent = objectType<any>({
 
 types.IexCloudBook = objectType<any>({
 	name: "IexCloudBook",
-	description: "",
+
 	definition: (t) => {
 		t.field("quote", {
 			type: "IexCloudBookQuote" as any,
@@ -329,7 +329,7 @@ types.IexCloudBook = objectType<any>({
 
 types.IexCloudChart = objectType<any>({
 	name: "IexCloudChart",
-	description: "",
+
 	definition: (t) => {
 		t.field("date", {
 			type: "String" as any,
@@ -396,7 +396,7 @@ types.IexCloudChart = objectType<any>({
 
 types.IexCloudEarningsEarnings = objectType<any>({
 	name: "IexCloudEarningsEarnings",
-	description: "",
+
 	definition: (t) => {
 		t.field("actualEPS", {
 			type: "Number" as any,
@@ -447,7 +447,7 @@ types.IexCloudEarningsEarnings = objectType<any>({
 
 types.IexCloudEarnings = objectType<any>({
 	name: "IexCloudEarnings",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -462,7 +462,7 @@ types.IexCloudEarnings = objectType<any>({
 
 types.IexCloudEstimatesEstimates = objectType<any>({
 	name: "IexCloudEstimatesEstimates",
-	description: "",
+
 	definition: (t) => {
 		t.field("consensusEPS", {
 			type: "Number" as any,
@@ -497,7 +497,7 @@ types.IexCloudEstimatesEstimates = objectType<any>({
 
 types.IexCloudEstimates = objectType<any>({
 	name: "IexCloudEstimates",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -512,7 +512,7 @@ types.IexCloudEstimates = objectType<any>({
 
 types.IexCloudFinancialsFinancials = objectType<any>({
 	name: "IexCloudFinancialsFinancials",
-	description: "",
+
 	definition: (t) => {
 		t.field("reportDate", {
 			type: "String" as any,
@@ -611,7 +611,7 @@ types.IexCloudFinancialsFinancials = objectType<any>({
 
 types.IexCloudFinancials = objectType<any>({
 	name: "IexCloudFinancials",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -626,7 +626,7 @@ types.IexCloudFinancials = objectType<any>({
 
 types.IexCloudIncomeIncome = objectType<any>({
 	name: "IexCloudIncomeIncome",
-	description: "",
+
 	definition: (t) => {
 		t.field("reportDate", {
 			type: "String" as any,
@@ -705,7 +705,7 @@ types.IexCloudIncomeIncome = objectType<any>({
 
 types.IexCloudIncome = objectType<any>({
 	name: "IexCloudIncome",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -720,7 +720,7 @@ types.IexCloudIncome = objectType<any>({
 
 types.IexCloudLogo = objectType<any>({
 	name: "IexCloudLogo",
-	description: "",
+
 	definition: (t) => {
 		t.field("url", {
 			type: "String" as any,
@@ -731,7 +731,7 @@ types.IexCloudLogo = objectType<any>({
 
 types.IexCloudNews = objectType<any>({
 	name: "IexCloudNews",
-	description: "",
+
 	definition: (t) => {
 		t.field("datetime", {
 			type: "Number" as any,
@@ -774,7 +774,7 @@ types.IexCloudNews = objectType<any>({
 
 types.IexCloudOhlcOpen = objectType<any>({
 	name: "IexCloudOhlcOpen",
-	description: "",
+
 	definition: (t) => {
 		t.field("price", {
 			type: "Number" as any,
@@ -789,7 +789,7 @@ types.IexCloudOhlcOpen = objectType<any>({
 
 types.IexCloudOhlcClose = objectType<any>({
 	name: "IexCloudOhlcClose",
-	description: "",
+
 	definition: (t) => {
 		t.field("price", {
 			type: "Number" as any,
@@ -804,7 +804,7 @@ types.IexCloudOhlcClose = objectType<any>({
 
 types.IexCloudOhlc = objectType<any>({
 	name: "IexCloudOhlc",
-	description: "",
+
 	definition: (t) => {
 		t.field("open", {
 			type: "IexCloudOhlcOpen" as any,
@@ -835,7 +835,7 @@ types.IexCloudOhlc = objectType<any>({
 
 types.IexCloudPrevious = objectType<any>({
 	name: "IexCloudPrevious",
-	description: "",
+
 	definition: (t) => {
 		t.field("date", {
 			type: "String" as any,
@@ -902,7 +902,7 @@ types.IexCloudPrevious = objectType<any>({
 
 types.IexCloudPrevious = objectType<any>({
 	name: "IexCloudPrevious",
-	description: "",
+
 	definition: (t) => {
 		t.field("date", {
 			type: "String" as any,
@@ -969,7 +969,7 @@ types.IexCloudPrevious = objectType<any>({
 
 types.IexCloudQuote = objectType<any>({
 	name: "IexCloudQuote",
-	description: "",
+
 	definition: (t) => {
 		t.field("symbol", {
 			type: "String" as any,
@@ -1188,7 +1188,7 @@ types.IexCloudQuote = objectType<any>({
 
 types.IexCloudStats = objectType<any>({
 	name: "IexCloudStats",
-	description: "",
+
 	definition: (t) => {
 		t.field("week52change", {
 			type: "Number" as any,
@@ -1304,7 +1304,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("book", {
 			type: "IexCloudBook" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1321,7 +1321,7 @@ types.IexCloudProvider = objectType<any>({
 		t.list.field("chart", {
 			type: "IexCloudChart" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1338,7 +1338,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("earnings", {
 			type: "IexCloudEarnings" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1355,7 +1355,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("estimates", {
 			type: "IexCloudEstimates" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1372,7 +1372,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("financials", {
 			type: "IexCloudFinancials" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1389,7 +1389,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("income", {
 			type: "IexCloudIncome" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1406,7 +1406,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("logo", {
 			type: "IexCloudLogo" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1423,7 +1423,7 @@ types.IexCloudProvider = objectType<any>({
 		t.list.field("news", {
 			type: "IexCloudNews" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1440,7 +1440,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("ohlc", {
 			type: "IexCloudOhlc" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1457,7 +1457,7 @@ types.IexCloudProvider = objectType<any>({
 		t.list.field("peers", {
 			type: "String" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1474,7 +1474,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("previous", {
 			type: "IexCloudPrevious" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1491,7 +1491,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("price", {
 			type: "Number" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1508,7 +1508,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("quote", {
 			type: "IexCloudQuote" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1525,7 +1525,7 @@ types.IexCloudProvider = objectType<any>({
 		t.field("stats", {
 			type: "IexCloudStats" as any,
 			nullable: true,
-			description: "",
+
 			resolve: async (parent, args = {}, context) => {
 				const result = await (context as any).client.query({
 					provider: "iexCloud",
@@ -1586,8 +1586,7 @@ types.Query = queryType({
 			args: {
 				requestArgs: arg({
 					type: "RequestArgs" as any,
-					nullable: false,
-					description: ""
+					nullable: false
 				})
 			},
 			resolve: (parent, { requestArgs }) => {

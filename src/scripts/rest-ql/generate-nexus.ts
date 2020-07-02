@@ -56,7 +56,7 @@ const generateArgTypes = async (
 	const code = codeBlock`
 		types.${argNode.__type} = inputObjectType<any>({
 			name: "${argNode.__type}",
-			description: "${argNode.__description ?? ""}",
+			${argNode.__description ? `description: "${argNode.__description}",` : ""}
 			definition: (t) => {
 				${propNodes.map(
 					([propName, propNode]) => codeBlock`
@@ -94,7 +94,7 @@ const generatePropertyTypes = async (
 	const code = codeBlock`
 		types.${propertyNode.__type} = objectType<any>({
 			name: "${propertyNode.__type}",
-			description: "${propertyNode.__description ?? ""}",
+			${propertyNode.__description ? `description: "${propertyNode.__description}",` : ""}
 			definition: (t) => {
 				${propNodes.map(
 					([propName, propNode]) => codeBlock`
@@ -132,7 +132,7 @@ const generateResolverFieldTypes = async (
 	const code = codeBlock`
 		types.${fieldNode.__type} = objectType<any>({
 			name: "${fieldNode.__type}",
-			description: "${fieldNode.__description ?? ""}",
+			${fieldNode.__description ? `description: "${fieldNode.__description}",` : ""}
 			definition: (t) => {
 				${propNodes.map(
 					([propName, propNode]) => codeBlock`
@@ -160,17 +160,18 @@ const generateProviderTypes = async (
 
 	await mapSeries(fieldNodes, ([, fieldNode]) => generateResolverFieldTypes(fieldNode, file));
 
+	/* eslint-disable max-len */
 	const code = codeBlock`
 		types.${providerNode.__type} = objectType<any>({
 			name: "${providerNode.__type}",
-			description: "${providerNode.__description ?? ""}",
+			${providerNode.__description ? `description: "${providerNode.__description}",` : ""}
 			definition: (t) => {
 				${fieldNodes.map(
 					([fieldName, fieldNode]) => codeBlock`
 						t${fieldNode.__list && ".list"}.field("${fieldName}", {
 							type: "${fieldNode.__type}" as any,
 							nullable: true,
-							description: "${fieldNode.__description ?? ""}",
+							${fieldNode.__description ? `description: "${fieldNode.__description}"` : ""}
 							resolve: async (parent, args = {}, context) => {
 								const result = await (context as any).client.query({
 									provider: "${parentName}",
@@ -189,6 +190,7 @@ const generateProviderTypes = async (
 			}
 		});
 	`;
+	/* eslint-enable max-len */
 
 	await writeToFile(code, file);
 
@@ -206,7 +208,7 @@ const generateRequestArgTypes = async (
 	const code = codeBlock`
 		types.${requestArgNode.__type} = inputObjectType<any>({
 			name: "${requestArgNode.__type}",
-			description: "${requestArgNode.__description ?? ""}",
+			${requestArgNode.__description ? `description: "${requestArgNode.__description}",` : ""}
 			definition: (t) => {
 				${argNodes.map(
 					([argName, argNode]) => codeBlock`
@@ -291,6 +293,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 	});
 	const doesGroupBy: boolean = requestArgGroups.length !== 0;
 
+	/* eslint-disable max-len */
 	const code = codeBlock`
 		types.Providers = objectType<any>({
 			name: "Providers",
@@ -300,7 +303,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 						t.field("${providerName}", {
 							type: "${providerNode.__type}" as any,
 							nullable: false,
-							description: "${providerNode.__description ?? ""}",
+							${providerNode.__description ? `description: "${providerNode.__description}",` : ""}
 							resolve: ({ requestArgs, groupByArgs }) => ({
 								requestArgs,
 								groupByArgs
@@ -351,7 +354,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 						requestArgs: arg({
 							type: "${requestArgNode.__type}" as any,
 							nullable: false,
-							description: "${requestArgNode.__description ?? ""}"	
+							${requestArgNode.__description ? `description: "${requestArgNode.__description}",` : ""}
 						})
 					},
 					resolve: (parent, { requestArgs }) => {${((): string => {
@@ -409,6 +412,7 @@ export const generateNexus = async (config: IGenerateNexusOptions): Promise<stri
 			types
 		});
 	`;
+	/* eslint-enable max-len */
 
 	await writeToFile(code, file);
 
