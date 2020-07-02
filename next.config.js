@@ -16,6 +16,7 @@ const config = {
 		BRAND_NAME: process.env.BRAND_NAME,
 		WEBSITE_URL: process.env.WEBSITE_URL,
 		API_BASE_URL: process.env.API_BASE_URL,
+		ENABLE_SCRIPTS: process.env.ENABLE_SCRIPTS,
 		JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
 		JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
 		JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN,

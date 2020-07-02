@@ -25,3 +25,8 @@ declare type MaybePromise<T> = Promise<T> | T;
 
 declare type UnPromise<T> = T extends Promise<infer U> ? U : T;
 declare type UnArray<T> = T extends (infer U)[] ? U : T;
+
+declare type JSONPrimitive = string | number | boolean | null;
+declare type JSONValue = JSONPrimitive | JSONObject | JSONArray;
+declare type JSONObject = { [member: string]: JSONValue };
+declare interface JSONArray extends Array<JSONValue> {}

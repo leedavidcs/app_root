@@ -31,10 +31,11 @@ export interface IServerCreateContextArgs {
 	res: NextApiResponse;
 }
 
-export const createContext = async ({
-	req,
-	res
-}: IServerCreateContextArgs): Promise<Omit<IServerContext, "dataSources">> => {
+export const createContext = async (
+	params: IServerCreateContextArgs
+): Promise<Omit<IServerContext, "dataSources">> => {
+	const { req, res } = params;
+
 	const userId: string | null = getAuthorizedUserId(req);
 	const user = userId ? await prisma.user.findOne({ where: { id: userId } }) : null;
 
