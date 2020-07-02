@@ -23,7 +23,7 @@ interface IFormData {
 	confirmPassword: string;
 }
 
-const validationSchema = ({ password }: IFormData) => ({
+const resolver = getYupValidationResolver(({ password }: IFormData) => ({
 	username: string().required("Username is required"),
 	email: string().required("Email is required"),
 	password: string().required("Password is required"),
@@ -32,9 +32,7 @@ const validationSchema = ({ password }: IFormData) => ({
 		"Passwords do not match",
 		(text) => text === password
 	)
-});
-
-const validationResolver = getYupValidationResolver(validationSchema);
+}));
 
 /**
  * @description Returns a setState<string>, that toggles a modal content to a verify-email form.
@@ -138,9 +136,7 @@ const usePasswordChangeHandler = () => {
 export const SignUpForm: FC = () => {
 	const classes = useStyles();
 
-	const { control, errors, getValues, handleSubmit } = useForm<IFormData>({
-		validationResolver
-	});
+	const { control, errors, getValues, handleSubmit } = useForm<IFormData>({ resolver });
 
 	const setEmail = useSetEmail();
 	const onClickSignIn = useSignInHandler();
@@ -148,11 +144,11 @@ export const SignUpForm: FC = () => {
 
 	const onSuccess = useCallback(() => setEmail(getValues().email), [setEmail, getValues]);
 	const { errorMessage, onFormSubmit } = useFormSubmitHandler(onSuccess);
-	const onSubmit = useCallback(handleSubmit(onFormSubmit), [handleSubmit, onFormSubmit]);
+	const onSubmit = useCallback(onFormSubmit, [handleSubmit, onFormSubmit]);
 
 	return (
 		<div className={classes.root}>
-			<form className={classes.formWrapper} onSubmit={onSubmit}>
+			<form className={classes.formWrapper} onSubmit={handleSubmit(onSubmit)}>
 				<TextInput
 					className={classes.textInput}
 					label="Username"

@@ -13,7 +13,7 @@ import { useToast } from "@/client/hooks";
 import { getYupValidationResolver } from "@/client/utils";
 import { getHours, getMinutes, set } from "date-fns";
 import React, { FC, useCallback, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { array, date, number, string, StringSchema } from "yup";
 import { DaysMultiSelect } from "./days-multi-select.component";
 import { RecurrenceSelect } from "./recurrence-select.component";
@@ -37,7 +37,7 @@ interface IFormData {
 	dateTime?: Date;
 }
 
-const validationResolver = getYupValidationResolver<IFormData>((data) => {
+const resolver = getYupValidationResolver<IFormData>((data) => {
 	const isSchedule = Boolean(data.recurrence || (data.days ?? []).length > 0);
 
 	return {
@@ -112,7 +112,7 @@ export const SettingPollDataForm: FC<IProps> = ({
 			days: event?.scheduledEvent.days,
 			dateTime: defaultTime
 		},
-		validationResolver
+		resolver
 	});
 
 	const watched = watch();
@@ -124,12 +124,12 @@ export const SettingPollDataForm: FC<IProps> = ({
 		onCompleted: () => toaster.show({ intent: "success", message: "Update successful" })
 	});
 
-	const onSubmit = useCallback(
-		(formData: IFormData) => {
+	const onSubmit: SubmitHandler<IFormData> = useCallback(
+		(formData) => {
 			const type = StockPortfolioEventType.DataRetrieved;
 
-			const hour = formData.dateTime && getHours(formData.dateTime);
-			const minute = formData.dateTime && getMinutes(formData.dateTime);
+			const hour = formData.dateTime && getHours(formData.dateTime as Date);
+			const minute = formData.dateTime && getMinutes(formData.dateTime as Date);
 
 			if (!formData.interval && !formData.recurrence) {
 				try {
@@ -172,12 +172,10 @@ export const SettingPollDataForm: FC<IProps> = ({
 	);
 
 	const onClickReset = useCallback(() => {
-		setValue([
-			{ interval: undefined },
-			{ recurrence: undefined },
-			{ days: undefined },
-			{ dateTime: undefined }
-		]);
+		setValue("interval", undefined);
+		setValue("recurrence", undefined);
+		setValue("days", undefined);
+		setValue("dateTime", undefined);
 	}, [setValue]);
 
 	return (

@@ -15,13 +15,13 @@ import {
 } from "@/client/graphql";
 import { useToast } from "@/client/hooks";
 import { OrderSummary } from "@/client/page-parts";
-import { getYupValidationResolver } from "@/client/utils";
+import { yupResolver } from "@hookform/resolvers";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { StripeCardElement, StripeCardElementChangeEvent } from "@stripe/stripe-js";
 import classnames from "classnames";
 import React, { FC, useCallback, useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import yup from "yup";
 import { useStyles } from "./styles";
 
 export interface IBillingFormData {
@@ -39,14 +39,16 @@ interface IProps {
 	onSubmit: () => void;
 }
 
-const validationResolver = getYupValidationResolver<IBillingFormData>(() => ({
-	line1: string().required(),
-	cardholder: string().required(),
-	city: string().required(),
-	country: string().required(),
-	state: string().required(),
-	postal_code: string().required()
-}));
+const resolver = yupResolver<IBillingFormData>(
+	yup.object().shape({
+		line1: yup.string().required(),
+		cardholder: yup.string().required(),
+		city: yup.string().required(),
+		country: yup.string().required(),
+		state: yup.string().required(),
+		postal_code: yup.string().required()
+	})
+);
 
 const useOnSubmit = ({ onSubmit: _onSubmit }: IProps) => {
 	const { orderDetails, setBillingDetails, setCard, setClientSecret } = useContext(Context);
@@ -162,7 +164,7 @@ export const BillingForm: FC<IProps> = (props) => {
 
 	const { control, errors, handleSubmit } = useForm<IBillingFormData>({
 		mode: "onChange",
-		validationResolver
+		resolver
 	});
 
 	const onChangeCardElement = useCallback(

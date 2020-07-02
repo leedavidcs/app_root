@@ -8,11 +8,11 @@ import {
 	WebhookType
 } from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
-import { getYupValidationResolver } from "@/client/utils";
+import { yupResolver } from "@hookform/resolvers";
 import { NextRouter, useRouter } from "next/router";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import yup from "yup";
 import { useStyles } from "./styles";
 import { webhookTypes, WebhookTypeSelect } from "./webhook-type-select.component";
 
@@ -34,23 +34,27 @@ interface IFormData {
 	type: WebhookType;
 }
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	url: string()
-		.required("Url is required")
-		.url("Url is invalid")
-		.test({
-			message: "Url host localhost is not supported",
-			test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
-		}),
-	secret: string(),
-	type: string()
-		.oneOf<WebhookType>([WebhookType.StockDataRetrieved])
-		.required("Type is required")
-		.test({
-			message: "Type is invalid",
-			test: (value) => webhookTypes.some((type) => type === value)
-		})
-}));
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		url: yup
+			.string()
+			.required("Url is required")
+			.url("Url is invalid")
+			.test({
+				message: "Url host localhost is not supported",
+				test: (value) => !/(https?:\/\/)?localhost.*$/g.test(value)
+			}),
+		secret: yup.string(),
+		type: yup
+			.string()
+			.oneOf<WebhookType>([WebhookType.StockDataRetrieved])
+			.required("Type is required")
+			.test({
+				message: "Type is invalid",
+				test: (value) => webhookTypes.some((type) => type === value)
+			})
+	})
+);
 
 const useOnEditQuery = ({ webhook }: IProps) => {
 	const [query, setQuery] = useState<Maybe<string>>(webhook?.query);
@@ -118,12 +122,12 @@ export const UpsertWebhookForm: FC<IProps> = (props) => {
 		}
 	});
 
-	const { control, errors, handleSubmit, setError } = useForm<IFormData>({
-		validationResolver
-	});
+	const { control, errors, handleSubmit, setError } = useForm<IFormData>({ resolver });
 
 	const onFormSubmitError = useOnFormSubmitError<IFormData>({
-		onBadUserInput: (invalidArgs) => setError(invalidArgs)
+		onBadUserInput: (invalidArgs) => {
+			invalidArgs.forEach(({ name, type, message }) => setError(name, { type, message }));
+		}
 	});
 
 	const [onEditQuery, queryStates] = useOnEditQuery(props);

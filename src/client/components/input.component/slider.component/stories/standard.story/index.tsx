@@ -1,10 +1,10 @@
 import { Button } from "@/client/components/button.component";
 import { Slider } from "@/client/components/input.component/slider.component";
-import { getYupValidationResolver } from "@/client/utils";
+import { yupResolver } from "@hookform/resolvers";
 import { action } from "@storybook/addon-actions";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { number } from "yup";
+import yup from "yup";
 
 const MAX_ALLOWED_VALUE = 7;
 
@@ -12,12 +12,14 @@ interface IFormData {
 	story_slider: number;
 }
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	story_slider: number().required().max(MAX_ALLOWED_VALUE)
-}));
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		story_slider: yup.number().required().max(MAX_ALLOWED_VALUE)
+	})
+);
 
 export const StandardStory: FC = () => {
-	const { control, errors, handleSubmit } = useForm<IFormData>({ validationResolver });
+	const { control, errors, handleSubmit } = useForm<IFormData>({ resolver });
 
 	const onSubmit = useCallback(
 		handleSubmit((data) => action("onSubmit")(data)),

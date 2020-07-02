@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { ManualFieldError } from "react-hook-form";
+import { ManualFieldError } from "react-hook-form/dist/types/form";
 import { useToast } from "./use-toast.hook";
 
 interface IOptions<T extends Record<string, any>> {

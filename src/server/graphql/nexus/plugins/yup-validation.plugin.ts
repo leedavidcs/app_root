@@ -10,7 +10,7 @@ import {
 import { UserInputError } from "apollo-server-micro";
 import { oneLine } from "common-tags";
 import { GraphQLResolveInfo } from "graphql";
-import { ManualFieldError } from "react-hook-form";
+import { ManualFieldError } from "react-hook-form/dist/types/form";
 import { object, ObjectSchemaDefinition, ValidationError } from "yup";
 
 /* eslint-disable no-console */
