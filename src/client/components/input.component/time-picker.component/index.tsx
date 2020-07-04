@@ -72,7 +72,7 @@ const BaseTimePicker: FC<IProps> = ({
 };
 
 export const TimePicker: FC<IProps> = (props) => {
-	const { control, defaultValue, name, onChange, value, ...restProps } = props;
+	const { control, defaultValue, name, onChange: _onChange, value: _value, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -81,10 +81,18 @@ export const TimePicker: FC<IProps> = (props) => {
 
 		return (
 			<Controller
-				as={BaseTimePicker}
 				control={control}
 				name={name}
-				{...restProps}
+				render={({ onChange, value }) => (
+					<BaseTimePicker
+						{...restProps}
+						onChange={(input) => {
+							_onChange?.(input);
+							onChange(input || undefined);
+						}}
+						value={value}
+					/>
+				)}
 				defaultValue={defaultValue}
 			/>
 		);

@@ -1,7 +1,7 @@
 import type { Alignment } from "@blueprintjs/core";
 import { Switch as BpSwitch } from "@blueprintjs/core";
 import classnames from "classnames";
-import React, { FC, FormEventHandler, ReactElement, ReactNode, useCallback } from "react";
+import React, { FC, FormEventHandler, ReactElement, ReactNode } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
@@ -64,15 +64,6 @@ export const Switch: FC<IProps> = (props) => {
 		...restProps
 	} = props;
 
-	const onChange = useCallback(
-		([event]) => {
-			_onChange?.(event);
-
-			return event.currentTarget.checked;
-		},
-		[_onChange]
-	);
-
 	if (control) {
 		if (!name) {
 			throw new Error("Switch is used in a form without a name!");
@@ -80,13 +71,19 @@ export const Switch: FC<IProps> = (props) => {
 
 		return (
 			<Controller
-				as={BaseSwitch}
 				control={control}
 				name={name}
+				render={({ onChange, value }) => (
+					<BaseSwitch
+						{...restProps}
+						onChange={(event) => {
+							_onChange?.(event);
+							onChange(event.currentTarget.checked);
+						}}
+						checked={value}
+					/>
+				)}
 				defaultValue={defaultChecked}
-				{...restProps}
-				onChange={onChange}
-				valueName="checked"
 			/>
 		);
 	}

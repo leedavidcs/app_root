@@ -87,7 +87,14 @@ const BaseNumberInput: FC<IProps> = ({
 };
 
 export const NumberInput: FC<IProps> = (props) => {
-	const { control, defaultValue, name, value, onValueChange, ...restProps } = props;
+	const {
+		control,
+		defaultValue,
+		name,
+		onValueChange: _onValueChange,
+		value: _value,
+		...restProps
+	} = props;
 
 	if (control) {
 		if (!name) {
@@ -96,13 +103,19 @@ export const NumberInput: FC<IProps> = (props) => {
 
 		return (
 			<Controller
-				as={BaseNumberInput}
 				control={control}
 				name={name}
+				render={({ onChange, value }) => (
+					<BaseNumberInput
+						{...restProps}
+						onValueChange={(input) => {
+							_onValueChange?.(input, input.toString());
+							onChange(input);
+						}}
+						value={value}
+					/>
+				)}
 				defaultValue={defaultValue}
-				{...restProps}
-				onChange={([valueAsNumber]) => valueAsNumber}
-				onChangeName="onValueChange"
 			/>
 		);
 	}

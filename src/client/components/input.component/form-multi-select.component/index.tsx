@@ -102,7 +102,14 @@ const ofType = <T extends any, TOriginal = T>() => {
 	};
 
 	const component: FC<IFormMultiSelectProps<T, TOriginal>> = memo((props) => {
-		const { control, defaultValue, name, onChange, value, ...restProps } = props;
+		const {
+			control,
+			defaultValue,
+			name,
+			onChange: _onChange,
+			value: _value,
+			...restProps
+		} = props;
 
 		if (control) {
 			if (!name) {
@@ -111,16 +118,24 @@ const ofType = <T extends any, TOriginal = T>() => {
 
 			return (
 				<Controller
-					as={BaseComponent}
 					control={control}
-					defaultValue={defaultValue}
 					name={name}
-					{...restProps}
+					render={({ onChange, value }) => (
+						<BaseComponent
+							{...restProps}
+							onChange={(input) => {
+								_onChange?.(input);
+								onChange(input || undefined);
+							}}
+							value={value}
+						/>
+					)}
+					defaultValue={defaultValue}
 				/>
 			);
 		}
 
-		return <BaseComponent {...restProps} />;
+		return <BaseComponent {...props} />;
 	});
 
 	component.displayName = "TypedFormMultiSelect";

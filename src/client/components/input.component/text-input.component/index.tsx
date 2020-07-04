@@ -110,7 +110,7 @@ const BaseTextInput: FC<IProps> = ({
 };
 
 export const TextInput: FC<IProps> = (props) => {
-	const { control, defaultValue, name, value, onChange, ...restProps } = props;
+	const { control, defaultValue, name, value: _value, onChange: _onChange, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -119,12 +119,19 @@ export const TextInput: FC<IProps> = (props) => {
 
 		return (
 			<Controller
-				as={BaseTextInput}
 				control={control}
 				name={name}
-				{...restProps}
-				defaultValue={defaultValue ?? ""}
-				onChange={([event]) => event.target.value || ""}
+				render={({ onChange, value }) => (
+					<BaseTextInput
+						{...restProps}
+						onChange={(event) => {
+							_onChange?.(event);
+							onChange(event.currentTarget.value || undefined);
+						}}
+						value={value}
+					/>
+				)}
+				defaultValue={defaultValue}
 			/>
 		);
 	}
