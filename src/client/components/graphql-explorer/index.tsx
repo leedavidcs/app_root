@@ -40,7 +40,13 @@ export const GraphQLExplorer: FC<IProps> = memo(
 		title = "GraphQL Explorer",
 		url
 	}) => {
-		/** Import GraphiQL within function, because `codemirror` cannot be imported in SSR */
+		/**
+		 * !HACK
+		 * @description Import GraphiQL within function, because lazy/dynamic loading breaks the
+		 *     import, but lazy loading is still desireable.
+		 * @author David Lee
+		 * @date July 06, 2020
+		 */
 		const GraphiQL = useModule(() => import("graphiql"))?.GraphiQL;
 
 		const classes = useStyles();
