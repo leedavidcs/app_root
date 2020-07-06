@@ -22,24 +22,26 @@ A styled wrapper around
 
 ### Source
 ```tsx
-import { CountrySelect } from "@/client/components/input.component/country-select.component";
-import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@/client/components/button.component";
+import { CountrySelect } from "@/client/components/input.component/country-select.component";
+import { yupResolver } from "@hookform/resolvers";
 import { action } from "@storybook/addon-actions";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import * as yup from "yup";
 
 interface IFormData {
 	country: string;
 }
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	country: string().required()
-}));
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		country: yup.string().required()
+	})
+);
 
 export const StandardStory: FC = () => {
-	const { control, errors, handleSubmit } = useForm<IFormData>({ validationResolver });
+	const { control, errors, handleSubmit } = useForm<IFormData>({ resolver });
 
 	const onSubmit = useCallback(
 		handleSubmit((data) => action("onSubmit")(data)),

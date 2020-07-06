@@ -115,7 +115,7 @@ const BaseSlider: FC<IProps> = (props) => {
 };
 
 export const Slider: FC<IProps> = (props) => {
-	const { control, name, value, onChange, ...restProps } = props;
+	const { control, name, value: _value, onChange: _onChange, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -124,16 +124,19 @@ export const Slider: FC<IProps> = (props) => {
 
 		return (
 			<Controller
-				as={BaseSlider}
 				control={control}
 				name={name}
-				{...restProps}
+				render={({ onChange, value }) => (
+					<BaseSlider
+						{...restProps}
+						onChange={(input) => {
+							_onChange?.(input);
+							onChange(input || 0);
+						}}
+						value={value}
+					/>
+				)}
 				defaultValue={restProps.min || 0}
-				onChange={([input]) => {
-					onChange?.(input);
-
-					return input;
-				}}
 			/>
 		);
 	}

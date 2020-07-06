@@ -1,9 +1,10 @@
 import { Anchor, Button, TextInput } from "@/client/components";
-import { useLogin, useModal, useYupValidationResolver } from "@/client/hooks";
+import { useLogin, useModal } from "@/client/hooks";
+import { yupResolver } from "@hookform/resolvers";
 import dynamic from "next/dynamic";
 import React, { FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 
 const SignUpModal = dynamic(() => import("@/client/modals/sign-up.modal"));
@@ -36,22 +37,12 @@ const useSignUpHandler = () => {
 	}, [setContent, toggle]);
 };
 
-/**
- * @description Derives the validation resolver for the useForm hook.
- */
-const useValidationResolver = () => {
-	const validationSchema = useCallback(
-		() => ({
-			userIdentifier: string().required("Username or email is required"),
-			password: string().required("Password is required")
-		}),
-		[]
-	);
-
-	const validationResolver = useYupValidationResolver(validationSchema);
-
-	return validationResolver;
-};
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		userIdentifier: yup.string().required("Username or email is required"),
+		password: yup.string().required("Password is required")
+	})
+);
 
 export const SignInForm: FC<IProps> = ({ onComplete }) => {
 	const classes = useStyles();
@@ -59,15 +50,13 @@ export const SignInForm: FC<IProps> = ({ onComplete }) => {
 	const onClickForgotPassword = useForgotPasswordHandler();
 	const onClickSignUp = useSignUpHandler();
 
-	const validationResolver = useValidationResolver();
-
 	const { control, errors, handleSubmit, setError } = useForm<IFormData>({
 		defaultValues: {
 			userIdentifier: "",
 			password: ""
 		},
-		validateCriteriaMode: "all",
-		validationResolver
+		criteriaMode: "all",
+		resolver
 	});
 
 	const { toggle } = useModal();
@@ -88,7 +77,10 @@ export const SignInForm: FC<IProps> = ({ onComplete }) => {
 					throw new Error("Invalid username/password");
 				}
 			} catch (err) {
-				setError("password", "invalid", "Username/Password combination is invalid");
+				setError("password", {
+					type: "invalid",
+					message: "Username/Password combination is invalid"
+				});
 			}
 		},
 		[login, setError]

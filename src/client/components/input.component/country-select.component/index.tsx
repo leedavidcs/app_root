@@ -9,6 +9,7 @@ import { useStyles } from "./styles";
 interface IProps {
 	className?: string;
 	control?: Control<any>;
+	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
@@ -55,7 +56,7 @@ const BaseCountrySelect: FC<IProps> = ({
 };
 
 export const CountrySelect: FC<IProps> = memo((props) => {
-	const { control, name, onChange, value, ...restProps } = props;
+	const { control, name, defaultValue, onChange: _onChange, value: _value, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -65,17 +66,18 @@ export const CountrySelect: FC<IProps> = memo((props) => {
 		return (
 			<Controller
 				control={control}
-				as={BaseCountrySelect}
 				name={name}
-				{...restProps}
-				defaultValue={undefined}
-				onChange={([input]) => {
-					const result = input || undefined;
-
-					onChange?.(result);
-
-					return result;
-				}}
+				render={({ onChange, value }) => (
+					<BaseCountrySelect
+						{...restProps}
+						onChange={(input) => {
+							_onChange?.(input);
+							onChange(input || undefined);
+						}}
+						value={value}
+					/>
+				)}
+				defaultValue={defaultValue}
 			/>
 		);
 	}

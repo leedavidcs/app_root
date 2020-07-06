@@ -1,11 +1,11 @@
 import { DataGrid, EditableText, NonIdealState, Paper, Spinner } from "@/client/components";
 import { GetOneStockPortfolioQuery } from "@/client/graphql";
-import { getYupValidationResolver } from "@/client/utils";
+import { yupResolver } from "@hookform/resolvers";
 import classnames from "classnames";
 import { format } from "date-fns";
 import React, { FC, memo, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { string } from "yup";
+import * as yup from "yup";
 import { Actions } from "./actions.component";
 import { useStyles } from "./styles";
 import { IStockPortfolioEditData, useData } from "./use-data.hook.";
@@ -25,17 +25,18 @@ export interface IFormData {
 
 const TypedDataGrid = DataGrid.ofType<IStockPortfolioEditData>();
 
-const validationSchema = () => ({ name: string().min(1) });
-const validationResolver = getYupValidationResolver<IFormData>(validationSchema);
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		name: yup.string().min(1)
+	})
+);
 
 export const StockPortfolioEdit: FC<IStockPortfolioEditProps> = memo((props) => {
 	const { className, stockPortfolio } = props;
 
 	const classes = useStyles();
 
-	const { control, errors, handleSubmit } = useForm<IFormData>({
-		validationResolver
-	});
+	const { control, errors, handleSubmit } = useForm<IFormData>({ resolver });
 	const optionsResult = useOptions();
 	const [headerStates, headerActions] = useHeaders(props, optionsResult.options);
 	const [dataStates, dataActions] = useData(props);

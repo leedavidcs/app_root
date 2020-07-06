@@ -1,7 +1,7 @@
 import { FormGroup } from "@/client/components/input.component/form-group.component";
 import type { Intent } from "@blueprintjs/core";
 import { EditableText as BpEditableText } from "@blueprintjs/core";
-import React, { CSSProperties, FC, ReactElement, useCallback, useMemo } from "react";
+import React, { CSSProperties, FC, memo, ReactElement, useMemo } from "react";
 import { Control, Controller } from "react-hook-form";
 import { useStyles } from "./styles";
 
@@ -21,14 +21,12 @@ interface IProps {
 	value?: string;
 }
 
-export const EditableText: FC<IProps> = ({
+const BaseEditableText: FC<IProps> = ({
 	className,
-	control: _control,
 	defaultValue,
 	error,
 	disabled,
 	maxLength,
-	name,
 	onCancel,
 	onChange,
 	onConfirm,
@@ -53,29 +51,6 @@ export const EditableText: FC<IProps> = ({
 		[classes.root, defaultValue, disabled, intent, maxLength, placeholder]
 	);
 
-	const getAsController = useCallback(
-		(control: NonNullable<IProps["control"]>) => {
-			if (!name) {
-				throw new Error("Input is used in a form without a name!");
-			}
-
-			return <Controller as={BpEditableText} control={control} {...inputProps} name={name} />;
-		},
-		[inputProps, name]
-	);
-
-	const getAsInput = useCallback(() => {
-		return (
-			<BpEditableText
-				{...inputProps}
-				onCancel={onCancel}
-				onChange={onChange}
-				onConfirm={onConfirm}
-				value={value}
-			/>
-		);
-	}, [inputProps, onCancel, onChange, onConfirm, value]);
-
 	return (
 		<FormGroup
 			className={className}
@@ -84,7 +59,45 @@ export const EditableText: FC<IProps> = ({
 			intent={intent}
 			style={style}
 		>
-			{_control ? getAsController(_control) : getAsInput()}
+			<BpEditableText
+				{...inputProps}
+				onCancel={onCancel}
+				onChange={onChange}
+				onConfirm={onConfirm}
+				value={value}
+			/>
 		</FormGroup>
 	);
 };
+
+export const EditableText: FC<IProps> = memo((props) => {
+	const { control, name, defaultValue, onChange: _onChange, value: _value, ...restProps } = props;
+
+	if (control) {
+		if (!name) {
+			throw new Error("Editable text is used in a form without a name!");
+		}
+
+		return (
+			<Controller
+				control={control}
+				name={name}
+				render={({ onChange, value }) => (
+					<BaseEditableText
+						{...restProps}
+						onChange={(input) => {
+							_onChange?.(input);
+							onChange(input || undefined);
+						}}
+						value={value}
+					/>
+				)}
+				defaultValue={defaultValue}
+			/>
+		);
+	}
+
+	return <BaseEditableText {...props} />;
+});
+
+EditableText.displayName = "EditableText";

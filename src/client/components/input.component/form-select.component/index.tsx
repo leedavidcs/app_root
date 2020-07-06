@@ -82,7 +82,14 @@ const ofType = <T extends any, TOriginal = T>() => {
 	};
 
 	const component: FC<IFormSelectProps<T, TOriginal>> = memo((props) => {
-		const { control, defaultValue, name, value, ...restProps } = props;
+		const {
+			control,
+			defaultValue,
+			name,
+			value: _value,
+			onItemSelect: _onItemSelect,
+			...restProps
+		} = props;
 
 		if (control) {
 			if (!name) {
@@ -91,17 +98,24 @@ const ofType = <T extends any, TOriginal = T>() => {
 
 			return (
 				<Controller
-					as={BaseComponent}
 					control={control}
-					defaultValue={defaultValue}
 					name={name}
-					onChangeName="onItemSelect"
-					{...restProps}
+					render={({ onChange, value }) => (
+						<BaseComponent
+							{...restProps}
+							onItemSelect={(item, event) => {
+								_onItemSelect?.(item, event);
+								onChange(item);
+							}}
+							value={value}
+						/>
+					)}
+					defaultValue={defaultValue}
 				/>
 			);
 		}
 
-		return <BaseComponent {...restProps} />;
+		return <BaseComponent {...props} />;
 	});
 
 	component.displayName = "TypedFormSelect";

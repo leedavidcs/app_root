@@ -23,15 +23,15 @@ various aspects of other `react-hook-form` compatible components, including the 
 
 ### Source
 ```tsx
-import { FormSelect } from "@/client/components/input.component/form-select.component";
-import { getYupValidationResolver } from "@/client/utils";
 import { Button } from "@/client/components/button.component";
+import { FormSelect } from "@/client/components/input.component/form-select.component";
+import { yupResolver } from "@hookform/resolvers";
 import { action } from "@storybook/addon-actions";
 import Faker from "faker";
 import { range } from "lodash";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
+import * as yup from "yup";
 
 Faker.seed(1);
 
@@ -54,20 +54,23 @@ const mockData: readonly IMockData[] = range(DATA_SIZE).map(() => {
 
 const TypedFormSelect = FormSelect.ofType<IMockData>();
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	demo: object()
-		.shape({
-			key: string().required(),
-			uuid: string().required()
-		})
-		.test({
-			message: "Value must start with alphabetic letter",
-			test: (value: IMockData) => /^[a-z].*$/i.test(value.key)
-		})
-}));
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		demo: yup
+			.object()
+			.shape({
+				key: yup.string().required(),
+				uuid: yup.string().required()
+			})
+			.test({
+				message: "Value must start with alphabetic letter",
+				test: (value: IMockData) => /^[a-z].*$/i.test(value.key)
+			})
+	})
+);
 
 export const StandardStory: FC = () => {
-	const { control, errors, handleSubmit } = useForm<IFormData>({ validationResolver });
+	const { control, errors, handleSubmit } = useForm<IFormData>({ resolver });
 
 	return (
 		<form onSubmit={handleSubmit(action("onSubmit"))}>

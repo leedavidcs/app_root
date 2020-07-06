@@ -8,12 +8,12 @@ import {
 	useUpdateStockPortfolioSettingsMutation
 } from "@/client/graphql";
 import { useOnFormSubmitError, useToast } from "@/client/hooks";
-import { getYupValidationResolver } from "@/client/utils";
+import { yupResolver } from "@hookform/resolvers";
 import classnames from "classnames";
 import Link from "next/link";
 import React, { CSSProperties, FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { boolean, object } from "yup";
+import * as yup from "yup";
 import { useStyles } from "./styles";
 
 type StockPortfolio = Pick<_StockPortfolio, "id"> & {
@@ -34,11 +34,13 @@ interface IFormData {
 	};
 }
 
-const validationResolver = getYupValidationResolver<IFormData>(() => ({
-	data: object().shape({
-		enableSnapshots: boolean()
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		data: yup.object().shape({
+			enableSnapshots: yup.boolean()
+		})
 	})
-}));
+);
 
 const computeNewCost = (
 	stockPortfolio: StockPortfolio,
@@ -72,17 +74,19 @@ export const StockPortfolioSettingsForm: FC<IProps> = ({ className, stockPortfol
 				enableSnapshots: stockPortfolio.settings.enableSnapshots
 			}
 		},
-		validationResolver
+		resolver
 	});
 
-	const formFields = watch({ nest: true });
+	const formFields = watch();
 
 	const [updateSettings] = useUpdateStockPortfolioSettingsMutation({
 		onCompleted: () => toaster.show({ intent: "success", message: "Update successful" })
 	});
 
 	const onFormSubmitError = useOnFormSubmitError<IFormData>({
-		onBadUserInput: (invalidArgs) => setError(invalidArgs)
+		onBadUserInput: (invalidArgs) => {
+			invalidArgs.forEach(({ name, type, message }) => setError(name, { type, message }));
+		}
 	});
 
 	const onSubmit = useCallback(

@@ -1,29 +1,3 @@
-import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
-import { TextInput } from ".";
-import { StandardStory } from "./stories";
-
-<Meta title="general/inputs/text-input" component={TextInput} />
-
-# TextInput
-
-## Description
-A text-input for forms. Provides a wrapper around the native HTMLInputElement, with custom styles
-and additional features including validation.
-
-## Props
-<Props of={TextInput} />
-
-## StandardStory
-export const STANDARD_MAX_INPUT_LENGTH = 5;
-
-<Preview>
-	<Story name="standard">
-		<StandardStory />
-	</Story>
-</Preview>
-
-### Source
-```tsx
 import { Button } from "@/client/components/button.component";
 import { TextInput } from "@/client/components/input.component/text-input.component";
 import { Paper } from "@/client/components/paper.component";
@@ -64,4 +38,3 @@ export const StandardStory: FC = () => {
 		</Paper>
 	);
 };
-```

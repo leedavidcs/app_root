@@ -10,6 +10,7 @@ interface IProps {
 	className?: string;
 	control?: Control<any>;
 	country: string;
+	defaultValue?: string;
 	disabled?: boolean;
 	error?: Maybe<string | ReactElement>;
 	inline?: boolean;
@@ -58,7 +59,7 @@ const BaseRegionSelect: FC<IProps> = ({
 };
 
 export const RegionSelect: FC<IProps> = memo((props) => {
-	const { control, name, onChange, value, ...restProps } = props;
+	const { control, defaultValue, name, onChange: _onChange, value: _value, ...restProps } = props;
 
 	if (control) {
 		if (!name) {
@@ -68,17 +69,18 @@ export const RegionSelect: FC<IProps> = memo((props) => {
 		return (
 			<Controller
 				control={control}
-				as={BaseRegionSelect}
 				name={name}
-				{...restProps}
-				defaultValue={value}
-				onChange={([input]) => {
-					const result = input || undefined;
-
-					onChange?.(result);
-
-					return result;
-				}}
+				render={({ onChange, value }) => (
+					<BaseRegionSelect
+						{...restProps}
+						onChange={(input, event) => {
+							_onChange?.(input, event);
+							onChange(input || undefined);
+						}}
+						value={value}
+					/>
+				)}
+				defaultValue={defaultValue}
 			/>
 		);
 	}
