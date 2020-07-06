@@ -88,7 +88,7 @@ export const TimePicker: FC<IProps> = (props) => {
 						{...restProps}
 						onChange={(input) => {
 							_onChange?.(input);
-							onChange(input || undefined);
+							onChange(input);
 						}}
 						value={value}
 					/>

@@ -17,9 +17,7 @@ const resolver = yupResolver<IFormData>(
 	yup.object().shape({
 		mockTimePicker: yup.date().test({
 			message: "Hours must be greater than 12",
-			test: (value) => {
-				return getHours(value) > MIN_HOURS;
-			}
+			test: (value) => getHours(value) > MIN_HOURS
 		})
 	})
 );
@@ -34,7 +32,7 @@ export const StandardStory: FC = () => {
 				error={errors.mockTimePicker?.message}
 				label="Time Picker"
 				labelInfo="(with form)"
-				name="mocktimePicker"
+				name="mockTimePicker"
 			/>
 			<Button text="Submit" type="submit" />
 		</form>
