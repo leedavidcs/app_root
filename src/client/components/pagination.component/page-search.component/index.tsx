@@ -1,7 +1,7 @@
 import { Icon } from "@/client/components/icon.component";
 import { NumberInput } from "@/client/components/input.component";
 import { Interactable } from "@/client/components/interactable.component";
-import { IPaginationProps } from "@/client/components/pagination.component";
+import { IPaginationProps, OnPageProps } from "@/client/components/pagination.component";
 import {
 	getCurrentPage,
 	getPageCount,
@@ -14,10 +14,23 @@ import React, { FC, KeyboardEvent, useCallback, useMemo, useState } from "react"
 import { useStyles } from "./styles";
 
 interface IProps extends IPaginationProps {
-	onPage: (props: IPaginationProps) => void;
+	onPage: (props: OnPageProps) => void;
 }
 
-export const PageSearch: FC<IProps> = ({ count, first, skip, onPage }) => {
+export const PageSearch: FC<IProps> = ({
+	count,
+	first: _first,
+	take: _take = _first,
+	skip,
+	onPage
+}) => {
+	const first: number | undefined = _take;
+	const take: number | undefined = _take;
+
+	if (typeof first !== "number" || typeof take !== "number") {
+		throw new Error("Must define either first or take in PageSearch component!");
+	}
+
 	const classes = useStyles();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -38,9 +51,9 @@ export const PageSearch: FC<IProps> = ({ count, first, skip, onPage }) => {
 				return;
 			}
 
-			onPage({ count, first, skip: getSkipFromPage(value - 1, first) });
+			onPage({ count, first, take, skip: getSkipFromPage(value - 1, first) });
 		},
-		[count, first, onPage, value]
+		[count, first, onPage, take, value]
 	);
 
 	return (

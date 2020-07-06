@@ -1,4 +1,4 @@
-import { Button, IPaginationProps, Pagination } from "@/client/components";
+import { Button, IPaginationProps, OnPageProps, Pagination } from "@/client/components";
 import {
 	CreateStockPortfolioMutation,
 	GetManyStockPortfoliosQueryVariables,
@@ -21,7 +21,7 @@ interface IProps {
 
 const useOnPage = (
 	filters: GetManyStockPortfoliosQueryVariables
-): [Pick<IPaginationProps, "first" | "skip">, (value: IPaginationProps) => void] => {
+): [Pick<IPaginationProps, "first" | "skip">, (value: OnPageProps) => void] => {
 	const [first, setFirst] = useState<number>(DEFAULT_PAGINATION_FIRST);
 	const [skip, setSkip] = useState<number>(0);
 
@@ -31,7 +31,7 @@ const useOnPage = (
 	]);
 
 	const onPage = useCallback(
-		(value: IPaginationProps) => {
+		(value: OnPageProps) => {
 			setFirst(value.first);
 			setSkip(value.skip);
 		},
