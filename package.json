@@ -88,7 +88,7 @@
     "dataloader": "^2.0.0",
     "date-fns": "^2.14.0",
     "date-fns-tz": "^1.0.10",
-    "graphiql": "^1.0.0-alpha.13",
+    "graphiql": "^1.0.3",
     "graphql": "^15.3.0",
     "graphql-depth-limit": "^1.1.0",
     "graphql-query-complexity": "^0.6.0",
