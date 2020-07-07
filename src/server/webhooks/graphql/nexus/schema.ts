@@ -1,5 +1,5 @@
 import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "@nexus/schema";
-import { nexusPrismaPlugin } from "nexus-prisma";
+import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import path from "path";
 import * as queries from "./queries";
 import * as types from "./types";
@@ -24,8 +24,10 @@ export const schema = makeSchema({
 		output: false
 	},
 	plugins: [
-		nexusPrismaPlugin({
-			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") }
+		nexusSchemaPrisma({
+			experimentalCRUD: true,
+			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") },
+			paginationStrategy: "prisma"
 		}),
 		queryComplexityPlugin(),
 		fieldAuthorizePlugin()
