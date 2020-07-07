@@ -1,13 +1,13 @@
 query GetWebhooks(
-	$first: Int
+	$take: Int
 	$skip: Int
-	$after: WebhookWhereUniqueInput
+	$cursor: WebhookWhereUniqueInput
 	$where: WebhookWhereInput
 ) {
 	webhooks(
-		first: $first
+		take: $take
 		skip: $skip
-		after: $after
+		cursor: $cursor
 		where: $where
 	) {
 		id

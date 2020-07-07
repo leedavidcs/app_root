@@ -1,11 +1,17 @@
 query GetManyStockPortfolios(
-	$first: Int
-	$after: StockPortfolioWhereUniqueInput
+	$take: Int
+	$cursor: StockPortfolioWhereUniqueInput
 	$skip: Int
 	$where: StockPortfolioWhereInput
 	$query: String
 ) {
-	stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {
+	stockPortfolios(
+		take: $take,
+		cursor: $cursor,
+		skip: $skip,
+		where: $where,
+		query: $query
+	) {
 		id
 		name
 		updatedAt
