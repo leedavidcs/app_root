@@ -39,8 +39,7 @@ model StockPortfolio {
   user           User                   @relation(fields: [userId], references: [id])
   userId         String
   name           String
-  // This should be Json[], but as of prisma@2.0.0-beta.6, Json[] does not work correctly
-  headers        String[]
+  headers        Json[]
   tickers        String[]
   settings       StockPortfolioSettings
   snapshots      Snapshot[]
@@ -165,12 +164,10 @@ model Webhook {
 model Snapshot {
   id               String         @id @default(cuid())
   tickers          String[]
-  // This should be Json[], but as of prisma@2.0.0-beta.6, Json[] does not work correctly
-  headers          String[]
+  headers          Json[]
   stockPortfolio   StockPortfolio @relation(fields: [stockPortfolioId], references: [id])
   stockPortfolioId String
-  // This should be Json[], but as of prisma@2.0.0-beta.6, Json[] does not work correctly
-  data             String[]
+  data             Json[]
   createdAt        DateTime       @default(now())
 }
 
