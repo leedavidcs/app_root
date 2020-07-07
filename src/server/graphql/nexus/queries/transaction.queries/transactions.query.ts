@@ -33,10 +33,8 @@ export const transactions = queryField("transactions", {
 	args: {
 		where: arg({ type: "TransactionWhereWithoutUserInput" }),
 		skip: intArg(),
-		after: arg({ type: "TransactionWhereUniqueInput" }),
-		before: arg({ type: "TransactionWhereUniqueInput" }),
-		first: intArg(),
-		last: intArg()
+		cursor: arg({ type: "TransactionWhereUniqueInput" }),
+		take: intArg()
 	},
 	authorize: (parent, args, { user }) => {
 		if (!user) {

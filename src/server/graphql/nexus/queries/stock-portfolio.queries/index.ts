@@ -12,10 +12,8 @@ export const stockPortfolioQueries = extendType({
 			nullable: false,
 			rateLimit: () => ({ window: "1m", max: 30 }),
 			args: {
-				after: arg({ type: "StockPortfolioWhereUniqueInput" }),
-				before: arg({ type: "StockPortfolioWhereUniqueInput" }),
-				first: intArg(),
-				last: intArg(),
+				cursor: arg({ type: "StockPortfolioWhereUniqueInput" }),
+				take: intArg(),
 				skip: intArg(),
 				orderBy: arg({ type: "StockPortfolioOrderByInput" }),
 				where: arg({ type: "StockPortfolioWhereInput" }),
