@@ -90,17 +90,14 @@ export const useHeaders = (
 	}, []);
 
 	const onHeadersError = useCallback(
-		(message: string) => {
-			toast.show({ message, intent: "warning" });
-		},
+		(message: string) => toast.show({ message, intent: "warning" }),
 		[toast]
 	);
 
 	const addGridHeader = useCallback(
 		(newOption: IHeaderOption) => {
-			const isDuplicateOption = Boolean(
-				gridHeaders.find(({ label }) => newOption.value === label)
-			);
+			const isDuplicateOption: boolean =
+				gridHeaders.findIndex(({ label }) => newOption.label === label) !== -1;
 
 			if (isDuplicateOption) {
 				toast.show({
