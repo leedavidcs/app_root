@@ -36,7 +36,7 @@ export const Button: FC<IProps> = ({
 	rightIcon,
 	style,
 	text,
-	type
+	type = "button"
 }) => {
 	const classes = useStyles();
 
