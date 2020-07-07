@@ -2,10 +2,10 @@ import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
 import { IServerContextWithUser } from "@/server/graphql";
 import { NotFoundError } from "@/server/utils";
 import {
+	PaymentTransaction,
 	Snapshot,
 	StockPortfolio,
 	StockPortfolioSettings,
-	Transaction,
 	User,
 	WebhookType
 } from "@prisma/client";
@@ -170,7 +170,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 		const mapped: Record<string, any>[] = this.mapToStockPortfolio(results, stockPortfolio);
 
-		if (stockPortfolio.settings.enableSnapshots) {
+		if (stockPortfolio.settings?.enableSnapshots) {
 			await this.createSnapshot(stockPortfolio, mapped);
 		}
 
@@ -187,23 +187,27 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	}
 
 	public computeCosts = (
-		stockPortfolio: StockPortfolio & { settings: StockPortfolioSettings }
+		stockPortfolio: StockPortfolio & { settings?: Maybe<StockPortfolioSettings> }
 	): number => {
 		const { headers, tickers } = stockPortfolio;
 
 		const dataKeys: readonly string[] = headers.map((header) => {
-			const { dataKey } = JSON.parse(header);
+			const { dataKey } = header as any;
 
 			return dataKey;
 		});
 
 		const multiplier: number = tickers.length;
 
+		const settings = stockPortfolio.settings;
+
+		if (!settings) {
+			throw new Error("Missing stock portfolio settings");
+		}
+
 		const types: readonly IexType[] = Object.keys(this.getTypes(dataKeys)) as IexType[];
 
-		const snapshotCost: number = stockPortfolio.settings.enableSnapshots
-			? SnapshotConfig.price
-			: 0;
+		const snapshotCost: number = settings.enableSnapshots ? SnapshotConfig.price : 0;
 		const dataCost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
 
 		const totalCost: number = snapshotCost + dataCost;
@@ -221,7 +225,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 	private getDataKeys = (stockPortfolio: StockPortfolio): readonly string[] => {
 		const dataKeys: readonly string[] = stockPortfolio.headers.map((header) => {
-			const { dataKey } = JSON.parse(header);
+			const { dataKey } = header as any;
 
 			return dataKey;
 		});
@@ -232,7 +236,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	private createTransaction = async (
 		cost: number,
 		userToCharge: Pick<User, "id">
-	): Promise<Maybe<Transaction>> => {
+	): Promise<Maybe<PaymentTransaction>> => {
 		const { prisma } = this.context;
 
 		if (cost <= 0) {
@@ -250,7 +254,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 			data: { credits: balance.credits - cost }
 		});
 
-		return prisma.transaction.create({
+		return prisma.paymentTransaction.create({
 			data: {
 				creditsBefore: balance.credits,
 				creditsTransacted: -cost,
@@ -284,12 +288,11 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	): Promise<Snapshot> => {
 		const { prisma } = this.context;
 
-		const newHeaders: string[] = headers.map((header) => {
-			const { name, dataKey } = JSON.parse(header);
+		const newHeaders = headers.map((header) => {
+			const { name, dataKey } = header as any;
 
-			return JSON.stringify({ name, dataKey });
+			return { name, dataKey };
 		});
-		const newData: string[] = data.map((datum) => JSON.stringify(datum));
 
 		const latest = await prisma.latestSnapshot.upsert({
 			where: { stockPortfolioId: id },
@@ -300,7 +303,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 						stockPortfolio: { connect: { id } },
 						tickers: { set: tickers },
 						headers: { set: newHeaders },
-						data: { set: newData }
+						data: { set: data as any }
 					}
 				}
 			},
@@ -311,12 +314,12 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 							stockPortfolio: { connect: { id } },
 							tickers: { set: tickers },
 							headers: { set: newHeaders },
-							data: { set: newData }
+							data: { set: data as any }
 						},
 						update: {
 							tickers: { set: tickers },
 							headers: { set: newHeaders },
-							data: { set: newData },
+							data: { set: data as any },
 							createdAt: new Date()
 						}
 					}
@@ -340,12 +343,12 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 				tickers: { set: stockPortfolio.tickers },
 				headers: {
 					set: stockPortfolio.headers.map((header) => {
-						const { name, dataKey } = JSON.parse(header);
+						const { name, dataKey } = header as any;
 
-						return JSON.stringify({ name, dataKey });
+						return { name, dataKey };
 					})
 				},
-				data: { set: data.map((datum) => JSON.stringify(datum)) }
+				data: { set: data as any }
 			}
 		});
 	};

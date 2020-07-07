@@ -49,11 +49,9 @@ export const StockPortfolio = objectType({
 			resolve: async ({ id }, args, { prisma }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
-				const parsedHeaders = (stockPortfolio?.headers || []).map((header) =>
-					JSON.parse(header)
-				);
+				const headers = stockPortfolio?.headers ?? [];
 
-				return parsedHeaders;
+				return headers as any;
 			}
 		});
 		t.field("stockData", {
@@ -92,10 +90,8 @@ export const StockPortfolio = objectType({
 				where: arg({ type: "OrderWhereInput" }),
 				orderBy: arg({ type: "OrderOrderByInput" }),
 				skip: intArg(),
-				after: arg({ type: "OrderWhereUniqueInput" }),
-				before: arg({ type: "OrderWhereUniqueInput" }),
-				first: intArg(),
-				last: intArg()
+				cursor: arg({ type: "OrderWhereUniqueInput" }),
+				take: intArg()
 			},
 			resolve: async ({ id }, args, { prisma, user }) => {
 				const casted = PrismaUtils.castInputs(args);

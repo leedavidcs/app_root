@@ -3,7 +3,7 @@ import * as ApolloReactCommon from '@apollo/client';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
-// This file was generated on: Jul 6th 2020 8:45:24 pm
+// This file was generated on: Jul 7th 2020 1:48:24 am
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -17,6 +17,7 @@ export type Scalars = {
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
   DateTime: any;
+  Json: any;
   /** The plain-text password of a user to be hashed */
   UserPassword: any;
 };
@@ -125,6 +126,7 @@ export type IntFilter = {
   readonly gt?: Maybe<Scalars['Int']>;
   readonly gte?: Maybe<Scalars['Int']>;
 };
+
 
 
 export type LatestSnapshotFilter = {
@@ -510,6 +512,65 @@ export type OrderWhereUniqueInput = {
   readonly id?: Maybe<Scalars['String']>;
 };
 
+export type PaymentTransaction = {
+  readonly __typename?: 'PaymentTransaction';
+  readonly id: Scalars['String'];
+  readonly creditsBefore: Scalars['Int'];
+  readonly creditsTransacted: Scalars['Int'];
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
+  readonly paymentIntent?: Maybe<StripePaymentIntent>;
+  readonly user: User;
+};
+
+export type PaymentTransactionFilter = {
+  readonly every?: Maybe<PaymentTransactionWhereInput>;
+  readonly some?: Maybe<PaymentTransactionWhereInput>;
+  readonly none?: Maybe<PaymentTransactionWhereInput>;
+};
+
+export type PaymentTransactionOrderByInput = {
+  readonly creditsBefore?: Maybe<OrderByArg>;
+  readonly creditsTransacted?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
+export enum PaymentTransactionStatus {
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Succeeded = 'SUCCEEDED'
+}
+
+export type PaymentTransactionWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<PaymentTransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<PaymentTransactionWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<PaymentTransactionWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<PaymentTransactionWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
+
+export type PaymentTransactionWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
+};
+
+export type PaymentTransactionWhereWithoutUserInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<PaymentTransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<PaymentTransactionWhereWithoutUserInput>>;
+  readonly OR?: Maybe<ReadonlyArray<PaymentTransactionWhereWithoutUserInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<PaymentTransactionWhereWithoutUserInput>>;
+};
+
 export type Position = {
   readonly __typename?: 'Position';
   readonly id: Scalars['String'];
@@ -556,6 +617,8 @@ export type Query = RequestRoot & {
   readonly modal: Scalars['Boolean'];
   readonly order?: Maybe<Order>;
   readonly orders: ReadonlyArray<Order>;
+  readonly paymentTransaction?: Maybe<PaymentTransaction>;
+  readonly paymentTransactions: ReadonlyArray<PaymentTransaction>;
   readonly priceBundles: ReadonlyArray<PriceBundle>;
   readonly snapshot?: Maybe<Snapshot>;
   readonly snapshotCount: Scalars['Int'];
@@ -571,8 +634,6 @@ export type Query = RequestRoot & {
   readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
   readonly stockSymbols: ReadonlyArray<StockDataSearch>;
   readonly toasts: ReadonlyArray<Toast>;
-  readonly transaction?: Maybe<Transaction>;
-  readonly transactions: ReadonlyArray<Transaction>;
   readonly user?: Maybe<User>;
   /** The viewer of this request */
   readonly viewer?: Maybe<User>;
@@ -608,6 +669,21 @@ export type QueryOrdersArgs = {
   orderBy?: Maybe<OrderOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   cursor?: Maybe<OrderWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
+};
+
+
+/** Root query type */
+export type QueryPaymentTransactionArgs = {
+  where: PaymentTransactionWhereUniqueInput;
+};
+
+
+/** Root query type */
+export type QueryPaymentTransactionsArgs = {
+  where?: Maybe<PaymentTransactionWhereWithoutUserInput>;
+  skip?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<PaymentTransactionWhereUniqueInput>;
   take?: Maybe<Scalars['Int']>;
 };
 
@@ -673,21 +749,6 @@ export type QueryStockPortfoliosArgs = {
 /** Root query type */
 export type QueryStockSymbolsArgs = {
   text: Scalars['String'];
-};
-
-
-/** Root query type */
-export type QueryTransactionArgs = {
-  where: TransactionWhereUniqueInput;
-};
-
-
-/** Root query type */
-export type QueryTransactionsArgs = {
-  where?: Maybe<TransactionWhereWithoutUserInput>;
-  skip?: Maybe<Scalars['Int']>;
-  cursor?: Maybe<TransactionWhereUniqueInput>;
-  take?: Maybe<Scalars['Int']>;
 };
 
 
@@ -843,7 +904,7 @@ export type Snapshot = {
   readonly tickers: ReadonlyArray<Scalars['String']>;
   readonly createdAt: Scalars['DateTime'];
   readonly headers: ReadonlyArray<SnapshotHeader>;
-  readonly data: ReadonlyArray<Scalars['JSONObject']>;
+  readonly data: ReadonlyArray<Scalars['Json']>;
 };
 
 export type SnapshotFilter = {
@@ -944,10 +1005,8 @@ export type StockPortfolioOrdersArgs = {
   where?: Maybe<OrderWhereInput>;
   orderBy?: Maybe<OrderOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<OrderWhereUniqueInput>;
-  before?: Maybe<OrderWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<OrderWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1214,65 +1273,6 @@ export type TokenPayload = {
   readonly refreshToken: Scalars['String'];
 };
 
-export type Transaction = {
-  readonly __typename?: 'Transaction';
-  readonly id: Scalars['String'];
-  readonly creditsBefore: Scalars['Int'];
-  readonly creditsTransacted: Scalars['Int'];
-  readonly paymentIntentId?: Maybe<Scalars['String']>;
-  readonly paymentIntent?: Maybe<StripePaymentIntent>;
-  readonly user: User;
-};
-
-export type TransactionFilter = {
-  readonly every?: Maybe<TransactionWhereInput>;
-  readonly some?: Maybe<TransactionWhereInput>;
-  readonly none?: Maybe<TransactionWhereInput>;
-};
-
-export type TransactionOrderByInput = {
-  readonly creditsBefore?: Maybe<OrderByArg>;
-  readonly creditsTransacted?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-};
-
-export enum TransactionStatus {
-  Failed = 'FAILED',
-  Pending = 'PENDING',
-  Succeeded = 'SUCCEEDED'
-}
-
-export type TransactionWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly userId?: Maybe<StringFilter>;
-  readonly creditsBefore?: Maybe<IntFilter>;
-  readonly creditsTransacted?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly paymentIntentId?: Maybe<NullableStringFilter>;
-  readonly status?: Maybe<TransactionStatus>;
-  readonly AND?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-};
-
-export type TransactionWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-  readonly paymentIntentId?: Maybe<Scalars['String']>;
-};
-
-export type TransactionWhereWithoutUserInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly creditsBefore?: Maybe<IntFilter>;
-  readonly creditsTransacted?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly paymentIntentId?: Maybe<NullableStringFilter>;
-  readonly status?: Maybe<TransactionStatus>;
-  readonly AND?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-  readonly OR?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-};
-
 /** Basic user of the application */
 export type User = {
   readonly __typename?: 'User';
@@ -1311,7 +1311,7 @@ export type UserWhereInput = {
   readonly stockPortfolios?: Maybe<StockPortfolioFilter>;
   readonly createdAt?: Maybe<DateTimeFilter>;
   readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly Transaction?: Maybe<TransactionFilter>;
+  readonly PaymentTransaction?: Maybe<PaymentTransactionFilter>;
   readonly ScheduledEvent?: Maybe<ScheduledEventFilter>;
   readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
   readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;

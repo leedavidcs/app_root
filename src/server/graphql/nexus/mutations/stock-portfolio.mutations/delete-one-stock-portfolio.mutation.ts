@@ -32,10 +32,23 @@ export const deleteOneStockPortfolio = extendType({
 
 				return isOwnedByUser;
 			},
-			resolve: (parent, args, { prisma }) => {
+			resolve: async (parent, args, { prisma }) => {
 				const { where } = PrismaUtils.castInputs(args);
 
-				return prisma.stockPortfolio.delete({ where });
+				const stockPortfolio = await prisma.stockPortfolio.findOne({ where });
+
+				if (!stockPortfolio) {
+					return null;
+				}
+
+				await prisma.transaction([
+					prisma.stockPortfolioSettings.delete({
+						where: { stockPortfolioId: stockPortfolio.id }
+					}),
+					prisma.stockPortfolio.delete({ where })
+				]);
+
+				return stockPortfolio;
 			}
 		});
 	}

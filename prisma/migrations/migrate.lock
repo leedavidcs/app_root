@@ -1,6 +1,5 @@
-# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
-# INSTEAD EXECUTE `prisma migrate fix`
 # Prisma Migrate lockfile v1
-# Read more about conflict resolution here: TODO
 
-20200528202655-initial-migration
+20200706223525-initial-migration
+20200707004837-with-optional-settings
+20200707014112-rename-transaction

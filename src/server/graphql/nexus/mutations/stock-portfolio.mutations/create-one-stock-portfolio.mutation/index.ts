@@ -37,6 +37,7 @@ export const createOneStockPortfolio = mutationField("createOneStockPortfolio", 
 			data: {
 				user: { connect: { id: user.id } },
 				name: uniqueName,
+				headers: { set: [] },
 				tickers: { set: [] },
 				settings: { create: {} }
 			}

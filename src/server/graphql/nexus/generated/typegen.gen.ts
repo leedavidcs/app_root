@@ -208,6 +208,44 @@ export interface NexusGenInputs {
   OrderWhereUniqueInput: { // input type
     id?: string | null; // String
   }
+  PaymentTransactionFilter: { // input type
+    every?: NexusGenInputs['PaymentTransactionWhereInput'] | null; // PaymentTransactionWhereInput
+    none?: NexusGenInputs['PaymentTransactionWhereInput'] | null; // PaymentTransactionWhereInput
+    some?: NexusGenInputs['PaymentTransactionWhereInput'] | null; // PaymentTransactionWhereInput
+  }
+  PaymentTransactionOrderByInput: { // input type
+    createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    creditsBefore?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+    creditsTransacted?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
+  }
+  PaymentTransactionWhereInput: { // input type
+    AND?: NexusGenInputs['PaymentTransactionWhereInput'][] | null; // [PaymentTransactionWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['PaymentTransactionWhereInput'][] | null; // [PaymentTransactionWhereInput!]
+    OR?: NexusGenInputs['PaymentTransactionWhereInput'][] | null; // [PaymentTransactionWhereInput!]
+    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
+    status?: NexusGenEnums['PaymentTransactionStatus'] | null; // PaymentTransactionStatus
+    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  PaymentTransactionWhereUniqueInput: { // input type
+    id?: string | null; // String
+    paymentIntentId?: string | null; // String
+  }
+  PaymentTransactionWhereWithoutUserInput: { // input type
+    AND?: NexusGenInputs['PaymentTransactionWhereWithoutUserInput'][] | null; // [PaymentTransactionWhereWithoutUserInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['PaymentTransactionWhereWithoutUserInput'][] | null; // [PaymentTransactionWhereWithoutUserInput!]
+    OR?: NexusGenInputs['PaymentTransactionWhereWithoutUserInput'][] | null; // [PaymentTransactionWhereWithoutUserInput!]
+    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
+    status?: NexusGenEnums['PaymentTransactionStatus'] | null; // PaymentTransactionStatus
+  }
   PositionFilter: { // input type
     every?: NexusGenInputs['PositionWhereInput'] | null; // PositionWhereInput
     none?: NexusGenInputs['PositionWhereInput'] | null; // PositionWhereInput
@@ -441,44 +479,6 @@ export interface NexusGenInputs {
     user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
-  TransactionFilter: { // input type
-    every?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
-    none?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
-    some?: NexusGenInputs['TransactionWhereInput'] | null; // TransactionWhereInput
-  }
-  TransactionOrderByInput: { // input type
-    createdAt?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    creditsBefore?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-    creditsTransacted?: NexusGenEnums['OrderByArg'] | null; // OrderByArg
-  }
-  TransactionWhereInput: { // input type
-    AND?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
-    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
-    OR?: NexusGenInputs['TransactionWhereInput'][] | null; // [TransactionWhereInput!]
-    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
-    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
-    user?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
-    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
-  }
-  TransactionWhereUniqueInput: { // input type
-    id?: string | null; // String
-    paymentIntentId?: string | null; // String
-  }
-  TransactionWhereWithoutUserInput: { // input type
-    AND?: NexusGenInputs['TransactionWhereWithoutUserInput'][] | null; // [TransactionWhereWithoutUserInput!]
-    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    creditsBefore?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    creditsTransacted?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['TransactionWhereWithoutUserInput'][] | null; // [TransactionWhereWithoutUserInput!]
-    OR?: NexusGenInputs['TransactionWhereWithoutUserInput'][] | null; // [TransactionWhereWithoutUserInput!]
-    paymentIntentId?: NexusGenInputs['NullableStringFilter'] | null; // NullableStringFilter
-    status?: NexusGenEnums['TransactionStatus'] | null; // TransactionStatus
-  }
   UserIdNameCompoundUniqueInput: { // input type
     name: string; // String!
     userId: string; // String!
@@ -493,11 +493,11 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    PaymentTransaction?: NexusGenInputs['PaymentTransactionFilter'] | null; // PaymentTransactionFilter
     ScheduledEvent?: NexusGenInputs['ScheduledEventFilter'] | null; // ScheduledEventFilter
     stockPortfolios?: NexusGenInputs['StockPortfolioFilter'] | null; // StockPortfolioFilter
     stripeDetails?: NexusGenInputs['StripeDetailsWhereInput'] | null; // StripeDetailsWhereInput
     timezone?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    Transaction?: NexusGenInputs['TransactionFilter'] | null; // TransactionFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -550,10 +550,10 @@ export interface NexusGenEnums {
   OrderSide: "Buy" | "Sell"
   OrderStatus: "Closed" | "Open"
   OrderType: "Limit" | "Market" | "Stop" | "StopLimit"
+  PaymentTransactionStatus: "FAILED" | "PENDING" | "SUCCEEDED"
   Recurrence: "Daily" | "Once" | "Weekly"
   StockPortfolioEventType: "DataRetrieved"
   TimeInForce: "CLS" | "Day" | "FOK" | "GTC" | "IOC" | "OPG"
-  TransactionStatus: "FAILED" | "PENDING" | "SUCCEEDED"
   WebhookType: "StockDataRetrieved"
 }
 
@@ -586,6 +586,12 @@ export interface NexusGenRootTypes {
     ticker: string; // String!
     timeInForce: NexusGenEnums['TimeInForce']; // TimeInForce!
     type: NexusGenEnums['OrderType']; // OrderType!
+  }
+  PaymentTransaction: { // root type
+    creditsBefore: number; // Int!
+    creditsTransacted: number; // Int!
+    id: string; // String!
+    paymentIntentId?: string | null; // String
   }
   Position: { // root type
     avgEntryPrice: number; // Float!
@@ -623,6 +629,7 @@ export interface NexusGenRootTypes {
   }
   Snapshot: { // root type
     createdAt: any; // DateTime!
+    data: any[]; // [Json!]!
     id: string; // String!
     tickers: string[]; // [String!]!
   }
@@ -691,12 +698,6 @@ export interface NexusGenRootTypes {
     refreshToken: string; // String!
     token: string; // String!
   }
-  Transaction: { // root type
-    creditsBefore: number; // Int!
-    creditsTransacted: number; // Int!
-    id: string; // String!
-    paymentIntentId?: string | null; // String
-  }
   User: { // root type
     createdAt: any; // DateTime!
     email: any; // EmailAddress!
@@ -725,6 +726,7 @@ export interface NexusGenRootTypes {
   DateTime: any;
   EmailAddress: any;
   JSONObject: any;
+  Json: any;
   UserPassword: any;
 }
 
@@ -751,6 +753,11 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   OrderOrderByInput: NexusGenInputs['OrderOrderByInput'];
   OrderWhereInput: NexusGenInputs['OrderWhereInput'];
   OrderWhereUniqueInput: NexusGenInputs['OrderWhereUniqueInput'];
+  PaymentTransactionFilter: NexusGenInputs['PaymentTransactionFilter'];
+  PaymentTransactionOrderByInput: NexusGenInputs['PaymentTransactionOrderByInput'];
+  PaymentTransactionWhereInput: NexusGenInputs['PaymentTransactionWhereInput'];
+  PaymentTransactionWhereUniqueInput: NexusGenInputs['PaymentTransactionWhereUniqueInput'];
+  PaymentTransactionWhereWithoutUserInput: NexusGenInputs['PaymentTransactionWhereWithoutUserInput'];
   PositionFilter: NexusGenInputs['PositionFilter'];
   PositionWhereInput: NexusGenInputs['PositionWhereInput'];
   RefreshAccessTokenInput: NexusGenInputs['RefreshAccessTokenInput'];
@@ -790,11 +797,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   StockPortfolioWhereWithoutUserInput: NexusGenInputs['StockPortfolioWhereWithoutUserInput'];
   StringFilter: NexusGenInputs['StringFilter'];
   StripeDetailsWhereInput: NexusGenInputs['StripeDetailsWhereInput'];
-  TransactionFilter: NexusGenInputs['TransactionFilter'];
-  TransactionOrderByInput: NexusGenInputs['TransactionOrderByInput'];
-  TransactionWhereInput: NexusGenInputs['TransactionWhereInput'];
-  TransactionWhereUniqueInput: NexusGenInputs['TransactionWhereUniqueInput'];
-  TransactionWhereWithoutUserInput: NexusGenInputs['TransactionWhereWithoutUserInput'];
   UserIdNameCompoundUniqueInput: NexusGenInputs['UserIdNameCompoundUniqueInput'];
   UserWhereInput: NexusGenInputs['UserWhereInput'];
   WebhookCreateInput: NexusGenInputs['WebhookCreateInput'];
@@ -811,10 +813,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   OrderSide: NexusGenEnums['OrderSide'];
   OrderStatus: NexusGenEnums['OrderStatus'];
   OrderType: NexusGenEnums['OrderType'];
+  PaymentTransactionStatus: NexusGenEnums['PaymentTransactionStatus'];
   Recurrence: NexusGenEnums['Recurrence'];
   StockPortfolioEventType: NexusGenEnums['StockPortfolioEventType'];
   TimeInForce: NexusGenEnums['TimeInForce'];
-  TransactionStatus: NexusGenEnums['TransactionStatus'];
   WebhookType: NexusGenEnums['WebhookType'];
 }
 
@@ -877,6 +879,14 @@ export interface NexusGenFieldTypes {
     timeInForce: NexusGenEnums['TimeInForce']; // TimeInForce!
     type: NexusGenEnums['OrderType']; // OrderType!
   }
+  PaymentTransaction: { // field return type
+    creditsBefore: number; // Int!
+    creditsTransacted: number; // Int!
+    id: string; // String!
+    paymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
+    paymentIntentId: string | null; // String
+    user: NexusGenRootTypes['User']; // User!
+  }
   Position: { // field return type
     avgEntryPrice: number; // Float!
     costBasis: number; // Float!
@@ -896,6 +906,8 @@ export interface NexusGenFieldTypes {
     featurePricing: NexusGenRootTypes['FeaturePricing']; // FeaturePricing!
     order: NexusGenRootTypes['Order'] | null; // Order
     orders: NexusGenRootTypes['Order'][]; // [Order!]!
+    paymentTransaction: NexusGenRootTypes['PaymentTransaction'] | null; // PaymentTransaction
+    paymentTransactions: NexusGenRootTypes['PaymentTransaction'][]; // [PaymentTransaction!]!
     priceBundles: NexusGenRootTypes['PriceBundle'][]; // [PriceBundle!]!
     snapshot: NexusGenRootTypes['Snapshot'] | null; // Snapshot
     snapshotCount: number; // Int!
@@ -906,8 +918,6 @@ export interface NexusGenFieldTypes {
     stockPortfolioEvent: NexusGenRootTypes['StockPortfolioEvent'] | null; // StockPortfolioEvent
     stockPortfolios: NexusGenRootTypes['StockPortfolio'][]; // [StockPortfolio!]!
     stockSymbols: NexusGenRootTypes['StockDataSearch'][]; // [StockDataSearch!]!
-    transaction: NexusGenRootTypes['Transaction'] | null; // Transaction
-    transactions: NexusGenRootTypes['Transaction'][]; // [Transaction!]!
     viewer: NexusGenRootTypes['User'] | null; // User
     webhook: NexusGenRootTypes['Webhook'] | null; // Webhook
     webhookCount: number; // Int!
@@ -942,7 +952,7 @@ export interface NexusGenFieldTypes {
   }
   Snapshot: { // field return type
     createdAt: any; // DateTime!
-    data: any[]; // [JSONObject!]!
+    data: any[]; // [Json!]!
     headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
     id: string; // String!
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
@@ -1026,14 +1036,6 @@ export interface NexusGenFieldTypes {
   TokenPayload: { // field return type
     refreshToken: string; // String!
     token: string; // String!
-  }
-  Transaction: { // field return type
-    creditsBefore: number; // Int!
-    creditsTransacted: number; // Int!
-    id: string; // String!
-    paymentIntent: NexusGenRootTypes['StripePaymentIntent'] | null; // StripePaymentIntent
-    paymentIntentId: string | null; // String
-    user: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
     balance: NexusGenRootTypes['Balance'] | null; // Balance
@@ -1155,6 +1157,15 @@ export interface NexusGenArgTypes {
       take?: number | null; // Int
       where?: NexusGenInputs['OrderWhereInput'] | null; // OrderWhereInput
     }
+    paymentTransaction: { // args
+      where: NexusGenInputs['PaymentTransactionWhereUniqueInput']; // PaymentTransactionWhereUniqueInput!
+    }
+    paymentTransactions: { // args
+      cursor?: NexusGenInputs['PaymentTransactionWhereUniqueInput'] | null; // PaymentTransactionWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['PaymentTransactionWhereWithoutUserInput'] | null; // PaymentTransactionWhereWithoutUserInput
+    }
     snapshot: { // args
       where: NexusGenInputs['SnapshotWhereUniqueInput']; // SnapshotWhereUniqueInput!
     }
@@ -1192,15 +1203,6 @@ export interface NexusGenArgTypes {
     stockSymbols: { // args
       text: string; // String!
     }
-    transaction: { // args
-      where: NexusGenInputs['TransactionWhereUniqueInput']; // TransactionWhereUniqueInput!
-    }
-    transactions: { // args
-      cursor?: NexusGenInputs['TransactionWhereUniqueInput'] | null; // TransactionWhereUniqueInput
-      skip?: number | null; // Int
-      take?: number | null; // Int
-      where?: NexusGenInputs['TransactionWhereWithoutUserInput'] | null; // TransactionWhereWithoutUserInput
-    }
     webhook: { // args
       where: NexusGenInputs['WebhookWhereUniqueInput']; // WebhookWhereUniqueInput!
     }
@@ -1222,12 +1224,10 @@ export interface NexusGenArgTypes {
   }
   StockPortfolio: {
     orders: { // args
-      after?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
-      before?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
       orderBy?: NexusGenInputs['OrderOrderByInput'] | null; // OrderOrderByInput
       skip?: number | null; // Int
+      take?: number | null; // Int
       where?: NexusGenInputs['OrderWhereInput'] | null; // OrderWhereInput
     }
     snapshots: { // args
@@ -1254,15 +1254,15 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "Order" | "Position" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "RunScheduledEvent" | "ScheduledEvent" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioEvent" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "Transaction" | "User" | "Webhook";
+export type NexusGenObjectNames = "Balance" | "DataKeyOption" | "FeaturePricing" | "FeaturePricingConfig" | "Mutation" | "Order" | "PaymentTransaction" | "Position" | "PriceBundle" | "Query" | "RegisterLocalUserPayload" | "ResendVerifyEmailPayload" | "RunScheduledEvent" | "ScheduledEvent" | "Snapshot" | "SnapshotHeader" | "StockData" | "StockDataSearch" | "StockPortfolio" | "StockPortfolioEvent" | "StockPortfolioHeader" | "StockPortfolioSettings" | "StripeCard" | "StripePaymentIntent" | "StripePaymentMethod" | "StripeSetupIntent" | "TokenPayload" | "User" | "Webhook";
 
-export type NexusGenInputNames = "AddressInput" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "FloatFilter" | "IntFilter" | "LatestSnapshotFilter" | "LatestSnapshotWhereInput" | "LoginLocalUserInput" | "NullableDateTimeFilter" | "NullableFloatFilter" | "NullableIntFilter" | "NullableStringFilter" | "OrderCreateInput" | "OrderDetailInput" | "OrderEventFilter" | "OrderEventWhereInput" | "OrderFilter" | "OrderOrderByInput" | "OrderWhereInput" | "OrderWhereUniqueInput" | "PositionFilter" | "PositionWhereInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutOrderInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsWhereInput" | "TransactionFilter" | "TransactionOrderByInput" | "TransactionWhereInput" | "TransactionWhereUniqueInput" | "TransactionWhereWithoutUserInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
+export type NexusGenInputNames = "AddressInput" | "BalanceWhereInput" | "BalanceWhereUniqueInput" | "BooleanFilter" | "DateTimeFilter" | "FloatFilter" | "IntFilter" | "LatestSnapshotFilter" | "LatestSnapshotWhereInput" | "LoginLocalUserInput" | "NullableDateTimeFilter" | "NullableFloatFilter" | "NullableIntFilter" | "NullableStringFilter" | "OrderCreateInput" | "OrderDetailInput" | "OrderEventFilter" | "OrderEventWhereInput" | "OrderFilter" | "OrderOrderByInput" | "OrderWhereInput" | "OrderWhereUniqueInput" | "PaymentTransactionFilter" | "PaymentTransactionOrderByInput" | "PaymentTransactionWhereInput" | "PaymentTransactionWhereUniqueInput" | "PaymentTransactionWhereWithoutUserInput" | "PositionFilter" | "PositionWhereInput" | "RefreshAccessTokenInput" | "RegisterLocalUserInput" | "ScheduledEventCreateOneWithoutStockPortfolioEventInput" | "ScheduledEventCreateWithoutStockPortfolioEventInput" | "ScheduledEventCreatedaysInput" | "ScheduledEventFilter" | "ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput" | "ScheduledEventUpdateWithoutStockPortfolioEventDataInput" | "ScheduledEventUpdatedaysInput" | "ScheduledEventWhereInput" | "SnapshotFilter" | "SnapshotOrderByInput" | "SnapshotWhereInput" | "SnapshotWhereUniqueInput" | "StockDataWhereUniqueInput" | "StockPortfolioCreateInput" | "StockPortfolioCreateOneWithoutOrderInput" | "StockPortfolioCreateOneWithoutStockPortfolioEventInput" | "StockPortfolioCreateOneWithoutWebhookInput" | "StockPortfolioEventCreateInput" | "StockPortfolioEventFilter" | "StockPortfolioEventUpdateInput" | "StockPortfolioEventWhereInput" | "StockPortfolioEventWhereUniqueInput" | "StockPortfolioFilter" | "StockPortfolioHeaderInput" | "StockPortfolioIdTypeCompoundUniqueInput" | "StockPortfolioOrderByInput" | "StockPortfolioSettingsUpdateInput" | "StockPortfolioSettingsWhereInput" | "StockPortfolioSettingsWhereUniqueInput" | "StockPortfolioUpdateInput" | "StockPortfolioWhereInput" | "StockPortfolioWhereUniqueInput" | "StockPortfolioWhereWithoutUserInput" | "StringFilter" | "StripeDetailsWhereInput" | "UserIdNameCompoundUniqueInput" | "UserWhereInput" | "WebhookCreateInput" | "WebhookFilter" | "WebhookOrderByInput" | "WebhookUpdateInput" | "WebhookWhereInput" | "WebhookWhereUniqueInput";
 
-export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "OrderDetailType" | "OrderEventType" | "OrderSide" | "OrderStatus" | "OrderType" | "Recurrence" | "StockPortfolioEventType" | "TimeInForce" | "TransactionStatus" | "WebhookType";
+export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "OrderDetailType" | "OrderEventType" | "OrderSide" | "OrderStatus" | "OrderType" | "PaymentTransactionStatus" | "Recurrence" | "StockPortfolioEventType" | "TimeInForce" | "WebhookType";
 
 export type NexusGenInterfaceNames = "RequestRoot" | "StockPortfolioDataHeader";
 
-export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "String" | "UserPassword";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "Json" | "String" | "UserPassword";
 
 export type NexusGenUnionNames = never;
 

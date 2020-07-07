@@ -13,7 +13,7 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 			return false;
 		}
 
-		const transaction = await prisma.transaction.findOne({ where: { paymentIntentId } });
+		const transaction = await prisma.paymentTransaction.findOne({ where: { paymentIntentId } });
 
 		/** User is not associated with this transaction */
 		if (transaction?.userId !== user.id) {
@@ -34,7 +34,7 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 		return transaction.status === "PENDING";
 	},
 	resolve: async (parent, { paymentIntentId }, { prisma, user }) => {
-		const transaction = await prisma.transaction.findOne({ where: { paymentIntentId } });
+		const transaction = await prisma.paymentTransaction.findOne({ where: { paymentIntentId } });
 
 		/** Should not reach here */
 		if (!transaction) {
@@ -43,7 +43,7 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 
 		/** Should not reach here. Delete strange transaction with invalid state */
 		if (!transaction.paymentIntentId) {
-			await prisma.transaction.delete({ where: { id: transaction.id } });
+			await prisma.paymentTransaction.delete({ where: { id: transaction.id } });
 
 			throw new UnexpectedError("Transaction is not a price-bundle purchase");
 		}
@@ -62,7 +62,7 @@ export const applySucceededTransaction = mutationField("applySucceededTransactio
 			data: { credits: existingBalance!.credits + transaction.creditsTransacted }
 		});
 
-		await prisma.transaction.update({
+		await prisma.paymentTransaction.update({
 			where: { paymentIntentId },
 			data: { status: "SUCCEEDED" }
 		});

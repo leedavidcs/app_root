@@ -1,7 +1,7 @@
 import { objectType } from "@nexus/schema";
 
-export const Transaction = objectType({
-	name: "Transaction",
+export const PaymentTransaction = objectType({
+	name: "PaymentTransaction",
 	definition: (t) => {
 		t.model.id();
 		t.model.creditsBefore();
@@ -14,7 +14,7 @@ export const Transaction = objectType({
 					return false;
 				}
 
-				const transaction = await prisma.transaction.findOne({ where: { id } });
+				const transaction = await prisma.paymentTransaction.findOne({ where: { id } });
 
 				return transaction?.userId === user.id;
 			},

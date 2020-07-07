@@ -9,7 +9,7 @@ type Pagination = {
 }
 
 // Prisma custom scalar names
-type CustomScalars = 'DateTime'
+type CustomScalars = 'DateTime' | 'Json'
 
 // Prisma model type definitions
 interface PrismaModels {
@@ -19,7 +19,7 @@ interface PrismaModels {
   Order: Prisma.Order
   StockPortfolioSettings: Prisma.StockPortfolioSettings
   Balance: Prisma.Balance
-  Transaction: Prisma.Transaction
+  PaymentTransaction: Prisma.PaymentTransaction
   StripeDetails: Prisma.StripeDetails
   Webhook: Prisma.Webhook
   Snapshot: Prisma.Snapshot
@@ -33,7 +33,7 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'stockPortfolios' | 'createdAt' | 'updatedAt' | 'Transaction' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT' | 'balance' | 'stripeDetails'
+      filtering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'stockPortfolios' | 'createdAt' | 'updatedAt' | 'PaymentTransaction' | 'ScheduledEvent' | 'AND' | 'OR' | 'NOT' | 'balance' | 'stripeDetails'
       ordering: 'id' | 'email' | 'emailVerified' | 'password' | 'username' | 'timezone' | 'createdAt' | 'updatedAt'
     }
     stockPortfolios: {
@@ -56,7 +56,7 @@ interface NexusPrismaInputs {
       filtering: 'userId' | 'credits' | 'AND' | 'OR' | 'NOT' | 'user'
       ordering: 'userId' | 'credits'
     }
-    transactions: {
+    paymentTransactions: {
       filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
       ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
     }
@@ -94,7 +94,7 @@ interface NexusPrismaInputs {
       filtering: 'id' | 'userId' | 'name' | 'snapshots' | 'orders' | 'buyingPower' | 'createdAt' | 'updatedAt' | 'Position' | 'Webhook' | 'StockPortfolioEvent' | 'AND' | 'OR' | 'NOT' | 'user' | 'settings' | 'latestSnapshot'
       ordering: 'id' | 'userId' | 'name' | 'buyingPower' | 'createdAt' | 'updatedAt'
     }
-    Transaction: {
+    PaymentTransaction: {
       filtering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status' | 'AND' | 'OR' | 'NOT' | 'user'
       ordering: 'id' | 'userId' | 'creditsBefore' | 'creditsTransacted' | 'createdAt' | 'paymentIntentId' | 'status'
     }
@@ -137,7 +137,7 @@ interface NexusPrismaInputs {
   Balance: {
 
   }
-  Transaction: {
+  PaymentTransaction: {
 
   }
   StripeDetails: {
@@ -188,8 +188,8 @@ interface NexusPrismaOutputs {
     stockPortfolioSettings: 'StockPortfolioSettings'
     balance: 'Balance'
     balances: 'Balance'
-    transaction: 'Transaction'
-    transactions: 'Transaction'
+    paymentTransaction: 'PaymentTransaction'
+    paymentTransactions: 'PaymentTransaction'
     stripeDetails: 'StripeDetails'
     stripeDetails: 'StripeDetails'
     webhook: 'Webhook'
@@ -242,12 +242,12 @@ interface NexusPrismaOutputs {
     deleteOneBalance: 'Balance'
     deleteManyBalance: 'BatchPayload'
     upsertOneBalance: 'Balance'
-    createOneTransaction: 'Transaction'
-    updateOneTransaction: 'Transaction'
-    updateManyTransaction: 'BatchPayload'
-    deleteOneTransaction: 'Transaction'
-    deleteManyTransaction: 'BatchPayload'
-    upsertOneTransaction: 'Transaction'
+    createOnePaymentTransaction: 'PaymentTransaction'
+    updateOnePaymentTransaction: 'PaymentTransaction'
+    updateManyPaymentTransaction: 'BatchPayload'
+    deleteOnePaymentTransaction: 'PaymentTransaction'
+    deleteManyPaymentTransaction: 'BatchPayload'
+    upsertOnePaymentTransaction: 'PaymentTransaction'
     createOneStripeDetails: 'StripeDetails'
     updateOneStripeDetails: 'StripeDetails'
     updateManyStripeDetails: 'BatchPayload'
@@ -303,7 +303,7 @@ interface NexusPrismaOutputs {
     stockPortfolios: 'StockPortfolio'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    Transaction: 'Transaction'
+    PaymentTransaction: 'PaymentTransaction'
     ScheduledEvent: 'ScheduledEvent'
   }
   StockPortfolio: {
@@ -311,7 +311,7 @@ interface NexusPrismaOutputs {
     user: 'User'
     userId: 'String'
     name: 'String'
-    headers: 'String'
+    headers: 'Json'
     tickers: 'String'
     settings: 'StockPortfolioSettings'
     snapshots: 'Snapshot'
@@ -362,7 +362,7 @@ interface NexusPrismaOutputs {
     userId: 'String'
     credits: 'Int'
   }
-  Transaction: {
+  PaymentTransaction: {
     id: 'String'
     user: 'User'
     userId: 'String'
@@ -370,7 +370,7 @@ interface NexusPrismaOutputs {
     creditsTransacted: 'Int'
     createdAt: 'DateTime'
     paymentIntentId: 'String'
-    status: 'TransactionStatus'
+    status: 'PaymentTransactionStatus'
   }
   StripeDetails: {
     user: 'User'
@@ -391,10 +391,10 @@ interface NexusPrismaOutputs {
   Snapshot: {
     id: 'String'
     tickers: 'String'
-    headers: 'String'
+    headers: 'Json'
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
-    data: 'String'
+    data: 'Json'
     createdAt: 'DateTime'
     LatestSnapshot: 'LatestSnapshot'
   }
@@ -440,7 +440,7 @@ interface NexusPrismaMethods {
   Order: Typegen.NexusPrismaFields<'Order'>
   StockPortfolioSettings: Typegen.NexusPrismaFields<'StockPortfolioSettings'>
   Balance: Typegen.NexusPrismaFields<'Balance'>
-  Transaction: Typegen.NexusPrismaFields<'Transaction'>
+  PaymentTransaction: Typegen.NexusPrismaFields<'PaymentTransaction'>
   StripeDetails: Typegen.NexusPrismaFields<'StripeDetails'>
   Webhook: Typegen.NexusPrismaFields<'Webhook'>
   Snapshot: Typegen.NexusPrismaFields<'Snapshot'>
