@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
 20200706223525-initial-migration
+20200707004837-with-optional-settings
