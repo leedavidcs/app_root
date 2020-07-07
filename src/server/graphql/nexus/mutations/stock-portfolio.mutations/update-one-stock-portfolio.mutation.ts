@@ -72,9 +72,7 @@ export const updateOneStockPortfolio = mutationField("updateOneStockPortfolio", 
 			data: {
 				name,
 				tickers: { set: tickers },
-				...(headers && {
-					headers: { set: headers.map((header) => JSON.stringify(header)) }
-				})
+				...(headers && { headers: { set: headers } })
 			},
 			where
 		});

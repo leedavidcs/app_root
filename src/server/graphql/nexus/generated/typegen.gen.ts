@@ -623,6 +623,7 @@ export interface NexusGenRootTypes {
   }
   Snapshot: { // root type
     createdAt: any; // DateTime!
+    data: any[]; // [Json!]!
     id: string; // String!
     tickers: string[]; // [String!]!
   }
@@ -725,6 +726,7 @@ export interface NexusGenRootTypes {
   DateTime: any;
   EmailAddress: any;
   JSONObject: any;
+  Json: any;
   UserPassword: any;
 }
 
@@ -942,7 +944,7 @@ export interface NexusGenFieldTypes {
   }
   Snapshot: { // field return type
     createdAt: any; // DateTime!
-    data: any[]; // [JSONObject!]!
+    data: any[]; // [Json!]!
     headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
     id: string; // String!
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
@@ -1222,12 +1224,10 @@ export interface NexusGenArgTypes {
   }
   StockPortfolio: {
     orders: { // args
-      after?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
-      before?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['OrderWhereUniqueInput'] | null; // OrderWhereUniqueInput
       orderBy?: NexusGenInputs['OrderOrderByInput'] | null; // OrderOrderByInput
       skip?: number | null; // Int
+      take?: number | null; // Int
       where?: NexusGenInputs['OrderWhereInput'] | null; // OrderWhereInput
     }
     snapshots: { // args
@@ -1262,7 +1262,7 @@ export type NexusGenEnumNames = "DataKey_Provider" | "Day" | "OrderByArg" | "Ord
 
 export type NexusGenInterfaceNames = "RequestRoot" | "StockPortfolioDataHeader";
 
-export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "String" | "UserPassword";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "JSONObject" | "Json" | "String" | "UserPassword";
 
 export type NexusGenUnionNames = never;
 

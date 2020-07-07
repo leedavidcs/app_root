@@ -21,17 +21,11 @@ export const Snapshot = objectType({
 			resolve: async ({ id }, args, { prisma }) => {
 				const snapshot = await prisma.snapshot.findOne({ where: { id } });
 
-				return snapshot?.headers.map((header) => JSON.parse(header)) ?? [];
-			}
-		});
-		t.list.field("data", {
-			type: "JSONObject",
-			nullable: false,
-			resolve: async ({ id }, args, { prisma }) => {
-				const snapshot = await prisma.snapshot.findOne({ where: { id } });
+				const headers = snapshot?.headers ?? [];
 
-				return snapshot?.data.map((datum) => JSON.parse(datum)) ?? [];
+				return headers as any;
 			}
 		});
+		t.model.data();
 	}
 });

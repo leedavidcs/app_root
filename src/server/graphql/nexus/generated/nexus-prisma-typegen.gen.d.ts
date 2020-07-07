@@ -9,7 +9,7 @@ type Pagination = {
 }
 
 // Prisma custom scalar names
-type CustomScalars = 'DateTime'
+type CustomScalars = 'DateTime' | 'Json'
 
 // Prisma model type definitions
 interface PrismaModels {
@@ -311,7 +311,7 @@ interface NexusPrismaOutputs {
     user: 'User'
     userId: 'String'
     name: 'String'
-    headers: 'String'
+    headers: 'Json'
     tickers: 'String'
     settings: 'StockPortfolioSettings'
     snapshots: 'Snapshot'
@@ -391,10 +391,10 @@ interface NexusPrismaOutputs {
   Snapshot: {
     id: 'String'
     tickers: 'String'
-    headers: 'String'
+    headers: 'Json'
     stockPortfolio: 'StockPortfolio'
     stockPortfolioId: 'String'
-    data: 'String'
+    data: 'Json'
     createdAt: 'DateTime'
     LatestSnapshot: 'LatestSnapshot'
   }

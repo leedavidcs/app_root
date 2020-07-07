@@ -112,6 +112,8 @@ input IntFilter {
   notIn: [Int!]
 }
 
+scalar Json
+
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -573,7 +575,7 @@ input ScheduledEventWhereInput {
 
 type Snapshot {
   createdAt: DateTime!
-  data: [JSONObject!]!
+  data: [Json!]!
   headers: [SnapshotHeader!]!
   id: String!
   stockPortfolio: StockPortfolio!
@@ -652,7 +654,7 @@ type StockPortfolio {
   id: String!
   latestSnapshot: Snapshot
   name: String!
-  orders(after: OrderWhereUniqueInput, before: OrderWhereUniqueInput, first: Int, last: Int, orderBy: OrderOrderByInput, skip: Int, where: OrderWhereInput): [Order!]!
+  orders(cursor: OrderWhereUniqueInput, orderBy: OrderOrderByInput, skip: Int, take: Int, where: OrderWhereInput): [Order!]!
   settings: StockPortfolioSettings!
   snapshots(cursor: SnapshotWhereUniqueInput, orderBy: SnapshotOrderByInput, skip: Int, take: Int, where: SnapshotWhereInput): [Snapshot!]!
 

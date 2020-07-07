@@ -22,15 +22,7 @@ export const StockPortfolio = objectType({
 			resolve: async ({ id }, args, { prisma }) => {
 				const stockPortfolio = await prisma.stockPortfolio.findOne({ where: { id } });
 
-				if (!stockPortfolio) {
-					return [];
-				}
-
-				const headers = stockPortfolio.headers.map((header) => {
-					const { name, dataKey } = JSON.parse(header);
-
-					return { name, dataKey };
-				});
+				const headers = stockPortfolio?.headers ?? [];
 
 				return headers as any;
 			}

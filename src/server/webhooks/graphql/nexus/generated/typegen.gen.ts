@@ -105,6 +105,7 @@ export interface NexusGenRootTypes {
   Query: {};
   Snapshot: { // root type
     createdAt: any; // DateTime!
+    data: any[]; // [Json!]!
     id: string; // String!
     tickers: string[]; // [String!]!
   }
@@ -139,6 +140,7 @@ export interface NexusGenRootTypes {
   ID: string;
   DateTime: any;
   JSONObject: any;
+  Json: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
@@ -192,7 +194,7 @@ export interface NexusGenFieldTypes {
   }
   Snapshot: { // field return type
     createdAt: any; // DateTime!
-    data: any[]; // [JSONObject!]!
+    data: any[]; // [Json!]!
     headers: NexusGenRootTypes['SnapshotHeader'][]; // [SnapshotHeader!]!
     id: string; // String!
     stockPortfolio: NexusGenRootTypes['StockPortfolio']; // StockPortfolio!
@@ -269,7 +271,7 @@ export type NexusGenEnumNames = "OrderByArg" | "OrderSide" | "OrderStatus" | "Or
 
 export type NexusGenInterfaceNames = never;
 
-export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int" | "JSONObject" | "String";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int" | "JSONObject" | "Json" | "String";
 
 export type NexusGenUnionNames = never;
 
