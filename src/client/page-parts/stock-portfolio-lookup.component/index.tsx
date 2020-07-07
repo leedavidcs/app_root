@@ -7,12 +7,13 @@ import {
 } from "@/client/graphql";
 import classnames from "classnames";
 import { NextRouter, useRouter } from "next/router";
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { StockPortfolioFilter } from "./stock-portfolio-filter.component";
 import { StockPortfolioList } from "./stock-portfolio-list.component";
 import { useStyles } from "./styles";
 
-const DEFAULT_PAGINATION_FIRST = 10;
+const DEFAULT_PAGINATION_TAKE = 10;
+const DEFAULT_PAGINATION_SKIP = 0;
 
 interface IProps {
 	className?: string;
@@ -21,22 +22,27 @@ interface IProps {
 
 const useOnPage = (
 	filters: GetManyStockPortfoliosQueryVariables
-): [Pick<IPaginationProps, "first" | "skip">, (value: OnPageProps) => void] => {
-	const [first, setFirst] = useState<number>(DEFAULT_PAGINATION_FIRST);
-	const [skip, setSkip] = useState<number>(0);
-
-	const pagination: Pick<IPaginationProps, "first" | "skip"> = useMemo(() => ({ first, skip }), [
-		first,
-		skip
-	]);
+): [Pick<IPaginationProps, "take" | "skip">, (value: OnPageProps) => void] => {
+	const [take, setTake] = useState<number>(DEFAULT_PAGINATION_TAKE);
+	const [skip, setSkip] = useState<number>(DEFAULT_PAGINATION_SKIP);
 
 	const onPage = useCallback(
 		(value: OnPageProps) => {
-			setFirst(value.first);
+			setTake(value.take);
 			setSkip(value.skip);
 		},
-		[setFirst, setSkip]
+		[setSkip]
 	);
+
+	useEffect(() => {
+		setTake(filters.take ?? DEFAULT_PAGINATION_TAKE);
+		setSkip(filters.skip ?? DEFAULT_PAGINATION_SKIP);
+	}, [filters.skip, filters.take]);
+
+	const pagination: Pick<IPaginationProps, "take" | "skip"> = useMemo(() => ({ take, skip }), [
+		skip,
+		take
+	]);
 
 	return [pagination, onPage];
 };
@@ -85,7 +91,7 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 	const variables = useMemo(
 		(): GetManyStockPortfoliosQueryVariables => ({
 			...lastFilters,
-			first: pagination.first,
+			take: pagination.take,
 			skip: pagination.skip,
 			where: { user: { id: { equals: userId } } }
 		}),
@@ -117,7 +123,7 @@ export const StockPortfolioLookup: FC<IProps> = (props) => {
 			</div>
 			<Pagination
 				className={classes.pagination}
-				first={pagination.first}
+				take={pagination.take}
 				skip={pagination.skip}
 				count={data?.count ?? 0}
 				onPage={onPage}

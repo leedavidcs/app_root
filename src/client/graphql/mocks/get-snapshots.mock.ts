@@ -19,7 +19,7 @@ export const GetSnapshotsMock: MockedResponse = {
 				createdAt: { gte: null, lte: null }
 			},
 			orderBy: { createdAt: OrderByArg.Desc },
-			first: 50
+			take: 50
 		}
 	},
 	result: {

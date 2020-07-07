@@ -24,7 +24,7 @@ export const useStockPortfoliosNode = (
 
 	const { data } = useGetManyStockPortfoliosQuery({
 		variables: {
-			first: 10,
+			take: 10,
 			skip: 0,
 			where: { user: { id: { equals: user?.id } } }
 		}
