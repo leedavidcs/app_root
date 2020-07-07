@@ -128,7 +128,7 @@ export const TextInput: FC<IProps> = (props) => {
 							_onChange?.(event);
 							onChange(event.currentTarget.value || undefined);
 						}}
-						value={value}
+						value={value ?? ""}
 					/>
 				)}
 				defaultValue={defaultValue}
