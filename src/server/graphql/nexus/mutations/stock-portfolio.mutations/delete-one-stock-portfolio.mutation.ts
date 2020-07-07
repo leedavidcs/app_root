@@ -1,6 +1,5 @@
 import { PrismaUtils } from "@/server/utils";
 import { arg, extendType } from "@nexus/schema";
-import { last } from "lodash";
 
 export const deleteOneStockPortfolio = extendType({
 	type: "Mutation",
