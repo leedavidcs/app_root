@@ -3,17 +3,17 @@ import { arg, inputObjectType, queryField } from "@nexus/schema";
 import { AuthenticationError } from "apollo-server-micro";
 
 export const TransactionWhereUniqueInput = inputObjectType({
-	name: "TransactionWhereUniqueInput",
+	name: "PaymentTransactionWhereUniqueInput",
 	definition: (t) => {
 		t.string("id");
 		t.string("paymentIntentId");
 	}
 });
 
-export const transaction = queryField("transaction", {
-	type: "Transaction",
+export const paymentTransaction = queryField("paymentTransaction", {
+	type: "PaymentTransaction",
 	args: {
-		where: arg({ type: "TransactionWhereUniqueInput", nullable: false })
+		where: arg({ type: "PaymentTransactionWhereUniqueInput", nullable: false })
 	},
 	authorize: async (parent, args, { prisma, user }) => {
 		const casted = PrismaUtils.castInputs(args);
@@ -22,7 +22,7 @@ export const transaction = queryField("transaction", {
 			return new AuthenticationError("This request requires authentication");
 		}
 
-		const retrievedTransaction = await prisma.transaction.findOne(casted);
+		const retrievedTransaction = await prisma.paymentTransaction.findOne(casted);
 
 		if (!retrievedTransaction) {
 			return true;
@@ -37,6 +37,6 @@ export const transaction = queryField("transaction", {
 	resolve: (parent, args, { prisma }) => {
 		const casted = PrismaUtils.castInputs(args);
 
-		return prisma.transaction.findOne(casted);
+		return prisma.paymentTransaction.findOne(casted);
 	}
 });

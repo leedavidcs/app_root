@@ -2,10 +2,10 @@ import { SnapshotConfig, StockDataFeatures } from "@/server/configs";
 import { IServerContextWithUser } from "@/server/graphql";
 import { NotFoundError } from "@/server/utils";
 import {
+	PaymentTransaction,
 	Snapshot,
 	StockPortfolio,
 	StockPortfolioSettings,
-	Transaction,
 	User,
 	WebhookType
 } from "@prisma/client";
@@ -170,7 +170,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 		const mapped: Record<string, any>[] = this.mapToStockPortfolio(results, stockPortfolio);
 
-		if (stockPortfolio.settings.enableSnapshots) {
+		if (stockPortfolio.settings?.enableSnapshots) {
 			await this.createSnapshot(stockPortfolio, mapped);
 		}
 
@@ -187,7 +187,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	}
 
 	public computeCosts = (
-		stockPortfolio: StockPortfolio & { settings: StockPortfolioSettings }
+		stockPortfolio: StockPortfolio & { settings?: Maybe<StockPortfolioSettings> }
 	): number => {
 		const { headers, tickers } = stockPortfolio;
 
@@ -199,11 +199,15 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 
 		const multiplier: number = tickers.length;
 
+		const settings = stockPortfolio.settings;
+
+		if (!settings) {
+			throw new Error("Missing stock portfolio settings");
+		}
+
 		const types: readonly IexType[] = Object.keys(this.getTypes(dataKeys)) as IexType[];
 
-		const snapshotCost: number = stockPortfolio.settings.enableSnapshots
-			? SnapshotConfig.price
-			: 0;
+		const snapshotCost: number = settings.enableSnapshots ? SnapshotConfig.price : 0;
 		const dataCost: number = types.reduce((acc, type) => acc + StockDataFeatures[type].cost, 0);
 
 		const totalCost: number = snapshotCost + dataCost;
@@ -232,7 +236,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 	private createTransaction = async (
 		cost: number,
 		userToCharge: Pick<User, "id">
-	): Promise<Maybe<Transaction>> => {
+	): Promise<Maybe<PaymentTransaction>> => {
 		const { prisma } = this.context;
 
 		if (cost <= 0) {
@@ -250,7 +254,7 @@ export class IexCloudAPI extends DataSource<IServerContextWithUser> {
 			data: { credits: balance.credits - cost }
 		});
 
-		return prisma.transaction.create({
+		return prisma.paymentTransaction.create({
 			data: {
 				creditsBefore: balance.credits,
 				creditsTransacted: -cost,

@@ -17,7 +17,7 @@ export const cancelTransaction = mutationField("cancelTransaction", {
 			return false;
 		}
 
-		const transaction = await prisma.transaction.findOne({ where: { paymentIntentId } });
+		const transaction = await prisma.paymentTransaction.findOne({ where: { paymentIntentId } });
 
 		/** User is associated with the transaction to cancel */
 		if (user.id !== transaction?.userId) {
@@ -43,7 +43,7 @@ export const cancelTransaction = mutationField("cancelTransaction", {
 		const { StripeAPI } = dataSources;
 
 		await StripeAPI.paymentIntents.cancel(paymentIntentId);
-		await prisma.transaction.update({
+		await prisma.paymentTransaction.update({
 			where: { paymentIntentId },
 			data: { status: "FAILED" }
 		});

@@ -81,7 +81,7 @@ export const createStripePaymentIntent = mutationField("createStripePaymentInten
 			payment_method: paymentMethodId
 		});
 
-		await prisma.transaction.create({
+		await prisma.paymentTransaction.create({
 			data: {
 				user: { connect: { id: user.id } },
 				creditsBefore,
