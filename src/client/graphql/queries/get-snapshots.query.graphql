@@ -1,15 +1,13 @@
 query GetSnapshots(
 	$where: SnapshotWhereInput!
 	$orderBy: SnapshotOrderByInput
-	$first: Int
-	$last: Int
+	$take: Int
 	$skip: Int
 ) {
 	snapshots(
 		where: $where
 		orderBy: $orderBy
-		first: $first
-		last: $last
+		take: $take
 		skip: $skip
 	) {
 		id

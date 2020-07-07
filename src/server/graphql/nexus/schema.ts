@@ -2,7 +2,7 @@ import { IServerContextWithUser } from "@/server/graphql/context";
 import { AuthClient } from "@/server/redis";
 import { fieldAuthorizePlugin, makeSchema, queryComplexityPlugin } from "@nexus/schema";
 import { RedisStore } from "graphql-rate-limit";
-import { nexusPrismaPlugin } from "nexus-prisma";
+import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import path from "path";
 import { getClientIp } from "request-ip";
 import * as mutations from "./mutations";
@@ -31,8 +31,10 @@ export const schema = makeSchema({
 		output: false
 	},
 	plugins: [
-		nexusPrismaPlugin({
-			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") }
+		nexusSchemaPrisma({
+			experimentalCRUD: true,
+			outputs: { typegen: getPath("generated/nexus-prisma-typegen.gen.d.ts") },
+			paginationStrategy: "prisma"
 		}),
 		queryComplexityPlugin(),
 		rateLimitPlugin({

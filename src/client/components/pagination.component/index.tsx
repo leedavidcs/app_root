@@ -16,9 +16,16 @@ const MAX_PAGE_LIMIT = 100;
 
 export interface IPaginationProps {
 	count: number;
-	first: number;
+	first?: number;
+	/** `take` is the same as `first`. This was added to support prisma pagination */
+	take?: number;
 	skip: number;
 }
+
+export type OnPageProps = Omit<IPaginationProps, "first" | "take"> & {
+	first: number;
+	take: number;
+};
 
 interface IRangeOptions {
 	/** The minimum number of pages that are shown, centered around the current page. */
@@ -29,7 +36,7 @@ interface IRangeOptions {
 
 interface IProps extends IPaginationProps, Partial<IRangeOptions> {
 	className?: string;
-	onPage?: (props: IPaginationProps) => void;
+	onPage?: (props: OnPageProps) => void;
 	showLimitConfig?: boolean;
 }
 
@@ -111,13 +118,21 @@ const getPageRanges = ({
 export const Pagination: FC<IProps> = ({
 	className,
 	count,
-	first,
+	first: _first,
+	take: _take = _first,
 	skip,
 	innerRange = DEFAULT_INNER_PAGE_RANGE,
 	marginRange = DEFAULT_MARGIN_PAGE_RANGE,
 	onPage = () => undefined,
 	showLimitConfig
 }) => {
+	const first: number | undefined = _take;
+	const take: number | undefined = _take;
+
+	if (typeof first !== "number" || typeof take !== "number") {
+		throw new Error("Must define either first or take in Pagination component!");
+	}
+
 	const classes = useStyles();
 
 	const pageCount: number = useMemo(() => getPageCount({ count, first }), [count, first]);
@@ -133,25 +148,25 @@ export const Pagination: FC<IProps> = ({
 	const isLastPage: boolean = currentPage === pageCount - 1;
 
 	const onClickPage = useCallback(
-		(page: number) => () => onPage?.({ count, first, skip: getSkipFromPage(page, first) }),
-		[onPage, count, first]
+		(page: number) => () =>
+			onPage?.({ count, first, take, skip: getSkipFromPage(page, first) }),
+		[onPage, count, first, take]
 	);
 
 	const onPreviousPage = useCallback(
-		() => onPage?.({ count, first, skip: getSkipFromPage(currentPage - 1, first) }),
-		[onPage, count, first, currentPage]
+		() => onPage?.({ count, first, take, skip: getSkipFromPage(currentPage - 1, first) }),
+		[onPage, count, first, take, currentPage]
 	);
 
 	const onNextPage = useCallback(
-		() => onPage?.({ count, first, skip: getSkipFromPage(currentPage + 1, first) }),
-		[onPage, count, first, currentPage]
+		() => onPage?.({ count, first, take, skip: getSkipFromPage(currentPage + 1, first) }),
+		[onPage, count, first, take, currentPage]
 	);
 
-	const onLimitChange = useCallback((value: number) => onPage?.({ count, first: value, skip }), [
-		onPage,
-		count,
-		skip
-	]);
+	const onLimitChange = useCallback(
+		(value: number) => onPage?.({ count, first: value, take: value, skip }),
+		[onPage, count, skip]
+	);
 
 	if (pageCount === 1) {
 		return null;
@@ -177,7 +192,13 @@ export const Pagination: FC<IProps> = ({
 							</Interactable>
 						))}
 						{!isLastRange(i) && (
-							<PageSearch count={count} first={first} skip={skip} onPage={onPage} />
+							<PageSearch
+								count={count}
+								first={first}
+								take={take}
+								skip={skip}
+								onPage={onPage}
+							/>
 						)}
 					</Fragment>
 				))}

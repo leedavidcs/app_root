@@ -6,7 +6,19 @@ const isDebug: boolean = process.env.NODE_ENV !== "production";
 const isIntrospectionQuery = (request: GraphQLRequest): boolean => {
 	const { operationName } = request;
 
-	return operationName === "IntrospectionQuery";
+	const isIntrospection: boolean =
+		operationName === "IntrospectionQuery" ||
+		/**
+		 * !HACK
+		 * @description Include this case, because `graphql-codegen` seems not to have an
+		 *     operationName, but starts with `query IntrospectionQuery`. Should short to the first
+		 *     condition, if the first condition matches
+		 * @date July 6, 2020
+		 * @author David Lee
+		 */
+		Boolean(request.query?.indexOf("IntrospectionQuery") !== -1);
+
+	return isIntrospection;
 };
 
 /* eslint-disable no-console */

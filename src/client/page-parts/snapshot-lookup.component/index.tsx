@@ -62,7 +62,7 @@ export const SnapshotLookup: FC<IProps> = ({
 		variables: {
 			where,
 			orderBy: { createdAt: OrderByArg.Desc },
-			first: 50
+			take: 50
 		},
 		pollInterval: ms("2m"),
 		onCompleted: (result) => setSnapshots(result.snapshots)
@@ -71,11 +71,11 @@ export const SnapshotLookup: FC<IProps> = ({
 	const count: number = data?.count ?? 0;
 
 	const onLoadMore = useCallback(
-		async (skip: number, first: number) => {
+		async (skip: number, take: number) => {
 			const result = await refetch({
 				where,
 				orderBy: { createdAt: OrderByArg.Desc },
-				first,
+				take,
 				skip
 			});
 

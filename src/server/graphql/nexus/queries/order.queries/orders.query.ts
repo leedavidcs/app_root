@@ -53,14 +53,12 @@ export const orders = queryField("orders", {
 		where: arg({ type: "OrderWhereInput" }),
 		orderBy: arg({ type: "OrderOrderByInput" }),
 		skip: intArg(),
-		after: arg({ type: "OrderWhereUniqueInput" }),
-		before: arg({ type: "OrderWhereUniqueInput" }),
-		first: intArg(),
-		last: intArg()
+		cursor: arg({ type: "OrderWhereUniqueInput" }),
+		take: intArg()
 	},
 	authorize: (parent, args, { user }) => Boolean(user),
 	resolve: async (parent, args, { prisma, user }) => {
-		const { where, orderBy, skip, after, before, first, last } = PrismaUtils.castInputs(args);
+		const { where, orderBy, skip, cursor, take } = PrismaUtils.castInputs(args);
 
 		return await prisma.order.findMany({
 			where: {
@@ -72,10 +70,8 @@ export const orders = queryField("orders", {
 			},
 			orderBy,
 			skip,
-			after,
-			before,
-			first,
-			last
+			cursor,
+			take
 		});
 	}
 });

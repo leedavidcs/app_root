@@ -46,10 +46,8 @@ export const webhooks = queryField("webhooks", {
 		where: arg({ type: "WebhookWhereInput" }),
 		orderBy: arg({ type: "WebhookOrderByInput" }),
 		skip: intArg(),
-		after: arg({ type: "WebhookWhereUniqueInput" }),
-		before: arg({ type: "WebhookWhereUniqueInput" }),
-		first: intArg(),
-		last: intArg()
+		cursor: arg({ type: "WebhookWhereUniqueInput" }),
+		take: intArg()
 	},
 	authorize: (parent, { where }, { prisma, user }) => {
 		if (!user) {

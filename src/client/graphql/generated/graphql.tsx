@@ -2,7 +2,8 @@ import { gql } from '@apollo/client';
 import * as ApolloReactCommon from '@apollo/client';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
-// This file was generated on: May 17th 2020 7:34:37 pm
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+// This file was generated on: Jul 6th 2020 8:45:24 pm
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,223 +16,11 @@ export type Scalars = {
   EmailAddress: any;
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any;
+  DateTime: any;
   /** The plain-text password of a user to be hashed */
   UserPassword: any;
-  DateTime: any;
 };
 
-
-export type LoginLocalUserInput = {
-  /** The email or username (either) of the user */
-  readonly userIdentifier: Scalars['String'];
-  /** The user's decrypted password */
-  readonly password: Scalars['String'];
-};
-
-export type RefreshAccessTokenInput = {
-  /** The refresh token, that is used to refresh the access token */
-  readonly refreshToken: Scalars['String'];
-};
-
-export type RegisterLocalUserInput = {
-  /** (Unique) The user's email */
-  readonly email: Scalars['EmailAddress'];
-  /** The user's decrypted password */
-  readonly password: Scalars['UserPassword'];
-  /** (Unique) The user's username */
-  readonly username: Scalars['String'];
-};
-
-/** The response object from a local register user request */
-export type RegisterLocalUserPayload = {
-  readonly __typename?: 'RegisterLocalUserPayload';
-  /** Whether the registration successfully created a user or not */
-  readonly success: Scalars['Boolean'];
-  /** An error will be described if success is false */
-  readonly error?: Maybe<Scalars['String']>;
-  /** The user object */
-  readonly user?: Maybe<User>;
-};
-
-/** The response object from a resend verify email request */
-export type ResendVerifyEmailPayload = {
-  readonly __typename?: 'ResendVerifyEmailPayload';
-  /** Status, on whether the email was successfully resent */
-  readonly success: Scalars['Boolean'];
-};
-
-export type RunScheduledEvent = {
-  readonly __typename?: 'RunScheduledEvent';
-  readonly scheduledEvents: ReadonlyArray<ScheduledEvent>;
-  readonly startTime: Scalars['DateTime'];
-  /** Retrieves stock-data for stock-portfolios that have polling configured, and generates snapshots for each one. */
-  readonly stockDataRetrieved: ReadonlyArray<StockPortfolioEvent>;
-};
-
-export type StockPortfolioCreateInput = {
-  readonly name: Scalars['String'];
-};
-
-export type StockPortfolioUpdateInput = {
-  readonly name?: Maybe<Scalars['String']>;
-  readonly headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
-  readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
-};
-
-export type ScheduledEventCreatedaysInput = {
-  readonly set?: Maybe<ReadonlyArray<Day>>;
-};
-
-export type ScheduledEventCreateWithoutStockPortfolioEventInput = {
-  readonly interval?: Maybe<Scalars['Int']>;
-  readonly recurrence?: Maybe<Recurrence>;
-  readonly days?: Maybe<ScheduledEventCreatedaysInput>;
-  readonly hour?: Maybe<Scalars['Int']>;
-  readonly minute?: Maybe<Scalars['Int']>;
-};
-
-export type ScheduledEventCreateOneWithoutStockPortfolioEventInput = {
-  readonly create: ScheduledEventCreateWithoutStockPortfolioEventInput;
-};
-
-export type StockPortfolioCreateOneWithoutStockPortfolioEventInput = {
-  readonly connect: StockPortfolioWhereUniqueInput;
-};
-
-export type StockPortfolioEventCreateInput = {
-  readonly type: StockPortfolioEventType;
-  readonly scheduledEvent: ScheduledEventCreateOneWithoutStockPortfolioEventInput;
-  readonly stockPortfolio: StockPortfolioCreateOneWithoutStockPortfolioEventInput;
-};
-
-export type ScheduledEventUpdatedaysInput = {
-  readonly set?: Maybe<ReadonlyArray<Day>>;
-};
-
-export type ScheduledEventUpdateWithoutStockPortfolioEventDataInput = {
-  readonly interval?: Maybe<Scalars['Int']>;
-  readonly recurrence?: Maybe<Recurrence>;
-  readonly days?: Maybe<ScheduledEventUpdatedaysInput>;
-  readonly hour?: Maybe<Scalars['Int']>;
-  readonly minute?: Maybe<Scalars['Int']>;
-};
-
-export type ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput = {
-  readonly update: ScheduledEventUpdateWithoutStockPortfolioEventDataInput;
-};
-
-export type StockPortfolioEventUpdateInput = {
-  readonly type?: Maybe<StockPortfolioEventType>;
-  readonly scheduledEvent?: Maybe<ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput>;
-};
-
-export type StockPortfolioSettingsWhereUniqueInput = {
-  readonly stockPortfolioId: Scalars['String'];
-};
-
-export type StockPortfolioSettingsUpdateInput = {
-  /** Whether snapshots should be saved per-data-refresh of this stock-portfolio */
-  readonly enableSnapshots?: Maybe<Scalars['Boolean']>;
-};
-
-export enum OrderDetailType {
-  PriceBundle = 'PriceBundle'
-}
-
-export type OrderDetailInput = {
-  readonly type: OrderDetailType;
-  readonly id: Scalars['String'];
-  readonly quantity?: Maybe<Scalars['Int']>;
-};
-
-export type StockPortfolioCreateOneWithoutWebhookInput = {
-  readonly connect: StockPortfolioWhereUniqueInput;
-};
-
-export type WebhookCreateInput = {
-  readonly type: WebhookType;
-  readonly query?: Maybe<Scalars['String']>;
-  readonly secret?: Maybe<Scalars['String']>;
-  readonly url: Scalars['String'];
-  readonly timeout?: Maybe<Scalars['Int']>;
-  readonly stockPortfolio: StockPortfolioCreateOneWithoutWebhookInput;
-};
-
-export type WebhookUpdateInput = {
-  readonly type?: Maybe<WebhookType>;
-  readonly query?: Maybe<Scalars['String']>;
-  readonly secret?: Maybe<Scalars['String']>;
-  readonly url?: Maybe<Scalars['String']>;
-  readonly timeout?: Maybe<Scalars['Int']>;
-};
-
-export type StockDataWhereUniqueInput = {
-  readonly stockPortfolioId: Scalars['String'];
-};
-
-export type StockPortfolioIdTypeCompoundUniqueInput = {
-  readonly stockPortfolioId: Scalars['String'];
-  readonly type: StockPortfolioEventType;
-};
-
-export type StockPortfolioEventWhereUniqueInput = {
-  readonly scheduledEventId?: Maybe<Scalars['String']>;
-  readonly stockPortfolioId_type?: Maybe<StockPortfolioIdTypeCompoundUniqueInput>;
-};
-
-export type TransactionWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-  readonly paymentIntentId?: Maybe<Scalars['String']>;
-};
-
-export type TransactionOrderByInput = {
-  readonly creditsBefore?: Maybe<OrderByArg>;
-  readonly creditsTransacted?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-};
-
-export type TransactionWhereWithoutUserInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly creditsBefore?: Maybe<IntFilter>;
-  readonly creditsTransacted?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly paymentIntentId?: Maybe<NullableStringFilter>;
-  readonly status?: Maybe<TransactionStatus>;
-  readonly AND?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-  readonly OR?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
-};
-
-export type WebhookWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-};
-
-export type WebhookOrderByInput = {
-  readonly createdAt?: Maybe<OrderByArg>;
-};
-
-export type StockPortfolioWhereWithoutUserInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly webhook?: Maybe<WebhookFilter>;
-  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
-  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
-};
-
-export type WebhookWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly type?: Maybe<WebhookType>;
-  readonly url?: Maybe<StringFilter>;
-  readonly timeout?: Maybe<IntFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly AND?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<WebhookWhereInput>>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereWithoutUserInput>;
-};
 
 export type AddressInput = {
   readonly line1: Scalars['String'];
@@ -241,20 +30,35 @@ export type AddressInput = {
   readonly state?: Maybe<Scalars['String']>;
 };
 
-/** The response from a successful login or token refresh request */
-export type TokenPayload = {
-  readonly __typename?: 'TokenPayload';
-  /** JSON web token to authenticate API requests */
-  readonly token: Scalars['String'];
-  /** JSON web token to refresh the token */
-  readonly refreshToken: Scalars['String'];
-};
-
 export type Balance = {
   readonly __typename?: 'Balance';
   readonly credits: Scalars['Int'];
   readonly user: User;
 };
+
+export type BalanceWhereInput = {
+  readonly userId?: Maybe<StringFilter>;
+  readonly credits?: Maybe<IntFilter>;
+  readonly AND?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<BalanceWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+};
+
+export type BalanceWhereUniqueInput = {
+  readonly userId?: Maybe<Scalars['String']>;
+};
+
+export type BooleanFilter = {
+  readonly equals?: Maybe<Scalars['Boolean']>;
+  readonly not?: Maybe<Scalars['Boolean']>;
+};
+
+/** The provider for the data provided by the data key */
+export enum DataKey_Provider {
+  /** IEX Cloud (see `https://iexcloud.io/`) */
+  IexCloud = 'IEX_CLOUD'
+}
 
 /** A single data key option that can be selected for a stock portfolio header */
 export type DataKeyOption = {
@@ -267,35 +71,94 @@ export type DataKeyOption = {
   readonly provider: DataKey_Provider;
 };
 
-/** The provider for the data provided by the data key */
-export enum DataKey_Provider {
-  /** IEX Cloud (see `https://iexcloud.io/`) */
-  IexCloud = 'IEX_CLOUD'
+
+export type DateTimeFilter = {
+  readonly equals?: Maybe<Scalars['DateTime']>;
+  readonly not?: Maybe<Scalars['DateTime']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly lt?: Maybe<Scalars['DateTime']>;
+  readonly lte?: Maybe<Scalars['DateTime']>;
+  readonly gt?: Maybe<Scalars['DateTime']>;
+  readonly gte?: Maybe<Scalars['DateTime']>;
+};
+
+export enum Day {
+  Mon = 'Mon',
+  Tues = 'Tues',
+  Wed = 'Wed',
+  Thurs = 'Thurs',
+  Fri = 'Fri',
+  Sat = 'Sat',
+  Sun = 'Sun'
 }
 
-export type FeaturePricingConfig = {
-  readonly __typename?: 'FeaturePricingConfig';
-  readonly price: Scalars['Int'];
-};
 
 export type FeaturePricing = {
   readonly __typename?: 'FeaturePricing';
   readonly snapshot: FeaturePricingConfig;
 };
 
-export type PriceBundle = {
-  readonly __typename?: 'PriceBundle';
-  readonly id: Scalars['String'];
-  readonly price: Scalars['Float'];
-  readonly credits: Scalars['Int'];
+export type FeaturePricingConfig = {
+  readonly __typename?: 'FeaturePricingConfig';
+  readonly price: Scalars['Int'];
+};
+
+export type FloatFilter = {
+  readonly equals?: Maybe<Scalars['Float']>;
+  readonly not?: Maybe<Scalars['Float']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Float']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Float']>>;
+  readonly lt?: Maybe<Scalars['Float']>;
+  readonly lte?: Maybe<Scalars['Float']>;
+  readonly gt?: Maybe<Scalars['Float']>;
+  readonly gte?: Maybe<Scalars['Float']>;
+};
+
+export type IntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
+
+
+export type LatestSnapshotFilter = {
+  readonly every?: Maybe<LatestSnapshotWhereInput>;
+  readonly some?: Maybe<LatestSnapshotWhereInput>;
+  readonly none?: Maybe<LatestSnapshotWhereInput>;
+};
+
+export type LatestSnapshotWhereInput = {
+  readonly snapshotId?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
+  readonly snapshot?: Maybe<SnapshotWhereInput>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type LoginLocalUserInput = {
+  /** The email or username (either) of the user */
+  readonly userIdentifier: Scalars['String'];
+  /** The user's decrypted password */
+  readonly password: Scalars['String'];
 };
 
 /** Root mutation type */
 export type Mutation = RequestRoot & {
   readonly __typename?: 'Mutation';
   readonly applySucceededTransaction?: Maybe<Balance>;
+  readonly cancelOneOrder?: Maybe<Order>;
   readonly cancelStripeSetupIntent?: Maybe<StripeSetupIntent>;
   readonly cancelTransaction?: Maybe<Balance>;
+  readonly createOneOrder: Order;
   readonly createOneStockPortfolio: StockPortfolio;
   readonly createOneWebhook: Webhook;
   readonly createStripePaymentIntent?: Maybe<StripePaymentIntent>;
@@ -303,7 +166,10 @@ export type Mutation = RequestRoot & {
   readonly deleteOneStockPortfolio?: Maybe<StockPortfolio>;
   readonly deleteOneStockPortfolioEvent?: Maybe<StockPortfolioEvent>;
   readonly deleteOneWebhook?: Maybe<Webhook>;
-  /** Mutation version of the query `stockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation. */
+  /**
+   * Mutation version of the query `stockData`. The `StockData` type inherently
+   * results in data mutations. As a result, this operation exists both as a query and mutation.
+   */
   readonly getStockData?: Maybe<StockData>;
   /** Logins in the user, and returns an expiring access token */
   readonly loginLocalUser?: Maybe<TokenPayload>;
@@ -334,6 +200,12 @@ export type MutationApplySucceededTransactionArgs = {
 
 
 /** Root mutation type */
+export type MutationCancelOneOrderArgs = {
+  where: OrderWhereUniqueInput;
+};
+
+
+/** Root mutation type */
 export type MutationCancelStripeSetupIntentArgs = {
   id: Scalars['String'];
 };
@@ -342,6 +214,12 @@ export type MutationCancelStripeSetupIntentArgs = {
 /** Root mutation type */
 export type MutationCancelTransactionArgs = {
   paymentIntentId: Scalars['String'];
+};
+
+
+/** Root mutation type */
+export type MutationCreateOneOrderArgs = {
+  data: OrderCreateInput;
 };
 
 
@@ -454,6 +332,220 @@ export type MutationUpsertOneWebhookArgs = {
   update: WebhookUpdateInput;
 };
 
+export type NullableDateTimeFilter = {
+  readonly equals?: Maybe<Scalars['DateTime']>;
+  readonly not?: Maybe<Scalars['DateTime']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
+  readonly lt?: Maybe<Scalars['DateTime']>;
+  readonly lte?: Maybe<Scalars['DateTime']>;
+  readonly gt?: Maybe<Scalars['DateTime']>;
+  readonly gte?: Maybe<Scalars['DateTime']>;
+};
+
+export type NullableFloatFilter = {
+  readonly equals?: Maybe<Scalars['Float']>;
+  readonly not?: Maybe<Scalars['Float']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Float']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Float']>>;
+  readonly lt?: Maybe<Scalars['Float']>;
+  readonly lte?: Maybe<Scalars['Float']>;
+  readonly gt?: Maybe<Scalars['Float']>;
+  readonly gte?: Maybe<Scalars['Float']>;
+};
+
+export type NullableIntFilter = {
+  readonly equals?: Maybe<Scalars['Int']>;
+  readonly not?: Maybe<Scalars['Int']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
+  readonly lt?: Maybe<Scalars['Int']>;
+  readonly lte?: Maybe<Scalars['Int']>;
+  readonly gt?: Maybe<Scalars['Int']>;
+  readonly gte?: Maybe<Scalars['Int']>;
+};
+
+export type NullableStringFilter = {
+  readonly equals?: Maybe<Scalars['String']>;
+  readonly not?: Maybe<Scalars['String']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly lt?: Maybe<Scalars['String']>;
+  readonly lte?: Maybe<Scalars['String']>;
+  readonly gt?: Maybe<Scalars['String']>;
+  readonly gte?: Maybe<Scalars['String']>;
+  readonly contains?: Maybe<Scalars['String']>;
+  readonly startsWith?: Maybe<Scalars['String']>;
+  readonly endsWith?: Maybe<Scalars['String']>;
+};
+
+export type Order = {
+  readonly __typename?: 'Order';
+  readonly id: Scalars['String'];
+  readonly stockPortfolio: StockPortfolio;
+  readonly ticker: Scalars['String'];
+  readonly quantity: Scalars['Int'];
+  readonly type: OrderType;
+  readonly side: OrderSide;
+  readonly status: OrderStatus;
+  readonly timeInForce: TimeInForce;
+  readonly limitPrice?: Maybe<Scalars['Float']>;
+  readonly stopPrice?: Maybe<Scalars['Float']>;
+  readonly avgFilledPrice?: Maybe<Scalars['Float']>;
+  readonly createdAt: Scalars['DateTime'];
+  readonly filledAt?: Maybe<Scalars['DateTime']>;
+  readonly cancelledAt?: Maybe<Scalars['DateTime']>;
+  readonly failedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export enum OrderByArg {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type OrderCreateInput = {
+  readonly ticker: Scalars['String'];
+  readonly quantity: Scalars['Int'];
+  readonly side: OrderSide;
+  readonly type?: Maybe<OrderType>;
+  readonly timeInForce?: Maybe<TimeInForce>;
+  readonly limitPrice?: Maybe<Scalars['Float']>;
+  readonly stopPrice?: Maybe<Scalars['Float']>;
+  readonly stockPortfolio: StockPortfolioCreateOneWithoutOrderInput;
+};
+
+export type OrderDetailInput = {
+  readonly type: OrderDetailType;
+  readonly id: Scalars['String'];
+  readonly quantity?: Maybe<Scalars['Int']>;
+};
+
+export enum OrderDetailType {
+  PriceBundle = 'PriceBundle'
+}
+
+export type OrderEventFilter = {
+  readonly every?: Maybe<OrderEventWhereInput>;
+  readonly some?: Maybe<OrderEventWhereInput>;
+  readonly none?: Maybe<OrderEventWhereInput>;
+};
+
+export enum OrderEventType {
+  CloseExpiredOrders = 'CloseExpiredOrders',
+  DeleteInvalidOrders = 'DeleteInvalidOrders',
+  ExecuteOpenOrders = 'ExecuteOpenOrders'
+}
+
+export type OrderEventWhereInput = {
+  readonly scheduledEventId?: Maybe<StringFilter>;
+  readonly type?: Maybe<OrderEventType>;
+  readonly AND?: Maybe<ReadonlyArray<OrderEventWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<OrderEventWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<OrderEventWhereInput>>;
+  readonly scheduledEvent?: Maybe<ScheduledEventWhereInput>;
+};
+
+export type OrderFilter = {
+  readonly every?: Maybe<OrderWhereInput>;
+  readonly some?: Maybe<OrderWhereInput>;
+  readonly none?: Maybe<OrderWhereInput>;
+};
+
+export type OrderOrderByInput = {
+  readonly ticker?: Maybe<OrderByArg>;
+  readonly quantity?: Maybe<OrderByArg>;
+  readonly type?: Maybe<OrderByArg>;
+  readonly side?: Maybe<OrderByArg>;
+  readonly status?: Maybe<OrderByArg>;
+  readonly limitPrice?: Maybe<OrderByArg>;
+  readonly stopPrice?: Maybe<OrderByArg>;
+  readonly avgFilledPrice?: Maybe<OrderByArg>;
+  readonly timeInForce?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+  readonly filledAt?: Maybe<OrderByArg>;
+  readonly cancelledAt?: Maybe<OrderByArg>;
+  readonly failedAt?: Maybe<OrderByArg>;
+};
+
+export enum OrderSide {
+  Buy = 'Buy',
+  Sell = 'Sell'
+}
+
+export enum OrderStatus {
+  Open = 'Open',
+  Closed = 'Closed'
+}
+
+export enum OrderType {
+  Market = 'Market',
+  Limit = 'Limit',
+  Stop = 'Stop',
+  StopLimit = 'StopLimit'
+}
+
+export type OrderWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly ticker?: Maybe<StringFilter>;
+  readonly quantity?: Maybe<IntFilter>;
+  readonly type?: Maybe<OrderType>;
+  readonly side?: Maybe<OrderSide>;
+  readonly status?: Maybe<OrderStatus>;
+  readonly limitPrice?: Maybe<NullableFloatFilter>;
+  readonly stopPrice?: Maybe<NullableFloatFilter>;
+  readonly avgFilledPrice?: Maybe<NullableFloatFilter>;
+  readonly timeInForce?: Maybe<TimeInForce>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly filledAt?: Maybe<NullableDateTimeFilter>;
+  readonly cancelledAt?: Maybe<NullableDateTimeFilter>;
+  readonly failedAt?: Maybe<NullableDateTimeFilter>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+  readonly AND?: Maybe<ReadonlyArray<OrderWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<OrderWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<OrderWhereInput>>;
+};
+
+export type OrderWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+};
+
+export type Position = {
+  readonly __typename?: 'Position';
+  readonly id: Scalars['String'];
+  readonly stockPortfolio: StockPortfolio;
+  readonly ticker: Scalars['String'];
+  readonly quantity: Scalars['Int'];
+  readonly avgEntryPrice: Scalars['Float'];
+  readonly costBasis: Scalars['Float'];
+};
+
+export type PositionFilter = {
+  readonly every?: Maybe<PositionWhereInput>;
+  readonly some?: Maybe<PositionWhereInput>;
+  readonly none?: Maybe<PositionWhereInput>;
+};
+
+export type PositionWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly ticker?: Maybe<StringFilter>;
+  readonly quantity?: Maybe<IntFilter>;
+  readonly avgEntryPrice?: Maybe<FloatFilter>;
+  readonly costBasis?: Maybe<FloatFilter>;
+  readonly AND?: Maybe<ReadonlyArray<PositionWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<PositionWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<PositionWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type PriceBundle = {
+  readonly __typename?: 'PriceBundle';
+  readonly id: Scalars['String'];
+  readonly price: Scalars['Float'];
+  readonly credits: Scalars['Int'];
+};
+
 /** Root query type */
 export type Query = RequestRoot & {
   readonly __typename?: 'Query';
@@ -462,11 +554,16 @@ export type Query = RequestRoot & {
   readonly dataKeyOptions: ReadonlyArray<DataKeyOption>;
   readonly featurePricing: FeaturePricing;
   readonly modal: Scalars['Boolean'];
+  readonly order?: Maybe<Order>;
+  readonly orders: ReadonlyArray<Order>;
   readonly priceBundles: ReadonlyArray<PriceBundle>;
   readonly snapshot?: Maybe<Snapshot>;
   readonly snapshotCount: Scalars['Int'];
   readonly snapshots: ReadonlyArray<Snapshot>;
-  /** Query version of the mutation `getStockData`. The `StockData` type inherently results in data mutations. As a result, this operation exists both as a query and mutation. */
+  /**
+   * Query version of the mutation `getStockData`. The `StockData` type inherently
+   * results in data mutations. As a result, this operation exists both as a query and mutation.
+   */
   readonly stockData?: Maybe<StockData>;
   readonly stockPortfolio?: Maybe<StockPortfolio>;
   readonly stockPortfolioCount?: Maybe<Scalars['Int']>;
@@ -500,6 +597,22 @@ export type QueryDataKeyOptionsArgs = {
 
 
 /** Root query type */
+export type QueryOrderArgs = {
+  where: OrderWhereUniqueInput;
+};
+
+
+/** Root query type */
+export type QueryOrdersArgs = {
+  where?: Maybe<OrderWhereInput>;
+  orderBy?: Maybe<OrderOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<OrderWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
+};
+
+
+/** Root query type */
 export type QuerySnapshotArgs = {
   where: SnapshotWhereUniqueInput;
 };
@@ -515,11 +628,9 @@ export type QuerySnapshotCountArgs = {
 export type QuerySnapshotsArgs = {
   where?: Maybe<SnapshotWhereInput>;
   orderBy?: Maybe<SnapshotOrderByInput>;
+  take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<SnapshotWhereUniqueInput>;
-  before?: Maybe<SnapshotWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<SnapshotWhereUniqueInput>;
 };
 
 
@@ -550,10 +661,8 @@ export type QueryStockPortfolioEventArgs = {
 
 /** Root query type */
 export type QueryStockPortfoliosArgs = {
-  after?: Maybe<StockPortfolioWhereUniqueInput>;
-  before?: Maybe<StockPortfolioWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<StockPortfolioWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<StockPortfolioOrderByInput>;
   where?: Maybe<StockPortfolioWhereInput>;
@@ -577,10 +686,8 @@ export type QueryTransactionArgs = {
 export type QueryTransactionsArgs = {
   where?: Maybe<TransactionWhereWithoutUserInput>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<TransactionWhereUniqueInput>;
-  before?: Maybe<TransactionWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<TransactionWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
 };
 
 
@@ -601,10 +708,39 @@ export type QueryWebhooksArgs = {
   where?: Maybe<WebhookWhereInput>;
   orderBy?: Maybe<WebhookOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<WebhookWhereUniqueInput>;
-  before?: Maybe<WebhookWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<WebhookWhereUniqueInput>;
+  take?: Maybe<Scalars['Int']>;
+};
+
+export enum Recurrence {
+  Once = 'Once',
+  Weekly = 'Weekly',
+  Daily = 'Daily'
+}
+
+export type RefreshAccessTokenInput = {
+  /** The refresh token, that is used to refresh the access token */
+  readonly refreshToken: Scalars['String'];
+};
+
+export type RegisterLocalUserInput = {
+  /** (Unique) The user's email */
+  readonly email: Scalars['EmailAddress'];
+  /** The user's decrypted password */
+  readonly password: Scalars['UserPassword'];
+  /** (Unique) The user's username */
+  readonly username: Scalars['String'];
+};
+
+/** The response object from a local register user request */
+export type RegisterLocalUserPayload = {
+  readonly __typename?: 'RegisterLocalUserPayload';
+  /** Whether the registration successfully created a user or not */
+  readonly success: Scalars['Boolean'];
+  /** An error will be described if success is false */
+  readonly error?: Maybe<Scalars['String']>;
+  /** The user object */
+  readonly user?: Maybe<User>;
 };
 
 /** Common properties for Query, Mutation and Subscription types */
@@ -613,13 +749,30 @@ export type RequestRoot = {
   readonly viewer?: Maybe<User>;
 };
 
+/** The response object from a resend verify email request */
+export type ResendVerifyEmailPayload = {
+  readonly __typename?: 'ResendVerifyEmailPayload';
+  /** Status, on whether the email was successfully resent */
+  readonly success: Scalars['Boolean'];
+};
 
-
+export type RunScheduledEvent = {
+  readonly __typename?: 'RunScheduledEvent';
+  readonly scheduledEvents: ReadonlyArray<ScheduledEvent>;
+  readonly startTime: Scalars['DateTime'];
+  /** Update orders that are expired (no longer valid to be executed) */
+  readonly closeExpiredOrders: Scalars['Int'];
+  /** Deletes invalid orders (e.g. limit-orders without a limit-price, or stop-orders without a stop-price) */
+  readonly deleteInvalidOrders: Scalars['Int'];
+  readonly executeOpenOrders?: Maybe<Scalars['Int']>;
+  /** Retrieves stock-data for stock-portfolios that have polling configured, and generates snapshots for each one. */
+  readonly stockDataRetrieved?: Maybe<ReadonlyArray<StockPortfolioEvent>>;
+};
 
 export type ScheduledEvent = {
   readonly __typename?: 'ScheduledEvent';
   readonly id: Scalars['String'];
-  readonly user: User;
+  readonly user?: Maybe<User>;
   readonly recurrence?: Maybe<Recurrence>;
   readonly days: ReadonlyArray<Day>;
   readonly hour: Scalars['Int'];
@@ -629,10 +782,58 @@ export type ScheduledEvent = {
   readonly stockPortfolioEvent?: Maybe<StockPortfolioEvent>;
 };
 
-export type SnapshotHeader = StockPortfolioDataHeader & {
-  readonly __typename?: 'SnapshotHeader';
-  readonly name: Scalars['String'];
-  readonly dataKey: Scalars['String'];
+export type ScheduledEventCreatedaysInput = {
+  readonly set?: Maybe<ReadonlyArray<Day>>;
+};
+
+export type ScheduledEventCreateOneWithoutStockPortfolioEventInput = {
+  readonly create: ScheduledEventCreateWithoutStockPortfolioEventInput;
+};
+
+export type ScheduledEventCreateWithoutStockPortfolioEventInput = {
+  readonly interval?: Maybe<Scalars['Int']>;
+  readonly recurrence?: Maybe<Recurrence>;
+  readonly days?: Maybe<ScheduledEventCreatedaysInput>;
+  readonly hour?: Maybe<Scalars['Int']>;
+  readonly minute?: Maybe<Scalars['Int']>;
+};
+
+export type ScheduledEventFilter = {
+  readonly every?: Maybe<ScheduledEventWhereInput>;
+  readonly some?: Maybe<ScheduledEventWhereInput>;
+  readonly none?: Maybe<ScheduledEventWhereInput>;
+};
+
+export type ScheduledEventUpdatedaysInput = {
+  readonly set?: Maybe<ReadonlyArray<Day>>;
+};
+
+export type ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput = {
+  readonly update: ScheduledEventUpdateWithoutStockPortfolioEventDataInput;
+};
+
+export type ScheduledEventUpdateWithoutStockPortfolioEventDataInput = {
+  readonly interval?: Maybe<Scalars['Int']>;
+  readonly recurrence?: Maybe<Recurrence>;
+  readonly days?: Maybe<ScheduledEventUpdatedaysInput>;
+  readonly hour?: Maybe<Scalars['Int']>;
+  readonly minute?: Maybe<Scalars['Int']>;
+};
+
+export type ScheduledEventWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<NullableStringFilter>;
+  readonly recurrence?: Maybe<Recurrence>;
+  readonly hour?: Maybe<IntFilter>;
+  readonly minute?: Maybe<IntFilter>;
+  readonly interval?: Maybe<NullableIntFilter>;
+  readonly next?: Maybe<DateTimeFilter>;
+  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
+  readonly OrderEvent?: Maybe<OrderEventFilter>;
+  readonly AND?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
 };
 
 export type Snapshot = {
@@ -645,10 +846,49 @@ export type Snapshot = {
   readonly data: ReadonlyArray<Scalars['JSONObject']>;
 };
 
-/** The data for a stock-portfolio, derived from its headers and tickers. Accessing the `data` prop of this type will incur a transaction for the `viewer` of this request */
+export type SnapshotFilter = {
+  readonly every?: Maybe<SnapshotWhereInput>;
+  readonly some?: Maybe<SnapshotWhereInput>;
+  readonly none?: Maybe<SnapshotWhereInput>;
+};
+
+export type SnapshotHeader = StockPortfolioDataHeader & {
+  readonly __typename?: 'SnapshotHeader';
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+};
+
+export type SnapshotOrderByInput = {
+  readonly id?: Maybe<OrderByArg>;
+  readonly stockPortfolioId?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
+export type SnapshotWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly LatestSnapshot?: Maybe<LatestSnapshotFilter>;
+  readonly AND?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type SnapshotWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+};
+
+/**
+ * The data for a stock-portfolio, derived from its headers and tickers. Accessing
+ * the `data` prop of this type will incur a transaction for the `viewer` of this request
+ */
 export type StockData = {
   readonly __typename?: 'StockData';
-  /** The stock portfolio for which this data is being generated for. If provided, 				snapshots may be created depending on the stock-portfolio's settings. */
+  /**
+   * The stock portfolio for which this data is being generated for. If provided,
+   * 				snapshots may be created depending on the stock-portfolio's settings.
+   */
   readonly stockPortfolio: StockPortfolio;
   /** The amount in credits, that a data-refresh would cost */
   readonly refreshCost: Scalars['Int'];
@@ -657,7 +897,10 @@ export type StockData = {
 };
 
 
-/** The data for a stock-portfolio, derived from its headers and tickers. Accessing the `data` prop of this type will incur a transaction for the `viewer` of this request */
+/**
+ * The data for a stock-portfolio, derived from its headers and tickers. Accessing
+ * the `data` prop of this type will incur a transaction for the `viewer` of this request
+ */
 export type StockDataRefreshCostArgs = {
   enableSnapshots?: Maybe<Scalars['Boolean']>;
 };
@@ -671,21 +914,8 @@ export type StockDataSearch = {
   readonly exchange: Scalars['String'];
 };
 
-export type StockPortfolioHeaderInput = {
-  readonly name: Scalars['String'];
-  readonly dataKey: Scalars['String'];
-  readonly width: Scalars['Int'];
-  readonly frozen: Scalars['Boolean'];
-  readonly resizable: Scalars['Boolean'];
-};
-
-export type StockPortfolioHeader = StockPortfolioDataHeader & {
-  readonly __typename?: 'StockPortfolioHeader';
-  readonly name: Scalars['String'];
-  readonly dataKey: Scalars['String'];
-  readonly frozen: Scalars['Boolean'];
-  readonly resizable: Scalars['Boolean'];
-  readonly width: Scalars['Int'];
+export type StockDataWhereUniqueInput = {
+  readonly stockPortfolioId: Scalars['String'];
 };
 
 /** StockPortfolio entity. This is what gets shown on the data grid */
@@ -693,13 +923,16 @@ export type StockPortfolio = {
   readonly __typename?: 'StockPortfolio';
   readonly id: Scalars['String'];
   readonly user: User;
+  readonly userId: Scalars['String'];
   readonly name: Scalars['String'];
-  readonly headers: ReadonlyArray<StockPortfolioHeader>;
-  readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly buyingPower: Scalars['Float'];
   readonly settings: StockPortfolioSettings;
+  readonly tickers: ReadonlyArray<Scalars['String']>;
+  readonly headers: ReadonlyArray<StockPortfolioHeader>;
   /** The data that gets resolved based on headers and tickers */
   readonly stockData: StockData;
   readonly latestSnapshot?: Maybe<Snapshot>;
+  readonly orders: ReadonlyArray<Order>;
   readonly snapshots: ReadonlyArray<Snapshot>;
   readonly createdAt: Scalars['DateTime'];
   readonly updatedAt: Scalars['DateTime'];
@@ -707,14 +940,40 @@ export type StockPortfolio = {
 
 
 /** StockPortfolio entity. This is what gets shown on the data grid */
+export type StockPortfolioOrdersArgs = {
+  where?: Maybe<OrderWhereInput>;
+  orderBy?: Maybe<OrderOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<OrderWhereUniqueInput>;
+  before?: Maybe<OrderWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+/** StockPortfolio entity. This is what gets shown on the data grid */
 export type StockPortfolioSnapshotsArgs = {
   where?: Maybe<SnapshotWhereInput>;
   orderBy?: Maybe<SnapshotOrderByInput>;
+  take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<SnapshotWhereUniqueInput>;
-  before?: Maybe<SnapshotWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<SnapshotWhereUniqueInput>;
+};
+
+export type StockPortfolioCreateInput = {
+  readonly name: Scalars['String'];
+};
+
+export type StockPortfolioCreateOneWithoutOrderInput = {
+  readonly connect?: Maybe<StockPortfolioWhereUniqueInput>;
+};
+
+export type StockPortfolioCreateOneWithoutStockPortfolioEventInput = {
+  readonly connect: StockPortfolioWhereUniqueInput;
+};
+
+export type StockPortfolioCreateOneWithoutWebhookInput = {
+  readonly connect: StockPortfolioWhereUniqueInput;
 };
 
 export type StockPortfolioDataHeader = {
@@ -730,10 +989,157 @@ export type StockPortfolioEvent = {
   readonly type: StockPortfolioEventType;
 };
 
+export type StockPortfolioEventCreateInput = {
+  readonly type: StockPortfolioEventType;
+  readonly scheduledEvent: ScheduledEventCreateOneWithoutStockPortfolioEventInput;
+  readonly stockPortfolio: StockPortfolioCreateOneWithoutStockPortfolioEventInput;
+};
+
+export type StockPortfolioEventFilter = {
+  readonly every?: Maybe<StockPortfolioEventWhereInput>;
+  readonly some?: Maybe<StockPortfolioEventWhereInput>;
+  readonly none?: Maybe<StockPortfolioEventWhereInput>;
+};
+
+export enum StockPortfolioEventType {
+  DataRetrieved = 'DataRetrieved'
+}
+
+export type StockPortfolioEventUpdateInput = {
+  readonly type?: Maybe<StockPortfolioEventType>;
+  readonly scheduledEvent?: Maybe<ScheduledEventUpdateOneRequiredWithoutStockPortfolioEventInput>;
+};
+
+export type StockPortfolioEventWhereInput = {
+  readonly scheduledEventId?: Maybe<StringFilter>;
+  readonly type?: Maybe<StockPortfolioEventType>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
+  readonly scheduledEvent?: Maybe<ScheduledEventWhereInput>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type StockPortfolioEventWhereUniqueInput = {
+  readonly scheduledEventId?: Maybe<Scalars['String']>;
+  readonly stockPortfolioId_type?: Maybe<StockPortfolioIdTypeCompoundUniqueInput>;
+};
+
+export type StockPortfolioFilter = {
+  readonly every?: Maybe<StockPortfolioWhereInput>;
+  readonly some?: Maybe<StockPortfolioWhereInput>;
+  readonly none?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type StockPortfolioHeader = StockPortfolioDataHeader & {
+  readonly __typename?: 'StockPortfolioHeader';
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+  readonly frozen: Scalars['Boolean'];
+  readonly resizable: Scalars['Boolean'];
+  readonly width: Scalars['Int'];
+};
+
+export type StockPortfolioHeaderInput = {
+  readonly name: Scalars['String'];
+  readonly dataKey: Scalars['String'];
+  readonly width: Scalars['Int'];
+  readonly frozen: Scalars['Boolean'];
+  readonly resizable: Scalars['Boolean'];
+};
+
+export type StockPortfolioIdTypeCompoundUniqueInput = {
+  readonly stockPortfolioId: Scalars['String'];
+  readonly type: StockPortfolioEventType;
+};
+
+export type StockPortfolioOrderByInput = {
+  readonly id?: Maybe<OrderByArg>;
+  readonly userId?: Maybe<OrderByArg>;
+  readonly name?: Maybe<OrderByArg>;
+  readonly buyingPower?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
+  readonly updatedAt?: Maybe<OrderByArg>;
+};
+
 export type StockPortfolioSettings = {
   readonly __typename?: 'StockPortfolioSettings';
   readonly stockPortfolio: StockPortfolio;
   readonly enableSnapshots: Scalars['Boolean'];
+};
+
+export type StockPortfolioSettingsUpdateInput = {
+  /** Whether snapshots should be saved per-data-refresh of this stock-portfolio */
+  readonly enableSnapshots?: Maybe<Scalars['Boolean']>;
+};
+
+export type StockPortfolioSettingsWhereInput = {
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly enableSnapshots?: Maybe<BooleanFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
+};
+
+export type StockPortfolioSettingsWhereUniqueInput = {
+  readonly stockPortfolioId: Scalars['String'];
+};
+
+export type StockPortfolioUpdateInput = {
+  readonly name?: Maybe<Scalars['String']>;
+  readonly headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
+  readonly tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
+};
+
+export type StockPortfolioWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly userId?: Maybe<StringFilter>;
+  readonly name?: Maybe<StringFilter>;
+  readonly snapshots?: Maybe<SnapshotFilter>;
+  readonly orders?: Maybe<OrderFilter>;
+  readonly buyingPower?: Maybe<FloatFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly Position?: Maybe<PositionFilter>;
+  readonly Webhook?: Maybe<WebhookFilter>;
+  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
+  readonly settings?: Maybe<StockPortfolioSettingsWhereInput>;
+  readonly latestSnapshot?: Maybe<LatestSnapshotWhereInput>;
+};
+
+export type StockPortfolioWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+  readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
+};
+
+export type StockPortfolioWhereWithoutUserInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly webhook?: Maybe<WebhookFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereWithoutUserInput>>;
+};
+
+export type StringFilter = {
+  readonly equals?: Maybe<Scalars['String']>;
+  readonly not?: Maybe<Scalars['String']>;
+  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
+  readonly lt?: Maybe<Scalars['String']>;
+  readonly lte?: Maybe<Scalars['String']>;
+  readonly gt?: Maybe<Scalars['String']>;
+  readonly gte?: Maybe<Scalars['String']>;
+  readonly contains?: Maybe<Scalars['String']>;
+  readonly startsWith?: Maybe<Scalars['String']>;
+  readonly endsWith?: Maybe<Scalars['String']>;
 };
 
 export type StripeCard = {
@@ -743,6 +1149,15 @@ export type StripeCard = {
   readonly last4: Scalars['String'];
   readonly exp_month: Scalars['Int'];
   readonly exp_year: Scalars['Int'];
+};
+
+export type StripeDetailsWhereInput = {
+  readonly userId?: Maybe<StringFilter>;
+  readonly customerId?: Maybe<StringFilter>;
+  readonly AND?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
+  readonly user?: Maybe<UserWhereInput>;
 };
 
 export type StripePaymentIntent = {
@@ -770,6 +1185,35 @@ export type StripeSetupIntent = {
   readonly created: Scalars['Int'];
 };
 
+export enum TimeInForce {
+  Day = 'Day',
+  Gtc = 'GTC',
+  Opg = 'OPG',
+  Cls = 'CLS',
+  Ioc = 'IOC',
+  Fok = 'FOK'
+}
+
+export type Toast = {
+  readonly __typename?: 'Toast';
+  readonly intent?: Maybe<Scalars['String']>;
+  readonly message: Scalars['String'];
+};
+
+export type ToastInput = {
+  readonly intent?: Maybe<Scalars['String']>;
+  readonly message: Scalars['String'];
+};
+
+/** The response from a successful login or token refresh request */
+export type TokenPayload = {
+  readonly __typename?: 'TokenPayload';
+  /** JSON web token to authenticate API requests */
+  readonly token: Scalars['String'];
+  /** JSON web token to refresh the token */
+  readonly refreshToken: Scalars['String'];
+};
+
 export type Transaction = {
   readonly __typename?: 'Transaction';
   readonly id: Scalars['String'];
@@ -780,278 +1224,23 @@ export type Transaction = {
   readonly user: User;
 };
 
-/** Basic user of the application */
-export type User = {
-  readonly __typename?: 'User';
-  readonly id: Scalars['String'];
-  readonly email: Scalars['EmailAddress'];
-  readonly emailVerified: Scalars['Boolean'];
-  readonly username: Scalars['String'];
-  readonly balance?: Maybe<Balance>;
-  readonly timezone: Scalars['String'];
-  readonly createdAt: Scalars['DateTime'];
-  readonly updatedAt: Scalars['DateTime'];
-};
-
-export type Webhook = {
-  readonly __typename?: 'Webhook';
-  readonly id: Scalars['String'];
-  readonly stockPortfolio: StockPortfolio;
-  readonly timeout: Scalars['Int'];
-  readonly type: WebhookType;
-  readonly url: Scalars['String'];
-  readonly query?: Maybe<Scalars['String']>;
-  readonly secret?: Maybe<Scalars['String']>;
-  readonly createdAt: Scalars['DateTime'];
-};
-
-export type BalanceWhereUniqueInput = {
-  readonly userId?: Maybe<Scalars['String']>;
-};
-
-export type SnapshotWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-};
-
-export type SnapshotWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly LatestSnapshot?: Maybe<LatestSnapshotFilter>;
-  readonly AND?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<SnapshotWhereInput>>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type SnapshotOrderByInput = {
-  readonly id?: Maybe<OrderByArg>;
-  readonly stockPortfolioId?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-};
-
-export type StockPortfolioWhereUniqueInput = {
-  readonly id?: Maybe<Scalars['String']>;
-  readonly userId_name?: Maybe<UserIdNameCompoundUniqueInput>;
-};
-
-export type StockPortfolioWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly userId?: Maybe<StringFilter>;
-  readonly name?: Maybe<StringFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly Webhook?: Maybe<WebhookFilter>;
-  readonly Snapshot?: Maybe<SnapshotFilter>;
-  readonly LatestSnapshot?: Maybe<LatestSnapshotFilter>;
-  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
-  readonly AND?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-  readonly settings?: Maybe<StockPortfolioSettingsWhereInput>;
-};
-
-export type StockPortfolioOrderByInput = {
-  readonly id?: Maybe<OrderByArg>;
-  readonly userId?: Maybe<OrderByArg>;
-  readonly name?: Maybe<OrderByArg>;
-  readonly createdAt?: Maybe<OrderByArg>;
-  readonly updatedAt?: Maybe<OrderByArg>;
-};
-
-export enum Recurrence {
-  Once = 'Once',
-  Weekly = 'Weekly',
-  Daily = 'Daily'
-}
-
-export enum Day {
-  Mon = 'Mon',
-  Tues = 'Tues',
-  Wed = 'Wed',
-  Thurs = 'Thurs',
-  Fri = 'Fri',
-  Sat = 'Sat',
-  Sun = 'Sun'
-}
-
-
-export enum StockPortfolioEventType {
-  DataRetrieved = 'DataRetrieved'
-}
-
-export enum WebhookType {
-  StockDataRetrieved = 'StockDataRetrieved'
-}
-
-export type StringFilter = {
-  readonly equals?: Maybe<Scalars['String']>;
-  readonly not?: Maybe<Scalars['String']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly lt?: Maybe<Scalars['String']>;
-  readonly lte?: Maybe<Scalars['String']>;
-  readonly gt?: Maybe<Scalars['String']>;
-  readonly gte?: Maybe<Scalars['String']>;
-  readonly contains?: Maybe<Scalars['String']>;
-  readonly startsWith?: Maybe<Scalars['String']>;
-  readonly endsWith?: Maybe<Scalars['String']>;
-};
-
-export type DateTimeFilter = {
-  readonly equals?: Maybe<Scalars['DateTime']>;
-  readonly not?: Maybe<Scalars['DateTime']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['DateTime']>>;
-  readonly lt?: Maybe<Scalars['DateTime']>;
-  readonly lte?: Maybe<Scalars['DateTime']>;
-  readonly gt?: Maybe<Scalars['DateTime']>;
-  readonly gte?: Maybe<Scalars['DateTime']>;
-};
-
-export type LatestSnapshotFilter = {
-  readonly every?: Maybe<LatestSnapshotWhereInput>;
-  readonly some?: Maybe<LatestSnapshotWhereInput>;
-  readonly none?: Maybe<LatestSnapshotWhereInput>;
-};
-
-export enum OrderByArg {
-  Asc = 'asc',
-  Desc = 'desc'
-}
-
-export type UserIdNameCompoundUniqueInput = {
-  readonly userId: Scalars['String'];
-  readonly name: Scalars['String'];
-};
-
-export type WebhookFilter = {
-  readonly every?: Maybe<WebhookWhereInput>;
-  readonly some?: Maybe<WebhookWhereInput>;
-  readonly none?: Maybe<WebhookWhereInput>;
-};
-
-export type SnapshotFilter = {
-  readonly every?: Maybe<SnapshotWhereInput>;
-  readonly some?: Maybe<SnapshotWhereInput>;
-  readonly none?: Maybe<SnapshotWhereInput>;
-};
-
-export type StockPortfolioEventFilter = {
-  readonly every?: Maybe<StockPortfolioEventWhereInput>;
-  readonly some?: Maybe<StockPortfolioEventWhereInput>;
-  readonly none?: Maybe<StockPortfolioEventWhereInput>;
-};
-
-export type UserWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly email?: Maybe<StringFilter>;
-  readonly emailVerified?: Maybe<BooleanFilter>;
-  readonly password?: Maybe<StringFilter>;
-  readonly username?: Maybe<StringFilter>;
-  readonly timezone?: Maybe<StringFilter>;
-  readonly createdAt?: Maybe<DateTimeFilter>;
-  readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly StockPortfolio?: Maybe<StockPortfolioFilter>;
-  readonly Balance?: Maybe<BalanceFilter>;
-  readonly Transaction?: Maybe<TransactionFilter>;
-  readonly StripeDetails?: Maybe<StripeDetailsFilter>;
-  readonly ScheduledEvent?: Maybe<ScheduledEventFilter>;
-  readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
-};
-
-export type StockPortfolioSettingsWhereInput = {
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly enableSnapshots?: Maybe<BooleanFilter>;
-  readonly AND?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioSettingsWhereInput>>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type LatestSnapshotWhereInput = {
-  readonly snapshotId?: Maybe<StringFilter>;
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly updatedAt?: Maybe<DateTimeFilter>;
-  readonly AND?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<LatestSnapshotWhereInput>>;
-  readonly snapshot?: Maybe<SnapshotWhereInput>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type StockPortfolioEventWhereInput = {
-  readonly scheduledEventId?: Maybe<StringFilter>;
-  readonly type?: Maybe<StockPortfolioEventType>;
-  readonly stockPortfolioId?: Maybe<StringFilter>;
-  readonly AND?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<StockPortfolioEventWhereInput>>;
-  readonly scheduledEvent?: Maybe<ScheduledEventWhereInput>;
-  readonly stockPortfolio?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type BooleanFilter = {
-  readonly equals?: Maybe<Scalars['Boolean']>;
-  readonly not?: Maybe<Scalars['Boolean']>;
-};
-
-export type StockPortfolioFilter = {
-  readonly every?: Maybe<StockPortfolioWhereInput>;
-  readonly some?: Maybe<StockPortfolioWhereInput>;
-  readonly none?: Maybe<StockPortfolioWhereInput>;
-};
-
-export type BalanceFilter = {
-  readonly every?: Maybe<BalanceWhereInput>;
-  readonly some?: Maybe<BalanceWhereInput>;
-  readonly none?: Maybe<BalanceWhereInput>;
-};
-
 export type TransactionFilter = {
   readonly every?: Maybe<TransactionWhereInput>;
   readonly some?: Maybe<TransactionWhereInput>;
   readonly none?: Maybe<TransactionWhereInput>;
 };
 
-export type StripeDetailsFilter = {
-  readonly every?: Maybe<StripeDetailsWhereInput>;
-  readonly some?: Maybe<StripeDetailsWhereInput>;
-  readonly none?: Maybe<StripeDetailsWhereInput>;
+export type TransactionOrderByInput = {
+  readonly creditsBefore?: Maybe<OrderByArg>;
+  readonly creditsTransacted?: Maybe<OrderByArg>;
+  readonly createdAt?: Maybe<OrderByArg>;
 };
 
-export type ScheduledEventFilter = {
-  readonly every?: Maybe<ScheduledEventWhereInput>;
-  readonly some?: Maybe<ScheduledEventWhereInput>;
-  readonly none?: Maybe<ScheduledEventWhereInput>;
-};
-
-export type ScheduledEventWhereInput = {
-  readonly id?: Maybe<StringFilter>;
-  readonly userId?: Maybe<StringFilter>;
-  readonly recurrence?: Maybe<Recurrence>;
-  readonly hour?: Maybe<IntFilter>;
-  readonly minute?: Maybe<IntFilter>;
-  readonly interval?: Maybe<NullableIntFilter>;
-  readonly next?: Maybe<DateTimeFilter>;
-  readonly StockPortfolioEvent?: Maybe<StockPortfolioEventFilter>;
-  readonly AND?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<ScheduledEventWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-};
-
-export type BalanceWhereInput = {
-  readonly userId?: Maybe<StringFilter>;
-  readonly credits?: Maybe<IntFilter>;
-  readonly AND?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<BalanceWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
-};
+export enum TransactionStatus {
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Succeeded = 'SUCCEEDED'
+}
 
 export type TransactionWhereInput = {
   readonly id?: Maybe<StringFilter>;
@@ -1067,69 +1256,131 @@ export type TransactionWhereInput = {
   readonly user?: Maybe<UserWhereInput>;
 };
 
-export type StripeDetailsWhereInput = {
-  readonly userId?: Maybe<StringFilter>;
-  readonly customerId?: Maybe<StringFilter>;
-  readonly AND?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
-  readonly OR?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
-  readonly NOT?: Maybe<ReadonlyArray<StripeDetailsWhereInput>>;
-  readonly user?: Maybe<UserWhereInput>;
+export type TransactionWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+  readonly paymentIntentId?: Maybe<Scalars['String']>;
 };
 
-export type IntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
+export type TransactionWhereWithoutUserInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly creditsBefore?: Maybe<IntFilter>;
+  readonly creditsTransacted?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly paymentIntentId?: Maybe<NullableStringFilter>;
+  readonly status?: Maybe<TransactionStatus>;
+  readonly AND?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
+  readonly OR?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<TransactionWhereWithoutUserInput>>;
 };
 
-export type NullableIntFilter = {
-  readonly equals?: Maybe<Scalars['Int']>;
-  readonly not?: Maybe<Scalars['Int']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['Int']>>;
-  readonly lt?: Maybe<Scalars['Int']>;
-  readonly lte?: Maybe<Scalars['Int']>;
-  readonly gt?: Maybe<Scalars['Int']>;
-  readonly gte?: Maybe<Scalars['Int']>;
+/** Basic user of the application */
+export type User = {
+  readonly __typename?: 'User';
+  readonly id: Scalars['String'];
+  readonly email: Scalars['EmailAddress'];
+  readonly emailVerified: Scalars['Boolean'];
+  readonly username: Scalars['String'];
+  readonly balance?: Maybe<Balance>;
+  readonly stockPortfolios: ReadonlyArray<StockPortfolio>;
+  readonly timezone: Scalars['String'];
+  readonly createdAt: Scalars['DateTime'];
+  readonly updatedAt: Scalars['DateTime'];
 };
 
-export type NullableStringFilter = {
-  readonly equals?: Maybe<Scalars['String']>;
-  readonly not?: Maybe<Scalars['String']>;
-  readonly in?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly notIn?: Maybe<ReadonlyArray<Scalars['String']>>;
-  readonly lt?: Maybe<Scalars['String']>;
-  readonly lte?: Maybe<Scalars['String']>;
-  readonly gt?: Maybe<Scalars['String']>;
-  readonly gte?: Maybe<Scalars['String']>;
-  readonly contains?: Maybe<Scalars['String']>;
-  readonly startsWith?: Maybe<Scalars['String']>;
-  readonly endsWith?: Maybe<Scalars['String']>;
+
+/** Basic user of the application */
+export type UserStockPortfoliosArgs = {
+  take?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<StockPortfolioWhereUniqueInput>;
 };
 
-export enum TransactionStatus {
-  Failed = 'FAILED',
-  Pending = 'PENDING',
-  Succeeded = 'SUCCEEDED'
+export type UserIdNameCompoundUniqueInput = {
+  readonly userId: Scalars['String'];
+  readonly name: Scalars['String'];
+};
+
+
+export type UserWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly email?: Maybe<StringFilter>;
+  readonly emailVerified?: Maybe<BooleanFilter>;
+  readonly password?: Maybe<StringFilter>;
+  readonly username?: Maybe<StringFilter>;
+  readonly timezone?: Maybe<StringFilter>;
+  readonly stockPortfolios?: Maybe<StockPortfolioFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly updatedAt?: Maybe<DateTimeFilter>;
+  readonly Transaction?: Maybe<TransactionFilter>;
+  readonly ScheduledEvent?: Maybe<ScheduledEventFilter>;
+  readonly AND?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<UserWhereInput>>;
+  readonly balance?: Maybe<BalanceWhereInput>;
+  readonly stripeDetails?: Maybe<StripeDetailsWhereInput>;
+};
+
+export type Webhook = {
+  readonly __typename?: 'Webhook';
+  readonly id: Scalars['String'];
+  readonly stockPortfolio: StockPortfolio;
+  readonly timeout: Scalars['Int'];
+  readonly type: WebhookType;
+  readonly url: Scalars['String'];
+  readonly query?: Maybe<Scalars['String']>;
+  readonly secret?: Maybe<Scalars['String']>;
+  readonly createdAt: Scalars['DateTime'];
+};
+
+export type WebhookCreateInput = {
+  readonly type: WebhookType;
+  readonly query?: Maybe<Scalars['String']>;
+  readonly secret?: Maybe<Scalars['String']>;
+  readonly url: Scalars['String'];
+  readonly timeout?: Maybe<Scalars['Int']>;
+  readonly stockPortfolio: StockPortfolioCreateOneWithoutWebhookInput;
+};
+
+export type WebhookFilter = {
+  readonly every?: Maybe<WebhookWhereInput>;
+  readonly some?: Maybe<WebhookWhereInput>;
+  readonly none?: Maybe<WebhookWhereInput>;
+};
+
+export type WebhookOrderByInput = {
+  readonly createdAt?: Maybe<OrderByArg>;
+};
+
+export enum WebhookType {
+  StockDataRetrieved = 'StockDataRetrieved'
 }
 
-export type Toast = {
-  readonly __typename?: 'Toast';
-  readonly intent?: Maybe<Scalars['String']>;
-  readonly message: Scalars['String'];
+export type WebhookUpdateInput = {
+  readonly type?: Maybe<WebhookType>;
+  readonly query?: Maybe<Scalars['String']>;
+  readonly secret?: Maybe<Scalars['String']>;
+  readonly url?: Maybe<Scalars['String']>;
+  readonly timeout?: Maybe<Scalars['Int']>;
 };
 
-export type ToastInput = {
-  readonly intent?: Maybe<Scalars['String']>;
-  readonly message: Scalars['String'];
+export type WebhookWhereInput = {
+  readonly id?: Maybe<StringFilter>;
+  readonly stockPortfolioId?: Maybe<StringFilter>;
+  readonly type?: Maybe<WebhookType>;
+  readonly url?: Maybe<StringFilter>;
+  readonly timeout?: Maybe<IntFilter>;
+  readonly createdAt?: Maybe<DateTimeFilter>;
+  readonly AND?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly OR?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly NOT?: Maybe<ReadonlyArray<WebhookWhereInput>>;
+  readonly stockPortfolio?: Maybe<StockPortfolioWhereWithoutUserInput>;
 };
 
-export type Unnamed_1_QueryVariables = {};
+export type WebhookWhereUniqueInput = {
+  readonly id?: Maybe<Scalars['String']>;
+};
+
+export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type Unnamed_1_Query = (
@@ -1144,9 +1395,9 @@ export type Unnamed_1_Query = (
   )> }
 );
 
-export type ApplySucceededTransactionMutationVariables = {
+export type ApplySucceededTransactionMutationVariables = Exact<{
   paymentIntentId: Scalars['String'];
-};
+}>;
 
 
 export type ApplySucceededTransactionMutation = (
@@ -1157,9 +1408,9 @@ export type ApplySucceededTransactionMutation = (
   )> }
 );
 
-export type CancelStripeSetupIntentMutationVariables = {
+export type CancelStripeSetupIntentMutationVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
 export type CancelStripeSetupIntentMutation = (
@@ -1176,9 +1427,9 @@ export type CancelStripeSetupIntentMutation = (
   )> }
 );
 
-export type CreateStockPortfolioMutationVariables = {
+export type CreateStockPortfolioMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type CreateStockPortfolioMutation = (
@@ -1189,10 +1440,10 @@ export type CreateStockPortfolioMutation = (
   ) }
 );
 
-export type CreateStripePaymentIntentMutationVariables = {
+export type CreateStripePaymentIntentMutationVariables = Exact<{
   orderDetails: ReadonlyArray<OrderDetailInput>;
   paymentMethodId: Scalars['String'];
-};
+}>;
 
 
 export type CreateStripePaymentIntentMutation = (
@@ -1210,7 +1461,7 @@ export type CreateStripePaymentIntentMutation = (
   )> }
 );
 
-export type CreateStripeSetupIntentMutationVariables = {};
+export type CreateStripeSetupIntentMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CreateStripeSetupIntentMutation = (
@@ -1221,9 +1472,9 @@ export type CreateStripeSetupIntentMutation = (
   )> }
 );
 
-export type CreateWebhookMutationVariables = {
+export type CreateWebhookMutationVariables = Exact<{
   data: WebhookCreateInput;
-};
+}>;
 
 
 export type CreateWebhookMutation = (
@@ -1234,9 +1485,9 @@ export type CreateWebhookMutation = (
   ) }
 );
 
-export type DeleteDataRetrievedEventMutationVariables = {
+export type DeleteDataRetrievedEventMutationVariables = Exact<{
   where: StockPortfolioEventWhereUniqueInput;
-};
+}>;
 
 
 export type DeleteDataRetrievedEventMutation = (
@@ -1247,9 +1498,9 @@ export type DeleteDataRetrievedEventMutation = (
   )> }
 );
 
-export type DeleteStockPortfolioMutationVariables = {
+export type DeleteStockPortfolioMutationVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
 export type DeleteStockPortfolioMutation = (
@@ -1260,9 +1511,9 @@ export type DeleteStockPortfolioMutation = (
   )> }
 );
 
-export type DeleteWebhookMutationVariables = {
+export type DeleteWebhookMutationVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
 export type DeleteWebhookMutation = (
@@ -1273,9 +1524,9 @@ export type DeleteWebhookMutation = (
   )> }
 );
 
-export type GetStockDataMutationVariables = {
+export type GetStockDataMutationVariables = Exact<{
   where: StockDataWhereUniqueInput;
-};
+}>;
 
 
 export type GetStockDataMutation = (
@@ -1286,9 +1537,9 @@ export type GetStockDataMutation = (
   )> }
 );
 
-export type LoginLocalUserMutationVariables = {
+export type LoginLocalUserMutationVariables = Exact<{
   input: LoginLocalUserInput;
-};
+}>;
 
 
 export type LoginLocalUserMutation = (
@@ -1299,9 +1550,9 @@ export type LoginLocalUserMutation = (
   )> }
 );
 
-export type RefreshAccessTokenMutationVariables = {
+export type RefreshAccessTokenMutationVariables = Exact<{
   input: RefreshAccessTokenInput;
-};
+}>;
 
 
 export type RefreshAccessTokenMutation = (
@@ -1312,9 +1563,9 @@ export type RefreshAccessTokenMutation = (
   )> }
 );
 
-export type RegisterLocalUserMutationVariables = {
+export type RegisterLocalUserMutationVariables = Exact<{
   input: RegisterLocalUserInput;
-};
+}>;
 
 
 export type RegisterLocalUserMutation = (
@@ -1329,7 +1580,7 @@ export type RegisterLocalUserMutation = (
   )> }
 );
 
-export type ResendVerifyEmailMutationVariables = {};
+export type ResendVerifyEmailMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ResendVerifyEmailMutation = (
@@ -1340,9 +1591,9 @@ export type ResendVerifyEmailMutation = (
   )> }
 );
 
-export type SetToastsMutationVariables = {
+export type SetToastsMutationVariables = Exact<{
   toasts: ReadonlyArray<ToastInput>;
-};
+}>;
 
 
 export type SetToastsMutation = (
@@ -1353,7 +1604,7 @@ export type SetToastsMutation = (
   )> }
 );
 
-export type SetUserMutationVariables = {};
+export type SetUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SetUserMutation = (
@@ -1368,9 +1619,9 @@ export type SetUserMutation = (
   )> }
 );
 
-export type ToggleModalMutationVariables = {
+export type ToggleModalMutationVariables = Exact<{
   force?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type ToggleModalMutation = (
@@ -1378,12 +1629,12 @@ export type ToggleModalMutation = (
   & Pick<Mutation, 'toggleModal'>
 );
 
-export type UpdateOneStockPortfolioMutationVariables = {
+export type UpdateOneStockPortfolioMutationVariables = Exact<{
   id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   tickers?: Maybe<ReadonlyArray<Scalars['String']>>;
   headers?: Maybe<ReadonlyArray<StockPortfolioHeaderInput>>;
-};
+}>;
 
 
 export type UpdateOneStockPortfolioMutation = (
@@ -1394,10 +1645,10 @@ export type UpdateOneStockPortfolioMutation = (
   )> }
 );
 
-export type UpdateStockPortfolioSettingsMutationVariables = {
+export type UpdateStockPortfolioSettingsMutationVariables = Exact<{
   where: StockPortfolioSettingsWhereUniqueInput;
   data: StockPortfolioSettingsUpdateInput;
-};
+}>;
 
 
 export type UpdateStockPortfolioSettingsMutation = (
@@ -1412,10 +1663,10 @@ export type UpdateStockPortfolioSettingsMutation = (
   )> }
 );
 
-export type UpdateWebhookMutationVariables = {
+export type UpdateWebhookMutationVariables = Exact<{
   where: WebhookWhereUniqueInput;
   data: WebhookUpdateInput;
-};
+}>;
 
 
 export type UpdateWebhookMutation = (
@@ -1426,7 +1677,7 @@ export type UpdateWebhookMutation = (
   )> }
 );
 
-export type UpsertDataRetrievedEventMutationVariables = {
+export type UpsertDataRetrievedEventMutationVariables = Exact<{
   type: StockPortfolioEventType;
   interval?: Maybe<Scalars['Int']>;
   recurrence?: Maybe<Recurrence>;
@@ -1434,7 +1685,7 @@ export type UpsertDataRetrievedEventMutationVariables = {
   hour?: Maybe<Scalars['Int']>;
   minute?: Maybe<Scalars['Int']>;
   stockPortfolioId: Scalars['String'];
-};
+}>;
 
 
 export type UpsertDataRetrievedEventMutation = (
@@ -1445,14 +1696,14 @@ export type UpsertDataRetrievedEventMutation = (
   ) }
 );
 
-export type UpsertWebhookMutationVariables = {
+export type UpsertWebhookMutationVariables = Exact<{
   id?: Maybe<Scalars['String']>;
   query?: Maybe<Scalars['String']>;
   secret?: Maybe<Scalars['String']>;
   type: WebhookType;
   url: Scalars['String'];
   stockPortfolioId: Scalars['String'];
-};
+}>;
 
 
 export type UpsertWebhookMutation = (
@@ -1463,11 +1714,11 @@ export type UpsertWebhookMutation = (
   ) }
 );
 
-export type GetDataKeyOptionsQueryVariables = {
+export type GetDataKeyOptionsQueryVariables = Exact<{
   name?: Maybe<Scalars['String']>;
   dataKey?: Maybe<Scalars['String']>;
   provider?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type GetDataKeyOptionsQuery = (
@@ -1478,7 +1729,7 @@ export type GetDataKeyOptionsQuery = (
   )> }
 );
 
-export type GetFeaturePricingQueryVariables = {};
+export type GetFeaturePricingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetFeaturePricingQuery = (
@@ -1492,7 +1743,7 @@ export type GetFeaturePricingQuery = (
   ) }
 );
 
-export type GetInitialAppLoadQueryVariables = {};
+export type GetInitialAppLoadQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetInitialAppLoadQuery = (
@@ -1503,13 +1754,13 @@ export type GetInitialAppLoadQuery = (
   )> }
 );
 
-export type GetManyStockPortfoliosQueryVariables = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<StockPortfolioWhereUniqueInput>;
+export type GetManyStockPortfoliosQueryVariables = Exact<{
+  take?: Maybe<Scalars['Int']>;
+  cursor?: Maybe<StockPortfolioWhereUniqueInput>;
   skip?: Maybe<Scalars['Int']>;
   where?: Maybe<StockPortfolioWhereInput>;
   query?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type GetManyStockPortfoliosQuery = (
@@ -1521,7 +1772,7 @@ export type GetManyStockPortfoliosQuery = (
   )> }
 );
 
-export type GetModalQueryVariables = {};
+export type GetModalQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetModalQuery = (
@@ -1529,9 +1780,9 @@ export type GetModalQuery = (
   & Pick<Query, 'modal'>
 );
 
-export type GetOneStockPortfolioQueryVariables = {
+export type GetOneStockPortfolioQueryVariables = Exact<{
   where: StockPortfolioWhereUniqueInput;
-};
+}>;
 
 
 export type GetOneStockPortfolioQuery = (
@@ -1558,7 +1809,7 @@ export type GetOneStockPortfolioQuery = (
   )> }
 );
 
-export type GetPriceBundlesQueryVariables = {};
+export type GetPriceBundlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetPriceBundlesQuery = (
@@ -1569,9 +1820,9 @@ export type GetPriceBundlesQuery = (
   )> }
 );
 
-export type GetSnapshotQueryVariables = {
+export type GetSnapshotQueryVariables = Exact<{
   where: SnapshotWhereUniqueInput;
-};
+}>;
 
 
 export type GetSnapshotQuery = (
@@ -1586,13 +1837,12 @@ export type GetSnapshotQuery = (
   )> }
 );
 
-export type GetSnapshotsQueryVariables = {
+export type GetSnapshotsQueryVariables = Exact<{
   where: SnapshotWhereInput;
   orderBy?: Maybe<SnapshotOrderByInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
-};
+}>;
 
 
 export type GetSnapshotsQuery = (
@@ -1604,9 +1854,9 @@ export type GetSnapshotsQuery = (
   )> }
 );
 
-export type GetStockPortfolioEventQueryVariables = {
+export type GetStockPortfolioEventQueryVariables = Exact<{
   where: StockPortfolioEventWhereUniqueInput;
-};
+}>;
 
 
 export type GetStockPortfolioEventQuery = (
@@ -1624,7 +1874,7 @@ export type GetStockPortfolioEventQuery = (
   )> }
 );
 
-export type GetUserQueryVariables = {};
+export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUserQuery = (
@@ -1639,7 +1889,7 @@ export type GetUserQuery = (
   )> }
 );
 
-export type GetViewerQueryVariables = {};
+export type GetViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetViewerQuery = (
@@ -1654,9 +1904,9 @@ export type GetViewerQuery = (
   )> }
 );
 
-export type GetWebhookQueryVariables = {
+export type GetWebhookQueryVariables = Exact<{
   where: WebhookWhereUniqueInput;
-};
+}>;
 
 
 export type GetWebhookQuery = (
@@ -1675,12 +1925,12 @@ export type GetWebhookQuery = (
   )> }
 );
 
-export type GetWebhooksQueryVariables = {
-  first?: Maybe<Scalars['Int']>;
+export type GetWebhooksQueryVariables = Exact<{
+  take?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
-  after?: Maybe<WebhookWhereUniqueInput>;
+  cursor?: Maybe<WebhookWhereUniqueInput>;
   where?: Maybe<WebhookWhereInput>;
-};
+}>;
 
 
 export type GetWebhooksQuery = (
@@ -1692,9 +1942,9 @@ export type GetWebhooksQuery = (
   )> }
 );
 
-export type SearchStockSymbolsQueryVariables = {
+export type SearchStockSymbolsQueryVariables = Exact<{
   text: Scalars['String'];
-};
+}>;
 
 
 export type SearchStockSymbolsQuery = (
@@ -1705,7 +1955,7 @@ export type SearchStockSymbolsQuery = (
   )> }
 );
 
-export type Unnamed_2_QueryVariables = {};
+export type Unnamed_2_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type Unnamed_2_Query = (
@@ -2580,8 +2830,8 @@ export type GetInitialAppLoadQueryHookResult = ReturnType<typeof useGetInitialAp
 export type GetInitialAppLoadLazyQueryHookResult = ReturnType<typeof useGetInitialAppLoadLazyQuery>;
 export type GetInitialAppLoadQueryResult = ApolloReactCommon.QueryResult<GetInitialAppLoadQuery, GetInitialAppLoadQueryVariables>;
 export const GetManyStockPortfoliosDocument = gql`
-    query GetManyStockPortfolios($first: Int, $after: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
-  stockPortfolios(first: $first, after: $after, skip: $skip, where: $where, query: $query) {
+    query GetManyStockPortfolios($take: Int, $cursor: StockPortfolioWhereUniqueInput, $skip: Int, $where: StockPortfolioWhereInput, $query: String) {
+  stockPortfolios(take: $take, cursor: $cursor, skip: $skip, where: $where, query: $query) {
     id
     name
     updatedAt
@@ -2602,8 +2852,8 @@ export const GetManyStockPortfoliosDocument = gql`
  * @example
  * const { data, loading, error } = useGetManyStockPortfoliosQuery({
  *   variables: {
- *      first: // value for 'first'
- *      after: // value for 'after'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
  *      skip: // value for 'skip'
  *      where: // value for 'where'
  *      query: // value for 'query'
@@ -2782,8 +3032,8 @@ export type GetSnapshotQueryHookResult = ReturnType<typeof useGetSnapshotQuery>;
 export type GetSnapshotLazyQueryHookResult = ReturnType<typeof useGetSnapshotLazyQuery>;
 export type GetSnapshotQueryResult = ApolloReactCommon.QueryResult<GetSnapshotQuery, GetSnapshotQueryVariables>;
 export const GetSnapshotsDocument = gql`
-    query GetSnapshots($where: SnapshotWhereInput!, $orderBy: SnapshotOrderByInput, $first: Int, $last: Int, $skip: Int) {
-  snapshots(where: $where, orderBy: $orderBy, first: $first, last: $last, skip: $skip) {
+    query GetSnapshots($where: SnapshotWhereInput!, $orderBy: SnapshotOrderByInput, $take: Int, $skip: Int) {
+  snapshots(where: $where, orderBy: $orderBy, take: $take, skip: $skip) {
     id
     createdAt
   }
@@ -2805,8 +3055,7 @@ export const GetSnapshotsDocument = gql`
  *   variables: {
  *      where: // value for 'where'
  *      orderBy: // value for 'orderBy'
- *      first: // value for 'first'
- *      last: // value for 'last'
+ *      take: // value for 'take'
  *      skip: // value for 'skip'
  *   },
  * });
@@ -2987,8 +3236,8 @@ export type GetWebhookQueryHookResult = ReturnType<typeof useGetWebhookQuery>;
 export type GetWebhookLazyQueryHookResult = ReturnType<typeof useGetWebhookLazyQuery>;
 export type GetWebhookQueryResult = ApolloReactCommon.QueryResult<GetWebhookQuery, GetWebhookQueryVariables>;
 export const GetWebhooksDocument = gql`
-    query GetWebhooks($first: Int, $skip: Int, $after: WebhookWhereUniqueInput, $where: WebhookWhereInput) {
-  webhooks(first: $first, skip: $skip, after: $after, where: $where) {
+    query GetWebhooks($take: Int, $skip: Int, $cursor: WebhookWhereUniqueInput, $where: WebhookWhereInput) {
+  webhooks(take: $take, skip: $skip, cursor: $cursor, where: $where) {
     id
     type
     url
@@ -3010,9 +3259,9 @@ export const GetWebhooksDocument = gql`
  * @example
  * const { data, loading, error } = useGetWebhooksQuery({
  *   variables: {
- *      first: // value for 'first'
+ *      take: // value for 'take'
  *      skip: // value for 'skip'
- *      after: // value for 'after'
+ *      cursor: // value for 'cursor'
  *      where: // value for 'where'
  *   },
  * });

@@ -170,7 +170,7 @@ const executeOrders = async (
 	const valuesPrices = PgUtils.values(priceMap, (info) => info?.price);
 	const valuesExecutableOrderIds = PgUtils.values(executableOrderIds);
 
-	const updated: number = await prisma.raw<number>`
+	const updated: number = await prisma.executeRaw<number>`
 		UPDATE "Order" as ord
 		SET
 			filledQuantity = quantity,
@@ -217,7 +217,7 @@ const executeOrders = async (
 		AND ord.ticker = prices.ticker
 	`;
 
-	await prisma.raw<number>`
+	await prisma.executeRaw<number>`
 		UPDATE "Position" as pos
 		SET
 			quantity = quantity + changeQuantity,
