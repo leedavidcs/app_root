@@ -16,7 +16,8 @@ const server: ApolloServer = getApolloServer({
 	context,
 	schema,
 	maxComplexity: 500,
-	maxDepth: 10
+	maxDepth: 10,
+	readOnly: true
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
