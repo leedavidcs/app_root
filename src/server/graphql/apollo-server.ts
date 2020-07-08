@@ -42,10 +42,11 @@ export interface IGetApolloServerConfig {
 	context?: Record<string, any> | ContextFunction;
 	maxComplexity?: number;
 	maxDepth?: number;
+	readOnly?: boolean;
 }
 
 export const getApolloServer = (config: IGetApolloServerConfig): ApolloServer => {
-	const { schema, context, maxComplexity = Infinity, maxDepth = Infinity } = config;
+	const { schema, context, maxComplexity = Infinity, maxDepth = Infinity, readOnly } = config;
 
 	const server: ApolloServer = new ApolloServer({
 		cache: new RedisCache({
@@ -57,7 +58,7 @@ export const getApolloServer = (config: IGetApolloServerConfig): ApolloServer =>
 		debug: isDebug,
 		extensions: [],
 		playground: isDebug,
-		plugins: getPlugins({ maxComplexity, schema }),
+		plugins: getPlugins({ maxComplexity, readOnly, schema }),
 		schema,
 		validationRules: getValidationRules({ maxDepth })
 	});

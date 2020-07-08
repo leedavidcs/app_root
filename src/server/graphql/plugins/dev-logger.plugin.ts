@@ -3,7 +3,7 @@ import { ApolloServerPlugin } from "apollo-server-plugin-base";
 
 const isDebug: boolean = process.env.NODE_ENV !== "production";
 
-const isIntrospectionQuery = (request: GraphQLRequest): boolean => {
+export const isIntrospectionQuery = (request: GraphQLRequest): boolean => {
 	const { operationName } = request;
 
 	const isIntrospection: boolean =
