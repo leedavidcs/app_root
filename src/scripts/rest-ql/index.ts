@@ -52,12 +52,14 @@ export interface IPropertyAstNode extends IAstNode<"Property">, IWithPropertiesA
 
 export interface IFieldAstNode<
 	TArgs extends object = any,
+	TMeta extends object = any,
 	TResult = any,
 	TContext extends object = any,
 	TRequestArgs extends object = any
 > extends IAstNode<"Field">, IWithArgsAstNodes, IWithPropertiesAstNodes {
-	__fn: IResolverFieldFn<TArgs, TResult, TContext, TRequestArgs>;
+	__fn: IResolverFieldFn<TArgs, TMeta, TResult, TContext, TRequestArgs>;
 	__list?: boolean;
+	__meta?: TMeta;
 }
 
 export interface IProviderAstNode extends IAstNode<"Provider"> {
@@ -111,11 +113,13 @@ interface IArgParams<T> {
 
 interface IResolverFieldFnParams<
 	TArgs extends object = any,
+	TMeta extends object = any,
 	TContext extends object = any,
 	TRequestArgs extends object = any,
 	TGroupByArgs extends object = any
 > {
 	args: TArgs;
+	meta: TMeta;
 	context: TContext;
 	requestArgs: TRequestArgs;
 	groupByArgs: TGroupByArgs;
@@ -124,16 +128,18 @@ interface IResolverFieldFnParams<
 
 type IResolverFieldFn<
 	TArgs extends object = any,
+	TMeta extends object = any,
 	TResult = any,
 	TContext extends object = any,
 	TRequestArgs extends object = any,
 	TGroupByArgs extends object = any
 > = (
-	fnParams: IResolverFieldFnParams<TArgs, TContext, TRequestArgs, TGroupByArgs>
+	fnParams: IResolverFieldFnParams<TArgs, TMeta, TContext, TRequestArgs, TGroupByArgs>
 ) => MaybePromise<TResult>;
 
 interface IResolverFieldParams<
 	TArgs extends object = any,
+	TMeta extends object = any,
 	TResult = any,
 	TContext extends object = any,
 	TRequestArgs extends object = any,
@@ -141,7 +147,8 @@ interface IResolverFieldParams<
 > {
 	description?: string;
 	args?: { [name in keyof TArgs]: AstResult<IArgAstNode<TArgs[name]>> };
-	fn: IResolverFieldFn<TArgs, TResult, TContext, TRequestArgs, TGroupByArgs>;
+	fn: IResolverFieldFn<TArgs, TMeta, TResult, TContext, TRequestArgs, TGroupByArgs>;
+	meta?: TMeta;
 }
 
 type RequestArgsParams<TRequestArgs extends object = any> = {
@@ -235,8 +242,8 @@ export class RestQL<
 		};
 	};
 
-	public resolverField = <TArgs extends object = any, TResult = any>(
-		params: IResolverFieldParams<TArgs, TResult, TContext, TRequestArgs, TGroupByArgs>
+	public resolverField = <TArgs extends object = any, TMeta extends object = any, TResult = any>(
+		params: IResolverFieldParams<TArgs, TMeta, TResult, TContext, TRequestArgs, TGroupByArgs>
 	): AstResult<IFieldAstNode> => {
 		return async ({ makeClientConfig, name, parentType, requestArgs, groupByArgs }) => {
 			if (!makeClientConfig.shouldGenerateArtifacts) {
@@ -263,6 +270,7 @@ export class RestQL<
 
 			const mockResult = await params.fn({
 				args: mockArgs,
+				meta: params.meta ?? ({} as TMeta),
 				context,
 				requestArgs,
 				groupByArgs,
@@ -279,12 +287,13 @@ export class RestQL<
 				return null;
 			}
 
-			const fieldAst: IFieldAstNode<TArgs, TResult, TContext, TRequestArgs> = {
+			const fieldAst: IFieldAstNode<TArgs, TMeta, TResult, TContext, TRequestArgs> = {
 				...typeInfo,
 				__kind: "Field",
 				__description: params.description,
 				__args: args,
-				__fn: params.fn
+				__fn: params.fn,
+				__meta: params.meta
 			};
 
 			return fieldAst;
