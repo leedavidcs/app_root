@@ -1,6 +1,6 @@
 {
   "name": "app_root",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Application root, for development purposes.",
   "main": "index.js",
   "sideEffects": false,
