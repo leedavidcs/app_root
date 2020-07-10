@@ -17,6 +17,9 @@ export const balanceSheet = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -30,6 +33,9 @@ export const book = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -43,6 +49,9 @@ export const cashFlow = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -56,6 +65,9 @@ export const ceoCompensation = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -69,6 +81,9 @@ export const chart = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -82,6 +97,9 @@ export const delayedQuote = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -95,6 +113,9 @@ export const dividends = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -108,6 +129,9 @@ export const earnings = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -121,6 +145,9 @@ export const estimates = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -134,6 +161,9 @@ export const financials = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -147,6 +177,9 @@ export const fundOwnership = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -160,6 +193,9 @@ export const income = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -173,6 +209,9 @@ export const intradayPrices = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -186,6 +225,9 @@ export const largestTrades = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -199,6 +241,9 @@ export const logo = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -212,6 +257,9 @@ export const news = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -225,6 +273,9 @@ export const ohlc = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -238,6 +289,9 @@ export const options = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -251,6 +305,9 @@ export const peers = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -264,6 +321,9 @@ export const previous = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -277,6 +337,9 @@ export const price = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -290,6 +353,9 @@ export const priceTarget = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -303,6 +369,9 @@ export const quote = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -316,6 +385,9 @@ export const recommendationTrends = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -329,6 +401,9 @@ export const sentiment = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -342,10 +417,13 @@ export const splits = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
-export const stats = rql.resolverField({
+export const stats = rql.resolverField<any, any, any>({
 	fn: ({ context, isMock: mock, groupByArgs }) => {
 		const { IexCloudAPIv2 } = context.dataSources;
 		const { symbol } = groupByArgs;
@@ -355,6 +433,9 @@ export const stats = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });
 
@@ -368,5 +449,8 @@ export const volumeByVenue = rql.resolverField({
 			symbol,
 			options: { mock }
 		});
+	},
+	meta: {
+		credits: 1
 	}
 });

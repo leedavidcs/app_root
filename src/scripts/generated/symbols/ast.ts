@@ -373,7 +373,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"chart": {
 						"__type": "IexCloudChart",
@@ -456,7 +459,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"earnings": {
 						"__type": "IexCloudEarnings",
@@ -531,7 +537,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"estimates": {
 						"__type": "IexCloudEstimates",
@@ -586,7 +595,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"financials": {
 						"__type": "IexCloudFinancials",
@@ -721,7 +733,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"income": {
 						"__type": "IexCloudIncome",
@@ -831,7 +846,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"logo": {
 						"__type": "IexCloudLogo",
@@ -844,7 +862,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"news": {
 						"__type": "IexCloudNews",
@@ -897,7 +918,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"ohlc": {
 						"__type": "IexCloudOhlc",
@@ -959,13 +983,19 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"peers": {
 						"__type": "String",
 						"__list": true,
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"previous": {
 						"__type": "IexCloudPrevious",
@@ -1048,13 +1078,19 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"price": {
 						"__type": "Number",
 						"__list": false,
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"quote": {
 						"__type": "IexCloudQuote",
@@ -1327,7 +1363,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					},
 					"stats": {
 						"__type": "IexCloudStats",
@@ -1465,7 +1504,10 @@ export default {
 							}
 						},
 						"__kind": "Field",
-						"__args": {}
+						"__args": {},
+						"__meta": {
+							"credits": 1
+						}
 					}
 				}
 			}
