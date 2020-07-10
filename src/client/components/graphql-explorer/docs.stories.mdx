@@ -1,0 +1,35 @@
+import { Card } from "@/client/components/card.component";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { GraphQLExplorer } from ".";
+
+<Meta title="general/graphql-explorer" component={GraphQLExplorer} />
+
+# GraphQLExplorer
+
+## Description
+A GraphQL docs-explorer, that is a readonly-version of
+[GraphiQL](https://github.com/graphql/graphiql).
+
+## Props
+<Props of={GraphQLExplorer} />
+
+## StandardStory
+export const url = "https://graphql-pokemon.now.sh/";
+
+<Preview>
+	<Story name="standard">
+		<Card style={{ width: 1000, padding: 20 }}>
+			<GraphQLExplorer
+				defaultDocsOpen={false}
+				url={url}
+				onEditQuery={action("onEditQuery")}
+				onToggleDocs={action("onToggleDocs")}
+				style={{ width: "100%" }}
+			/>
+		</Card>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

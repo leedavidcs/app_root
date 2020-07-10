@@ -1,0 +1,33 @@
+import { Paper } from "@/client/components";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback } from "react";
+import { SignUpForm } from ".";
+
+<Meta title="forms/sign-up-form" component={SignUpForm} />
+
+# SignUpForm
+
+- [Table of contents](#signupform)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+The presentational display for the form used to register a user.
+
+## Props
+<Props of={SignUpForm} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<SignUpForm />
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

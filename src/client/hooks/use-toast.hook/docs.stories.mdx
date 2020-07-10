@@ -1,0 +1,42 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { StandardStory } from "./stories";
+
+<Meta title="hooks/use-toast" />
+
+# useToast
+
+## Description
+Creates a `toaster` from
+[blueprint.js](https://blueprintjs.com/docs/#core/components/toast.toaster).
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { useToast } from "@/client/hooks/use-toast.hook";
+import { Button } from "@/client/components";
+import React, { FC, useCallback, useState } from "react";
+
+export const StandardStory: FC = () => {
+	const [count, setCount] = useState<number>(1);
+
+	const toaster = useToast();
+
+	const createToast = useCallback(() => {
+		toaster.show({ message: `New toast created! Counter: ${count}` });
+
+		setCount(count + 1);
+	}, [count, setCount, toaster]);
+
+	return (
+		<div>
+			<Button intent="primary" onClick={createToast} text="Create toast" />
+		</div>
+	);
+};
+```

@@ -1,0 +1,30 @@
+query GetOneStockPortfolio($where: StockPortfolioWhereUniqueInput!) {
+	stockPortfolio(where: $where) {
+		id
+		name
+		headers {
+			name
+			dataKey
+			frozen
+			resizable
+			width
+		}
+		tickers
+		createdAt
+		updatedAt
+		latestSnapshot {
+			data
+			createdAt
+		}
+		stockData {
+			refreshCost
+		}
+		user {
+			id
+			username
+		}
+		settings {
+			enableSnapshots
+		}
+	}
+}

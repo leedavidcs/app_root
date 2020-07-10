@@ -1,0 +1,58 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StandardStory } from "./stories";
+import { Popover } from ".";
+
+<Meta title="general/popover" component={Popover} />
+
+## Description
+Positioned element, that acts as a limited feature set of [Popper.js](https://popper.js.org/).
+
+## Props
+<Props of={Popover} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Button } from "@/client/components/button.component";
+import { Popover } from "@/client/components/popover.component";
+import { Menu } from "@/client/components/menu.component";
+import { boolean } from "@storybook/addon-knobs";
+import React, { FC, useCallback, useState } from "react";
+import { useStyles } from "./styles";
+
+export const StandardStory: FC = () => {
+	const classes = useStyles();
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const onClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+
+	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+	return (
+		<Popover
+			className={classes.root}
+			arrow={boolean("arrow", false)}
+			isOpen={isOpen}
+			onClose={onClose}
+			position="bottom-left"
+			content={
+				<Menu>
+					<Menu.Item text="Banana" />
+					<Menu.Item text="Apple" />
+				</Menu>
+			}
+		>
+			<Button onClick={onClick} intent="primary" style={{ display: "inline-block" }}>
+				Toggle
+			</Button>
+		</Popover>
+	);
+};
+```

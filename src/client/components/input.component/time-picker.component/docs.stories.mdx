@@ -1,0 +1,68 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { TimePicker } from ".";
+import { StandardStory } from "./stories";
+
+<Meta title="general/inputs/time-picker" component={TimePicker} />
+
+# TimePicker
+
+## Description
+A limited feature set around
+[@blueprintjs/time-picker](https://blueprintjs.com/docs/#datetime/timepicker), but with form-group
+and [react-hook-form](https://react-hook-form.com/) compatability.
+
+## Props
+<Props of={TimePicker} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Button } from "@/client/components/button.component";
+import { TimePicker } from "@/client/components/input.component/time-picker.component";
+import { yupResolver } from "@hookform/resolvers";
+import { action } from "@storybook/addon-actions";
+import { getHours } from "date-fns";
+import React, { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const MIN_HOURS = 12;
+
+interface IFormData {
+	mockTimePicker: Date;
+}
+
+const resolver = yupResolver<IFormData>(
+	yup.object().shape({
+		mockTimePicker: yup.date().test({
+			message: "Hours must be greater than 12",
+			test: (value) => {
+				return getHours(value) > MIN_HOURS;
+			}
+		})
+	})
+);
+
+export const StandardStory: FC = () => {
+	const { control, errors, handleSubmit } = useForm<IFormData>({ resolver });
+
+	return (
+		<form onSubmit={handleSubmit(action("onSubmit"))}>
+			<TimePicker
+				control={control}
+				error={errors.mockTimePicker?.message}
+				label="Time Picker"
+				labelInfo="(with form)"
+				name="mocktimePicker"
+			/>
+			<Button text="Submit" type="submit" />
+		</form>
+	);
+};
+```

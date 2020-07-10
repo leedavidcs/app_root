@@ -1,0 +1,36 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback, useState } from "react";
+import { SearchInput } from ".";
+
+<Meta title="general/inputs/search-input" component={SearchInput} />
+
+# SearchInput
+
+## Description
+A text-input search. Provides a wrapper around the native HTMLInputElement, with custom styling
+additional features including validation.
+
+## Props
+<Props of={SearchInput} />
+
+## StandardStory
+export const STANDARD_MAX_INPUT_LENGTH = 5;
+
+<Preview>
+	<Story name="standard">
+		{() => {
+			const [value, setValue] = useState("");
+			const onChange = useCallback(({ currentTarget }) => setValue(currentTarget.value), []);
+			return (
+				<Paper>
+					<SearchInput
+						label="SearchInput"
+						labelInfo="(required)"
+						onChange={onChange}
+						value={value}
+					/>
+				</Paper>
+			);
+		}}
+	</Story>
+</Preview>

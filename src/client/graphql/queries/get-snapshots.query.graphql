@@ -1,0 +1,17 @@
+query GetSnapshots(
+	$where: SnapshotWhereInput!
+	$orderBy: SnapshotOrderByInput
+	$take: Int
+	$skip: Int
+) {
+	snapshots(
+		where: $where
+		orderBy: $orderBy
+		take: $take
+		skip: $skip
+	) {
+		id
+		createdAt
+	}
+	count: snapshotCount(where: $where)
+}

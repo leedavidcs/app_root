@@ -1,0 +1,38 @@
+import { Paper } from "@/client/components/paper.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { action } from "@storybook/addon-actions";
+import { Anchor } from ".";
+
+<Meta title="general/inputs/anchor" component={Anchor} />
+
+# Anchor
+
+- [Table of Contents](#anchor)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+An anchor element, that can either act as a native anchor, or as clickable text that behaves as a
+button. Provides a wrapper around either an `a` or `button`.
+
+## Props
+<Props of={Anchor} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<div>
+				<Anchor value="No Href" onClick={action("onClick")} />
+			</div>
+			<div>
+				<Anchor value="With Href" href="https://www.google.com" />
+			</div>
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

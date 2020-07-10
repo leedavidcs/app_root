@@ -1,0 +1,5 @@
+mutation SetToasts($toasts: [ToastInput!]!) {
+	setToasts(toasts: $toasts) @client {
+		message
+	}
+}

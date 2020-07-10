@@ -1,0 +1,55 @@
+mutation UpsertDataRetrievedEvent(
+	$type: StockPortfolioEventType!
+	$interval: Int
+	$recurrence: Recurrence
+	$days: [Day!]
+	$hour: Int
+	$minute: Int
+	$stockPortfolioId: String!
+
+) {
+	upsertOneStockPortfolioEvent(
+		where: {
+			stockPortfolioId_type: {
+				stockPortfolioId: $stockPortfolioId,
+				type: $type
+			}
+		}
+		create: {
+			type: $type
+			scheduledEvent: {
+				create: {
+					interval: $interval
+					recurrence: $recurrence
+					days: {
+						set: $days
+					}
+					hour: $hour
+					minute: $minute
+				}
+			}
+			stockPortfolio: {
+				connect: {
+					id: $stockPortfolioId
+				}
+			}
+		}
+		update: {
+			type: $type
+			scheduledEvent: {
+				update: {
+					interval: $interval
+					recurrence: $recurrence
+					days: {
+						set: $days
+					}
+					hour: $hour
+					minute: $minute
+				}
+			}
+		}
+	) {
+		scheduledEventId
+		type
+	}
+}

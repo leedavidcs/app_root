@@ -1,0 +1,95 @@
+import { Icon } from "@/client/components/icon.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { themes } from "@storybook/theming";
+import { SelectableStory } from "./stories";
+import { List, ListItem } from ".";
+
+<Meta
+	title="general/list"
+	component={List}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# List
+
+- [List](#list)
+- [Description](#description)
+  * [Props](#props)
+    + [List](#list-1)
+    + [ListItem](#listitem)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+  * [SelectableStory](#selectablestory)
+    + [Source](#source-1)
+  * [WithHrefStory](#withhrefstory)
+    + [Source](#source-2)
+
+## Description
+A list component that replaces the native `li` element, to give it custom behaviors, and customize
+styling.
+
+## Props
+### List
+<Props of={List} />
+
+### ListItem
+<Props of={ListItem} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<List divider="full">
+			<ListItem icon="badge" text="Banana" info="Is fruit" />
+			<ListItem icon="badge" text="Apple" />
+			<ListItem text="Melon" />
+		</List>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)
+
+## SelectableStory
+<Preview>
+	<Story name="selectable">
+		<SelectableStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { List, ListItem } from "@/client/components/list.component";
+import React, { FC, useCallback, useState } from "react";
+
+export const SelectableStory: FC = () => {
+	const [selected, setSelected] = useState<number>(0);
+
+	const onClick = useCallback((index: number) => () => setSelected(index), []);
+
+	return (
+		<List divider="full">
+			<ListItem selected={selected === 0} onClick={onClick(0)} icon="badge" text="Banana" />
+			<ListItem selected={selected === 1} onClick={onClick(1)} icon="badge" text="Apple" />
+			<ListItem selected={selected === 2} onClick={onClick(2)} text="Melon" />
+		</List>
+	);
+};
+```
+
+## WithHrefStory
+<Preview>
+	<Story name="with-href">
+		<List divider="full">
+			<ListItem href="https://google.com" icon="badge" text="Banana" />
+			<ListItem icon="badge" text="Apple" />
+			<ListItem text="Melon" />
+		</List>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

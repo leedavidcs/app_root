@@ -1,0 +1,21 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { InlineLink } from ".";
+
+<Meta title="general/inline-link" component={InlineLink} />
+
+# InlineLink
+
+## Description
+A link to be placed inline with other text, (i.e. in a `p`-tag). Uses `next/link` internally.
+
+## Props
+<Props of={InlineLink} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<p>
+			Go to <InlineLink href="https://google.com" text="Google" /> to find cool stuff!
+		</p>
+	</Story>
+</Preview>

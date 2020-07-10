@@ -1,0 +1,27 @@
+import { Button } from "@/client/components";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockSymbolSearch } from ".";
+
+<Meta title="page-parts/stock-symbol-search" component={StockSymbolSearch} />
+
+# StockSymbolSearch
+
+## Description
+A select that functions as a general-text query for stock tickers.
+
+## Props
+<Props of={StockSymbolSearch} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StockSymbolSearch onSelect={action("onSelect")}>
+			<p>Type `test` into the search, to see some results</p>
+			<Button text="Search ticker" />
+		</StockSymbolSearch>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

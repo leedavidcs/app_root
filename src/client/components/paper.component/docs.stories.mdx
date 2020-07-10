@@ -1,0 +1,58 @@
+import { Meta, Preview, Story } from "@storybook/addon-docs/blocks";
+import { themes } from "@storybook/theming";
+import { StandardStory } from "./stories";
+import { Paper } from ".";
+
+<Meta
+	title="general/paper"
+	component={Paper}
+	parameters={{
+		options: {
+			theme: themes.dark
+		}
+	}}
+/>
+
+# Paper
+
+- [Table of Contents](#paper)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+The standard surface to use on top of a background.
+
+This is simply a div with custom styling
+
+## Props
+(same as `div`)
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Paper } from "@/client/components/paper.component";
+import Faker from "faker";
+import React from "react";
+
+Faker.seed(1);
+
+const heading: string = Faker.lorem.word();
+const paragraph: string = Faker.lorem.paragraph();
+
+export const StandardStory = () => {
+	return (
+		<Paper>
+			<h1>{heading}</h1>
+			<p>{paragraph}</p>
+		</Paper>
+	);
+};
+```

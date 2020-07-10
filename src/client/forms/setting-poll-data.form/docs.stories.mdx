@@ -1,0 +1,24 @@
+import { GetOneStockPortfolioMock, GetStockPortfolioEventMock } from "@/client/graphql/mocks";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { SettingPollDataForm } from ".";
+
+<Meta title="forms/setting-poll-data-form" component={SettingPollDataForm} />
+
+# SettingPollDataForm
+
+## Description
+Form to create a scheduled-event for a stock-portfolio to routinely refresh its data and generate a
+new snapshot
+
+## Props
+<Props of={SettingPollDataForm} />
+
+## StandardStory
+export const scheduledEvent = GetStockPortfolioEventMock.result.data.stockPortfolioEvent;
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
+<Preview>
+	<Story name="standard">
+		<SettingPollDataForm scheduledEvent={scheduledEvent} stockPortfolio={stockPortfolio} />
+	</Story>
+</Preview>

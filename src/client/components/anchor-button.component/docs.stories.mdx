@@ -1,0 +1,72 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { boolean } from "@storybook/addon-knobs";
+import { AnchorButton } from ".";
+
+<Meta title="general/anchor-button" component={AnchorButton} />
+
+# AnchorButton
+
+## Description 
+A wrapper around [@blueprintjs/anchor-button](https://blueprintjs.com/docs/#core/components/button)
+with custom styling and additional behaviors.
+
+## Props
+<Props of={AnchorButton} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		{() => {
+			const minimal = boolean("minimal");
+			const outlined = boolean("outlined");
+			const onClick = action("onClick");
+			return (
+				<div>
+					<AnchorButton
+						href="https://google.com"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="default"
+					/>
+					<AnchorButton
+						href="https://google.com"
+						intent="primary"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="primary"
+					/>
+					<AnchorButton
+						href="https://google.com"
+						intent="success"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="success"
+					/>
+					<AnchorButton
+						href="https://google.com"
+						intent="warning"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="warning"
+					/>
+					<AnchorButton
+						href="https://google.com"
+						intent="danger"
+						minimal={minimal}
+						onClick={onClick}
+						outlined={outlined}
+						text="danger"
+					/>
+				</div>
+			);
+		}}
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

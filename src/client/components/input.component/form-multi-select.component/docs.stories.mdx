@@ -1,0 +1,24 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { FormMultiSelect } from ".";
+import { StandardStory } from "./stories";
+
+<Meta title="general/inputs/form-multi-select" component={FormMultiSelect} />
+
+# FormMultiSelect
+
+## Description 
+This is identical to the `Multi-Select` component, but removes the individual selection change
+handlers, and exposes `onChange`, `value` and `react-hook-form`-compatible props (e.g. `control`,
+`name` and `error`).
+
+## Props
+<Props of={FormMultiSelect} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source

@@ -1,0 +1,45 @@
+import { Button } from "@/client/components/button.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { useCallback, useState } from "react";
+import { WindowDrawer } from ".";
+
+<Meta title="general/window-drawer" component={WindowDrawer} />
+
+# WindowDrawer
+
+- [Table of Contents](#windowdrawer)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+A drawer that is anchored to the edge of the browser-window. Overlays existing parts of the UI.
+
+## Props
+<Props of={WindowDrawer} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		{() => {
+			const [isOpen, setIsOpen] = useState(false);
+			const onClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+			const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+			return (
+				<div>
+					<WindowDrawer
+						isOpen={isOpen}
+						onClose={onClose}
+						position="left"
+						title="Title here"
+					/>
+					<Button intent="primary" onClick={onClick} text="Toggle" />
+				</div>
+			);
+		}}
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

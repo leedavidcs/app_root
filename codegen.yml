@@ -1,0 +1,21 @@
+overwrite: true
+schema:
+  - http://localhost:3031/api/graphql
+  - ./src/client/graphql/schemas/*.schema.{ts,graphql}
+documents: "./src/client/graphql/**/*.{ts,graphql}"
+generates:
+  ./src/client/graphql/generated/graphql.tsx:
+    plugins:
+      - time:
+          message: "This file was generated on: "
+          format: MMM Do YYYY h:mm:ss a
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      gqlImport: "@apollo/client#gql"
+      immutableTypes: true
+      reactApolloVersion: 3
+      withHOC: false
+      withHooks: true
+      withComponent: false

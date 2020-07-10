@@ -1,0 +1,43 @@
+import { Context } from "@/client/forms/checkout.form/provider.component";
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import Faker from "faker";
+import { ReviewOrderForm } from ".";
+//
+Faker.seed(1);
+
+<Meta title="forms/review-order-form" component={ReviewOrderForm} />
+
+# ReviewOrderForm
+
+## Description
+A review-order step of the checkout flow.
+
+## Props
+<Props of={ReviewOrderForm} />
+
+## StandardStory
+export const orderDetails = [];
+export const billingDetails = {
+	name: Faker.name.findName(),
+	address: {
+		city: Faker.address.city(),
+		country: Faker.address.country(),
+		line1: Faker.address.streetAddress(),
+		postal_code: Faker.address.zipCode(),
+		state: Faker.address.state()
+	}
+};
+
+<Preview>
+	<Story name="standard">
+		<Context value={{ orderDetails, billingDetails }}>
+			<div style={{ width: 800 }}>
+				<ReviewOrderForm onBack={action("onBack")} />
+			</div>
+		</Context>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

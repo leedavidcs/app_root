@@ -1,0 +1,12 @@
+mutation UpdateStockPortfolioSettings(
+	$where: StockPortfolioSettingsWhereUniqueInput!
+	$data: StockPortfolioSettingsUpdateInput!
+) {
+	updateOneStockPortfolioSettings(where: $where, data: $data) {
+		stockPortfolio {
+			id
+			name
+		}
+		enableSnapshots
+	}
+}

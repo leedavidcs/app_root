@@ -1,0 +1,62 @@
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StandardStory } from "./stories";
+import { Tooltip } from ".";
+
+<Meta title="general/tooltip" component={Tooltip} />
+
+# Tooltip
+
+- [Table of Contents](#tooltip)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+Positioned element, that acts as a limited feature set of [Popper.js](https://popper.js.org/).
+Interacts with hover events.
+
+## Props
+<Props of={Tooltip} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<StandardStory />
+	</Story>
+</Preview>
+
+### Source
+```tsx
+import { Button } from "@/client/components/button.component";
+import { Menu } from "@/client/components/menu.component";
+import { Tooltip } from "@/client/components/tooltip.component";
+import { boolean } from "@storybook/addon-knobs";
+import React, { FC, useCallback, useState } from "react";
+
+export const StandardStory: FC = () => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	const onInteraction = useCallback((nextState: boolean) => setIsOpen(nextState), [setIsOpen]);
+
+	const onClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+	return (
+		<Tooltip
+			arrow={boolean("arrow", true)}
+			isOpen={isOpen}
+			onClose={onClose}
+			onInteraction={onInteraction}
+			position="bottom-left"
+			content={
+				<Menu>
+					<Menu.Item text="Banana" />
+					<Menu.Item text="Apple" />
+				</Menu>
+			}
+		>
+			<Button intent="primary" text="Toggle" />
+		</Tooltip>
+	);
+};
+```

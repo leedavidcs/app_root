@@ -1,0 +1,20 @@
+query GetManyStockPortfolios(
+	$take: Int
+	$cursor: StockPortfolioWhereUniqueInput
+	$skip: Int
+	$where: StockPortfolioWhereInput
+	$query: String
+) {
+	stockPortfolios(
+		take: $take,
+		cursor: $cursor,
+		skip: $skip,
+		where: $where,
+		query: $query
+	) {
+		id
+		name
+		updatedAt
+	}
+	count: stockPortfolioCount(where: $where, query: $query)
+}

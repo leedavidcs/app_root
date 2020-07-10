@@ -1,0 +1,11 @@
+mutation SetUser {
+	setUser @client {
+		id
+		balance {
+			credits
+		}
+		email
+		emailVerified
+		username
+	}
+}

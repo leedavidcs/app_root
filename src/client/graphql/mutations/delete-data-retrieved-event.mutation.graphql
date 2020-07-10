@@ -1,0 +1,5 @@
+mutation DeleteDataRetrievedEvent($where: StockPortfolioEventWhereUniqueInput!) {
+	deleteOneStockPortfolioEvent(where: $where) {
+		scheduledEventId
+	}
+}

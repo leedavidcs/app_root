@@ -1,0 +1,18 @@
+{
+	"presets": ["next/babel"],
+	"plugins": [
+		[
+			"module-resolver",
+			{
+				"alias": {
+					"@/client": "./src/client",
+					"@/pages": "./src/pages",
+					"@/scripts": "./src/scripts",
+					"@/server": "./src/server"
+				}
+			}
+		],
+		"date-fns",
+		"lodash"
+	]
+}

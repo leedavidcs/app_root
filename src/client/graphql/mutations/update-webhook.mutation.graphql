@@ -1,0 +1,5 @@
+mutation UpdateWebhook($where: WebhookWhereUniqueInput!, $data: WebhookUpdateInput!) {
+	webhook: updateOneWebhook(where: $where, data: $data) {
+		id
+	}
+}

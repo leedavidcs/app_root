@@ -1,0 +1,11 @@
+query GetViewer {
+	viewer {
+		id
+		balance {
+			credits
+		}
+		email
+		emailVerified
+		username
+	}
+}

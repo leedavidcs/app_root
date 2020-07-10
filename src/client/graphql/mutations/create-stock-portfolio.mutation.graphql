@@ -1,0 +1,6 @@
+mutation CreateStockPortfolio($name: String!) {
+	createOneStockPortfolio(data: { name: $name }) {
+		id
+		name
+	}
+}

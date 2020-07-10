@@ -1,0 +1,30 @@
+import { action } from "@storybook/addon-actions";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockPortfolioLookup} from ".";
+
+<Meta title="page-parts/stock-portfolio-lookup" component={StockPortfolioLookup} />
+
+# StockPortfolioLookup
+
+- [Table of contents](#stockportfoliolookup)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+A stock-portfolio lookup, including a list for preview, pagination, general-text search, and
+additional filters.
+
+## Props
+<Props of={StockPortfolioLookup} />
+
+## Standard
+<Preview>
+	<Story name="standard">
+		<StockPortfolioLookup onClickOpen={action("onClickOpen")} />
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

@@ -1,0 +1,7 @@
+query GetDataKeyOptions($name: String, $dataKey: String, $provider: String) {
+	dataKeyOptions(name: $name, dataKey: $dataKey, provider: $provider) {
+		name
+		dataKey
+		provider
+	}
+}

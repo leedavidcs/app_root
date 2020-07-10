@@ -1,0 +1,21 @@
+mutation CreateStripePaymentIntent(
+	$orderDetails: [OrderDetailInput!]!
+	$paymentMethodId: String!
+) {
+	createStripePaymentIntent(
+		orderDetails: $orderDetails
+		paymentMethodId: $paymentMethodId
+	) {
+		amount
+		client_secret
+		payment_method {
+			card {
+				brand
+				fingerprint
+				last4
+				exp_month
+				exp_year
+			}
+		}
+	}
+}

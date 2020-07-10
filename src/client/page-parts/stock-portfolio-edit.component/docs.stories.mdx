@@ -1,0 +1,25 @@
+import { GetOneStockPortfolioMock } from "@/client/graphql/mocks/get-one-stock-portfolio.mock";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { StockPortfolioEdit } from ".";
+
+<Meta title="page-parts/stock-portfolio-edit" component={StockPortfolioEdit} />
+
+# StockPortfolioEdit
+
+## Description 
+A stock-portfolio display, that is displayed as a data-grid without data. This is for users to be
+able to update their stock-portfolio without incurring additional costs.
+
+## Props
+<Props of={StockPortfolioEdit} />
+
+## StandardStory
+export const stockPortfolio = GetOneStockPortfolioMock.result.data.stockPortfolio;
+
+<Preview>
+	<Story name="standard">
+		<div style={{ maxWidth: 1280 }}>
+			<StockPortfolioEdit stockPortfolio={stockPortfolio} />
+		</div>
+	</Story>
+</Preview>

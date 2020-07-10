@@ -1,0 +1,7 @@
+query GetPriceBundles {
+	priceBundles {
+		id
+		price
+		credits
+	}
+}

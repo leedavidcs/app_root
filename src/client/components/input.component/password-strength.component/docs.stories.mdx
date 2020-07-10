@@ -1,0 +1,32 @@
+import { Paper } from "@/client/components/paper.component";
+import { Meta, Preview, Props, Story } from "@storybook/addon-docs/blocks";
+import { text } from "@storybook/addon-knobs";
+import { PasswordStrength } from ".";
+
+<Meta title="general/inputs/password-strength" component={PasswordStrength} />
+
+# PasswordStrength
+
+- [Table of Contents](#passwordstrength)
+  * [Description](#description)
+  * [Props](#props)
+  * [StandardStory](#standardstory)
+    + [Source](#source)
+
+## Description
+A password strength meter, based on [zxcvbn](https://www.npmjs.com/package/zxcvbn).
+
+## Props
+<Props of={PasswordStrength} />
+
+## StandardStory
+<Preview>
+	<Story name="standard">
+		<Paper>
+			<PasswordStrength password={text("password", "")} />
+		</Paper>
+	</Story>
+</Preview>
+
+### Source
+(see code in story)

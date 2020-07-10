@@ -1,0 +1,6 @@
+mutation LoginLocalUser($input: LoginLocalUserInput!) {
+	loginLocalUser(input: $input) {
+		token
+		refreshToken
+	}
+}
